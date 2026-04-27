@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from __future__ import annotations
 """
 Fredericksburg Metro Foreclosure Scraper
 -----------------------------------------
@@ -17,6 +18,7 @@ Run: python3 scripts/scraper.py
 Requires: pip install requests beautifulsoup4 lxml
 """
 
+import re
 import requests
 import json
 import hashlib
@@ -40,6 +42,7 @@ HEADERS = {
         "Chrome/124.0.0.0 Safari/537.36"
     ),
     "Accept-Language": "en-US,en;q=0.9",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 }
 
 
@@ -49,7 +52,7 @@ HEADERS = {
 
 def make_id(address: str, sale_date: str) -> str:
     """Stable unique ID based on address + sale date."""
-    raw = f"{address.lower().strip()}-{sale_date or 'nordate'}"
+    raw = f"{address.lower().strip()}-{sale_date or 'nodate'}"
     return "fc-" + hashlib.md5(raw.encode()).hexdigest()[:8]
 
 
@@ -110,80 +113,190 @@ def scrape_public_notice_va() -> list:
     """
     Scrapes trustee sale notices from publicnoticevirginia.com.
 
-    NOTE: This scraper is written against the site structure as of early 2026.
-    If the site changes its layout, update the CSS selectors below.
-    Run with --debug to print raw HTML for inspection.
+    The site is ASP.NET WebForms with a session ID embedded in the URL path:
+      https://www.publicnoticevirginia.com/(S(sessionid))/default.aspx
 
-    The site requires searching per county. We loop over all four target counties.
+    As of 2026 the county filter uses individual checkboxes (not a <select>)
+    inside #countyDiv and #cityDiv.  Fredericksburg is a *city* in ASP.NET's
+    taxonomy so its checkbox lives in #cityDiv, not #countyDiv.
+
+    Approach:
+      1. GET homepage → follow redirect to get the session URL
+      2. GET default.aspx → extract __VIEWSTATE and all other hidden fields
+      3. Find county/city checkboxes dynamically by label text
+      4. POST the form with keyword="foreclosure" + target checkboxes checked
+      5. Parse the GridView results table for trustee/foreclosure notices
+
+    Virginia requires trustee sale notices to be published per VA Code § 55.1-321.
     """
     listings = []
-    base_url = "https://publicnoticevirginia.com"
+    session = requests.Session()
 
-    for county in TARGET_COUNTIES:
-        url = f"{base_url}/search?keywords=foreclosure&county={county}&state=VA"
-        log.info(f"  PublicNoticeVA — {county.title()}: {url}")
-        try:
-            resp = requests.get(url, headers=HEADERS, timeout=15)
-            resp.raise_for_status()
-            soup = BeautifulSoup(resp.text, "lxml")
+    try:
+        # Step 1: Hit homepage to establish ASP.NET session (follows redirect)
+        resp = session.get(
+            "https://www.publicnoticevirginia.com/",
+            headers=HEADERS, timeout=15, allow_redirects=True
+        )
 
-            # TODO: Inspect the actual HTML and update these selectors.
-            # Typical structure on legal notice aggregators:
-            #   <div class="notice-item"> or <article class="notice">
-            #     <h3 class="notice-title">...</h3>
-            #     <div class="notice-body">...</div>
-            #   </div>
-            # Run: python3 scripts/scraper.py --debug to print raw HTML.
+        # Extract session prefix from final URL e.g. /(S(er1tscv0pg3k2gy2ul4rqhxw))
+        m = re.search(r'(https://www\.publicnoticevirginia\.com/\(S\([^)]+\)\))', resp.url)
+        session_base = m.group(1) if m else "https://www.publicnoticevirginia.com"
+        default_url = session_base + "/default.aspx"
 
-            notice_items = soup.select(".notice-item, article.notice, .search-result-item")
+        log.info(f"  PNV: default URL = {default_url}")
 
-            if not notice_items:
-                log.warning(f"  No items found for {county} — selector may need updating")
+        # Step 2: GET default.aspx for ASP.NET form tokens
+        resp2 = session.get(
+            default_url,
+            headers={**HEADERS, "Referer": "https://www.publicnoticevirginia.com/"},
+            timeout=15
+        )
+        soup = BeautifulSoup(resp2.text, "lxml")
+
+        # Collect ALL hidden input fields for the POST (preserves ASP.NET state)
+        post_data = []
+        for inp in soup.find_all("input", type="hidden"):
+            name = inp.get("name", "")
+            val  = inp.get("value", "")
+            if name:
+                post_data.append((name, val))
+
+        post_data += [
+            ("__EVENTTARGET",   ""),
+            ("__EVENTARGUMENT", ""),
+        ]
+
+        # Step 3: Find target checkboxes dynamically by label text
+        # County checkboxes in #countyDiv; city checkbox for Fredericksburg in #cityDiv
+        COUNTY_TARGETS = ["caroline", "spotsylvania", "stafford"]
+        CITY_TARGETS   = ["fredericksburg"]
+
+        checked_count = 0
+        for div_id, targets in [("countyDiv", COUNTY_TARGETS), ("cityDiv", CITY_TARGETS)]:
+            div = soup.find(id=div_id) or soup.find(id=re.compile(div_id, re.I))
+            if not div:
+                log.warning(f"  PNV: #{div_id} not found in page")
+                continue
+            for inp in div.find_all("input", type="checkbox"):
+                inp_id = inp.get("id", "")
+                # Label may be a sibling <label for="id"> or inline text
+                label_el = (soup.find("label", attrs={"for": inp_id})
+                            if inp_id else None)
+                if not label_el:
+                    label_el = inp.find_next_sibling("label")
+                label_text = label_el.get_text(strip=True).lower() if label_el else ""
+                if any(t in label_text for t in targets):
+                    name = inp.get("name", "")
+                    if name:
+                        post_data.append((name, "on"))
+                        checked_count += 1
+                        log.info(f"  PNV: checking '{label_text}' ({name})")
+
+        # Fallback: hardcode known checkbox names if dynamic discovery fails
+        if checked_count == 0:
+            log.warning("  PNV: dynamic checkbox discovery failed — using hardcoded names")
+            for name in [
+                "ctl00$ContentPlaceHolder1$as1$lstCounty$16",  # Caroline
+                "ctl00$ContentPlaceHolder1$as1$lstCounty$89",  # Spotsylvania
+                "ctl00$ContentPlaceHolder1$as1$lstCounty$90",  # Stafford
+                "ctl00$ContentPlaceHolder1$as1$lstCity$101",   # Fredericksburg City
+            ]:
+                post_data.append((name, "on"))
+
+        # Search keyword
+        post_data.append(("ctl00$ContentPlaceHolder1$as1$txtSearch", "foreclosure"))
+
+        # Submit button (value="" is correct per live page inspection)
+        post_data.append(("ctl00$ContentPlaceHolder1$as1$btnGo", ""))
+
+        # Step 4: POST the search form
+        resp3 = session.post(
+            default_url,
+            data=post_data,
+            headers={
+                **HEADERS,
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Referer": default_url,
+            },
+            timeout=30,
+        )
+        soup3 = BeautifulSoup(resp3.text, "lxml")
+
+        # Step 5: Parse result rows from ASP.NET GridView
+        # Primary: the updateWSGrid table; fallback: any data table rows
+        grid = (
+            soup3.find(id=re.compile(r"updateWSGrid", re.I)) or
+            soup3.find(id=re.compile(r"WSExtendedGrid", re.I))
+        )
+        if grid:
+            rows = grid.find_all("tr")[1:]  # skip header row
+        else:
+            rows = (
+                soup3.select("table.results-table tr, table.search-results tr") or
+                soup3.select("tr.GridRow, tr.GridAltRow, tr[class*='grid']") or
+                []
+            )
+
+        log.info(f"  PNV: {len(rows)} raw result rows")
+
+        for row in rows:
+            # Skip header / empty rows
+            if row.find("th"):
+                continue
+            cells = row.find_all("td")
+            if not cells:
                 continue
 
-            for item in notice_items:
-                title_el = item.select_one(".notice-title, h3, h4")
-                body_el = item.select_one(".notice-body, .notice-text, p")
-                link_el = item.select_one("a")
+            text_raw = row.get_text(" ", strip=True)
+            if not text_raw:
+                continue
 
-                raw_text = body_el.get_text(" ", strip=True) if body_el else ""
-                title_text = title_el.get_text(strip=True) if title_el else ""
-                source_url = base_url + link_el["href"] if link_el and link_el.get("href") else None
+            link_el    = row.find("a")
+            href       = link_el.get("href") if link_el else None
+            source_url = None
+            if href:
+                source_url = (href if href.startswith("http")
+                              else session_base + "/" + href.lstrip("/"))
 
-                # Parse address from notice text (notices typically start with property address)
-                address = parse_address_from_notice(raw_text) or title_text
-                sale_date, sale_time = parse_sale_datetime(raw_text)
-                lender = parse_lender(raw_text)
-                trustee = parse_trustee(raw_text)
-                county_clean = county_display(county)
+            address          = parse_address_from_notice(text_raw)
+            sale_date, sale_time = parse_sale_datetime(text_raw)
+            lender           = parse_lender(text_raw)
+            trustee          = parse_trustee(text_raw)
 
-                listing = {
-                    "id": make_id(address, sale_date),
-                    "address": address,
-                    "city": county_city(county),
-                    "county": county_clean,
-                    "zip": None,
-                    "stage": "auction" if sale_date else "prefc",
-                    "property_type": "single-family",
-                    "assessed_value": None,
-                    "asking_price": None,
-                    "sale_date": sale_date,
-                    "sale_time": sale_time,
-                    "sale_location": courthouse_location(county),
-                    "days_until_sale": None,
-                    "notice_date": date.today().isoformat(),
-                    "days_in_foreclosure": 0,
-                    "lender": lender,
-                    "trustee": trustee,
-                    "source": "publicnoticevirginia",
-                    "source_url": source_url,
-                }
-                listings.append(listing)
+            # Identify which target county this notice belongs to
+            county_key = "fredericksburg"  # default
+            for c in TARGET_COUNTIES:
+                if c in text_raw.lower():
+                    county_key = c
+                    break
 
-            sleep(1.5)  # Be polite — don't hammer the server
+            listings.append({
+                "id":               make_id(address, sale_date),
+                "address":          address,
+                "city":             county_city(county_key),
+                "county":           county_display(county_key),
+                "zip":              None,
+                "stage":            "auction" if sale_date else "pre-fc",
+                "property_type":    "single-family",
+                "assessed_value":   None,
+                "asking_price":     None,
+                "sale_date":        sale_date,
+                "sale_time":        sale_time,
+                "sale_location":    courthouse_location(county_key),
+                "days_until_sale":  None,
+                "notice_date":      date.today().isoformat(),
+                "days_in_foreclosure": 0,
+                "lender":           lender,
+                "trustee":          trustee,
+                "source":           "publicnoticevirginia",
+                "source_url":       source_url,
+            })
 
-        except Exception as e:
-            log.error(f"  Error scraping publicnoticevirginia.com for {county}: {e}")
+        sleep(1)
+
+    except Exception as e:
+        log.error(f"  PNV error: {e}", exc_info=True)
 
     log.info(f"  PublicNoticeVA: found {len(listings)} listings")
     return listings
@@ -195,80 +308,181 @@ def scrape_public_notice_va() -> list:
 
 def scrape_auction_com() -> list:
     """
-    Scrapes active auction listings for Fredericksburg VA from Auction.com.
+    Scrapes Auction.com for foreclosure listings near Fredericksburg, VA.
 
-    Auction.com uses a React frontend. The public search page renders listings
-    as JSON embedded in a <script id="__NEXT_DATA__"> tag (Next.js pattern).
-    We parse that JSON directly — no Selenium needed for basic listings.
+    As of 2026 Auction.com is fully client-side rendered — the search page HTML
+    contains zero listing data before JavaScript runs.  Instead we use the site's
+    XML sitemap (server-generated, no JS required) to discover active listing URLs,
+    filter by target county keywords, then fetch each matching detail page to
+    parse the embedded JSON auction data and the <title> tag for address/county.
 
-    If this stops working, the fallback is:
-      pip install selenium webdriver-manager
-      (then use a headless Chrome approach)
+    Sitemap hierarchy (from robots.txt):
+      https://www.auction.com/sitemaps/sitemapindex.xml
+        → sitemap-pdp-active-tps-{0..N}.xml  (trustee/pre-foreclosure sales)
+        → sitemap-pdp-active-reo-{0..N}.xml  (bank-owned / REO)
+
+    Detail page data format (server-rendered):
+      <title>{address}, {city}, {state} {zip}, {county} County | Auction.com</title>
+      ... embedded JSON ... "auction":{"auction_date":"YYYY-MM-DD","starting_bid":N,...}
     """
     listings = []
-    url = "https://www.auction.com/residential/?state=VA&city=fredericksburg&county=stafford,spotsylvania,caroline"
-    log.info(f"  Auction.com: {url}")
+
+    # URL slug keywords → county display name
+    SLUG_COUNTY: dict[str, str] = {
+        "stafford-va":        "Stafford",
+        "fredericksburg-va":  "Fredericksburg City",
+        "spotsylvania-va":    "Spotsylvania",
+        "bowling-green-va":   "Caroline",
+        "ruther-glen-va":     "Caroline",
+        "milford-va":         "Caroline",
+        "port-royal-va":      "Caroline",
+        "woodford-va":        "Caroline",
+        "penola-va":          "Caroline",
+    }
 
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=20)
-        resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "lxml")
+        # Step 1: Fetch the sitemap index
+        idx_resp = requests.get(
+            "https://www.auction.com/sitemaps/sitemapindex.xml",
+            headers=HEADERS, timeout=15
+        )
+        idx_resp.raise_for_status()
+        all_sm_urls = re.findall(r"<loc>(https://[^<]+)</loc>", idx_resp.text)
 
-        # Try Next.js data blob first
-        next_data = soup.find("script", {"id": "__NEXT_DATA__"})
-        if next_data:
-            data = json.loads(next_data.string)
-            # Navigate the JSON structure — path varies by Auction.com version
-            # Typical: data["props"]["pageProps"]["listings"] or similar
-            props = data.get("props", {}).get("pageProps", {})
-            raw_listings = (
-                props.get("listings")
-                or props.get("searchResults", {}).get("listings")
-                or []
-            )
+        # Keep only PDP sitemaps for active TPS and REO (skip image sitemaps)
+        pdp_urls = [
+            u for u in all_sm_urls
+            if ("sitemap-pdp-active-tps" in u or "sitemap-pdp-active-reo" in u)
+            and "image" not in u
+        ]
+        log.info(f"  Auction.com: scanning {len(pdp_urls)} PDP sitemap files")
 
-            for item in raw_listings:
-                address = item.get("address", {})
-                full_address = address.get("street", "") or item.get("streetAddress", "")
-                city = address.get("city", "") or item.get("city", "")
-                county = address.get("county", "") or ""
-                zip_code = address.get("zip", "") or item.get("postalCode", "")
-                sale_date = item.get("saleDate") or item.get("auctionDate")
-                if sale_date:
-                    sale_date = sale_date[:10]  # Trim to YYYY-MM-DD
+        # Step 2: Scan each sitemap for target-county listing URLs
+        target_detail_urls: list[str] = []
+        for sm_url in pdp_urls:
+            try:
+                sm_resp = requests.get(sm_url, headers=HEADERS, timeout=20)
+                sm_resp.raise_for_status()
+                locs = re.findall(
+                    r"<loc>(https://www\.auction\.com/details/[^<]+)</loc>",
+                    sm_resp.text
+                )
+                for u in locs:
+                    slug = u.split("/details/")[-1]
+                    if any(kw in slug for kw in SLUG_COUNTY):
+                        target_detail_urls.append(u)
+                sleep(0.3)
+            except Exception as e:
+                log.warning(f"  Auction.com: sitemap error {sm_url}: {e}")
 
-                listing = {
-                    "id": make_id(full_address, sale_date),
-                    "address": full_address,
-                    "city": city,
-                    "county": normalize_county(county),
-                    "zip": zip_code,
-                    "stage": "auction",
-                    "property_type": normalize_property_type(item.get("propertyType", "")),
-                    "assessed_value": None,
-                    "asking_price": item.get("openingBid") or item.get("startingBid"),
-                    "sale_date": sale_date,
-                    "sale_time": item.get("saleTime"),
-                    "sale_location": item.get("saleLocation") or courthouse_for_address(county),
-                    "days_until_sale": None,
-                    "notice_date": None,
+        # Deduplicate (some listings appear in both TPS and REO sitemaps)
+        target_detail_urls = list(dict.fromkeys(target_detail_urls))
+        log.info(f"  Auction.com: {len(target_detail_urls)} target-county detail pages")
+
+        # Step 3: Fetch each detail page and parse embedded data
+        for detail_url in target_detail_urls:
+            try:
+                slug = detail_url.split("/details/")[-1]
+
+                # Determine county from slug keyword
+                county_name = None
+                for kw, cn in SLUG_COUNTY.items():
+                    if kw in slug:
+                        county_name = cn
+                        break
+
+                det_resp = requests.get(detail_url, headers=HEADERS, timeout=20)
+                det_resp.raise_for_status()
+                html = det_resp.text
+
+                # --- Parse address from <title> ---
+                # Format: "9 Plowshare Court, Stafford, VA 22554, Stafford County | SmartSale"
+                title_m = re.search(r"<title[^>]*>(.*?)</title>", html, re.I | re.S)
+                title_raw = title_m.group(1).strip() if title_m else ""
+                addr_part = title_raw.split(" | ")[0].strip() if " | " in title_raw else title_raw
+
+                # Parse "street, city, ST zip, County County" → fields
+                am = re.match(
+                    r"^(.*?),\s*([^,]+),\s*([A-Z]{2})\s+(\d{5}(?:-\d{4})?),\s*(.+)$",
+                    addr_part
+                )
+                if am:
+                    street    = am.group(1).strip()
+                    city_name = am.group(2).strip()
+                    zip_code  = am.group(4).strip()
+                    county_from_title = (am.group(5)
+                                         .replace(" County", "")
+                                         .replace(" City", "")
+                                         .strip())
+                    if not county_name:
+                        county_name = county_from_title
+                else:
+                    # Fallback: parse address from slug
+                    slug_no_id = re.sub(r"-\d+$", "", slug)
+                    parts = slug_no_id.split("-")
+                    if len(parts) >= 3 and len(parts[-1]) == 2:
+                        city_name = parts[-2].title()
+                        street    = " ".join(parts[:-2]).title()
+                    else:
+                        street    = slug_no_id.replace("-", " ").title()
+                        city_name = ""
+                    zip_code = None
+
+                # --- Parse auction data from embedded JSON blob ---
+                sale_date    = None
+                asking_price = None
+                auction_m = re.search(
+                    r'"auction"\s*:\s*(\{[^{}]*(?:\{[^{}]*\}[^{}]*)?\})',
+                    html
+                )
+                if auction_m:
+                    try:
+                        auc = json.loads(auction_m.group(1))
+                        # Prefer auction_date, then visible start, then end_date
+                        raw_date = (
+                            auc.get("auction_date") or
+                            auc.get("visible_auction_start_date_time") or
+                            auc.get("end_date") or
+                            auc.get("start_date")
+                        )
+                        if raw_date:
+                            sale_date = str(raw_date)[:10]  # keep YYYY-MM-DD
+                        bid = auc.get("starting_bid")
+                        if bid and int(bid) > 1:  # $1 is placeholder
+                            asking_price = int(bid)
+                    except (json.JSONDecodeError, TypeError, ValueError):
+                        pass
+
+                listings.append({
+                    "id":               make_id(detail_url, sale_date),
+                    "address":          street,
+                    "city":             city_name,
+                    "county":           county_name or "Unknown",
+                    "zip":              zip_code,
+                    "stage":            "auction",
+                    "property_type":    "single-family",
+                    "assessed_value":   None,
+                    "asking_price":     asking_price,
+                    "sale_date":        sale_date,
+                    "sale_time":        None,
+                    "sale_location":    courthouse_for_address(county_name or ""),
+                    "days_until_sale":  None,
+                    "notice_date":      None,
                     "days_in_foreclosure": None,
-                    "lender": item.get("lender") or item.get("beneficiary"),
-                    "trustee": item.get("trustee"),
-                    "source": "auction.com",
-                    "source_url": f"https://www.auction.com/details/{item.get('slug', '')}",
-                }
-                listings.append(listing)
-        else:
-            # Fallback: parse HTML cards
-            # TODO: Update selector if Next.js data not found
-            cards = soup.select("[data-testid='property-card'], .property-card, .listing-card")
-            log.warning(f"  Auction.com: Next.js data not found, found {len(cards)} HTML cards")
+                    "lender":           None,
+                    "trustee":          None,
+                    "source":           "auction.com",
+                    "source_url":       detail_url,
+                })
+                sleep(0.4)
+
+            except Exception as e:
+                log.warning(f"  Auction.com: detail error {detail_url}: {e}")
 
     except Exception as e:
-        log.error(f"  Error scraping auction.com: {e}")
+        log.error(f"  Auction.com error: {e}", exc_info=True)
 
-    log.info(f"  Auction.com: found {len(listings)} listings")
+    log.info(f"  Auction.com: found {len(listings)} target-county listings")
     return listings
 
 
@@ -278,66 +492,138 @@ def scrape_auction_com() -> list:
 
 def scrape_hud_homes() -> list:
     """
-    Scrapes HUD REO listings for the Fredericksburg area.
+    Scrapes HUD REO listings for Virginia from HUD Homestore.
 
-    HUD Homes has a JSON API endpoint used by their search page.
-    We call it directly for the target zip codes.
+    URL: https://www.hudhomestore.gov/searchresult?citystate=VA
+
+    As of 2026 HUD Homestore is powered by Yardi and embeds ALL listing data
+    as a JSON array inside a hidden <input type="hidden"> element with no
+    'name' attribute.  The input value starts with '[{' and contains one
+    object per property.
+
+    Key JSON fields per listing:
+      propertyCaseNumber, propertyAddress, propertyCity, propertyState,
+      propertyZip, propertyCounty, listPrice, bedrooms, bathrooms,
+      squareFootage, yearBuilt, bidOpenDate, periodDeadlineDate,
+      listDate, listingPeriod, propertyStatus
+
+    propertyCounty values for our targets (no "County" suffix):
+      "Stafford", "Spotsylvania", "Caroline", "Fredericksburg"
     """
     listings = []
-    # HUD's internal API (discovered via browser devtools — may change)
-    url = "https://www.hudhomestore.gov/Home/PropertySearchResult.aspx"
-    params = {
-        "sState": "VA",
-        "sCity": "FREDERICKSBURG,STAFFORD,SPOTSYLVANIA,BOWLING GREEN",
-        "iPage": 1,
-        "sPageSize": 50,
-    }
+    url = "https://www.hudhomestore.gov/searchresult?citystate=VA"
     log.info(f"  HUD Homes: {url}")
 
+    TARGET_COUNTIES_HUD = {"stafford", "spotsylvania", "caroline", "fredericksburg"}
+
     try:
-        resp = requests.get(url, params=params, headers=HEADERS, timeout=20)
+        resp = requests.get(url, headers=HEADERS, timeout=25)
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "lxml")
 
-        # HUD renders an HTML table
-        rows = soup.select("table.property-list tr, #propertyList tr, tr.property-row")
-        for row in rows:
-            cells = row.find_all("td")
-            if len(cells) < 4:
-                continue
-            address = cells[0].get_text(strip=True)
-            city = cells[1].get_text(strip=True) if len(cells) > 1 else ""
-            price_text = cells[2].get_text(strip=True) if len(cells) > 2 else ""
-            price = parse_price(price_text)
-            link = row.find("a")
+        # Find the hidden input whose value is the JSON property array
+        # It has no 'name' attribute and its value starts with '[{'
+        json_input = None
+        for inp in soup.find_all("input", type="hidden"):
+            val = inp.get("value", "")
+            if val.startswith("[{"):
+                json_input = inp
+                break
 
-            listing = {
-                "id": make_id(address, None),
-                "address": address,
-                "city": city,
-                "county": city_to_county(city),
-                "zip": None,
-                "stage": "reo",
-                "property_type": "single-family",
-                "assessed_value": None,
-                "asking_price": price,
-                "sale_date": None,
-                "sale_time": None,
-                "sale_location": None,
-                "days_until_sale": None,
-                "notice_date": None,
+        if not json_input:
+            # Fallback: search raw HTML for the JSON array pattern
+            m = re.search(r'value="\s*(\[\{.*?\}])\s*"', resp.text, re.S)
+            raw_json = m.group(1) if m else None
+        else:
+            raw_json = json_input.get("value", "")
+
+        if not raw_json:
+            log.warning("  HUD Homes: JSON property data not found in page — site may have changed")
+            return listings
+
+        try:
+            properties = json.loads(raw_json)
+        except json.JSONDecodeError as exc:
+            log.error(f"  HUD Homes: JSON parse error: {exc}")
+            return listings
+
+        log.info(f"  HUD Homes: {len(properties)} total VA properties in JSON")
+
+        for prop in properties:
+            county_raw = str(prop.get("propertyCounty", "")).strip()
+            if county_raw.lower() not in TARGET_COUNTIES_HUD:
+                continue
+
+            address   = str(prop.get("propertyAddress", "")).strip()
+            city_raw  = str(prop.get("propertyCity", "")).strip()
+            state_raw = str(prop.get("propertyState", "")).strip()
+            zip_raw   = str(prop.get("propertyZip", "")).strip()
+            case_num  = str(prop.get("propertyCaseNumber", "")).strip()
+
+            # Normalise county display name
+            county_display_hud = {
+                "stafford":       "Stafford",
+                "spotsylvania":   "Spotsylvania",
+                "caroline":       "Caroline",
+                "fredericksburg": "Fredericksburg City",
+            }.get(county_raw.lower(), county_raw.title())
+
+            # Price
+            price = None
+            try:
+                raw_price = prop.get("listPrice")
+                if raw_price not in (None, "", "0"):
+                    price = int(float(str(raw_price).replace(",", "")))
+            except (ValueError, TypeError):
+                pass
+
+            # Bid-open date (format: "MM/DD/YYYY" or ISO)
+            sale_date = None
+            raw_date = prop.get("bidOpenDate") or prop.get("listDate")
+            if raw_date:
+                for fmt in ("%m/%d/%Y", "%Y-%m-%d", "%Y-%m-%dT%H:%M:%S"):
+                    try:
+                        sale_date = datetime.strptime(str(raw_date)[:19], fmt).date().isoformat()
+                        break
+                    except ValueError:
+                        continue
+
+            # Build a detail URL from the case number if available
+            source_url = None
+            if case_num:
+                source_url = (
+                    f"https://www.hudhomestore.gov/Listing/PropertyListing.aspx"
+                    f"?caseNumber={case_num.replace('-', '')}"
+                )
+
+            listings.append({
+                "id":               make_id(address or case_num, sale_date),
+                "address":          address,
+                "city":             city_raw or county_city(county_raw),
+                "county":           county_display_hud,
+                "zip":              zip_raw or None,
+                "stage":            "reo",
+                "property_type":    "single-family",
+                "assessed_value":   None,
+                "asking_price":     price,
+                "sale_date":        sale_date,
+                "sale_time":        None,
+                "sale_location":    None,
+                "days_until_sale":  None,
+                "notice_date":      None,
                 "days_in_foreclosure": None,
-                "lender": "HUD / FHA",
-                "trustee": None,
-                "source": "hud_homes",
-                "source_url": "https://www.hudhomestore.gov" + link["href"] if link else None,
-            }
-            listings.append(listing)
+                "lender":           "HUD / FHA",
+                "trustee":          None,
+                "source":           "hud_homes",
+                "source_url":       source_url,
+            })
+
+        sleep(1)
 
     except Exception as e:
-        log.error(f"  Error scraping HUD Homes: {e}")
+        log.error(f"  HUD Homes error: {e}", exc_info=True)
 
-    log.info(f"  HUD Homes: found {len(listings)} listings")
+    log.info(f"  HUD Homes: found {len(listings)} target-county listings")
     return listings
 
 
@@ -347,60 +633,120 @@ def scrape_hud_homes() -> list:
 
 def scrape_homepath() -> list:
     """
-    Scrapes Fannie Mae REO listings from HomePath.com.
-    HomePath uses a REST API — we call it directly.
+    Fetches Fannie Mae REO listings from HomePath's JSON API.
+
+    API endpoint (discovered via browser DevTools):
+      GET https://homepath.fanniemae.com/cfl/property-inventory/search?bounds={s},{w},{n},{e}
+
+    Bounding box for Fredericksburg metro (Fredericksburg City, Stafford,
+    Spotsylvania, Caroline counties):
+      South 37.85, West -77.80, North 38.60, East -77.10
+
+    Response JSON: { "properties": [ {addressLine1, city, county, state,
+                                       zipCode, price, mlsId, propertyType, ...} ] }
     """
     listings = []
-    # HomePath API endpoint (discovered via browser devtools)
-    url = "https://www.homepath.com/api/property/search"
-    payload = {
-        "state": "VA",
-        "city": "Fredericksburg",
-        "radius": 30,
-        "pageSize": 50,
-        "page": 1,
-    }
+
+    # Bounding box tightly wrapping our 4 target counties
+    bounds = "37.85,-77.80,38.60,-77.10"
+    url    = f"https://homepath.fanniemae.com/cfl/property-inventory/search?bounds={bounds}"
     log.info(f"  HomePath: {url}")
 
+    TARGET_COUNTY_MAP = {
+        "fredericksburg": "Fredericksburg City",
+        "stafford":       "Stafford",
+        "spotsylvania":   "Spotsylvania",
+        "caroline":       "Caroline",
+    }
+
     try:
-        resp = requests.post(url, json=payload, headers={**HEADERS, "Content-Type": "application/json"}, timeout=20)
+        resp = requests.get(
+            url,
+            headers={
+                **HEADERS,
+                "Accept":  "application/json, text/plain, */*",
+                "Referer": "https://homepath.fanniemae.com/",
+            },
+            timeout=20,
+        )
         resp.raise_for_status()
-        data = resp.json()
-        properties = data.get("properties") or data.get("results") or []
+        data       = resp.json()
+        properties = data.get("properties") or []
+        log.info(f"  HomePath: {len(properties)} raw properties in bounding box")
 
         for item in properties:
-            address = item.get("streetAddress") or item.get("address", {}).get("street", "")
-            city = item.get("city", "") or item.get("address", {}).get("city", "")
-            zip_code = item.get("zipCode") or item.get("postalCode", "")
-            price = item.get("listPrice") or item.get("price")
+            county_raw   = (item.get("county") or "").lower().strip()
+            county_clean = TARGET_COUNTY_MAP.get(county_raw)
+            if not county_clean:
+                continue
 
-            listing = {
-                "id": make_id(address, None),
-                "address": address,
-                "city": city,
-                "county": city_to_county(city),
-                "zip": zip_code,
-                "stage": "reo",
-                "property_type": normalize_property_type(item.get("propertyType", "")),
-                "assessed_value": None,
-                "asking_price": price,
-                "sale_date": None,
-                "sale_time": None,
-                "sale_location": None,
-                "days_until_sale": None,
-                "notice_date": None,
+            address  = (item.get("addressLine1") or "").title()
+            city     = (item.get("city") or "").title()
+            zip_code = item.get("zipCode") or ""
+            price    = item.get("price")
+            mls_id   = item.get("mlsId") or ""
+            prop_uuid = item.get("propertyUuid") or ""
+
+            # Capture property details HomePath already provides
+            beds  = item.get("bedrooms")
+            baths = item.get("bathrooms")
+            sqft  = item.get("sqft")
+            beds  = int(beds)  if beds  and float(beds)  > 0 else None
+            baths = float(baths) if baths and float(baths) > 0 else None
+            sqft  = int(sqft)  if sqft  and int(sqft)   > 0 else None
+
+            # Geo coordinates (useful for future mapping)
+            geo   = item.get("geoPoint") or {}
+            lat   = geo.get("latitude")
+            lon   = geo.get("longitude")
+
+            # Listing flags
+            just_added   = item.get("justAdded", False)
+            ending_soon  = item.get("endingSoon", False)
+            img_url      = item.get("primHiResImageUrl") or None
+
+            listings.append({
+                "id":               make_id(f"{address} {city}", None),
+                "address":          address,
+                "city":             city,
+                "county":           county_clean,
+                "zip":              zip_code,
+                "stage":            "reo",
+                "property_type":    normalize_property_type(item.get("propertyType") or ""),
+                "assessed_value":   None,
+                "asking_price":     price,
+                "beds":             beds,
+                "baths":            baths,
+                "sqft":             sqft,
+                "latitude":         lat,
+                "longitude":        lon,
+                "image_url":        img_url,
+                "just_added":       just_added,
+                "ending_soon":      ending_soon,
+                "sale_date":        None,
+                "sale_time":        None,
+                "sale_location":    None,
+                "days_until_sale":  None,
+                "notice_date":      None,
                 "days_in_foreclosure": None,
-                "lender": "Fannie Mae",
-                "trustee": None,
-                "source": "homepath",
-                "source_url": f"https://www.homepath.com/property/{item.get('mlsId', '')}",
-            }
-            listings.append(listing)
+                "lender":              "Fannie Mae",
+                "owner_name":          "Fannie Mae",
+                "owner_mailing_address": "3900 Wisconsin Ave NW, Washington, DC 20016",
+                "owner_mailing_differs": "Yes",
+                "owner_phone":         "1-800-732-6643",
+                "owner_email":         "",
+                "trustee":             None,
+                "source":           "homepath",
+                "source_url":       (f"https://homepath.fanniemae.com/property-detail/{prop_uuid}"
+                                     if prop_uuid else None),
+            })
+
+        sleep(1)
 
     except Exception as e:
-        log.error(f"  Error scraping HomePath: {e}")
+        log.error(f"  HomePath error: {e}", exc_info=True)
 
-    log.info(f"  HomePath: found {len(listings)} listings")
+    log.info(f"  HomePath: found {len(listings)} target-county listings")
     return listings
 
 
@@ -411,40 +757,42 @@ def scrape_homepath() -> list:
 def parse_address_from_notice(text: str) -> str:
     """
     Virginia trustee sale notices typically open with the property address.
-    This grabs the first line up to the first comma-separated city/state block.
-    Adjust the regex if notices in your target counties have a different format.
+    This grabs a standard street address pattern from the notice text.
     """
-    import re
-    match = re.search(r"(\d+\s+[\w\s]+(?:Rd|St|Ave|Dr|Ln|Way|Ct|Blvd|Pl|Pike|Hwy)[^,]*)", text, re.IGNORECASE)
+    match = re.search(
+        r"(\d+\s+[\w\s]+(?:Rd|St|Ave|Dr|Ln|Way|Ct|Blvd|Pl|Pike|Hwy|Ter|Cir|Loop)[^,\n]*)",
+        text, re.IGNORECASE
+    )
     return match.group(1).strip() if match else text[:80]
 
 
 def parse_sale_datetime(text: str):
     """Extract sale date and time from notice body text."""
-    import re
-    # Match patterns like "May 15, 2026" or "05/15/2026"
-    date_match = re.search(r"(\w+ \d{1,2},\s*\d{4}|\d{1,2}/\d{1,2}/\d{4})", text)
+    date_match = re.search(r"(\w+ \d{1,2},?\s*\d{4}|\d{1,2}/\d{1,2}/\d{4})", text)
     time_match = re.search(r"(\d{1,2}:\d{2}\s*(?:AM|PM|a\.m\.|p\.m\.))", text, re.IGNORECASE)
 
     sale_date = None
     if date_match:
         raw = date_match.group(1).strip()
-        for fmt in ("%B %d, %Y", "%m/%d/%Y"):
+        for fmt in ("%B %d, %Y", "%B %d %Y", "%m/%d/%Y"):
             try:
                 sale_date = datetime.strptime(raw, fmt).date().isoformat()
                 break
             except ValueError:
                 continue
 
-    sale_time = time_match.group(1).upper().replace("A.M.", "AM").replace("P.M.", "PM") if time_match else None
+    sale_time = (time_match.group(1).upper()
+                 .replace("A.M.", "AM").replace("P.M.", "PM")
+                 if time_match else None)
     return sale_date, sale_time
 
 
 def parse_lender(text: str) -> str:
     """Look for common lender name patterns in notice text."""
-    import re
     match = re.search(
-        r"((?:Wells Fargo|Bank of America|Chase|JPMorgan|PNC|U\.?S\.? Bank|Rocket|Truist|SunTrust|USAA|Navy Federal)[^,.\n]*)",
+        r"(Wells Fargo|Bank of America|Chase|JPMorgan|PNC|U\.?S\.?\s*Bank|"
+        r"Rocket\s*Mortgage|Truist|SunTrust|USAA|Navy Federal|Mr\.\s*Cooper|"
+        r"Freedom\s*Mortgage|Pennymac|Lakeview\s*Loan|CrossCountry)[^,.\n]*",
         text, re.IGNORECASE
     )
     return match.group(1).strip() if match else None
@@ -452,9 +800,11 @@ def parse_lender(text: str) -> str:
 
 def parse_trustee(text: str) -> str:
     """Look for common Virginia trustee firm names."""
-    import re
     match = re.search(
-        r"(Samuel I\. White|BWW Law|Friedman.*?MacFadyen|Hutchens|Substitute Trustee Services|Brock.*?Scott|McCabe.*?Weisberg)[^,.\n]*",
+        r"(Samuel\s*I\.?\s*White|BWW\s*Law|Friedman\s*&\s*MacFadyen|"
+        r"Hutchens\s*Law|Substitute\s*Trustee\s*Services|Brock\s*&\s*Scott|"
+        r"McCabe\s*,?\s*Weisberg|Shapiro\s*&\s*Brown|Cohn\s*Goldberg|"
+        r"Atlantic\s*Trustee\s*Services)[^,.\n]*",
         text, re.IGNORECASE
     )
     return match.group(1).strip() if match else None
@@ -462,11 +812,8 @@ def parse_trustee(text: str) -> str:
 
 def parse_price(text: str):
     """Parse a dollar amount string into an integer."""
-    import re
     match = re.search(r"\$([\d,]+)", text)
-    if match:
-        return int(match.group(1).replace(",", ""))
-    return None
+    return int(match.group(1).replace(",", "")) if match else None
 
 
 # ---------------------------------------------------------------------------
@@ -476,32 +823,34 @@ def parse_price(text: str):
 def county_display(county: str) -> str:
     return {
         "fredericksburg": "Fredericksburg City",
-        "stafford": "Stafford",
-        "spotsylvania": "Spotsylvania",
-        "caroline": "Caroline",
+        "stafford":        "Stafford",
+        "spotsylvania":    "Spotsylvania",
+        "caroline":        "Caroline",
     }.get(county.lower(), county.title())
 
 
 def county_city(county: str) -> str:
+    """Return the main city name for a county key."""
     return {
         "fredericksburg": "Fredericksburg",
-        "stafford": "Stafford",
-        "spotsylvania": "Fredericksburg",
-        "caroline": "Bowling Green",
-    }.get(county.lower(), county.title())
+        "stafford":        "Stafford",
+        "spotsylvania":    "Fredericksburg",
+        "caroline":        "Bowling Green",
+    }.get(county.lower().replace(" city", "").strip(), county.title())
 
 
 def courthouse_location(county: str) -> str:
     return {
         "fredericksburg": "Front steps, Fredericksburg Circuit Court, 815 Princess Anne St",
-        "stafford":       "Front steps, Stafford Circuit Court, 1300 Courthouse Rd",
-        "spotsylvania":   "Front steps, Spotsylvania Circuit Court, 9115 Courthouse Rd",
-        "caroline":       "Front steps, Caroline Circuit Court, 112 Courthouse Ln",
-    }.get(county.lower(), "Courthouse steps (verify with trustee)")
+        "stafford":        "Front steps, Stafford Circuit Court, 1300 Courthouse Rd",
+        "spotsylvania":    "Front steps, Spotsylvania Circuit Court, 9115 Courthouse Rd",
+        "caroline":        "Front steps, Caroline Circuit Court, 112 Courthouse Ln",
+    }.get(county.lower(), "Courthouse steps — verify with trustee")
 
 
 def courthouse_for_address(county: str) -> str:
-    return courthouse_location(county.lower().replace(" county", "").replace(" city", ""))
+    key = county.lower().replace(" county", "").replace(" city", "").strip()
+    return courthouse_location(key)
 
 
 def normalize_county(raw: str) -> str:
@@ -512,14 +861,16 @@ def normalize_county(raw: str) -> str:
 def city_to_county(city: str) -> str:
     city = city.lower().strip()
     mapping = {
-        "fredericksburg": "Fredericksburg City",
-        "stafford": "Stafford",
-        "aquia harbour": "Stafford",
-        "quantico": "Stafford",
-        "spotsylvania": "Spotsylvania",
-        "chancellor": "Spotsylvania",
-        "bowling green": "Caroline",
-        "milford": "Caroline",
+        "fredericksburg":  "Fredericksburg City",
+        "stafford":        "Stafford",
+        "aquia harbour":   "Stafford",
+        "quantico":        "Stafford",
+        "spotsylvania":    "Spotsylvania",
+        "chancellor":      "Spotsylvania",
+        "bowling green":   "Caroline",
+        "milford":         "Caroline",
+        "ruther glen":     "Caroline",
+        "port royal":      "Caroline",
     }
     for key, val in mapping.items():
         if key in city:
@@ -533,9 +884,183 @@ def normalize_property_type(raw: str) -> str:
         return "single-family"
     if any(x in raw for x in ["multi", "duplex", "triplex", "quadplex"]):
         return "multi-family"
-    if "condo" in raw or "townhouse" in raw or "townhome" in raw:
+    if any(x in raw for x in ["condo", "townhouse", "townhome"]):
         return "condo/townhome"
     return "single-family"
+
+
+# ---------------------------------------------------------------------------
+# Redfin enrichment
+# ---------------------------------------------------------------------------
+
+REDFIN_HDR = {
+    "User-Agent": HEADERS["User-Agent"],
+    "Accept": "application/json, text/javascript, */*; q=0.01",
+    "Accept-Language": "en-US,en;q=0.9",
+    "X-Requested-With": "XMLHttpRequest",
+    "Referer": "https://www.redfin.com/",
+}
+
+
+def _rf_parse(text: str) -> dict:
+    """Strip Redfin's {}&& prefix and parse JSON."""
+    t = text.strip()
+    for prefix in ("{}&&\n", "{}&&"):
+        if t.startswith(prefix):
+            t = t[len(prefix):]
+            break
+    try:
+        return json.loads(t)
+    except json.JSONDecodeError:
+        return {}
+
+
+def _stat(obj: object, key: str):
+    """Extract a value from Redfin stat objects (can be dict or scalar)."""
+    v = obj.get(key) if isinstance(obj, dict) else None
+    if isinstance(v, dict):
+        return v.get("value")
+    return v
+
+
+def redfin_lookup(address: str, city: str, zip_code: str = "") -> dict:
+    """
+    Search Redfin for a property and return enrichment data.
+
+    Uses two Redfin endpoints:
+      1. location-autocomplete  → get canonical /VA/City/Address/home/ID path
+      2. home/details/initialInfo → beds, baths, sqft, year, lot, last-sale, AVM
+
+    Returns a dict of enrichment fields; empty dict on any failure.
+    """
+    query = ", ".join(filter(None, [address, city, f"VA {zip_code}".strip()]))
+    enrichment: dict = {}
+
+    # ── Step 1: autocomplete search ──────────────────────────────────────────
+    try:
+        r = requests.get(
+            "https://www.redfin.com/stingray/do/location-autocomplete",
+            params={"location": query, "count": 3, "v": 2},
+            headers=REDFIN_HDR,
+            timeout=12,
+        )
+        data = _rf_parse(r.text)
+        rf_path = None
+        for section in data.get("payload", {}).get("sections", []):
+            for row in section.get("rows", []):
+                if str(row.get("type")) == "1":   # type 1 = residential property
+                    rf_path = row.get("url")
+                    break
+            if rf_path:
+                break
+
+        if not rf_path:
+            sections = data.get("payload", {}).get("sections", [])
+            if not sections:
+                log.info(f"    Redfin: no autocomplete response for '{address}'")
+            else:
+                types_seen = [row.get("type") for s in sections for row in s.get("rows", [])]
+                log.info(f"    Redfin: no type-1 match for '{address}' — row types: {types_seen[:5]}")
+            return {}
+
+        enrichment["redfin_url"] = "https://www.redfin.com" + rf_path
+        sleep(0.5)
+
+    except Exception as e:
+        log.info(f"    Redfin search error for '{address}': {e}")
+        return {}
+
+    # ── Step 2: initialInfo property details ─────────────────────────────────
+    try:
+        r2 = requests.get(
+            "https://www.redfin.com/stingray/api/home/details/initialInfo",
+            params={"accessLevel": 3, "path": rf_path},
+            headers=REDFIN_HDR,
+            timeout=15,
+        )
+        payload = _rf_parse(r2.text).get("payload", {})
+
+        # Beds / baths / sqft / year / lot ─ Redfin nests these under several paths
+        above = payload.get("aboveTheFold", {})
+        house_stats = (
+            above.get("mainHouseInfo", {}).get("homeStats") or
+            above.get("mainHouseInfo", {}).get("stats") or
+            above.get("homeStats") or
+            {}
+        )
+
+        beds  = _stat(house_stats, "beds")
+        baths = _stat(house_stats, "baths")
+        sqft  = _stat(house_stats, "sqFt")
+        year  = _stat(house_stats, "yearBuilt")
+        lot   = _stat(house_stats, "lotSize")
+
+        if beds  is not None: enrichment["beds"]       = int(float(beds))
+        if baths is not None: enrichment["baths"]      = float(baths)
+        if sqft  is not None: enrichment["sqft"]       = int(float(sqft))
+        if year  is not None: enrichment["year_built"] = int(float(year))
+        if lot   is not None: enrichment["lot_sqft"]   = int(float(lot))
+
+        # Last sold date / price ─ try public records first, then saleHistory
+        pub_recs = (
+            payload.get("belowTheFold", {}).get("publicRecordInfo", {}).get("publicRecords") or
+            payload.get("publicRecords") or
+            []
+        )
+        if pub_recs:
+            rec = pub_recs[0] if isinstance(pub_recs, list) else pub_recs
+            if isinstance(rec, dict):
+                ls_date  = rec.get("lastSaleDate") or rec.get("lastSaleDate2")
+                ls_price = rec.get("lastSalePrice") or rec.get("price")
+                if ls_date:  enrichment["last_sold_date"]  = str(ls_date)[:10]
+                if ls_price: enrichment["last_sold_price"] = int(float(ls_price))
+
+        # AVM (Redfin Estimate)
+        avm = (
+            payload.get("avm", {}).get("predictedValue") or
+            above.get("avm", {}).get("predictedValue")
+        )
+        if avm:
+            enrichment["redfin_estimate"] = int(float(avm))
+
+    except Exception as e:
+        log.debug(f"    Redfin detail error for {rf_path}: {e}")
+
+    return enrichment
+
+
+def enrich_with_redfin(listings: list) -> list:
+    """
+    Enrich listings that lack property details (beds/sqft) via Redfin.
+    Already-enriched listings (sqft or beds present) are skipped.
+    Rate-limited to ~1 req/1.5 s to avoid bot detection.
+    """
+    log.info("--- Redfin enrichment ---")
+    enriched_count = 0
+
+    for listing in listings:
+        # Skip if already has property details or no address
+        if listing.get("sqft") or listing.get("beds") or not listing.get("address"):
+            continue
+
+        addr = listing["address"]
+        city = listing.get("city", "")
+        zip_ = listing.get("zip") or ""
+
+        log.info(f"  Enriching: {addr}, {city} {zip_}")
+        data = redfin_lookup(addr, city, zip_)
+
+        if data:
+            listing.update(data)
+            # Use redfin_url as source_url if we don't already have one
+            if not listing.get("source_url") and data.get("redfin_url"):
+                listing["source_url"] = data["redfin_url"]
+            enriched_count += 1
+
+        sleep(1.5)   # polite rate limit
+
+    log.info(f"  Enriched {enriched_count} listing(s) via Redfin")
+    return listings
 
 
 # ---------------------------------------------------------------------------
@@ -551,7 +1076,7 @@ def deduplicate(listings: list) -> list:
 
 
 def run():
-    log.info("Starting Fredericksburg foreclosure scraper...")
+    log.info("Starting Fredericksburg foreclosure scraper…")
     all_listings = []
 
     log.info("--- PublicNoticeVirginia.com ---")
@@ -568,6 +1093,12 @@ def run():
 
     all_listings = deduplicate(all_listings)
     log.info(f"Total after dedup: {len(all_listings)} listings")
+
+    # Redfin enrichment disabled — Redfin blocks automated requests (403).
+    # Property detail enrichment (beds/baths/sqft/AVM) is a Phase 2 item.
+    # Revisit with county GIS portals or ATTOM Data API.
+    # all_listings = enrich_with_redfin(all_listings)
+
     save(all_listings)
     log.info("Done.")
 
@@ -575,11 +1106,13 @@ def run():
 if __name__ == "__main__":
     import sys
     if "--debug" in sys.argv:
-        # Print raw HTML from the first source for selector debugging
-        resp = requests.get(
-            "https://publicnoticevirginia.com/search?keywords=foreclosure&county=fredericksburg&state=VA",
-            headers=HEADERS, timeout=15
-        )
-        print(resp.text[:5000])
+        # Print raw HTML from PNV for selector debugging
+        s = requests.Session()
+        r = s.get("https://www.publicnoticevirginia.com/", headers=HEADERS, timeout=15)
+        m = re.search(r'(https://www\.publicnoticevirginia\.com/\(S\([^)]+\)\))', r.url)
+        base = m.group(1) if m else "https://www.publicnoticevirginia.com"
+        r2 = s.get(base + "/Search.aspx", headers=HEADERS, timeout=15)
+        print("=== PNV Search.aspx (first 5000 chars) ===")
+        print(r2.text[:5000])
     else:
         run()

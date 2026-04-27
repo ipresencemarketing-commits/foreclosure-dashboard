@@ -15,10 +15,13 @@ echo "[$(date '+%Y-%m-%d %H:%M')] Starting foreclosure update..."
 cd "$REPO_DIR"
 python3 scripts/scraper.py
 
-# 2. Stage the updated data file
+# 2. Sync new listings to Google Sheets (non-fatal — sheet credentials may not be configured yet)
+python3 scripts/sheets_sync.py || echo "  [warn] Sheets sync skipped — check credentials/service-account.json"
+
+# 3. Stage the updated data file
 git -C "$REPO_DIR" add data/foreclosures.json
 
-# 3. Commit only if there are changes
+# 4. Commit only if there are changes
 if git -C "$REPO_DIR" diff --cached --quiet; then
   echo "No new listings found. Nothing to commit."
 else

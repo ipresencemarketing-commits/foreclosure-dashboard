@@ -158,6 +158,26 @@ The biggest risk with free sources is **scraper fragility** — county websites 
 
 Once deal flow is validated and a budget is available, ATTOM Data Solutions offers the best coverage-to-cost ratio for foreclosure data. A single-county subscription typically runs $50–$150/month and eliminates scraper maintenance entirely. RealtyTrac is an alternative but is generally considered less current. Revisit this decision after 60–90 days of using the free-source dashboard.
 
+### Known data gaps and recommended solutions
+
+The following spreadsheet fields cannot be populated automatically with free sources. These are the recommended paths to fill them:
+
+**Current Estimated Value, Rough Equity Est, Est Profit Potential, Years Since Last Sale**
+These require a market value estimate (AVM). Redfin and Zillow both block automated requests with 403 errors. Options:
+- **ATTOM Data API** (~$50–150/month per county) — clean REST API, provides AVM, last sale, year built, lot size, and full property characteristics. Best long-term solution once budget is available.
+- **Manual lookup** — for deals you're actively considering, pull the Zestimate or Redfin estimate directly from Zillow.com or Redfin.com (2 minutes per property). More accurate for individual deal analysis than a bulk API estimate anyway.
+
+**Last Sold Date / Last Sold Price**
+Deed and sales history are public record in Virginia but require querying the Virginia Circuit Court land records system (https://lrs.courts.state.va.us/), which is not accessible via a simple API. Options:
+- **ATTOM Data API** — includes full sales history.
+- **Manual lookup** — Virginia Circuit Court land records are free and searchable by address at lrs.courts.state.va.us. Takes ~1 minute per property.
+
+**Year Built / Lot Size**
+Available from county assessor portals (Stafford, Spotsylvania, Fredericksburg City, Caroline all have free online property lookup) but each county uses a different system with no common API. Options:
+- **ATTOM Data API** — includes full property characteristics.
+- **Manual lookup** — each county's assessor website is searchable by address for free. Stafford and Spotsylvania have the most complete online portals.
+- **County GIS REST APIs** — Stafford and Spotsylvania use ArcGIS-based systems that likely have queryable REST endpoints. The correct URLs require browser-based discovery; this is a viable free automation path to pursue in Phase 2.
+
 ---
 
 ## Success Metrics
