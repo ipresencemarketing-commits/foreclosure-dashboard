@@ -39,12 +39,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .stat .val.red{color:#c53030}
 .stat .val.green{color:#276749}
 
-.filter-bar{padding:16px 28px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+/* ---- Filters ---- */
+.filter-bar{padding:16px 28px 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.filter-bar-2{padding:10px 28px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .tabs{display:flex;gap:3px;background:#fff;border-radius:9px;padding:4px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .tab{padding:7px 18px;border-radius:7px;font-size:13px;font-weight:500;border:none;background:transparent;cursor:pointer;color:#4a5568;transition:all .15s}
 .tab.active{background:#1e3a5f;color:#fff}
+.tab.t-watch.active{background:#2b6cb0}
+.tab.t-pursue.active{background:#276749}
+.tab.t-pass.active{background:#718096}
 select.filter{padding:8px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;background:#fff;color:#2d3748;cursor:pointer}
+.price-range{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:4px 10px}
+.price-range label{font-size:12px;color:#718096;font-weight:500;white-space:nowrap}
+.price-range input{width:90px;border:none;outline:none;font-size:13px;color:#2d3748;background:transparent}
+.price-range .sep{color:#cbd5e0;font-size:12px}
+.filter-label{font-size:12px;font-weight:600;color:#718096;text-transform:uppercase;letter-spacing:.4px}
 
+/* ---- Table ---- */
 .table-wrap{padding:0 28px 32px;overflow-x:auto}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.07);font-size:13px}
 thead{background:#f7fafc}
@@ -52,6 +63,8 @@ th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;color:#71809
 th:hover{color:#1e3a5f}
 th.sort-asc::after{content:" ↑";color:#2563eb}
 th.sort-desc::after{content:" ↓";color:#2563eb}
+th.no-sort{cursor:default}
+th.no-sort:hover{color:#718096}
 td{padding:12px 14px;border-bottom:1px solid #f0f5fa;vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#f7fbff}
@@ -70,9 +83,28 @@ tr:hover td{background:#f7fbff}
 .cd.soon{color:#c05621}
 .cd.ok{color:#276749}
 .cd.na{color:#a0aec0;font-size:13px;font-weight:400}
-.loc{max-width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#4a5568;cursor:help}
+.loc{max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#4a5568;cursor:help}
 .muted{color:#718096}
 .no-rows{text-align:center;padding:48px;color:#a0aec0;font-size:14px}
+
+/* ---- Deal status buttons ---- */
+.status-btns{display:flex;gap:4px}
+.sbtn{padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600;border:1.5px solid #e2e8f0;background:#fff;cursor:pointer;color:#718096;transition:all .12s;white-space:nowrap}
+.sbtn:hover{border-color:#a0aec0}
+.sbtn.active-watch{background:#ebf8ff;border-color:#2b6cb0;color:#2b6cb0}
+.sbtn.active-pursue{background:#f0fff4;border-color:#276749;color:#276749}
+.sbtn.active-pass{background:#f7f7f7;border-color:#a0aec0;color:#718096;text-decoration:line-through}
+.status-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase}
+.sb-watch{background:#ebf8ff;color:#2b6cb0}
+.sb-pursue{background:#f0fff4;color:#276749}
+.sb-pass{background:#f7f7f7;color:#a0aec0}
+
+/* ---- Records link ---- */
+.rec-link{color:#a0aec0;text-decoration:none;font-size:15px;display:inline-block;transition:color .12s}
+.rec-link:hover{color:#2563eb}
+
+/* ---- New badge ---- */
+.new-badge{background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:4px}
 </style>
 </head>
 <body>
@@ -112,11 +144,12 @@ tr:hover td{background:#f7fbff}
     <div class="stat"><div class="lbl">New Today</div><div class="val green" id="s-new">—</div></div>
   </div>
 
+  <!-- Filter row 1: stage + county + type -->
   <div class="filter-bar">
-    <div class="tabs">
+    <div class="tabs" id="stage-tabs">
       <button class="tab active" onclick="setStage('all',this)">All</button>
       <button class="tab" onclick="setStage('auction',this)">Auction</button>
-      <button class="tab" onclick="setStage('prefc',this)">Pre-Foreclosure</button>
+      <button class="tab" onclick="setStage('pre-fc',this)">Pre-Foreclosure</button>
       <button class="tab" onclick="setStage('reo',this)">REO</button>
     </div>
     <select class="filter" id="f-county" onchange="render()">
@@ -133,20 +166,41 @@ tr:hover td{background:#f7fbff}
     </select>
   </div>
 
+  <!-- Filter row 2: price range + deal status -->
+  <div class="filter-bar-2">
+    <div class="price-range">
+      <label>Price</label>
+      <input type="number" id="f-min-price" placeholder="Min $" step="10000" oninput="render()">
+      <span class="sep">—</span>
+      <input type="number" id="f-max-price" placeholder="Max $" step="10000" oninput="render()">
+    </div>
+    <span class="filter-label">My Pipeline:</span>
+    <div class="tabs" id="status-tabs">
+      <button class="tab active" onclick="setStatusFilter('all',this)">All</button>
+      <button class="tab t-watch" onclick="setStatusFilter('watch',this)">👁 Watching</button>
+      <button class="tab t-pursue" onclick="setStatusFilter('pursue',this)">✓ Pursuing</button>
+      <button class="tab t-pass" onclick="setStatusFilter('pass',this)">✗ Passed</button>
+      <button class="tab" onclick="setStatusFilter('untagged',this)">Untagged</button>
+    </div>
+  </div>
+
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
           <th onclick="sortBy('address')">Address</th>
           <th onclick="sortBy('county')">County</th>
-          <th>Stage</th>
-          <th onclick="sortBy('assessed_value')">Value</th>
+          <th class="no-sort">Stage</th>
+          <th onclick="sortBy('asking_price')">Price</th>
+          <th onclick="sortBy('beds')">Details</th>
           <th onclick="sortBy('sale_date')">Sale Date</th>
-          <th>Sale Time</th>
-          <th>Sale Location</th>
-          <th id="th-countdown" onclick="sortBy('days_until_sale')">Days Until Sale</th>
+          <th class="no-sort">Sale Time</th>
+          <th class="no-sort">Sale Location</th>
+          <th onclick="sortBy('days_until_sale')">Days Until Sale</th>
           <th onclick="sortBy('days_in_foreclosure')">Days in FC</th>
           <th onclick="sortBy('lender')">Lender</th>
+          <th class="no-sort">My Status</th>
+          <th class="no-sort">Records</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -162,15 +216,46 @@ const PASSWORD_HASH = 'ca7866590af129532461791b78633ea4f5c8902eb1fe052a90d40ffd4
 
 let listings = [];
 let stage = 'all';
+let statusFilter = 'all';
 let sortField = 'days_until_sale';
 let sortAsc = true;
+
+// Deal status persisted in localStorage: { [listing_id]: 'watch'|'pursue'|'pass' }
+let dealStatus = {};
+function loadDealStatus() {
+  try { dealStatus = JSON.parse(localStorage.getItem('fc_deal_status') || '{}'); }
+  catch(e) { dealStatus = {}; }
+}
+function saveDealStatus() {
+  try { localStorage.setItem('fc_deal_status', JSON.stringify(dealStatus)); }
+  catch(e) {}
+}
+function setStatus(id, s) {
+  if (dealStatus[id] === s) {
+    delete dealStatus[id];   // clicking same status again clears it
+  } else {
+    dealStatus[id] = s;
+  }
+  saveDealStatus();
+  render();
+}
+
+// ---- County public records URLs ----
+const COUNTY_RECORDS = {
+  'Spotsylvania':       'https://gis.spotsylvania.va.us/spotsylvania/',
+  'Stafford':           'https://gismapping.stafford.va.us/',
+  'Fredericksburg City':'https://www.fredericksburgva.gov/649/Land-Records',
+  'Caroline':           'https://lrs.courts.state.va.us/',
+};
+function recordsUrl(listing) {
+  return COUNTY_RECORDS[listing.county] || 'https://lrs.courts.state.va.us/';
+}
 
 // ---- Auth ----
 async function sha256(str) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
-
 async function login() {
   const val = document.getElementById('pwd-input').value;
   const hash = await sha256(val);
@@ -183,13 +268,12 @@ async function login() {
     document.getElementById('pwd-input').focus();
   }
 }
-
 function show() {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
+  loadDealStatus();
   loadData();
 }
-
 window.addEventListener('DOMContentLoaded', () => {
   if (sessionStorage.getItem('fc_auth') === '1') show();
 });
@@ -210,13 +294,13 @@ async function loadData() {
   } catch(e) {
     document.getElementById('last-updated').textContent = 'Error loading data';
     document.getElementById('tbody').innerHTML =
-      '<tr><td colspan="10" class="no-rows">Could not load listings.<br>Run the scraper first: <code>python3 scripts/scraper.py</code></td></tr>';
+      '<tr><td colspan="13" class="no-rows">Could not load listings.<br>Run the scraper first: <code>python3 scripts/scraper.py</code></td></tr>';
   }
 }
 
 function updateStats(list, meta) {
   const today = new Date().toISOString().split('T')[0];
-  const in7 = new Date(Date.now()+7*864e5).toISOString().split('T')[0];
+  const in7   = new Date(Date.now()+7*864e5).toISOString().split('T')[0];
   document.getElementById('s-total').textContent   = list.length;
   document.getElementById('s-new').textContent     = list.filter(l=>l.first_seen===today).length;
   document.getElementById('s-urgent').textContent  = list.filter(l=>l.days_until_sale!=null&&l.days_until_sale>=0&&l.days_until_sale<=7).length;
@@ -226,7 +310,13 @@ function updateStats(list, meta) {
 // ---- Filters ----
 function setStage(s, btn) {
   stage = s;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('#stage-tabs .tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+function setStatusFilter(s, btn) {
+  statusFilter = s;
+  document.querySelectorAll('#status-tabs .tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
   render();
 }
@@ -235,12 +325,12 @@ function sortBy(field) {
   document.querySelectorAll('th').forEach(t=>{t.classList.remove('sort-asc','sort-desc')});
   if (sortField === field) sortAsc = !sortAsc;
   else { sortField = field; sortAsc = true; }
-  const th = document.getElementById('th-countdown');
   // Mark active header
-  const headers = {
-    address:0, county:1, assessed_value:3, sale_date:4, days_until_sale:7, days_in_foreclosure:8, lender:9
+  const fieldToIdx = {
+    address:0, county:1, asking_price:3, beds:4, sale_date:5,
+    days_until_sale:8, days_in_foreclosure:9, lender:10
   };
-  const idx = headers[field];
+  const idx = fieldToIdx[field];
   if (idx !== undefined) {
     const ths = document.querySelectorAll('th');
     ths[idx].classList.add(sortAsc ? 'sort-asc' : 'sort-desc');
@@ -249,13 +339,23 @@ function sortBy(field) {
 }
 
 function render() {
-  const county = document.getElementById('f-county').value;
-  const type   = document.getElementById('f-type').value;
+  const county   = document.getElementById('f-county').value;
+  const type     = document.getElementById('f-type').value;
+  const minPrice = parseFloat(document.getElementById('f-min-price').value) || 0;
+  const maxPrice = parseFloat(document.getElementById('f-max-price').value) || Infinity;
 
   let rows = listings.filter(l => {
     if (stage !== 'all' && l.stage !== stage) return false;
     if (county !== 'all' && l.county !== county) return false;
     if (type !== 'all' && l.property_type !== type) return false;
+    const price = l.asking_price || l.assessed_value || 0;
+    if (price < minPrice || price > maxPrice) return false;
+    // Deal status filter
+    const ds = dealStatus[l.id] || null;
+    if (statusFilter === 'watch'    && ds !== 'watch')   return false;
+    if (statusFilter === 'pursue'   && ds !== 'pursue')  return false;
+    if (statusFilter === 'pass'     && ds !== 'pass')    return false;
+    if (statusFilter === 'untagged' && ds !== null)      return false;
     return true;
   });
 
@@ -268,14 +368,15 @@ function render() {
   });
 
   if (!rows.length) {
-    document.getElementById('tbody').innerHTML = '<tr><td colspan="10" class="no-rows">No listings match your filters.</td></tr>';
+    document.getElementById('tbody').innerHTML =
+      '<tr><td colspan="13" class="no-rows">No listings match your filters.</td></tr>';
     return;
   }
 
   document.getElementById('tbody').innerHTML = rows.map(l => {
-    // Badge
-    const badge = l.stage==='auction' ? 'b-auction' : l.stage==='prefc' ? 'b-prefc' : 'b-reo';
-    const label = l.stage==='auction' ? 'Auction' : l.stage==='prefc' ? 'Pre-FC' : 'REO';
+    // Stage badge
+    const stageMap = {auction:['b-auction','Auction'],'pre-fc':['b-prefc','Pre-FC'],reo:['b-reo','REO']};
+    const [bClass, bLabel] = stageMap[l.stage] || ['b-reo','REO'];
 
     // Countdown
     const d = l.days_until_sale;
@@ -288,33 +389,61 @@ function render() {
       else            { cdClass='ok';     cdText=d+'d'; }
     }
 
-    // Value
-    const val = l.assessed_value
-      ? '$'+l.assessed_value.toLocaleString()
-      : l.asking_price ? '$'+l.asking_price.toLocaleString() : '—';
+    // Price
+    const price = l.asking_price || l.assessed_value;
+    const priceStr = price ? '$'+Math.round(price).toLocaleString() : '—';
+
+    // Property details (beds/baths/sqft)
+    const detailParts = [];
+    if (l.beds)  detailParts.push(l.beds+'bd');
+    if (l.baths) detailParts.push(l.baths+'ba');
+    if (l.sqft)  detailParts.push(Math.round(l.sqft).toLocaleString()+' sqft');
+    const details = detailParts.length ? detailParts.join(' / ') : '—';
 
     // Sale date
     const saleDate = l.sale_date
       ? new Date(l.sale_date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
       : '—';
 
+    // Address link
     const addrEl = l.source_url
       ? `<a href="${l.source_url}" target="_blank">${l.address}</a>`
       : l.address;
 
-    const newBadge = l.is_new ? ' <span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;vertical-align:middle">NEW</span>' : '';
+    // New today badge
+    const today = new Date().toISOString().split('T')[0];
+    const newBadge = (l.first_seen === today || l.is_new)
+      ? '<span class="new-badge">NEW</span>' : '';
+
+    // Deal status buttons
+    const ds = dealStatus[l.id] || null;
+    const watchClass  = ds==='watch'  ? 'sbtn active-watch'  : 'sbtn';
+    const pursueClass = ds==='pursue' ? 'sbtn active-pursue' : 'sbtn';
+    const passClass   = ds==='pass'   ? 'sbtn active-pass'   : 'sbtn';
+    const statusBtns = `<div class="status-btns">
+      <button class="${watchClass}"  onclick="setStatus('${l.id}','watch')">👁</button>
+      <button class="${pursueClass}" onclick="setStatus('${l.id}','pursue')">✓</button>
+      <button class="${passClass}"   onclick="setStatus('${l.id}','pass')">✗</button>
+    </div>`;
+
+    // Records link
+    const recUrl  = recordsUrl(l);
+    const recLink = `<a href="${recUrl}" target="_blank" class="rec-link" title="County records">📋</a>`;
 
     return `<tr>
-      <td><div class="addr">${addrEl}${newBadge}</div><div class="city-line">${l.city}, VA ${l.zip||''}</div></td>
-      <td class="muted">${l.county}</td>
-      <td><span class="badge ${badge}">${label}</span></td>
-      <td class="money">${val}</td>
+      <td><div class="addr">${addrEl}${newBadge}</div><div class="city-line">${l.city||''}, VA ${l.zip||''}</div></td>
+      <td class="muted">${l.county||'—'}</td>
+      <td><span class="badge ${bClass}">${bLabel}</span></td>
+      <td class="money">${priceStr}</td>
+      <td class="muted" style="font-size:12px">${details}</td>
       <td class="muted">${saleDate}</td>
       <td class="muted">${l.sale_time||'—'}</td>
       <td><div class="loc" title="${l.sale_location||''}">${l.sale_location||'—'}</div></td>
       <td><span class="cd ${cdClass}">${cdText}</span></td>
       <td class="muted">${l.days_in_foreclosure!=null ? l.days_in_foreclosure+'d' : '—'}</td>
       <td class="muted">${l.lender||'—'}</td>
+      <td>${statusBtns}</td>
+      <td style="text-align:center">${recLink}</td>
     </tr>`;
   }).join('');
 }
