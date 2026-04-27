@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fredericksburg Foreclosure Tracker</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f4f8;color:#1a202c;min-height:100vh}
+
+/* ---- Auth ---- */
+#auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#1e3a5f}
+.auth-card{background:#fff;border-radius:16px;padding:48px 40px;width:360px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.35)}
+.auth-icon{font-size:44px;margin-bottom:16px}
+.auth-card h1{font-size:21px;font-weight:700;color:#1e3a5f;margin-bottom:4px}
+.auth-card .sub{color:#718096;font-size:13px;margin-bottom:32px}
+#pwd-input{width:100%;padding:13px 16px;border:1.5px solid #e2e8f0;border-radius:9px;font-size:15px;outline:none;margin-bottom:12px;transition:border-color .2s}
+#pwd-input:focus{border-color:#2563eb}
+.auth-btn{width:100%;padding:13px;background:#1e3a5f;color:#fff;border:none;border-radius:9px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s}
+.auth-btn:hover{background:#2563eb}
+#auth-error{color:#e53e3e;font-size:13px;margin-top:10px;display:none}
+
+/* ---- Dashboard layout ---- */
+#dashboard{display:none}
+.topbar{background:#1e3a5f;color:#fff;padding:14px 28px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:17px;font-weight:700;letter-spacing:.2px}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.updated-label{font-size:12px;opacity:.7}
+.refresh-btn{background:rgba(255,255,255,.14);border:none;color:#fff;padding:7px 15px;border-radius:7px;font-size:13px;cursor:pointer;font-weight:500}
+.refresh-btn:hover{background:rgba(255,255,255,.25)}
+
+.warning-bar{background:#fffbeb;border-bottom:1px solid #f6d860;padding:10px 28px;font-size:13px;color:#744210}
+.warning-bar strong{font-weight:600}
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:20px 28px 0}
+.stat{background:#fff;border-radius:11px;padding:18px 20px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.stat .lbl{font-size:11px;font-weight:600;color:#718096;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.stat .val{font-size:30px;font-weight:800;color:#1e3a5f}
+.stat .val.red{color:#c53030}
+.stat .val.green{color:#276749}
+
+.filter-bar{padding:16px 28px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tabs{display:flex;gap:3px;background:#fff;border-radius:9px;padding:4px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.tab{padding:7px 18px;border-radius:7px;font-size:13px;font-weight:500;border:none;background:transparent;cursor:pointer;color:#4a5568;transition:all .15s}
+.tab.active{background:#1e3a5f;color:#fff}
+select.filter{padding:8px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;background:#fff;color:#2d3748;cursor:pointer}
+
+.table-wrap{padding:0 28px 32px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.07);font-size:13px}
+thead{background:#f7fafc}
+th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;color:#718096;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;white-space:nowrap;border-bottom:1px solid #e8f0f7;user-select:none}
+th:hover{color:#1e3a5f}
+th.sort-asc::after{content:" ↑";color:#2563eb}
+th.sort-desc::after{content:" ↓";color:#2563eb}
+td{padding:12px 14px;border-bottom:1px solid #f0f5fa;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f7fbff}
+
+.addr{font-weight:600;color:#1e3a5f}
+.addr a{color:#1e3a5f;text-decoration:none}
+.addr a:hover{text-decoration:underline}
+.city-line{font-size:11px;color:#a0aec0;margin-top:2px}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.b-auction{background:#fef9c3;color:#854d0e}
+.b-prefc{background:#ede9fe;color:#5b21b6}
+.b-reo{background:#fee2e2;color:#9b1c1c}
+.money{font-weight:600;color:#2d3748}
+.cd{font-size:15px;font-weight:800}
+.cd.urgent{color:#c53030}
+.cd.soon{color:#c05621}
+.cd.ok{color:#276749}
+.cd.na{color:#a0aec0;font-size:13px;font-weight:400}
+.loc{max-width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#4a5568;cursor:help}
+.muted{color:#718096}
+.no-rows{text-align:center;padding:48px;color:#a0aec0;font-size:14px}
+</style>
+</head>
+<body>
+
+<!-- Auth screen -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-icon">🏠</div>
+    <h1>Foreclosure Tracker</h1>
+    <p class="sub">Fredericksburg Metro &middot; Private</p>
+    <input type="password" id="pwd-input" placeholder="Enter password"
+           onkeydown="if(event.key==='Enter')login()">
+    <button class="auth-btn" onclick="login()">Access Dashboard &rarr;</button>
+    <div id="auth-error">Incorrect password &mdash; try again.</div>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard">
+  <div class="topbar">
+    <h1>🏠 Fredericksburg Foreclosure Tracker</h1>
+    <div class="topbar-right">
+      <span class="updated-label" id="last-updated">Loading&hellip;</span>
+      <button class="refresh-btn" onclick="loadData()">&#8635; Refresh</button>
+    </div>
+  </div>
+
+  <div class="warning-bar">
+    &#9888;&#65039; <strong>Virginia notice:</strong> Trustee sales can be postponed or cancelled with minimal notice.
+    Always verify the sale date &amp; time directly with the trustee or on Auction.com the day before attending.
+  </div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="lbl">Total Listings</div><div class="val" id="s-total">—</div></div>
+    <div class="stat"><div class="lbl">Auctions This Week</div><div class="val red" id="s-week">—</div></div>
+    <div class="stat"><div class="lbl">Selling in ≤ 7 Days</div><div class="val red" id="s-urgent">—</div></div>
+    <div class="stat"><div class="lbl">New Today</div><div class="val green" id="s-new">—</div></div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="tabs">
+      <button class="tab active" onclick="setStage('all',this)">All</button>
+      <button class="tab" onclick="setStage('auction',this)">Auction</button>
+      <button class="tab" onclick="setStage('prefc',this)">Pre-Foreclosure</button>
+      <button class="tab" onclick="setStage('reo',this)">REO</button>
+    </div>
+    <select class="filter" id="f-county" onchange="render()">
+      <option value="all">All Counties</option>
+      <option value="Fredericksburg City">Fredericksburg City</option>
+      <option value="Stafford">Stafford County</option>
+      <option value="Spotsylvania">Spotsylvania County</option>
+      <option value="Caroline">Caroline County</option>
+    </select>
+    <select class="filter" id="f-type" onchange="render()">
+      <option value="all">All Property Types</option>
+      <option value="single-family">Single-Family</option>
+      <option value="multi-family">Multi-Family</option>
+    </select>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th onclick="sortBy('address')">Address</th>
+          <th onclick="sortBy('county')">County</th>
+          <th>Stage</th>
+          <th onclick="sortBy('assessed_value')">Value</th>
+          <th onclick="sortBy('sale_date')">Sale Date</th>
+          <th>Sale Time</th>
+          <th>Sale Location</th>
+          <th id="th-countdown" onclick="sortBy('days_until_sale')">Days Until Sale</th>
+          <th onclick="sortBy('days_in_foreclosure')">Days in FC</th>
+          <th onclick="sortBy('lender')">Lender</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// -----------------------------------------------------------------------
+// Password hash — set by running: python3 scripts/setup.py
+// -----------------------------------------------------------------------
+const PASSWORD_HASH = 'ca7866590af129532461791b78633ea4f5c8902eb1fe052a90d40ffd4c7a60af';
+
+let listings = [];
+let stage = 'all';
+let sortField = 'days_until_sale';
+let sortAsc = true;
+
+// ---- Auth ----
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function login() {
+  const val = document.getElementById('pwd-input').value;
+  const hash = await sha256(val);
+  if (hash === PASSWORD_HASH) {
+    sessionStorage.setItem('fc_auth','1');
+    show();
+  } else {
+    document.getElementById('auth-error').style.display = 'block';
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-input').focus();
+  }
+}
+
+function show() {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  loadData();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem('fc_auth') === '1') show();
+});
+
+// ---- Data ----
+async function loadData() {
+  document.getElementById('last-updated').textContent = 'Loading…';
+  try {
+    const res = await fetch('./data/foreclosures.json?v=' + Date.now());
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    listings = data.listings || [];
+    updateStats(listings, data.meta);
+    const d = new Date(data.meta.last_updated);
+    document.getElementById('last-updated').textContent =
+      'Updated ' + d.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+    render();
+  } catch(e) {
+    document.getElementById('last-updated').textContent = 'Error loading data';
+    document.getElementById('tbody').innerHTML =
+      '<tr><td colspan="10" class="no-rows">Could not load listings.<br>Run the scraper first: <code>python3 scripts/scraper.py</code></td></tr>';
+  }
+}
+
+function updateStats(list, meta) {
+  const today = new Date().toISOString().split('T')[0];
+  const in7 = new Date(Date.now()+7*864e5).toISOString().split('T')[0];
+  document.getElementById('s-total').textContent   = list.length;
+  document.getElementById('s-new').textContent     = list.filter(l=>l.first_seen===today).length;
+  document.getElementById('s-urgent').textContent  = list.filter(l=>l.days_until_sale!=null&&l.days_until_sale>=0&&l.days_until_sale<=7).length;
+  document.getElementById('s-week').textContent    = list.filter(l=>l.sale_date&&l.sale_date>=today&&l.sale_date<=in7&&l.stage==='auction').length;
+}
+
+// ---- Filters ----
+function setStage(s, btn) {
+  stage = s;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function sortBy(field) {
+  document.querySelectorAll('th').forEach(t=>{t.classList.remove('sort-asc','sort-desc')});
+  if (sortField === field) sortAsc = !sortAsc;
+  else { sortField = field; sortAsc = true; }
+  const th = document.getElementById('th-countdown');
+  // Mark active header
+  const headers = {
+    address:0, county:1, assessed_value:3, sale_date:4, days_until_sale:7, days_in_foreclosure:8, lender:9
+  };
+  const idx = headers[field];
+  if (idx !== undefined) {
+    const ths = document.querySelectorAll('th');
+    ths[idx].classList.add(sortAsc ? 'sort-asc' : 'sort-desc');
+  }
+  render();
+}
+
+function render() {
+  const county = document.getElementById('f-county').value;
+  const type   = document.getElementById('f-type').value;
+
+  let rows = listings.filter(l => {
+    if (stage !== 'all' && l.stage !== stage) return false;
+    if (county !== 'all' && l.county !== county) return false;
+    if (type !== 'all' && l.property_type !== type) return false;
+    return true;
+  });
+
+  rows.sort((a,b) => {
+    let va = a[sortField], vb = b[sortField];
+    if (va == null) va = sortAsc ? 1e9 : -1e9;
+    if (vb == null) vb = sortAsc ? 1e9 : -1e9;
+    if (typeof va === 'string') return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+    return sortAsc ? va - vb : vb - va;
+  });
+
+  if (!rows.length) {
+    document.getElementById('tbody').innerHTML = '<tr><td colspan="10" class="no-rows">No listings match your filters.</td></tr>';
+    return;
+  }
+
+  document.getElementById('tbody').innerHTML = rows.map(l => {
+    // Badge
+    const badge = l.stage==='auction' ? 'b-auction' : l.stage==='prefc' ? 'b-prefc' : 'b-reo';
+    const label = l.stage==='auction' ? 'Auction' : l.stage==='prefc' ? 'Pre-FC' : 'REO';
+
+    // Countdown
+    const d = l.days_until_sale;
+    let cdClass='na', cdText='—';
+    if (d != null) {
+      if (d < 0)      { cdClass='na';     cdText='Passed'; }
+      else if (d===0) { cdClass='urgent'; cdText='TODAY!'; }
+      else if (d<=7)  { cdClass='urgent'; cdText=d+'d'; }
+      else if (d<=14) { cdClass='soon';   cdText=d+'d'; }
+      else            { cdClass='ok';     cdText=d+'d'; }
+    }
+
+    // Value
+    const val = l.assessed_value
+      ? '$'+l.assessed_value.toLocaleString()
+      : l.asking_price ? '$'+l.asking_price.toLocaleString() : '—';
+
+    // Sale date
+    const saleDate = l.sale_date
+      ? new Date(l.sale_date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+      : '—';
+
+    const addrEl = l.source_url
+      ? `<a href="${l.source_url}" target="_blank">${l.address}</a>`
+      : l.address;
+
+    const newBadge = l.is_new ? ' <span style="background:#d1fae5;color:#065f46;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;vertical-align:middle">NEW</span>' : '';
+
+    return `<tr>
+      <td><div class="addr">${addrEl}${newBadge}</div><div class="city-line">${l.city}, VA ${l.zip||''}</div></td>
+      <td class="muted">${l.county}</td>
+      <td><span class="badge ${badge}">${label}</span></td>
+      <td class="money">${val}</td>
+      <td class="muted">${saleDate}</td>
+      <td class="muted">${l.sale_time||'—'}</td>
+      <td><div class="loc" title="${l.sale_location||''}">${l.sale_location||'—'}</div></td>
+      <td><span class="cd ${cdClass}">${cdText}</span></td>
+      <td class="muted">${l.days_in_foreclosure!=null ? l.days_in_foreclosure+'d' : '—'}</td>
+      <td class="muted">${l.lender||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+</script>
+</body>
+</html>

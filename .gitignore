@@ -1,0 +1,15 @@
+# Google Cloud / API credentials — never commit these
+savvy-factor-*.json
+*-credentials.json
+*-service-account*.json
+*.key.json
+
+# Other common secrets
+.env
+*.pem
+*.p12
+
+# Python cache
+__pycache__/
+*.pyc
+.DS_Store
