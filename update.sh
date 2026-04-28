@@ -12,31 +12,37 @@ echo "Working in: $REPO_DIR"
 echo ""
 
 # 1. Run the scraper
-echo "[1/3] Running scrapers..."
+echo "[1/4] Running scrapers..."
 python3 scripts/scraper.py
 echo ""
 
-# 2. Show what changed
-echo "[2/3] Data file status:"
-if git diff --quiet data/foreclosures.json 2>/dev/null; then
-  echo "  No changes to foreclosures.json (data unchanged since last run)"
-  DATA_CHANGED=false
+# 2. Sync to Google Sheets
+echo "[2/4] Syncing to Google Sheets..."
+if [ -f "credentials/service-account.json" ]; then
+  python3 scripts/sheets_sync.py
 else
-  ADDED=$(python3 -c "
-import json
-try:
-    old = json.load(open('/tmp/_fc_old.json')) if __import__('os').path.exists('/tmp/_fc_old.json') else []
-except: old = []
-new = json.load(open('data/foreclosures.json'))
-print(f'{len(new)} total listings')
-" 2>/dev/null || echo "see foreclosures.json")
-  echo "  Updated: $ADDED"
-  DATA_CHANGED=true
+  echo "  ⚠ credentials/service-account.json not found — skipping Sheets sync"
+  echo "    Place your service account JSON at credentials/service-account.json to enable sync"
 fi
 echo ""
 
-# 3. Commit and push if anything changed
-echo "[3/3] Deploying to GitHub Pages..."
+# 3. Show what changed
+echo "[3/4] Data file status:"
+if git diff --quiet data/foreclosures.json 2>/dev/null; then
+  echo "  No changes to foreclosures.json (data unchanged since last run)"
+else
+  TOTAL=$(python3 -c "
+import json
+data = json.load(open('data/foreclosures.json'))
+m = data.get('meta', {})
+print(f\"{m.get('total_count','?')} total listings ({m.get('new_today','?')} new today)\")
+" 2>/dev/null || echo "see foreclosures.json")
+  echo "  Updated: $TOTAL"
+fi
+echo ""
+
+# 4. Commit and push if anything changed
+echo "[4/4] Deploying to GitHub Pages..."
 git add -A
 
 if git diff --cached --quiet; then
