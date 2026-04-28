@@ -54,7 +54,8 @@ COLUMNS = [
     "Investment_Priority", "Owner_Name", "Owner_Mailing_Address",
     "Owner_Mailing_Differs_From_Property", "Estimated_Phone",
     "Estimated_Email", "Listing_URL", "Notes", "Date_Checked", "City",
-    "Sale_Date", "Sale_Time",   # columns Z, AA — appended to avoid shifting existing data
+    "F_Sale_Date", "F_Sale_Time",  # columns Z, AA — renamed (was Sale_Date/Sale_Time)
+    "State", "County",             # columns AB, AC
 ]
 
 
@@ -200,8 +201,10 @@ def listing_to_row(listing: dict) -> list:
         notes,                                    # W  Notes
         date.today().isoformat(),                 # X  Date_Checked
         listing.get("city") or "",                # Y  City
-        listing.get("sale_date")  or "",          # Z  Sale_Date
-        listing.get("sale_time")  or "",          # AA Sale_Time
+        listing.get("sale_date")  or "",          # Z  F_Sale_Date
+        listing.get("sale_time")  or "",          # AA F_Sale_Time
+        "VA",                                     # AB State
+        listing.get("county")     or "",          # AC County
     ]
 
 
@@ -308,6 +311,7 @@ def run() -> None:
         ("Owner_Mailing_Differs_From_Property", "owner_mailing_differs"),
         ("Estimated_Phone",                     "owner_phone"),
         ("City",                                "city"),
+        ("County",                              "county"),
     ]
 
     # Columns we ALWAYS overwrite (data quality fixes — URL format changed)

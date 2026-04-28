@@ -7,11 +7,12 @@ Pulls trustee sale notices, auction listings, and REO properties
 from free public sources and saves to data/foreclosures.json.
 
 Sources:
-  1. PublicNoticeVirginia.com  — trustee sale notices (VA legal requirement)
-  2. Auction.com               — active foreclosure auctions
-  3. HUD Homes                 — FHA REO listings
-  4. Fannie Mae HomePath        — Fannie Mae REO listings
-  5. Freddie Mac HomeSteps      — Freddie Mac REO listings
+  1. PublicNoticeVirginia.com            — trustee sale notices (VA legal requirement)
+  2. Fredericksburg Free-Lance Star      — Column.us public notice portal (Playwright)
+  3. Auction.com                         — active foreclosure auctions
+  4. HUD Homes                           — FHA REO listings
+  5. Fannie Mae HomePath                 — Fannie Mae REO listings
+  6. Freddie Mac HomeSteps               — Freddie Mac REO listings
 
 Target counties: Fredericksburg City, Stafford, Spotsylvania, Caroline, Fauquier,
                   Culpeper, King George, Hanover, Richmond City, Chesterfield, Henrico, Louisa
@@ -823,7 +824,197 @@ def scrape_homepath() -> list:
 
 
 # ---------------------------------------------------------------------------
-# Source 5: Freddie Mac HomeSteps
+# Source 5: Fredericksburg Free-Lance Star (Column.us)
+# ---------------------------------------------------------------------------
+
+def scrape_column_us() -> list:
+    """
+    Scrapes foreclosure sale notices from the Fredericksburg Free-Lance Star's
+    Column.us public notice portal.
+
+    URL: https://fredericksburg.column.us/search?noticeType=Foreclosure+Sale
+
+    Column.us is a Next.js + Firebase app — the page shell is server-rendered
+    but all notice cards are injected client-side via the Firebase SDK.
+    Python requests alone returns an empty shell; Playwright is required to
+    execute JavaScript and wait for notices to render.
+
+    Each notice card contains:
+      - Notice type label ("Foreclosure Sale")
+      - Full notice body text (CSS visually clips it, but full text is in the DOM)
+      - Publication date (YYYY-MM-DD)
+
+    From the body text we extract:
+      - Property address  (from "TRUSTEE'S SALE OF {address}" opening line)
+      - Sale date / time  (from "on June 22, 2026, at 9:00 AM" standard VA phrase)
+      - Lender / trustee  (via existing parse helpers)
+
+    Requires: pip3 install playwright && playwright install chromium
+    """
+    listings = []
+
+    try:
+        from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
+    except ImportError:
+        log.warning(
+            "  Column.us: playwright not installed — skipping.\n"
+            "    Install with:  pip3 install playwright --break-system-packages\n"
+            "                   playwright install chromium"
+        )
+        return listings
+
+    try:
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(headless=True)
+            page = browser.new_page(
+                user_agent=(
+                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/124.0.0.0 Safari/537.36"
+                )
+            )
+
+            url = "https://fredericksburg.column.us/search?noticeType=Foreclosure+Sale"
+            log.info(f"  Column.us: {url}")
+            page.goto(url, wait_until="networkidle", timeout=40_000)
+
+            # Wait for at least one notice card to appear
+            try:
+                page.wait_for_selector("text=Foreclosure Sale", timeout=15_000)
+            except PWTimeout:
+                log.warning("  Column.us: timed out waiting for notices to render")
+                browser.close()
+                return listings
+
+            # Click "Load more notices" until exhausted
+            while True:
+                try:
+                    btn = page.query_selector('button:has-text("Load more")')
+                    if btn and btn.is_visible():
+                        btn.click()
+                        page.wait_for_timeout(2000)
+                    else:
+                        break
+                except Exception:
+                    break
+
+            # ── Extract all Foreclosure Sale cards ────────────────────────────
+            # Each notice is a <section> or <article> (or div with data attrs)
+            # containing the notice type label and the full body text.
+            notice_sections = page.query_selector_all(
+                "[class*='notice'], [class*='card'], [class*='result'], article, section"
+            )
+
+            for section in notice_sections:
+                try:
+                    text = section.inner_text(timeout=3000).strip()
+                except Exception:
+                    continue
+
+                if "Foreclosure Sale" not in text:
+                    continue
+                if not re.search(r"trustee.{0,10}sale", text, re.I):
+                    continue
+
+                # ── Address ────────────────────────────────────────────────
+                # Opening line pattern: "TRUSTEE'S SALE OF {address}"
+                addr_raw = None
+                addr_m = re.search(
+                    r"TRUSTEE[''`]?S\s+SALE\s+OF\s+([\w\d].*?)(?=\n\n|\nIn execution|\nDefault)",
+                    text, re.I | re.S
+                )
+                if addr_m:
+                    addr_raw = re.sub(r"\s+", " ", addr_m.group(1)).strip()
+
+                # Also handle "NOTICE OF SUBSTITUTE TRUSTEE SALE\n{address}"
+                if not addr_raw:
+                    sub_m = re.search(
+                        r"NOTICE OF SUBSTITUTE TRUSTEE SALE\s+([\w\d].*?)(?=\n\n|\nBy virtue|\nIn execution)",
+                        text, re.I | re.S
+                    )
+                    if sub_m:
+                        addr_raw = re.sub(r"\s+", " ", sub_m.group(1)).strip()
+
+                if not addr_raw:
+                    log.debug(f"  Column.us: could not parse address from card, skipping")
+                    continue
+
+                # Parse "Street, City, ST ZIP" from address line
+                parsed = re.match(
+                    r"^(.*?),\s*([^,]+),\s*([A-Z]{2})\s+(\d{5}(?:-\d{4})?)",
+                    addr_raw
+                )
+                if parsed:
+                    street   = parsed.group(1).strip()
+                    city     = parsed.group(2).strip()
+                    zip_code = parsed.group(4)
+                else:
+                    street   = addr_raw[:80]
+                    city     = ""
+                    zip_code = None
+
+                # Derive county; skip if outside our target area
+                county = city_to_county(city)
+                if county == "Unknown":
+                    # Try extracting county from the notice body directly
+                    county_m = re.search(
+                        r"Circuit Court(?:\s+for)?\s+(?:the\s+)?(?:City of\s+)?(\w[\w\s]+?)"
+                        r"(?:\s+County)?,\s+(?:Main|Courthouse|\d)",
+                        text, re.I
+                    )
+                    if county_m:
+                        county = county_display(county_m.group(1).strip().lower())
+                    else:
+                        log.debug(f"  Column.us: unknown county for '{city}', skipping")
+                        continue
+
+                if county.lower().replace(" city", "").replace(" county", "") not in [
+                    c.lower() for c in TARGET_COUNTIES
+                ]:
+                    continue
+
+                # ── Sale date / time (standard VA notice phrase) ───────────
+                sale_date, sale_time = parse_sale_datetime(text)
+
+                # ── Lender / trustee ───────────────────────────────────────
+                lender  = parse_lender(text)
+                trustee = parse_trustee(text)
+
+                listings.append({
+                    "id":               make_id(street, sale_date),
+                    "address":          street,
+                    "city":             city.title(),
+                    "county":           county,
+                    "zip":              zip_code,
+                    "stage":            "auction" if sale_date else "pre-fc",
+                    "property_type":    "single-family",
+                    "assessed_value":   None,
+                    "asking_price":     None,
+                    "sale_date":        sale_date,
+                    "sale_time":        sale_time,
+                    "sale_location":    courthouse_location(
+                                            county.lower().replace(" city","").replace(" county","").strip()
+                                        ),
+                    "days_until_sale":  None,
+                    "notice_date":      date.today().isoformat(),
+                    "days_in_foreclosure": 0,
+                    "lender":           lender,
+                    "trustee":          trustee,
+                    "source":           "column_us",
+                    "source_url":       url,
+                })
+
+            browser.close()
+
+    except Exception as e:
+        log.error(f"  Column.us error: {e}", exc_info=True)
+
+    log.info(f"  Column.us: found {len(listings)} listings")
+    return listings
+
+
+# ---------------------------------------------------------------------------
+# Source 6: Freddie Mac HomeSteps
 # ---------------------------------------------------------------------------
 
 def scrape_homesteps() -> list:
@@ -974,11 +1165,37 @@ def parse_address_from_notice(text: str) -> str:
 
 
 def parse_sale_datetime(text: str):
-    """Extract sale date and time from notice body text."""
+    """Extract sale date and time from Virginia trustee sale notice text.
+
+    Primary pattern matches the standard PNV notice phrase:
+      "...on June 22, 2026, at 9:00 AM"
+
+    Fallback scans the full notice body for any date/time pattern independently.
+    """
+    sale_date = None
+    sale_time = None
+
+    # Primary: "on [Month Day, Year], at [Time]" — standard VA trustee sale format
+    primary_m = re.search(
+        r'\bon\s+(\w+\s+\d{1,2},?\s*\d{4}),?\s+at\s+(\d{1,2}:\d{2}\s*(?:AM|PM|a\.m\.|p\.m\.))',
+        text, re.IGNORECASE
+    )
+    if primary_m:
+        raw_date = primary_m.group(1).strip()
+        raw_time = (primary_m.group(2).strip().upper()
+                    .replace("A.M.", "AM").replace("P.M.", "PM"))
+        for fmt in ("%B %d, %Y", "%B %d %Y"):
+            try:
+                sale_date = datetime.strptime(raw_date, fmt).date().isoformat()
+                break
+            except ValueError:
+                continue
+        return sale_date, raw_time
+
+    # Fallback: scan for any standalone date and time in the notice body
     date_match = re.search(r"(\w+ \d{1,2},?\s*\d{4}|\d{1,2}/\d{1,2}/\d{4})", text)
     time_match = re.search(r"(\d{1,2}:\d{2}\s*(?:AM|PM|a\.m\.|p\.m\.))", text, re.IGNORECASE)
 
-    sale_date = None
     if date_match:
         raw = date_match.group(1).strip()
         for fmt in ("%B %d, %Y", "%B %d %Y", "%m/%d/%Y"):
@@ -988,9 +1205,10 @@ def parse_sale_datetime(text: str):
             except ValueError:
                 continue
 
-    sale_time = (time_match.group(1).upper()
-                 .replace("A.M.", "AM").replace("P.M.", "PM")
-                 if time_match else None)
+    if time_match:
+        sale_time = (time_match.group(1).upper()
+                     .replace("A.M.", "AM").replace("P.M.", "PM"))
+
     return sale_date, sale_time
 
 
@@ -1348,6 +1566,9 @@ def run():
 
     log.info("--- PublicNoticeVirginia.com ---")
     all_listings.extend(scrape_public_notice_va())
+
+    log.info("--- Fredericksburg Free-Lance Star (Column.us) ---")
+    all_listings.extend(scrape_column_us())
 
     log.info("--- Auction.com ---")
     all_listings.extend(scrape_auction_com())
