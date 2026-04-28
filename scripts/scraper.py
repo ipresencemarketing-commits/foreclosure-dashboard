@@ -11,6 +11,7 @@ Sources:
   2. Auction.com               — active foreclosure auctions
   3. HUD Homes                 — FHA REO listings
   4. Fannie Mae HomePath        — Fannie Mae REO listings
+  5. Freddie Mac HomeSteps      — Freddie Mac REO listings
 
 Target counties: Fredericksburg City, Stafford, Spotsylvania, Caroline, Fauquier,
                   Culpeper, King George, Hanover, Richmond City, Chesterfield, Henrico, Louisa
@@ -822,6 +823,141 @@ def scrape_homepath() -> list:
 
 
 # ---------------------------------------------------------------------------
+# Source 5: Freddie Mac HomeSteps
+# ---------------------------------------------------------------------------
+
+def scrape_homesteps() -> list:
+    """
+    Scrapes Freddie Mac HomeSteps REO listings for Virginia.
+
+    URL: https://www.homesteps.com/listing/search?search=Virginia
+
+    The site is server-rendered Drupal — Python requests gets full HTML with
+    all listing data embedded. Each listing is a bare <li> element containing:
+
+      .property-address   → "804 Carter St, Martinsville, VA 24112"
+      .property-price     → "$34,900"
+      .property-details   → "2 beds, 1 bath, 840 sq. ft."
+      .property-status-value → "Active"
+      a[href*=/listingdetails/] → "/listingdetails/804-carter-st-martinsville-va-24112"
+
+    County is not present in the listing HTML — derived from city via city_to_county().
+    """
+    listings = []
+    url = "https://www.homesteps.com/listing/search?search=Virginia"
+    log.info(f"  HomeSteps: {url}")
+
+    TARGET_COUNTIES_SET = {
+        "fredericksburg city", "stafford", "spotsylvania", "caroline",
+        "fauquier", "culpeper", "king george", "hanover",
+        "richmond city", "chesterfield", "henrico", "louisa",
+    }
+
+    try:
+        resp = requests.get(url, headers=HEADERS, timeout=25)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "lxml")
+
+        # Each listing is a <li> containing a /listingdetails/ link
+        items = [
+            li for li in soup.find_all("li")
+            if li.find("a", href=re.compile(r"/listingdetails/"))
+        ]
+        log.info(f"  HomeSteps: {len(items)} total listings on page")
+
+        for item in items:
+            # ── Address ────────────────────────────────────────────────────
+            addr_el = item.find(class_="property-address")
+            if not addr_el:
+                continue
+            addr_text = addr_el.get_text(" ", strip=True)
+            # "804 Carter St, Martinsville, VA 24112"
+            addr_m = re.match(
+                r"^(.*?),\s*([^,]+),\s*([A-Z]{2})\s+(\d{5}(?:-\d{4})?)",
+                addr_text
+            )
+            if not addr_m:
+                continue
+            street   = addr_m.group(1).strip()
+            city_raw = addr_m.group(2).strip()
+            state    = addr_m.group(3)
+            zip_code = addr_m.group(4)
+
+            # Only Virginia — filter out "New Virginia, IA" etc.
+            if state != "VA":
+                continue
+
+            # Derive county from city and check against target list
+            county = city_to_county(city_raw)
+            if county == "Unknown" or county.lower() not in TARGET_COUNTIES_SET:
+                continue
+
+            # ── Price ──────────────────────────────────────────────────────
+            price = None
+            price_el = item.find(class_="property-price")
+            if price_el:
+                price = parse_price(price_el.get_text())
+
+            # ── Beds / baths / sqft ────────────────────────────────────────
+            beds = baths = sqft = None
+            details_el = item.find(class_="property-details")
+            if details_el:
+                dt = details_el.get_text()
+                beds_m  = re.search(r"(\d+)\s*bed", dt)
+                baths_m = re.search(r"([\d.]+)\s*bath", dt)
+                sqft_m  = re.search(r"([\d,]+)\s*sq\.?\s*ft", dt, re.I)
+                beds  = int(beds_m.group(1))                    if beds_m  else None
+                baths = float(baths_m.group(1))                 if baths_m else None
+                sqft  = int(sqft_m.group(1).replace(",", ""))   if sqft_m  else None
+
+            # ── Detail URL ─────────────────────────────────────────────────
+            link_el = item.find("a", href=re.compile(r"/listingdetails/"))
+            href = link_el["href"] if link_el else None
+            source_url = (
+                ("https://www.homesteps.com" + href)
+                if href and not href.startswith("http") else href
+            )
+
+            listings.append({
+                "id":               make_id(f"{street} {city_raw}", None),
+                "address":          street,
+                "city":             city_raw.title(),
+                "county":           county,
+                "zip":              zip_code or None,
+                "stage":            "reo",
+                "property_type":    "single-family",
+                "assessed_value":   None,
+                "asking_price":     price,
+                "beds":             beds,
+                "baths":            baths,
+                "sqft":             sqft,
+                "sale_date":        None,
+                "sale_time":        None,
+                "sale_location":    None,
+                "days_until_sale":  None,
+                "notice_date":      None,
+                "days_in_foreclosure": None,
+                "lender":           "Freddie Mac",
+                "owner_name":       "Freddie Mac",
+                "owner_mailing_address": "8200 Jones Branch Dr, McLean, VA 22102",
+                "owner_mailing_differs": "Yes",
+                "owner_phone":      "1-800-FREDDIE",
+                "owner_email":      "",
+                "trustee":          None,
+                "source":           "homesteps",
+                "source_url":       source_url,
+            })
+
+        sleep(1)
+
+    except Exception as e:
+        log.error(f"  HomeSteps error: {e}", exc_info=True)
+
+    log.info(f"  HomeSteps: found {len(listings)} target-county listings")
+    return listings
+
+
+# ---------------------------------------------------------------------------
 # Text parsing helpers
 # ---------------------------------------------------------------------------
 
@@ -1221,6 +1357,9 @@ def run():
 
     log.info("--- Fannie Mae HomePath ---")
     all_listings.extend(scrape_homepath())
+
+    log.info("--- Freddie Mac HomeSteps ---")
+    all_listings.extend(scrape_homesteps())
 
     all_listings = deduplicate(all_listings)
     log.info(f"Total after dedup: {len(all_listings)} listings")
