@@ -12,7 +12,8 @@ Sources:
   3. HUD Homes                 — FHA REO listings
   4. Fannie Mae HomePath        — Fannie Mae REO listings
 
-Target counties: Fredericksburg City, Stafford, Spotsylvania, Caroline
+Target counties: Fredericksburg City, Stafford, Spotsylvania, Caroline, Fauquier,
+                  Culpeper, King George, Hanover, Richmond City, Chesterfield, Henrico, Louisa
 
 Run: python3 scripts/scraper.py
 Requires: pip install requests beautifulsoup4 lxml
@@ -33,7 +34,11 @@ log = logging.getLogger(__name__)
 
 DATA_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "foreclosures.json")
 
-TARGET_COUNTIES = ["fredericksburg", "stafford", "spotsylvania", "caroline"]
+TARGET_COUNTIES = [
+    "fredericksburg", "stafford", "spotsylvania", "caroline",
+    "fauquier", "culpeper", "king george", "hanover",
+    "richmond", "chesterfield", "henrico", "louisa",
+]
 
 HEADERS = {
     "User-Agent": (
@@ -93,7 +98,11 @@ def save(listings: list) -> None:
     data = {
         "meta": {
             "last_updated": datetime.now().isoformat(timespec="seconds"),
-            "target_counties": ["Fredericksburg City", "Stafford", "Spotsylvania", "Caroline"],
+            "target_counties": [
+                "Fredericksburg City", "Stafford", "Spotsylvania", "Caroline",
+                "Fauquier", "Culpeper", "King George", "Hanover",
+                "Richmond City", "Chesterfield", "Henrico", "Louisa",
+            ],
             "total_count": len(listings),
             "new_today": sum(1 for l in listings if l.get("is_new")),
         },
@@ -169,8 +178,12 @@ def scrape_public_notice_va() -> list:
 
         # Step 3: Find target checkboxes dynamically by label text
         # County checkboxes in #countyDiv; city checkbox for Fredericksburg in #cityDiv
-        COUNTY_TARGETS = ["caroline", "spotsylvania", "stafford"]
-        CITY_TARGETS   = ["fredericksburg"]
+        COUNTY_TARGETS = [
+            "caroline", "spotsylvania", "stafford",
+            "fauquier", "culpeper", "king george", "hanover",
+            "chesterfield", "henrico", "louisa",
+        ]
+        CITY_TARGETS   = ["fredericksburg", "richmond"]
 
         checked_count = 0
         for div_id, targets in [("countyDiv", COUNTY_TARGETS), ("cityDiv", CITY_TARGETS)]:
@@ -329,15 +342,52 @@ def scrape_auction_com() -> list:
 
     # URL slug keywords → county display name
     SLUG_COUNTY: dict[str, str] = {
-        "stafford-va":        "Stafford",
-        "fredericksburg-va":  "Fredericksburg City",
-        "spotsylvania-va":    "Spotsylvania",
-        "bowling-green-va":   "Caroline",
-        "ruther-glen-va":     "Caroline",
-        "milford-va":         "Caroline",
-        "port-royal-va":      "Caroline",
-        "woodford-va":        "Caroline",
-        "penola-va":          "Caroline",
+        # Fredericksburg metro (original)
+        "stafford-va":          "Stafford",
+        "fredericksburg-va":    "Fredericksburg City",
+        "spotsylvania-va":      "Spotsylvania",
+        "bowling-green-va":     "Caroline",
+        "ruther-glen-va":       "Caroline",
+        "milford-va":           "Caroline",
+        "port-royal-va":        "Caroline",
+        "woodford-va":          "Caroline",
+        "penola-va":            "Caroline",
+        # Fauquier
+        "warrenton-va":         "Fauquier",
+        "new-baltimore-va":     "Fauquier",
+        "bealeton-va":          "Fauquier",
+        "catlett-va":           "Fauquier",
+        "remington-va":         "Fauquier",
+        "midland-va":           "Fauquier",
+        # Culpeper
+        "culpeper-va":          "Culpeper",
+        "jeffersonton-va":      "Culpeper",
+        "woodville-va":         "Culpeper",
+        "brandy-station-va":    "Culpeper",
+        # King George
+        "king-george-va":       "King George",
+        "dahlgren-va":          "King George",
+        # Hanover
+        "ashland-va":           "Hanover",
+        "mechanicsville-va":    "Hanover",
+        "hanover-va":           "Hanover",
+        "atlee-va":             "Hanover",
+        # Richmond City
+        "richmond-va":          "Richmond City",
+        # Chesterfield
+        "chesterfield-va":      "Chesterfield",
+        "midlothian-va":        "Chesterfield",
+        "chester-va":           "Chesterfield",
+        "bon-air-va":           "Chesterfield",
+        # Henrico
+        "henrico-va":           "Henrico",
+        "glen-allen-va":        "Henrico",
+        "short-pump-va":        "Henrico",
+        "sandston-va":          "Henrico",
+        "highland-springs-va":  "Henrico",
+        # Louisa
+        "louisa-va":            "Louisa",
+        "mineral-va":           "Louisa",
     }
 
     try:
@@ -514,7 +564,11 @@ def scrape_hud_homes() -> list:
     url = "https://www.hudhomestore.gov/searchresult?citystate=VA"
     log.info(f"  HUD Homes: {url}")
 
-    TARGET_COUNTIES_HUD = {"stafford", "spotsylvania", "caroline", "fredericksburg"}
+    TARGET_COUNTIES_HUD = {
+        "stafford", "spotsylvania", "caroline", "fredericksburg",
+        "fauquier", "culpeper", "king george", "hanover",
+        "richmond", "chesterfield", "henrico", "louisa",
+    }
 
     try:
         resp = requests.get(url, headers=HEADERS, timeout=25)
@@ -566,6 +620,14 @@ def scrape_hud_homes() -> list:
                 "spotsylvania":   "Spotsylvania",
                 "caroline":       "Caroline",
                 "fredericksburg": "Fredericksburg City",
+                "fauquier":       "Fauquier",
+                "culpeper":       "Culpeper",
+                "king george":    "King George",
+                "hanover":        "Hanover",
+                "richmond":       "Richmond City",
+                "chesterfield":   "Chesterfield",
+                "henrico":        "Henrico",
+                "louisa":         "Louisa",
             }.get(county_raw.lower(), county_raw.title())
 
             # Price
@@ -647,8 +709,9 @@ def scrape_homepath() -> list:
     """
     listings = []
 
-    # Bounding box tightly wrapping our 4 target counties
-    bounds = "37.85,-77.80,38.60,-77.10"
+    # Bounding box covering all 12 target counties
+    # S=37.30 (Chesterfield), W=-78.30 (Culpeper/Louisa), N=38.90 (Fauquier), E=-77.10
+    bounds = "37.30,-78.30,38.90,-77.10"
     url    = f"https://homepath.fanniemae.com/cfl/property-inventory/search?bounds={bounds}"
     log.info(f"  HomePath: {url}")
 
@@ -657,6 +720,14 @@ def scrape_homepath() -> list:
         "stafford":       "Stafford",
         "spotsylvania":   "Spotsylvania",
         "caroline":       "Caroline",
+        "fauquier":       "Fauquier",
+        "culpeper":       "Culpeper",
+        "king george":    "King George",
+        "hanover":        "Hanover",
+        "richmond":       "Richmond City",
+        "chesterfield":   "Chesterfield",
+        "henrico":        "Henrico",
+        "louisa":         "Louisa",
     }
 
     try:
@@ -826,6 +897,14 @@ def county_display(county: str) -> str:
         "stafford":        "Stafford",
         "spotsylvania":    "Spotsylvania",
         "caroline":        "Caroline",
+        "fauquier":        "Fauquier",
+        "culpeper":        "Culpeper",
+        "king george":     "King George",
+        "hanover":         "Hanover",
+        "richmond":        "Richmond City",
+        "chesterfield":    "Chesterfield",
+        "henrico":         "Henrico",
+        "louisa":          "Louisa",
     }.get(county.lower(), county.title())
 
 
@@ -836,6 +915,14 @@ def county_city(county: str) -> str:
         "stafford":        "Stafford",
         "spotsylvania":    "Fredericksburg",
         "caroline":        "Bowling Green",
+        "fauquier":        "Warrenton",
+        "culpeper":        "Culpeper",
+        "king george":     "King George",
+        "hanover":         "Ashland",
+        "richmond":        "Richmond",
+        "chesterfield":    "Chesterfield",
+        "henrico":         "Glen Allen",
+        "louisa":          "Louisa",
     }.get(county.lower().replace(" city", "").strip(), county.title())
 
 
@@ -845,6 +932,14 @@ def courthouse_location(county: str) -> str:
         "stafford":        "Front steps, Stafford Circuit Court, 1300 Courthouse Rd",
         "spotsylvania":    "Front steps, Spotsylvania Circuit Court, 9115 Courthouse Rd",
         "caroline":        "Front steps, Caroline Circuit Court, 112 Courthouse Ln",
+        "fauquier":        "Front steps, Fauquier Circuit Court, 29 Ashby St, Warrenton",
+        "culpeper":        "Front steps, Culpeper Circuit Court, 135 W Cameron St",
+        "king george":     "Front steps, King George Circuit Court, 10459 Courthouse Dr",
+        "hanover":         "Front steps, Hanover Circuit Court, 7507 Library Dr",
+        "richmond":        "Front steps, Richmond City Circuit Court, 400 N 9th St",
+        "chesterfield":    "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
+        "henrico":         "Front steps, Henrico Circuit Court, 4301 E Parham Rd",
+        "louisa":          "Front steps, Louisa Circuit Court, 100 W Main St",
     }.get(county.lower(), "Courthouse steps — verify with trustee")
 
 
@@ -861,16 +956,52 @@ def normalize_county(raw: str) -> str:
 def city_to_county(city: str) -> str:
     city = city.lower().strip()
     mapping = {
-        "fredericksburg":  "Fredericksburg City",
-        "stafford":        "Stafford",
-        "aquia harbour":   "Stafford",
-        "quantico":        "Stafford",
-        "spotsylvania":    "Spotsylvania",
-        "chancellor":      "Spotsylvania",
-        "bowling green":   "Caroline",
-        "milford":         "Caroline",
-        "ruther glen":     "Caroline",
-        "port royal":      "Caroline",
+        # Fredericksburg City
+        "fredericksburg":    "Fredericksburg City",
+        # Stafford
+        "stafford":          "Stafford",
+        "aquia harbour":     "Stafford",
+        "quantico":          "Stafford",
+        "garrisonville":     "Stafford",
+        # Spotsylvania
+        "spotsylvania":      "Spotsylvania",
+        "chancellor":        "Spotsylvania",
+        # Caroline
+        "bowling green":     "Caroline",
+        "milford":           "Caroline",
+        "ruther glen":       "Caroline",
+        "port royal":        "Caroline",
+        # Fauquier
+        "warrenton":         "Fauquier",
+        "new baltimore":     "Fauquier",
+        "bealeton":          "Fauquier",
+        "catlett":           "Fauquier",
+        "remington":         "Fauquier",
+        # Culpeper
+        "culpeper":          "Culpeper",
+        "jeffersonton":      "Culpeper",
+        # King George
+        "king george":       "King George",
+        "dahlgren":          "King George",
+        # Hanover
+        "ashland":           "Hanover",
+        "mechanicsville":    "Hanover",
+        "hanover":           "Hanover",
+        # Richmond City
+        "richmond":          "Richmond City",
+        # Chesterfield
+        "chesterfield":      "Chesterfield",
+        "midlothian":        "Chesterfield",
+        "chester":           "Chesterfield",
+        "bon air":           "Chesterfield",
+        # Henrico
+        "glen allen":        "Henrico",
+        "short pump":        "Henrico",
+        "sandston":          "Henrico",
+        "highland springs":  "Henrico",
+        # Louisa
+        "louisa":            "Louisa",
+        "mineral":           "Louisa",
     }
     for key, val in mapping.items():
         if key in city:
@@ -1076,7 +1207,7 @@ def deduplicate(listings: list) -> list:
 
 
 def run():
-    log.info("Starting Fredericksburg foreclosure scraper…")
+    log.info("Starting Virginia foreclosure scraper (12 counties)…")
     all_listings = []
 
     log.info("--- PublicNoticeVirginia.com ---")
