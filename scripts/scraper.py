@@ -178,51 +178,14 @@ def scrape_public_notice_va() -> list:
             ("__EVENTARGUMENT", ""),
         ]
 
-        # Step 3: Find target checkboxes dynamically by label text
-        # County checkboxes in #countyDiv; city checkbox for Fredericksburg in #cityDiv
-        COUNTY_TARGETS = [
-            "caroline", "spotsylvania", "stafford",
-            "fauquier", "culpeper", "king george", "hanover",
-            "chesterfield", "henrico", "louisa",
-        ]
-        CITY_TARGETS   = ["fredericksburg", "richmond"]
+        # Step 3: Keyword-only search — do NOT post county checkboxes.
+        # Posting any checkbox triggers ASP.NET's lstCounty_SelectedIndexChanged
+        # event which calls ParseInt32 on the checkbox value ("on" or None) and
+        # crashes with a server error.  Instead, search statewide with the keyword
+        # "trustee's sale" and filter results by county in the parsing loop below.
+        post_data.append(("ctl00$ContentPlaceHolder1$as1$txtSearch", "trustee's sale"))
 
-        checked_count = 0
-        for div_id, targets in [("countyDiv", COUNTY_TARGETS), ("cityDiv", CITY_TARGETS)]:
-            div = soup.find(id=div_id) or soup.find(id=re.compile(div_id, re.I))
-            if not div:
-                log.warning(f"  PNV: #{div_id} not found in page")
-                continue
-            for inp in div.find_all("input", type="checkbox"):
-                inp_id = inp.get("id", "")
-                # Label may be a sibling <label for="id"> or inline text
-                label_el = (soup.find("label", attrs={"for": inp_id})
-                            if inp_id else None)
-                if not label_el:
-                    label_el = inp.find_next_sibling("label")
-                label_text = label_el.get_text(strip=True).lower() if label_el else ""
-                if any(t in label_text for t in targets):
-                    name = inp.get("name", "")
-                    if name:
-                        post_data.append((name, "on"))
-                        checked_count += 1
-                        log.info(f"  PNV: checking '{label_text}' ({name})")
-
-        # Fallback: hardcode known checkbox names if dynamic discovery fails
-        if checked_count == 0:
-            log.warning("  PNV: dynamic checkbox discovery failed — using hardcoded names")
-            for name in [
-                "ctl00$ContentPlaceHolder1$as1$lstCounty$16",  # Caroline
-                "ctl00$ContentPlaceHolder1$as1$lstCounty$89",  # Spotsylvania
-                "ctl00$ContentPlaceHolder1$as1$lstCounty$90",  # Stafford
-                "ctl00$ContentPlaceHolder1$as1$lstCity$101",   # Fredericksburg City
-            ]:
-                post_data.append((name, "on"))
-
-        # Search keyword
-        post_data.append(("ctl00$ContentPlaceHolder1$as1$txtSearch", "foreclosure"))
-
-        # Submit button (value="" is correct per live page inspection)
+        # Submit button
         post_data.append(("ctl00$ContentPlaceHolder1$as1$btnGo", ""))
 
         # Step 4: POST the search form
@@ -246,12 +209,34 @@ def scrape_public_notice_va() -> list:
         )
         if grid:
             rows = grid.find_all("tr")[1:]  # skip header row
+            log.info(f"  PNV: grid found via ID match ({grid.get('id', '?')})")
         else:
+            # Save the raw HTML response so we can inspect what PNV is returning
+            debug_html = os.path.join(os.path.dirname(DATA_FILE), "pnv_debug.html")
+            try:
+                with open(debug_html, "w", encoding="utf-8") as _f:
+                    _f.write(resp3.text)
+                log.info(f"  PNV: saved response HTML → {debug_html}")
+            except Exception:
+                pass
+
+            all_tables = soup3.find_all("table")
+            table_ids  = [t.get("id", "") for t in all_tables if t.get("id")]
+            log.info(f"  PNV: grid not found by ID — page has {len(all_tables)} table(s), IDs: {table_ids[:8]}")
+
             rows = (
                 soup3.select("table.results-table tr, table.search-results tr") or
                 soup3.select("tr.GridRow, tr.GridAltRow, tr[class*='grid']") or
                 []
             )
+            if not rows:
+                # Last resort: any <tr> that has a link and at least 2 <td>s
+                rows = [
+                    tr for tr in soup3.find_all("tr")
+                    if tr.find("a") and len(tr.find_all("td")) >= 2
+                ]
+                if rows:
+                    log.info(f"  PNV: fallback link-row scan found {len(rows)} candidate row(s)")
 
         log.info(f"  PNV: {len(rows)} raw result rows")
 
@@ -267,6 +252,11 @@ def scrape_public_notice_va() -> list:
             if not text_raw:
                 continue
 
+            # Keyword "trustee's sale" should already scope results, but also
+            # filter row-level to be sure we're only processing trustee/sale notices.
+            if not re.search(r"trustee|deed of trust|sale of real property", text_raw, re.I):
+                continue
+
             link_el    = row.find("a")
             href       = link_el.get("href") if link_el else None
             source_url = None
@@ -274,17 +264,50 @@ def scrape_public_notice_va() -> list:
                 source_url = (href if href.startswith("http")
                               else session_base + "/" + href.lstrip("/"))
 
-            address          = parse_address_from_notice(text_raw)
-            sale_date, sale_time = parse_sale_datetime(text_raw)
-            lender           = parse_lender(text_raw)
-            trustee          = parse_trustee(text_raw)
+            # ── Fetch the full notice detail page ─────────────────────────────
+            # The search results grid shows only a summary line — the auction
+            # date/time ("auction will be on June 11, 2026 at 11:00AM") lives
+            # inside the full notice body text on the detail page.
+            # Fetch it now so parse_sale_datetime() has the right input.
+            full_text = text_raw   # fallback: use grid summary if fetch fails
+            if source_url:
+                try:
+                    det = session.get(
+                        source_url,
+                        headers={**HEADERS, "Referer": default_url},
+                        timeout=15,
+                    )
+                    det_soup  = BeautifulSoup(det.text, "lxml")
+                    # PNV notice body is in a <div> with id/class containing
+                    # "noticeText", "noticeBody", or "noticeDetail".
+                    # Fall back to the full page text if none found.
+                    body_el = (
+                        det_soup.find(id=re.compile(r"notice.?(text|body|detail)", re.I)) or
+                        det_soup.find(class_=re.compile(r"notice.?(text|body|detail)", re.I)) or
+                        det_soup.find("div", class_=re.compile(r"content|main|article", re.I))
+                    )
+                    full_text = body_el.get_text(" ", strip=True) if body_el else det_soup.get_text(" ", strip=True)
+                    sleep(0.5)   # polite rate limit between detail fetches
+                except Exception as det_err:
+                    log.debug(f"  PNV: detail fetch failed for {source_url}: {det_err}")
 
-            # Identify which target county this notice belongs to
-            county_key = "fredericksburg"  # default
+            address          = parse_address_from_notice(full_text)
+            sale_date, sale_time = parse_sale_datetime(full_text)
+            lender           = parse_lender(full_text)
+            trustee          = parse_trustee(full_text)
+
+            # Identify which target county this notice belongs to.
+            # Since we search statewide, skip notices that don't mention any
+            # of our 12 target counties — they're from other parts of Virginia.
+            county_key = None
+            text_lower = full_text.lower()
             for c in TARGET_COUNTIES:
-                if c in text_raw.lower():
+                if c in text_lower:
                     county_key = c
                     break
+            if county_key is None:
+                log.debug(f"  PNV: skipping notice (no target county found): {text_raw[:80]!r}")
+                continue
 
             listings.append({
                 "id":               make_id(address, sale_date),
@@ -865,28 +888,51 @@ def scrape_column_us() -> list:
 
     try:
         with sync_playwright() as pw:
-            browser = pw.chromium.launch(headless=True)
-            page = browser.new_page(
+            # Launch with args that suppress headless detection
+            browser = pw.chromium.launch(
+                headless=True,
+                args=[
+                    "--disable-blink-features=AutomationControlled",
+                    "--no-sandbox",
+                ]
+            )
+            context = browser.new_context(
                 user_agent=(
                     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
                     "AppleWebKit/537.36 (KHTML, like Gecko) "
                     "Chrome/124.0.0.0 Safari/537.36"
-                )
+                ),
+                # Spoof navigator.webdriver = false
+                java_script_enabled=True,
             )
+            # Hide the webdriver flag that sites use to detect headless browsers
+            context.add_init_script(
+                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+            )
+            page = context.new_page()
 
             url = "https://fredericksburg.column.us/search?noticeType=Foreclosure+Sale"
             log.info(f"  Column.us: {url}")
-            page.goto(url, wait_until="networkidle", timeout=40_000)
 
-            # Wait for at least one notice card to appear
+            # Use "load" (not "networkidle") — Firebase's persistent WebSocket
+            # connection prevents networkidle from ever firing cleanly.
+            page.goto(url, wait_until="load", timeout=40_000)
+
+            # Give the Firebase/React app time to fetch and render cards
+            page.wait_for_timeout(8_000)
+
+            # Confirm notices loaded — look for the repeating newspaper header
             try:
-                page.wait_for_selector("text=Foreclosure Sale", timeout=15_000)
+                page.wait_for_function(
+                    "document.body.innerText.includes('FREDERICKSBURG FREE-LANCE STAR')",
+                    timeout=20_000
+                )
             except PWTimeout:
-                log.warning("  Column.us: timed out waiting for notices to render")
+                log.warning("  Column.us: page body never contained notice text after 20s")
                 browser.close()
                 return listings
 
-            # Click "Load more notices" until exhausted
+            # Click "Load more notices" until exhausted to get all pages
             while True:
                 try:
                     btn = page.query_selector('button:has-text("Load more")')
@@ -898,45 +944,112 @@ def scrape_column_us() -> list:
                 except Exception:
                     break
 
-            # ── Extract all Foreclosure Sale cards ────────────────────────────
-            # Each notice is a <section> or <article> (or div with data attrs)
-            # containing the notice type label and the full body text.
-            notice_sections = page.query_selector_all(
-                "[class*='notice'], [class*='card'], [class*='result'], article, section"
-            )
+            # ── Capture individual notice detail URLs from the DOM ────────────
+            # Each notice card on Column.us has a link to its canonical detail
+            # page (the URL surfaced by the "Copy link" button on fredericksburg.com).
+            # These links appear in DOM order, which matches the text-block order
+            # we derive below, so we can zip them together 1-to-1.
+            #
+            # Selector: any <a> whose href contains "/notice/" (not just "/notices"
+            # nav links) — Column.us detail pages follow the pattern:
+            #   https://fredericksburg.column.us/notice/<slug>
+            #   https://fredericksburg.column.us/notices/<id>
+            try:
+                notice_urls: list = page.evaluate("""
+                    () => {
+                        const seen  = new Set();
+                        const links = document.querySelectorAll('a[href]');
+                        const out   = [];
+                        for (const a of links) {
+                            const h = a.href || '';
+                            // Match /notice/<something> or /notices/<something>
+                            if (/\\/notice[s]?\\/[\\w-]+/i.test(h) && !seen.has(h)) {
+                                seen.add(h);
+                                out.push(h);
+                            }
+                        }
+                        return out;
+                    }
+                """)
+            except Exception as e:
+                log.debug(f"  Column.us: could not extract notice URLs from DOM: {e}")
+                notice_urls = []
 
-            for section in notice_sections:
-                try:
-                    text = section.inner_text(timeout=3000).strip()
-                except Exception:
-                    continue
+            log.info(f"  Column.us: {len(notice_urls)} individual notice URL(s) found")
 
-                if "Foreclosure Sale" not in text:
-                    continue
-                if not re.search(r"trustee.{0,10}sale", text, re.I):
+            # ── Extract notices from full body text ───────────────────────────
+            # CSS class names vary between browser/headless renders (Tailwind
+            # purging, React hydration timing). Splitting by the newspaper
+            # header line is resilient to any DOM structure changes.
+            body_text = page.inner_text("body")
+
+            # Each notice block starts with "FREDERICKSBURG FREE-LANCE STAR"
+            raw_blocks = re.split(r"FREDERICKSBURG FREE-LANCE STAR", body_text, flags=re.I)
+            # First element is the page chrome (search form etc.) — drop it
+            notice_blocks = raw_blocks[1:]
+            log.info(f"  Column.us: {len(notice_blocks)} notice blocks found")
+
+            kept = skipped_trust = skipped_addr = skipped_county = 0
+
+            # Pair each notice block with its individual detail URL.
+            # Both sequences are in DOM order, so zip works 1-to-1.
+            # If the counts differ (DOM query missed some), fall back to the
+            # search page URL for unmatched blocks.
+            from itertools import zip_longest
+            block_url_pairs = zip_longest(notice_blocks, notice_urls, fillvalue=None)
+
+            for block_text, notice_url in block_url_pairs:
+                if not block_text:
+                    continue   # extra URL with no matching text block — skip
+                text = block_text.strip()
+
+                # Column.us already filters to "Foreclosure Sale" notices, but
+                # the block may contain editorial text, ads, or other filler.
+                # Accept any block that mentions trustee, substitute trustee,
+                # or foreclosure sale — all are VA auction notice patterns.
+                if not re.search(
+                    r"trustee.{0,15}sale|substitute trustee|foreclosure sale",
+                    text, re.I
+                ):
+                    skipped_trust += 1
                     continue
 
                 # ── Address ────────────────────────────────────────────────
-                # Opening line pattern: "TRUSTEE'S SALE OF {address}"
+                # Primary: match a Virginia street address directly.
+                # Handles all observed notice formats:
+                #   "TRUSTEE'S SALE OF 256 MANCHESTER DR, RUTHER GLEN, VA 22546 In execution..."
+                #   "Trustee's Sale 9422 WILDWOOD KNL FARM LN, SPOTSYLVANIA, VA 22551 (Parcel..."
+                #   "TRUSTEE'S SALE OF 12219 WARD RD, KING GEORGE, VA 22485"
+                # Pattern: house-number + street text + comma + city + ", VA " + ZIP
                 addr_raw = None
-                addr_m = re.search(
-                    r"TRUSTEE[''`]?S\s+SALE\s+OF\s+([\w\d].*?)(?=\n\n|\nIn execution|\nDefault)",
-                    text, re.I | re.S
+                direct_m = re.search(
+                    r"(\d+\s+[A-Z0-9][^,\n]{4,60},\s*[A-Z][^,\n]{1,35},\s*VA\s+\d{5}(?:-\d{4})?)",
+                    text, re.I
                 )
-                if addr_m:
-                    addr_raw = re.sub(r"\s+", " ", addr_m.group(1)).strip()
+                if direct_m:
+                    addr_raw = re.sub(r"\s+", " ", direct_m.group(1)).strip()
 
-                # Also handle "NOTICE OF SUBSTITUTE TRUSTEE SALE\n{address}"
+                # Fallback A: "TRUSTEE'S SALE OF {address}" with flexible terminator
+                if not addr_raw:
+                    addr_m = re.search(
+                        r"TRUSTEE.{0,3}S\s+SALE\s+OF\s+([\w\d].*?)(?=\n\n|\n?In\s+execution|\nDefault|\nVirginia|\(Parcel)",
+                        text, re.I | re.S
+                    )
+                    if addr_m:
+                        addr_raw = re.sub(r"\s+", " ", addr_m.group(1)).strip()
+
+                # Fallback B: "SUBSTITUTE TRUSTEE SALE / NOTICE\n{address}"
                 if not addr_raw:
                     sub_m = re.search(
-                        r"NOTICE OF SUBSTITUTE TRUSTEE SALE\s+([\w\d].*?)(?=\n\n|\nBy virtue|\nIn execution)",
+                        r"(?:NOTICE OF )?SUBSTITUTE TRUSTEE.{0,10}SALE\s+([\w\d].*?)(?=\n\n|\n?In\s+execution|\nBy virtue|\nVirginia)",
                         text, re.I | re.S
                     )
                     if sub_m:
                         addr_raw = re.sub(r"\s+", " ", sub_m.group(1)).strip()
 
                 if not addr_raw:
-                    log.debug(f"  Column.us: could not parse address from card, skipping")
+                    log.info(f"  Column.us: no address found — snippet: {text[:120]!r}")
+                    skipped_addr += 1
                     continue
 
                 # Parse "Street, City, ST ZIP" from address line
@@ -956,22 +1069,31 @@ def scrape_column_us() -> list:
                 # Derive county; skip if outside our target area
                 county = city_to_county(city)
                 if county == "Unknown":
-                    # Try extracting county from the notice body directly
+                    # Try extracting county name from Circuit Court reference
                     county_m = re.search(
                         r"Circuit Court(?:\s+for)?\s+(?:the\s+)?(?:City of\s+)?(\w[\w\s]+?)"
                         r"(?:\s+County)?,\s+(?:Main|Courthouse|\d)",
                         text, re.I
                     )
                     if county_m:
-                        county = county_display(county_m.group(1).strip().lower())
+                        # Trim to first 2 words — county names are at most 2 words
+                        # (e.g. "King George"); lazy regex can over-capture trailing
+                        # text like "Spotsylvania County On June 1"
+                        raw_county = " ".join(county_m.group(1).strip().split()[:2])
+                        county = county_display(raw_county.lower())
                     else:
-                        log.debug(f"  Column.us: unknown county for '{city}', skipping")
+                        log.info(f"  Column.us: unknown county for city='{city}' addr='{addr_raw[:60]}'")
+                        skipped_county += 1
                         continue
 
                 if county.lower().replace(" city", "").replace(" county", "") not in [
                     c.lower() for c in TARGET_COUNTIES
                 ]:
+                    log.info(f"  Column.us: county '{county}' not in target list — skipping")
+                    skipped_county += 1
                     continue
+
+                kept += 1
 
                 # ── Sale date / time (standard VA notice phrase) ───────────
                 sale_date, sale_time = parse_sale_datetime(text)
@@ -1001,9 +1123,18 @@ def scrape_column_us() -> list:
                     "lender":           lender,
                     "trustee":          trustee,
                     "source":           "column_us",
-                    "source_url":       url,
+                    # Individual notice detail page URL (the link behind "Copy link").
+                    # Falls back to the search page URL if the DOM query didn't
+                    # return a matching link for this block.
+                    "source_url":       notice_url or url,
                 })
 
+            log.info(
+                f"  Column.us: {kept} kept | "
+                f"{skipped_trust} dropped (not trustee/foreclosure) | "
+                f"{skipped_addr} dropped (no address) | "
+                f"{skipped_county} dropped (county outside target)"
+            )
             browser.close()
 
     except Exception as e:
@@ -1167,32 +1298,61 @@ def parse_address_from_notice(text: str) -> str:
 def parse_sale_datetime(text: str):
     """Extract sale date and time from Virginia trustee sale notice text.
 
-    Primary pattern matches the standard PNV notice phrase:
-      "...on June 22, 2026, at 9:00 AM"
+    Three patterns tried in order, most-specific first:
 
-    Fallback scans the full notice body for any date/time pattern independently.
+    1. Auction keyword pattern (PNV):
+         "auction will be on June 11, 2026 at 11:00AM"
+         "auction on May 27, 2026, at 1:00 PM"
+
+    2. General "on [Date], at [Time]" (PNV / Column.us standard VA phrase):
+         "...on June 22, 2026, at 9:00 AM"
+
+    3. Fallback: scan entire body for any date + time independently.
     """
     sale_date = None
     sale_time = None
 
-    # Primary: "on [Month Day, Year], at [Time]" — standard VA trustee sale format
-    primary_m = re.search(
-        r'\bon\s+(\w+\s+\d{1,2},?\s*\d{4}),?\s+at\s+(\d{1,2}:\d{2}\s*(?:AM|PM|a\.m\.|p\.m\.))',
-        text, re.IGNORECASE
-    )
-    if primary_m:
-        raw_date = primary_m.group(1).strip()
-        raw_time = (primary_m.group(2).strip().upper()
-                    .replace("A.M.", "AM").replace("P.M.", "PM"))
-        for fmt in ("%B %d, %Y", "%B %d %Y"):
+    TIME_PAT  = r'(\d{1,2}:\d{2}\s*(?:AM|PM|a\.m\.|p\.m\.))'
+    DATE_PAT  = r'(\w+\s+\d{1,2},?\s*\d{4})'
+    DATE_FMTS = ("%B %d, %Y", "%B %d %Y")
+
+    def _parse_date(raw: str):
+        raw = raw.strip()
+        for fmt in DATE_FMTS:
             try:
-                sale_date = datetime.strptime(raw_date, fmt).date().isoformat()
-                break
+                return datetime.strptime(raw, fmt).date().isoformat()
             except ValueError:
                 continue
-        return sale_date, raw_time
+        return None
 
-    # Fallback: scan for any standalone date and time in the notice body
+    def _clean_time(raw: str) -> str:
+        return (raw.strip().upper()
+                .replace("A.M.", "AM").replace("P.M.", "PM")
+                .replace(" ", ""))   # "11:00 AM" → "11:00AM" for consistency
+
+    # ── Pattern 1: "auction [will be] on [Date] at [Time]" ───────────────────
+    auction_m = re.search(
+        r'auction(?:\s+will\s+be)?\s+on\s+' + DATE_PAT + r',?\s+at\s+' + TIME_PAT,
+        text, re.IGNORECASE
+    )
+    if auction_m:
+        d = _parse_date(auction_m.group(1))
+        t = _clean_time(auction_m.group(2))
+        if d:
+            return d, t
+
+    # ── Pattern 2: "on [Date], at [Time]" — general VA trustee sale phrase ───
+    general_m = re.search(
+        r'\bon\s+' + DATE_PAT + r',?\s+at\s+' + TIME_PAT,
+        text, re.IGNORECASE
+    )
+    if general_m:
+        d = _parse_date(general_m.group(1))
+        t = _clean_time(general_m.group(2))
+        if d:
+            return d, t
+
+    # ── Pattern 3: fallback — scan for any date and time independently ────────
     date_match = re.search(r"(\w+ \d{1,2},?\s*\d{4}|\d{1,2}/\d{1,2}/\d{4})", text)
     time_match = re.search(r"(\d{1,2}:\d{2}\s*(?:AM|PM|a\.m\.|p\.m\.))", text, re.IGNORECASE)
 
@@ -1206,8 +1366,7 @@ def parse_sale_datetime(text: str):
                 continue
 
     if time_match:
-        sale_time = (time_match.group(1).upper()
-                     .replace("A.M.", "AM").replace("P.M.", "PM"))
+        sale_time = _clean_time(time_match.group(1))
 
     return sale_date, sale_time
 
@@ -1320,6 +1479,8 @@ def city_to_county(city: str) -> str:
         # Spotsylvania
         "spotsylvania":      "Spotsylvania",
         "chancellor":        "Spotsylvania",
+        "highland park":     "Spotsylvania",
+        "lake wilderness":   "Spotsylvania",
         # Caroline
         "bowling green":     "Caroline",
         "milford":           "Caroline",
@@ -1549,15 +1710,443 @@ def enrich_with_redfin(listings: list) -> list:
 
 
 # ---------------------------------------------------------------------------
+# Owner enrichment — Virginia county GIS parcel APIs
+# ---------------------------------------------------------------------------
+# Owner Name and Mailing Address come from each county's public ArcGIS parcel
+# REST service (all public record in Virginia).
+#
+# Estimated_Phone and Estimated_Email cannot be sourced from GIS data — they
+# require a paid skip-trace service (ATTOM, White Pages Pro, etc.).  Those
+# columns are left blank here and can be filled manually.
+# ---------------------------------------------------------------------------
+
+# ArcGIS parcel feature service endpoints by county.
+# Each entry has:
+#   url            – ArcGIS FeatureServer layer /query endpoint
+#   addr_field     – the attribute name used for address matching
+#   owner_variants – candidate field names for owner (tried in order)
+#   mail_variants  – dict of candidate field names for mailing address parts
+GIS_REGISTRY: dict[str, dict] = {
+    "stafford": {
+        "url": "https://gis.staffordcountyva.gov/arcgis/rest/services/Public/Parcels/FeatureServer/0/query",
+        "addr_field": "SITE_ADDR",
+        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME", "GRANTEE"],
+        "mail_variants": {
+            "line1": ["MAIL_ADDR1", "MAILING_ADDRESS", "MAILADDR", "MAILADDR1"],
+            "city":  ["MAIL_CITY",  "MAILCITY",  "MAIL_CTY"],
+            "state": ["MAIL_STATE", "MAILSTATE", "MAIL_ST"],
+            "zip":   ["MAIL_ZIP",   "MAILZIP",   "MAIL_ZIP5"],
+        },
+    },
+    "spotsylvania": {
+        "url": "https://gis.spotsylvania.va.us/arcgis/rest/services/Parcels/FeatureServer/0/query",
+        "addr_field": "SITE_ADDRESS",
+        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME"],
+        "mail_variants": {
+            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
+            "city":  ["MAIL_CITY",  "MAILCITY"],
+            "state": ["MAIL_STATE", "MAILSTATE"],
+            "zip":   ["MAIL_ZIP",   "MAILZIP"],
+        },
+    },
+    "fredericksburg": {
+        "url": "https://gis.fredericksburgva.gov/arcgis/rest/services/Property/FeatureServer/0/query",
+        "addr_field": "ADDRESS",
+        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME", "OWN_NAME"],
+        "mail_variants": {
+            "line1": ["MAIL_ADDR1", "MAILING_ADDRESS", "MAILADDR"],
+            "city":  ["MAIL_CITY",  "MAILCITY"],
+            "state": ["MAIL_STATE", "MAILSTATE"],
+            "zip":   ["MAIL_ZIP",   "MAILZIP"],
+        },
+    },
+    "caroline": {
+        "url": "https://gis.carolinecounty.va.gov/arcgis/rest/services/Parcels/FeatureServer/0/query",
+        "addr_field": "SITE_ADDR",
+        "owner_variants": ["OWNER", "OWNER_NAME", "OWNNAME"],
+        "mail_variants": {
+            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
+            "city":  ["MAIL_CITY",  "MAILCITY"],
+            "state": ["MAIL_STATE", "MAILSTATE"],
+            "zip":   ["MAIL_ZIP",   "MAILZIP"],
+        },
+    },
+    "fauquier": {
+        "url": "https://gis.fauquiercounty.gov/arcgis/rest/services/Property/Parcels/FeatureServer/0/query",
+        "addr_field": "SITE_ADDRESS",
+        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME"],
+        "mail_variants": {
+            "line1": ["MAIL_ADDR1", "MAILING_ADDRESS", "MAILADDR"],
+            "city":  ["MAIL_CITY",  "MAILCITY"],
+            "state": ["MAIL_STATE", "MAILSTATE"],
+            "zip":   ["MAIL_ZIP",   "MAILZIP"],
+        },
+    },
+    "culpeper": {
+        "url": "https://gis.culpepercountyva.gov/arcgis/rest/services/Parcels/FeatureServer/0/query",
+        "addr_field": "SITE_ADDR",
+        "owner_variants": ["OWNER", "OWNER_NAME", "OWNNAME"],
+        "mail_variants": {
+            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
+            "city":  ["MAIL_CITY",  "MAILCITY"],
+            "state": ["MAIL_STATE", "MAILSTATE"],
+            "zip":   ["MAIL_ZIP",   "MAILZIP"],
+        },
+    },
+    "king george": {
+        "url": "https://gis.kinggeorgecountyva.gov/arcgis/rest/services/Parcels/FeatureServer/0/query",
+        "addr_field": "SITE_ADDR",
+        "owner_variants": ["OWNER", "OWNER_NAME", "OWNNAME"],
+        "mail_variants": {
+            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
+            "city":  ["MAIL_CITY",  "MAILCITY"],
+            "state": ["MAIL_STATE", "MAILSTATE"],
+            "zip":   ["MAIL_ZIP",   "MAILZIP"],
+        },
+    },
+    "hanover": {
+        "url": "https://gis.hanovercounty.gov/arcgis/rest/services/Parcels/FeatureServer/0/query",
+        "addr_field": "SITE_ADDRESS",
+        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME"],
+        "mail_variants": {
+            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
+            "city":  ["MAIL_CITY",  "MAILCITY"],
+            "state": ["MAIL_STATE", "MAILSTATE"],
+            "zip":   ["MAIL_ZIP",   "MAILZIP"],
+        },
+    },
+    "richmond": {
+        "url": "https://gis.richmondgov.com/arcgis/rest/services/Parcels/MapServer/0/query",
+        "addr_field": "STREET_ADDRESS",
+        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME", "OWNER1"],
+        "mail_variants": {
+            "line1": ["MAIL_ADDR1", "MAILING_ADDR", "MAILADDR"],
+            "city":  ["MAIL_CITY",  "MAILCITY"],
+            "state": ["MAIL_STATE", "MAILSTATE"],
+            "zip":   ["MAIL_ZIP",   "MAILZIP"],
+        },
+    },
+    "chesterfield": {
+        "url": "https://gis.chesterfield.gov/arcgis/rest/services/Parcels/FeatureServer/0/query",
+        "addr_field": "SITE_ADDRESS",
+        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME"],
+        "mail_variants": {
+            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
+            "city":  ["MAIL_CITY",  "MAILCITY"],
+            "state": ["MAIL_STATE", "MAILSTATE"],
+            "zip":   ["MAIL_ZIP",   "MAILZIP"],
+        },
+    },
+    "henrico": {
+        "url": "https://gis.henrico.us/arcgis/rest/services/Property/Parcels/FeatureServer/0/query",
+        "addr_field": "SITE_ADDR",
+        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME"],
+        "mail_variants": {
+            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
+            "city":  ["MAIL_CITY",  "MAILCITY"],
+            "state": ["MAIL_STATE", "MAILSTATE"],
+            "zip":   ["MAIL_ZIP",   "MAILZIP"],
+        },
+    },
+    "louisa": {
+        "url": "https://gis.louisacounty.org/arcgis/rest/services/Parcels/FeatureServer/0/query",
+        "addr_field": "SITE_ADDR",
+        "owner_variants": ["OWNER", "OWNER_NAME", "OWNNAME"],
+        "mail_variants": {
+            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
+            "city":  ["MAIL_CITY",  "MAILCITY"],
+            "state": ["MAIL_STATE", "MAILSTATE"],
+            "zip":   ["MAIL_ZIP",   "MAILZIP"],
+        },
+    },
+}
+
+
+def _pick_field(attrs: dict, candidates: list) -> str | None:
+    """Return the first candidate key that exists and has a non-empty value."""
+    for name in candidates:
+        val = attrs.get(name) or attrs.get(name.lower()) or attrs.get(name.upper())
+        if val and str(val).strip() not in ("", "null", "None", "N/A"):
+            return str(val).strip()
+    return None
+
+
+def gis_lookup_owner(address: str, county_key: str) -> dict:
+    """
+    Query a Virginia county ArcGIS parcel REST API to find owner name and
+    mailing address for a given street address.
+
+    Returns a dict with keys: owner_name, owner_mailing_address,
+    owner_mailing_differs.  Empty dict on failure or no match.
+
+    The WHERE clause uses the first meaningful token(s) of the street address
+    (house number + first word of street name) to form a LIKE query, which is
+    more resilient to minor formatting differences than an exact match.
+    """
+    cfg = GIS_REGISTRY.get(county_key.lower().replace(" city", "").replace(" county", "").strip())
+    if not cfg:
+        return {}
+
+    # Build a compact address fragment: house number + first word of street name
+    # e.g. "1234 Main Street" → "1234 Main"
+    tokens = address.strip().split()
+    if len(tokens) >= 2:
+        fragment = f"{tokens[0]} {tokens[1]}"
+    elif tokens:
+        fragment = tokens[0]
+    else:
+        return {}
+
+    # Escape single quotes for SQL safety
+    fragment_sql = fragment.replace("'", "''")
+    where = f"UPPER({cfg['addr_field']}) LIKE '%{fragment_sql.upper()}%'"
+
+    params = {
+        "where":          where,
+        "outFields":      "*",
+        "returnGeometry": "false",
+        "resultRecordCount": 3,   # grab top 3 to pick best match
+        "f":              "json",
+    }
+
+    try:
+        resp = requests.get(
+            cfg["url"],
+            params=params,
+            headers=HEADERS,
+            timeout=12,
+        )
+        if resp.status_code != 200:
+            log.debug(f"    GIS {county_key}: HTTP {resp.status_code}")
+            return {}
+
+        data = resp.json()
+        features = data.get("features") or []
+        if not features:
+            log.debug(f"    GIS {county_key}: no parcels found for '{fragment}'")
+            return {}
+
+        # Pick the feature whose address field best matches (case-insensitive prefix)
+        best = None
+        for feat in features:
+            attrs = feat.get("attributes") or {}
+            feat_addr = str(
+                attrs.get(cfg["addr_field"]) or
+                attrs.get(cfg["addr_field"].lower()) or ""
+            ).strip()
+            if tokens[0] in feat_addr.upper():  # house number must match
+                best = attrs
+                break
+        if best is None:
+            best = features[0].get("attributes") or {}
+
+        mv = cfg["mail_variants"]
+        owner_raw  = _pick_field(best, cfg["owner_variants"])
+        mail_line1 = _pick_field(best, mv["line1"])
+        mail_city  = _pick_field(best, mv["city"])
+        mail_state = _pick_field(best, mv["state"])
+        mail_zip   = _pick_field(best, mv["zip"])
+
+        if not owner_raw:
+            return {}
+
+        # GIS returns field values in ALL-CAPS — normalize to readable case.
+        # State abbreviation stays uppercase (e.g. "VA"); everything else title-case.
+        if mail_line1: mail_line1 = mail_line1.title()
+        if mail_city:  mail_city  = mail_city.title()
+        if mail_state: mail_state = mail_state.upper()
+        if mail_zip:   mail_zip   = mail_zip.strip()
+
+        # Build a single mailing address string
+        mail_parts = [mail_line1]
+        if mail_city and mail_state:
+            mail_parts.append(f"{mail_city}, {mail_state} {mail_zip or ''}".strip())
+        elif mail_city:
+            mail_parts.append(mail_city)
+        mailing_address = ", ".join(p for p in mail_parts if p)
+
+        # Determine if mailing address differs from property address
+        # Compare first token (house number) of each
+        prop_num = tokens[0] if tokens else ""
+        mail_num = (mail_line1 or "").strip().split()[0] if mail_line1 else ""
+        differs  = "Yes" if (mail_num and mail_num != prop_num) else "No"
+        if not mailing_address:
+            differs = ""
+
+        result = {
+            "owner_name":            owner_raw.title(),
+            "owner_mailing_address": mailing_address,
+            "owner_mailing_differs": differs,
+        }
+        log.info(f"    GIS {county_key}: owner='{owner_raw}' mail='{mailing_address}'")
+        return result
+
+    except requests.exceptions.ConnectionError:
+        log.debug(f"    GIS {county_key}: connection error (endpoint may not exist)")
+        return {}
+    except Exception as e:
+        log.debug(f"    GIS {county_key}: error — {e}")
+        return {}
+
+
+def enrich_with_owner_data(listings: list) -> list:
+    """
+    Enrich listings with owner name and mailing address from county GIS APIs.
+
+    Skips listings that already have owner_name populated (e.g., Fannie Mae /
+    Freddie Mac) or that have no address.
+
+    Phone and email are NOT available from GIS data and require a paid
+    skip-trace service — those columns are left as None.
+
+    Rate-limited to ~1 req/s to be polite to county servers.
+    """
+    log.info("--- Owner data enrichment (county GIS) ---")
+    enriched_count = 0
+    skipped_count  = 0
+
+    for listing in listings:
+        # Skip if already has owner data (HomePath/HomeSteps sets it directly)
+        if listing.get("owner_name"):
+            skipped_count += 1
+            continue
+
+        address = listing.get("address", "").strip()
+        county  = listing.get("county", "").strip()
+        if not address or not county:
+            continue
+
+        # Normalize county key for GIS registry lookup
+        county_key = (
+            county.lower()
+            .replace(" city", "")
+            .replace(" county", "")
+            .strip()
+        )
+
+        log.info(f"  Owner lookup: {address} ({county})")
+        owner_data = gis_lookup_owner(address, county_key)
+
+        if owner_data:
+            listing["owner_name"]            = owner_data.get("owner_name")
+            listing["owner_mailing_address"] = owner_data.get("owner_mailing_address")
+            listing["owner_mailing_differs"] = owner_data.get("owner_mailing_differs")
+            # Phone/email require skip-trace — left blank
+            listing.setdefault("owner_phone", None)
+            listing.setdefault("owner_email", None)
+            enriched_count += 1
+        else:
+            # Ensure fields exist even when lookup fails
+            listing.setdefault("owner_name",            None)
+            listing.setdefault("owner_mailing_address", None)
+            listing.setdefault("owner_mailing_differs", None)
+            listing.setdefault("owner_phone",           None)
+            listing.setdefault("owner_email",           None)
+
+        sleep(1.0)   # polite rate limit — county GIS servers are not high-capacity
+
+    log.info(
+        f"  Owner enrichment complete: {enriched_count} enriched, "
+        f"{skipped_count} skipped (already set)"
+    )
+    return listings
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
+def normalize_address_key(address: str) -> str:
+    """
+    Produce a normalized address string for cross-source duplicate detection.
+
+    PNV and Column.us both publish the same VA legal notices, so the same
+    property can arrive with slightly different formatting:
+      "123 Main St"  vs  "123 MAIN STREET"
+
+    Strategy: uppercase, expand the most common street-type abbreviations to
+    their full word, strip punctuation, collapse whitespace.
+    """
+    if not address:
+        return ""
+    s = address.upper().strip()
+
+    # Expand abbreviated street types (whole-word only, avoid partial matches)
+    abbrev_map = [
+        (r'\bST\b',   "STREET"),
+        (r'\bAVE\b',  "AVENUE"),
+        (r'\bRD\b',   "ROAD"),
+        (r'\bDR\b',   "DRIVE"),
+        (r'\bLN\b',   "LANE"),
+        (r'\bCT\b',   "COURT"),
+        (r'\bBLVD\b', "BOULEVARD"),
+        (r'\bPL\b',   "PLACE"),
+        (r'\bTER\b',  "TERRACE"),
+        (r'\bCIR\b',  "CIRCLE"),
+        (r'\bPKWY\b', "PARKWAY"),
+        (r'\bHWY\b',  "HIGHWAY"),
+        (r'\bFWY\b',  "FREEWAY"),
+    ]
+    for pattern, replacement in abbrev_map:
+        s = re.sub(pattern, replacement, s)
+
+    # Remove all punctuation, collapse spaces
+    s = re.sub(r"[^\w\s]", "", s)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+
+# Source priority for cross-source dedup: prefer the more detail-rich source
+_SOURCE_PRIORITY = {
+    "publicnoticevirginia": 0,
+    "column_us":            1,
+    "auction.com":          2,
+    "hud_homes":            3,
+    "homepath":             4,
+    "homesteps":            5,
+}
+
+
 def deduplicate(listings: list) -> list:
-    """Remove duplicate listings by ID, keeping the most recently sourced."""
-    seen = {}
+    """
+    Remove duplicate listings in two passes:
+
+    Pass 1 — ID hash dedup (address + sale_date MD5).
+              Catches exact same address + date from the same source.
+
+    Pass 2 — Normalized-address dedup.
+              Catches same property with slightly different address strings
+              across sources (e.g. PNV "123 Main St" vs Column.us "123 MAIN STREET").
+              When a collision is found the listing from the higher-priority
+              source wins (publicnoticevirginia > column_us > auction.com > …).
+    """
+    # Pass 1: hash-based dedup
+    seen: dict = {}
     for listing in listings:
         seen[listing["id"]] = listing
-    return list(seen.values())
+    pass1 = list(seen.values())
+
+    # Pass 2: normalized-address + sale_date dedup
+    addr_seen: dict = {}   # key → winning listing
+    for listing in pass1:
+        addr_key  = normalize_address_key(listing.get("address", ""))
+        sale_date = listing.get("sale_date") or ""
+        key = (addr_key, sale_date)
+
+        if key not in addr_seen:
+            addr_seen[key] = listing
+        else:
+            # Keep whichever source has higher priority (lower number = better)
+            existing_prio = _SOURCE_PRIORITY.get(addr_seen[key].get("source", ""), 99)
+            new_prio      = _SOURCE_PRIORITY.get(listing.get("source", ""), 99)
+            if new_prio < existing_prio:
+                addr_seen[key] = listing
+
+    result = list(addr_seen.values())
+    dropped = len(pass1) - len(result)
+    if dropped:
+        log.info(f"  Cross-source dedup removed {dropped} duplicate address(es)")
+    return result
 
 
 def run():
@@ -1589,6 +2178,10 @@ def run():
     # Property detail enrichment (beds/baths/sqft/AVM) is a Phase 2 item.
     # Revisit with county GIS portals or ATTOM Data API.
     # all_listings = enrich_with_redfin(all_listings)
+
+    # Owner enrichment — queries each county's public ArcGIS parcel REST API
+    # to populate owner_name and owner_mailing_address.
+    all_listings = enrich_with_owner_data(all_listings)
 
     save(all_listings)
     log.info("Done.")

@@ -1,0 +1,46 @@
+Daily Foreclosure Update — Scheduled Run Status
+=================================================
+Run date:   2026-05-01 (Friday)
+Status:     FAILED — bash workspace mount error
+Run mode:   Automated (Joe not present)
+
+What happened
+-------------
+The scheduled task tried to execute:
+  bash /sessions/wizardly-cool-galileo/mnt/Foreclosures/scripts/update.sh
+
+The Cowork bash sandbox returned the same persistent mount error
+that has blocked every prior automated run:
+
+  RPC error: failed to mount /mnt/.virtiofs-root/shared/Users/jarvis/
+  Documents/Claude/Foreclosures as Foreclosures:
+  source path is not accessible: ... operation not permitted;
+  create: ensure user: user wizardly-cool-galileo already exists
+  unexpectedly: uid=1007 gid=1007
+
+Because of the mount failure, none of the steps ran:
+  - scraper.py was NOT executed
+  - sheets_sync.py was NOT executed
+  - data/foreclosures.json was NOT updated
+  - nothing was committed or pushed to GitHub
+  - the GitHub Pages dashboard still shows yesterday's data
+
+What to do
+----------
+Run the update manually in your Mac Terminal:
+
+  cd ~/Documents/Claude/Foreclosures
+  bash scripts/update.sh
+
+That will run the scraper, sync to the Google Sheet (if creds are
+configured), and push data/foreclosures.json so the dashboard updates.
+
+Note for future scheduled runs
+------------------------------
+Until the Cowork bash sandbox mount issue is resolved, automated
+daily updates will keep failing. Options:
+  1. Run scripts/update.sh manually each day in Terminal.
+  2. Move the schedule to a local cron/launchd job on your Mac
+     that runs scripts/update.sh directly (no Cowork sandbox).
+  3. Try restarting Cowork / re-selecting the Foreclosures folder
+     and see if the mount works on a fresh session.

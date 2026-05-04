@@ -45,17 +45,38 @@ DATA_FILE    = os.path.join(PROJECT_ROOT, "data", "foreclosures.json")
 CREDS_FILE   = os.path.join(PROJECT_ROOT, "credentials", "service-account.json")
 
 # Sheet column order (must match the actual header row in the spreadsheet)
-# Sale_Date and Sale_Time are appended at the end (Z, AA) to preserve existing column positions.
+# The header is rewritten on every sync run, so changing this list
+# automatically re-orders the spreadsheet on the next run.
 COLUMNS = [
-    "Address", "ZIP", "Property_Type", "Status", "Listing_Price",
-    "Beds_Baths_Sqft", "Year_Built", "Lot_Size", "Last_Sold_Date",
-    "Last_Sold_Price", "Current_Est_Value", "Rough_Equity_Est",
-    "Est_Profit_Potential", "Years_Since_Last_Sale", "Is_Auction",
-    "Investment_Priority", "Owner_Name", "Owner_Mailing_Address",
-    "Owner_Mailing_Differs_From_Property", "Estimated_Phone",
-    "Estimated_Email", "Listing_URL", "Notes", "Date_Checked", "City",
-    "F_Sale_Date", "F_Sale_Time",  # columns Z, AA — renamed (was Sale_Date/Sale_Time)
-    "State", "County",             # columns AB, AC
+    "Address",                              # A  — property street address
+    "County",                               # B  — moved to front for quick scanning
+    "F_Sale_Date",                          # C  — foreclosure sale date (most time-critical)
+    "F_Sale_Time",                          # D  — foreclosure sale time
+    "Status",                               # E
+    "Investment_Priority",                  # F
+    "Listing_Price",                        # G
+    "Current_Est_Value",                    # H
+    "Rough_Equity_Est",                     # I
+    "Est_Profit_Potential",                 # J
+    "Beds_Baths_Sqft",                      # K
+    "Year_Built",                           # L
+    "Lot_Size",                             # M
+    "Last_Sold_Date",                       # N
+    "Last_Sold_Price",                      # O
+    "Years_Since_Last_Sale",                # P
+    "City",                                 # Q
+    "ZIP",                                  # R
+    "State",                                # S
+    "Property_Type",                        # T
+    "Is_Auction",                           # U
+    "Owner_Name",                           # V
+    "Owner_Mailing_Address",                # W
+    "Owner_Mailing_Differs_From_Property",  # X
+    "Estimated_Phone",                      # Y
+    "Estimated_Email",                      # Z
+    "Listing_URL",                          # AA
+    "Notes",                                # AB
+    "Date_Checked",                         # AC
 ]
 
 
@@ -175,36 +196,36 @@ def listing_to_row(listing: dict) -> list:
     notes = " | ".join(note_parts)
 
     return [
-        listing.get("address")  or "",           # A  Address
-        listing.get("zip")      or "",            # B  ZIP
+        listing.get("address")  or "",            # A  Address
+        listing.get("county")   or "",            # B  County
+        listing.get("sale_date")  or "",          # C  F_Sale_Date
+        listing.get("sale_time")  or "",          # D  F_Sale_Time
+        status,                                   # E  Status
+        priority,                                 # F  Investment_Priority
+        price_str,                                # G  Listing_Price
+        est_value_str,                            # H  Current_Est_Value
+        rough_equity,                             # I  Rough_Equity_Est
+        est_profit_pct,                           # J  Est_Profit_Potential
+        beds_baths_sqft,                          # K  Beds_Baths_Sqft
+        str(year_built) if year_built else "",    # L  Year_Built
+        lot_size,                                 # M  Lot_Size
+        last_sold_date,                           # N  Last_Sold_Date
+        last_sold_price,                          # O  Last_Sold_Price
+        years_since_sale,                         # P  Years_Since_Last_Sale
+        listing.get("city") or "",                # Q  City
+        listing.get("zip")  or "",                # R  ZIP
+        "VA",                                     # S  State
         "SFR" if listing.get("property_type") == "single-family"
-             else (listing.get("property_type") or "SFR"),  # C  Property_Type
-        status,                                   # D  Status
-        price_str,                                # E  Listing_Price
-        beds_baths_sqft,                          # F  Beds_Baths_Sqft
-        str(year_built) if year_built else "",    # G  Year_Built
-        lot_size,                                 # H  Lot_Size
-        last_sold_date,                           # I  Last_Sold_Date
-        last_sold_price,                          # J  Last_Sold_Price
-        est_value_str,                            # K  Current_Est_Value
-        rough_equity,                             # L  Rough_Equity_Est
-        est_profit_pct,                           # M  Est_Profit_Potential
-        years_since_sale,                         # N  Years_Since_Last_Sale
-        "Yes" if stage == "auction" else "No",    # O  Is_Auction
-        priority,                                 # P  Investment_Priority
-        listing.get("owner_name") or "",          # Q  Owner_Name
-        listing.get("owner_mailing_address") or "",  # R  Owner_Mailing_Address
-        listing.get("owner_mailing_differs") or "",  # S  Owner_Mailing_Differs_From_Property
-        listing.get("owner_phone") or "",         # T  Estimated_Phone
-        listing.get("owner_email") or "",         # U  Estimated_Email
-        listing_url,                              # V  Listing_URL
-        notes,                                    # W  Notes
-        date.today().isoformat(),                 # X  Date_Checked
-        listing.get("city") or "",                # Y  City
-        listing.get("sale_date")  or "",          # Z  F_Sale_Date
-        listing.get("sale_time")  or "",          # AA F_Sale_Time
-        "VA",                                     # AB State
-        listing.get("county")     or "",          # AC County
+             else (listing.get("property_type") or "SFR"),  # T  Property_Type
+        "Yes" if stage == "auction" else "No",    # U  Is_Auction
+        listing.get("owner_name") or "",          # V  Owner_Name
+        listing.get("owner_mailing_address") or "",  # W  Owner_Mailing_Address
+        listing.get("owner_mailing_differs") or "",  # X  Owner_Mailing_Differs_From_Property
+        listing.get("owner_phone") or "",         # Y  Estimated_Phone
+        listing.get("owner_email") or "",         # Z  Estimated_Email
+        listing_url,                              # AA Listing_URL
+        notes,                                    # AB Notes
+        date.today().isoformat(),                 # AC Date_Checked
     ]
 
 
@@ -256,52 +277,40 @@ def run() -> None:
         log.error(f"Could not read sheet: {e}")
         return
 
-    # Find the Address column index (0-based)
+    # ── Always write the canonical header row ────────────────────────────────
+    # A single sheet.update() call writes all 29 headers at once and
+    # auto-expands the grid beyond column Z if needed — no add_cols gymnastics.
+    # This is idempotent: if headers are already correct it just re-confirms them.
+    try:
+        sheet.update([COLUMNS], "A1", value_input_option="RAW")
+        log.info(f"  Header row confirmed ({len(COLUMNS)} columns)")
+    except gspread.exceptions.APIError as e:
+        log.error(f"  Could not write header row: {e}")
+        return
+
+    # Address is always column A (index 0)
+    addr_col = 0
+
+    # Collect existing addresses from the snapshot we already read
     if not all_values:
-        log.warning("Sheet appears empty — writing header row first")
-        sheet.append_row(COLUMNS)
         existing_addresses = set()
     else:
-        # Header row → find Address column
-        headers = [h.strip() for h in all_values[HEADER_ROW - 1]]
-
-        # ── Ensure any missing columns are appended to the header row ──────────
-        missing_cols = [col for col in COLUMNS if col not in headers]
-        if missing_cols:
-            log.info(f"  Adding {len(missing_cols)} missing header(s): {missing_cols}")
-            start_col = len(headers) + 1   # 1-based column index for first new header
-            # Expand the sheet grid before writing beyond current column count
-            sheet.add_cols(len(missing_cols))
-            log.info(f"  Expanded sheet to {len(headers) + len(missing_cols)} columns")
-            for i, col_name in enumerate(missing_cols):
-                sheet.update_cell(HEADER_ROW, start_col + i, col_name)
-                log.info(f"    → wrote '{col_name}' to column {start_col + i}")
-            # Re-read headers so addr_col lookup is accurate
-            headers = [h.strip() for h in sheet.row_values(HEADER_ROW)]
-
-        try:
-            addr_col = headers.index("Address")
-        except ValueError:
-            addr_col = 0   # fallback: first column
-        # Collect all existing addresses (lower-cased for comparison)
         existing_addresses = {
             row[addr_col].strip().lower()
-            for row in all_values[HEADER_ROW:]   # skip header
-            if row and row[addr_col].strip()
+            for row in all_values[HEADER_ROW:]   # skip header row
+            if row and len(row) > addr_col and row[addr_col].strip()
         }
 
     log.info(f"  {len(existing_addresses)} addresses already in sheet")
 
-    # Build address → row-index map for enrichment updates (1-based, skip header)
+    # Build address → sheet-row map for enrichment updates (1-based row numbers)
     addr_to_row = {}
-    if all_values:
-        for i, row in enumerate(all_values[HEADER_ROW:], start=HEADER_ROW + 1):
-            if row and len(row) > addr_col and row[addr_col].strip():
-                addr_to_row[row[addr_col].strip().lower()] = i
+    for i, row in enumerate(all_values[HEADER_ROW:], start=HEADER_ROW + 1):
+        if row and len(row) > addr_col and row[addr_col].strip():
+            addr_to_row[row[addr_col].strip().lower()] = i
 
-    # Build header → column-index map (1-based)
-    headers = [h.strip() for h in (all_values[HEADER_ROW - 1] if all_values else [])]
-    col_idx = {h: i + 1 for i, h in enumerate(headers)}
+    # Column index map derived from COLUMNS (authoritative — matches what we just wrote)
+    col_idx = {h: i + 1 for i, h in enumerate(COLUMNS)}
 
     # Columns we will backfill if currently blank (never overwrite existing data)
     BACKFILL_COLS = [
@@ -310,8 +319,15 @@ def run() -> None:
         ("Owner_Mailing_Address",               "owner_mailing_address"),
         ("Owner_Mailing_Differs_From_Property", "owner_mailing_differs"),
         ("Estimated_Phone",                     "owner_phone"),
+        ("Estimated_Email",                     "owner_email"),
         ("City",                                "city"),
+        ("State",                               None),   # always "VA" — derived in listing_to_row
         ("County",                              "county"),
+        # Sale date/time come from the full PNV notice body — may be missing
+        # on first scrape if the detail page wasn't fetched yet.  Backfill
+        # once they're found on a subsequent run.
+        ("F_Sale_Date",                         "sale_date"),
+        ("F_Sale_Time",                         "sale_time"),
     ]
 
     # Columns we ALWAYS overwrite (data quality fixes — URL format changed)
@@ -319,29 +335,53 @@ def run() -> None:
         "Listing_URL",
     ]
 
-    # ── 5. Back-fill enrichment on existing rows ──────────────────────────────
+    # ── 5. Back-fill enrichment + mark expired auctions on existing rows ───────
     updates = []   # list of (row, col, value) to batch-update
     listings_by_addr = {
         (l.get("address") or "").strip().lower(): l for l in listings
     }
+    today_iso = date.today().isoformat()
+    expired_count = 0
 
     for addr_key, row_num in addr_to_row.items():
+        data_row = all_values[row_num - 1] if row_num - 1 < len(all_values) else []
+
+        # ── Mark past-auction rows as "Sale Passed – Verify" ─────────────────
+        # If the row's F_Sale_Date is a past date AND Status is still an active
+        # auction label, flip the status so the row stops showing as actionable.
+        # We never flip REO or pre-foreclosure rows — only auction ones.
+        status_c    = col_idx.get("Status")
+        sale_date_c = col_idx.get("F_Sale_Date")
+        if status_c and sale_date_c:
+            current_status    = (data_row[status_c - 1].strip()
+                                 if len(data_row) >= status_c else "")
+            current_sale_date = (data_row[sale_date_c - 1].strip()
+                                 if len(data_row) >= sale_date_c else "")
+            if (current_sale_date
+                    and current_sale_date < today_iso
+                    and current_status == "Active Auction"):
+                updates.append((row_num, status_c, "Sale Passed – Verify"))
+                expired_count += 1
+
+        # ── Backfill empty enrichment cells ──────────────────────────────────
         listing = listings_by_addr.get(addr_key)
         if not listing:
             continue
         # Pre-compute the full row so we can pull formatted values
         full_row = listing_to_row(listing)
 
-        # Backfill empty cells
         for col_name, _ in BACKFILL_COLS:
             c = col_idx.get(col_name)
             if not c:
                 continue
-            data_row = all_values[row_num - 1] if row_num - 1 < len(all_values) else []
             current_val = data_row[c - 1].strip() if len(data_row) >= c else ""
             if current_val:
                 continue   # already has data — don't overwrite
-            new_val = full_row[c - 1] if c - 1 < len(full_row) else ""
+            # State has no json_key — always "VA"; others come from listing_to_row()
+            if col_name == "State":
+                new_val = "VA"
+            else:
+                new_val = full_row[c - 1] if c - 1 < len(full_row) else ""
             if new_val:
                 updates.append((row_num, c, new_val))
 
@@ -353,6 +393,9 @@ def run() -> None:
             new_val = full_row[c - 1] if c - 1 < len(full_row) else ""
             if new_val:
                 updates.append((row_num, c, new_val))
+
+    if expired_count:
+        log.info(f"  Flagged {expired_count} past-auction row(s) as 'Sale Passed – Verify'")
 
     if updates:
         log.info(f"  Back-filling {len(updates)} empty cell(s) on existing rows…")
@@ -378,14 +421,75 @@ def run() -> None:
 
     if not new_rows:
         log.info("  No new listings to add — sheet is up to date.")
-        return
+    else:
+        log.info(f"  Appending {len(new_rows)} new row(s)…")
+        try:
+            # Use direct-range update instead of append_rows.
+            # append_rows uses the Sheets API's table-detection which clips writes
+            # to the width of the existing data (e.g., 25 cols if old rows stop at Y).
+            # Direct update writes exactly what we provide, all 29 columns.
+            next_row = max(2, len(all_values) + 1)  # always below header (row 1)
+            sheet.update(new_rows, f"A{next_row}", value_input_option="USER_ENTERED")
+            log.info(f"  ✓ Added {len(new_rows)} new listing(s) to Google Sheet")
+        except gspread.exceptions.APIError as e:
+            log.error(f"  Failed to append rows: {e}")
 
-    log.info(f"  Appending {len(new_rows)} new row(s)…")
+    # ── 7. Update Summary tab ─────────────────────────────────────────────────
+    update_summary_tab(spreadsheet, sheet)
+
+
+def update_summary_tab(spreadsheet: gspread.Spreadsheet, data_sheet: gspread.Worksheet) -> None:
+    """
+    Write key stats to the 'Summary' tab so Total Properties displays as a
+    plain integer (not a date).  The cell value is written as RAW so Google
+    Sheets cannot reformat it as a date serial number.
+
+    Layout written (starting at A1):
+        Metric            | Value
+        Total Properties  | <int>
+        Last Updated      | YYYY-MM-DD
+        Active Auctions   | <int>
+        Pre-FC Notices    | <int>
+        REO / Bank Owned  | <int>
+    """
     try:
-        sheet.append_rows(new_rows, value_input_option="USER_ENTERED")
-        log.info(f"  ✓ Added {len(new_rows)} new listing(s) to Google Sheet")
+        try:
+            summary = spreadsheet.worksheet("Summary")
+        except gspread.exceptions.WorksheetNotFound:
+            summary = spreadsheet.add_worksheet(title="Summary", rows=20, cols=4)
+            log.info("  Created 'Summary' tab")
+
+        # Read all rows from the data sheet to count statuses.
+        all_rows = data_sheet.get_all_values()
+        if len(all_rows) <= 1:
+            total = 0
+            auctions = pre_fc = reo = 0
+        else:
+            data_rows = all_rows[1:]   # skip header
+            total = len(data_rows)
+            # Status column (E = index 4 in new column order)
+            status_idx = COLUMNS.index("Status")
+            statuses = [r[status_idx].strip() if len(r) > status_idx else "" for r in data_rows]
+            auctions = sum(1 for s in statuses if s == "Active Auction")
+            pre_fc   = sum(1 for s in statuses if s == "Pre-Foreclosure Notice")
+            reo      = sum(1 for s in statuses if s == "REO / Bank Owned")
+
+        today = date.today().isoformat()
+
+        # Write the summary block.  Use RAW so numbers are never misread as dates.
+        summary_data = [
+            ["Metric",                "Value"],
+            ["Total Properties",      total],
+            ["Last Updated",          today],
+            ["Active Auctions",       auctions],
+            ["Pre-FC Notices",        pre_fc],
+            ["REO / Bank Owned",      reo],
+        ]
+        summary.update(summary_data, "A1", value_input_option="RAW")
+        log.info(f"  ✓ Summary tab updated — {total} total properties")
+
     except gspread.exceptions.APIError as e:
-        log.error(f"  Failed to append rows: {e}")
+        log.error(f"  Summary tab update failed: {e}")
 
 
 if __name__ == "__main__":
