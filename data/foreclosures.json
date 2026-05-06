@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-05-06T17:13:05",
+    "last_updated": "2026-05-06T17:39:43",
     "target_counties": [
       "Fredericksburg City",
       "Stafford",
@@ -16,7 +16,7 @@
       "Louisa"
     ],
     "total_count": 15,
-    "new_today": 0
+    "new_today": 15
   },
   "listings": [
     {
@@ -44,8 +44,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-7191fb11",
@@ -72,8 +72,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-065a2b68",
@@ -100,8 +100,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-6e2c235c",
@@ -128,8 +128,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-a10ef71d",
@@ -156,8 +156,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-05-01",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-830ddcf6",
@@ -184,8 +184,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-331c85f4",
@@ -212,8 +212,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-73f27a22",
@@ -240,8 +240,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-f84b140f",
@@ -268,8 +268,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-bcfd2061",
@@ -296,8 +296,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-8345dc85",
@@ -324,8 +324,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-0d9d2f20",
@@ -352,8 +352,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-ee9ee514",
@@ -380,8 +380,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-720219da",
@@ -408,8 +408,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     },
     {
       "id": "fc-db9714a6",
@@ -436,8 +436,8 @@
       "owner_mailing_differs": null,
       "owner_phone": null,
       "owner_email": null,
-      "first_seen": "2026-04-29",
-      "is_new": false
+      "first_seen": "2026-05-06",
+      "is_new": true
     }
   ]
 }
