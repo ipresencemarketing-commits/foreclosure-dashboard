@@ -885,7 +885,9 @@ def scrape_homepath() -> list:
 # ---------------------------------------------------------------------------
 
 def scrape_column_us() -> list:
-    """
+    """REMOVED 2026-05 — not called. PNV covers all notices statewide.
+    Original implementation preserved below for reference.
+
     Scrapes foreclosure sale notices from the Fredericksburg Free-Lance Star's
     Column.us public notice portal.
 
@@ -908,6 +910,7 @@ def scrape_column_us() -> list:
 
     Requires: pip3 install playwright && playwright install chromium
     """
+    return []   # REMOVED 2026-05 — PNV covers all statewide notices
     listings = []
 
     try:
@@ -2132,10 +2135,9 @@ def normalize_address_key(address: str) -> str:
     return s
 
 
-# Source priority for cross-source dedup: prefer the more detail-rich source
+# Source priority for cross-source dedup (only PNV active as of 2026-05)
 _SOURCE_PRIORITY = {
     "publicnoticevirginia": 0,
-    "column_us":            1,
 }
 
 
@@ -2187,9 +2189,6 @@ def run():
 
     log.info("--- PublicNoticeVirginia.com ---")
     all_listings.extend(scrape_public_notice_va())
-
-    log.info("--- Fredericksburg Free-Lance Star (Column.us) ---")
-    all_listings.extend(scrape_column_us())
 
     all_listings = deduplicate(all_listings)
     log.info(f"Total after dedup: {len(all_listings)} listings")
