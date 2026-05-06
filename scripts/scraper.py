@@ -117,216 +117,202 @@ def save(listings: list) -> None:
 
 def scrape_public_notice_va() -> list:
     """
-    Scrapes trustee sale notices from publicnoticevirginia.com.
+    Scrapes trustee sale notices from publicnoticevirginia.com using Playwright.
 
-    The site is ASP.NET WebForms with a session ID embedded in the URL path:
-      https://www.publicnoticevirginia.com/(S(sessionid))/default.aspx
-
-    As of 2026 the county filter uses individual checkboxes (not a <select>)
-    inside #countyDiv and #cityDiv.  Fredericksburg is a *city* in ASP.NET's
-    taxonomy so its checkbox lives in #cityDiv, not #countyDiv.
+    Switched from requests to Playwright to handle three issues:
+      1. First-visit human verification check — Playwright passes as a real browser
+      2. ASP.NET pagination — clicks "Next" through all result pages
+      3. Broader keyword coverage — uses PNV's own "popular searches" keyword set
 
     Approach:
-      1. GET homepage → follow redirect to get the session URL
-      2. GET default.aspx → extract __VIEWSTATE and all other hidden fields
-      3. Find county/city checkboxes dynamically by label text
-      4. POST the form with keyword="foreclosure" + target checkboxes checked
-      5. Parse the GridView results table for trustee/foreclosure notices
+      1. Open site in headless Chromium (spoof webdriver flag)
+      2. Fill the search box with the popular searches keyword set
+      3. Submit and wait for results
+      4. Loop: collect all notice URLs on current page → click Next → repeat
+      5. Navigate to each notice detail page and parse text
+      6. Filter to target counties; build listing dict
 
-    Virginia requires trustee sale notices to be published per VA Code § 55.1-321.
+    Virginia requires trustee sale notices per VA Code § 55.1-321.
     """
     listings = []
-    session = requests.Session()
 
     try:
-        # Step 1: Hit homepage to establish ASP.NET session (follows redirect)
-        resp = session.get(
-            "https://www.publicnoticevirginia.com/",
-            headers=HEADERS, timeout=15, allow_redirects=True
+        from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
+    except ImportError:
+        log.warning(
+            "  PNV: playwright not installed — skipping.\n"
+            "    Install with:  pip3 install playwright --break-system-packages\n"
+            "                   playwright install chromium"
         )
+        return listings
 
-        # Extract session prefix from final URL e.g. /(S(er1tscv0pg3k2gy2ul4rqhxw))
-        m = re.search(r'(https://www\.publicnoticevirginia\.com/\(S\([^)]+\)\))', resp.url)
-        session_base = m.group(1) if m else "https://www.publicnoticevirginia.com"
-        default_url = session_base + "/default.aspx"
+    # Full keyword set from PNV's "popular searches" dropdown.
+    # Space-separated terms = OR search on PNV — maximises notice coverage.
+    SEARCH_KEYWORDS = (
+        "real estate foreclosure foreclosed foreclose "
+        "judicial sale judgment notice of sale forfeiture forfeit"
+    )
 
-        log.info(f"  PNV: default URL = {default_url}")
-
-        # Step 2: GET default.aspx for ASP.NET form tokens
-        resp2 = session.get(
-            default_url,
-            headers={**HEADERS, "Referer": "https://www.publicnoticevirginia.com/"},
-            timeout=15
-        )
-        soup = BeautifulSoup(resp2.text, "lxml")
-
-        # Collect ALL hidden input fields for the POST (preserves ASP.NET state)
-        post_data = []
-        for inp in soup.find_all("input", type="hidden"):
-            name = inp.get("name", "")
-            val  = inp.get("value", "")
-            if name:
-                post_data.append((name, val))
-
-        post_data += [
-            ("__EVENTTARGET",   ""),
-            ("__EVENTARGUMENT", ""),
-        ]
-
-        # Step 3: Keyword-only search — do NOT post county checkboxes.
-        # Posting any checkbox triggers ASP.NET's lstCounty_SelectedIndexChanged
-        # event which calls ParseInt32 on the checkbox value ("on" or None) and
-        # crashes with a server error.  Instead, search statewide with the keyword
-        # "trustee's sale" and filter results by county in the parsing loop below.
-        post_data.append(("ctl00$ContentPlaceHolder1$as1$txtSearch", "trustee's sale"))
-
-        # Submit button
-        post_data.append(("ctl00$ContentPlaceHolder1$as1$btnGo", ""))
-
-        # Step 4: POST the search form
-        resp3 = session.post(
-            default_url,
-            data=post_data,
-            headers={
-                **HEADERS,
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Referer": default_url,
-            },
-            timeout=30,
-        )
-        soup3 = BeautifulSoup(resp3.text, "lxml")
-
-        # Step 5: Parse result rows from ASP.NET GridView
-        # Primary: the updateWSGrid table; fallback: any data table rows
-        grid = (
-            soup3.find(id=re.compile(r"updateWSGrid", re.I)) or
-            soup3.find(id=re.compile(r"WSExtendedGrid", re.I))
-        )
-        if grid:
-            rows = grid.find_all("tr")[1:]  # skip header row
-            log.info(f"  PNV: grid found via ID match ({grid.get('id', '?')})")
-        else:
-            # Save the raw HTML response so we can inspect what PNV is returning
-            debug_html = os.path.join(os.path.dirname(DATA_FILE), "pnv_debug.html")
-            try:
-                with open(debug_html, "w", encoding="utf-8") as _f:
-                    _f.write(resp3.text)
-                log.info(f"  PNV: saved response HTML → {debug_html}")
-            except Exception:
-                pass
-
-            all_tables = soup3.find_all("table")
-            table_ids  = [t.get("id", "") for t in all_tables if t.get("id")]
-            log.info(f"  PNV: grid not found by ID — page has {len(all_tables)} table(s), IDs: {table_ids[:8]}")
-
-            rows = (
-                soup3.select("table.results-table tr, table.search-results tr") or
-                soup3.select("tr.GridRow, tr.GridAltRow, tr[class*='grid']") or
-                []
+    try:
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(
+                headless=True,
+                args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
             )
-            if not rows:
-                # Last resort: any <tr> that has a link and at least 2 <td>s
-                rows = [
-                    tr for tr in soup3.find_all("tr")
-                    if tr.find("a") and len(tr.find_all("td")) >= 2
-                ]
-                if rows:
-                    log.info(f"  PNV: fallback link-row scan found {len(rows)} candidate row(s)")
+            context = browser.new_context(
+                user_agent=HEADERS["User-Agent"],
+                java_script_enabled=True,
+            )
+            # Spoof navigator.webdriver so the human-check JS doesn't flag us
+            context.add_init_script(
+                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+            )
+            page = context.new_page()
 
-        log.info(f"  PNV: {len(rows)} raw result rows")
+            log.info("  PNV: opening site with Playwright")
+            page.goto("https://www.publicnoticevirginia.com/", wait_until="load", timeout=45_000)
+            # Give the page time to finish any JS challenges / redirects
+            page.wait_for_timeout(5_000)
 
-        for row in rows:
-            # Skip header / empty rows
-            if row.find("th"):
-                continue
-            cells = row.find_all("td")
-            if not cells:
-                continue
+            # ── Fill search box ───────────────────────────────────────────────
+            search_sel = 'input[name*="txtSearch"], input[id*="txtSearch"]'
+            try:
+                page.wait_for_selector(search_sel, timeout=15_000)
+            except PWTimeout:
+                log.error(
+                    "  PNV: search box not found after 15 s — "
+                    "site may be showing a CAPTCHA or has changed structure"
+                )
+                browser.close()
+                return listings
 
-            text_raw = row.get_text(" ", strip=True)
-            if not text_raw:
-                continue
+            page.fill(search_sel, SEARCH_KEYWORDS)
+            log.info(f"  PNV: search box filled")
 
-            # Keyword "trustee's sale" should already scope results, but also
-            # filter row-level to be sure we're only processing trustee/sale notices.
-            if not re.search(r"trustee|deed of trust|sale of real property", text_raw, re.I):
-                continue
+            # ── Submit ────────────────────────────────────────────────────────
+            btn_sel = 'input[name*="btnGo"], input[id*="btnGo"], input[value="Search"], input[type="submit"]'
+            page.click(btn_sel)
+            page.wait_for_load_state("networkidle", timeout=30_000)
+            page.wait_for_timeout(2_000)
 
-            link_el    = row.find("a")
-            href       = link_el.get("href") if link_el else None
-            source_url = None
-            if href:
-                source_url = (href if href.startswith("http")
-                              else session_base + "/" + href.lstrip("/"))
+            # ── Paginate through all result pages ────────────────────────────
+            all_notice_urls: list[str] = []
+            page_num = 1
 
-            # ── Fetch the full notice detail page ─────────────────────────────
-            # The search results grid shows only a summary line — the auction
-            # date/time ("auction will be on June 11, 2026 at 11:00AM") lives
-            # inside the full notice body text on the detail page.
-            # Fetch it now so parse_sale_datetime() has the right input.
-            full_text = text_raw   # fallback: use grid summary if fetch fails
-            if source_url:
-                try:
-                    det = session.get(
-                        source_url,
-                        headers={**HEADERS, "Referer": default_url},
-                        timeout=15,
-                    )
-                    det_soup  = BeautifulSoup(det.text, "lxml")
-                    # PNV notice body is in a <div> with id/class containing
-                    # "noticeText", "noticeBody", or "noticeDetail".
-                    # Fall back to the full page text if none found.
-                    body_el = (
-                        det_soup.find(id=re.compile(r"notice.?(text|body|detail)", re.I)) or
-                        det_soup.find(class_=re.compile(r"notice.?(text|body|detail)", re.I)) or
-                        det_soup.find("div", class_=re.compile(r"content|main|article", re.I))
-                    )
-                    full_text = body_el.get_text(" ", strip=True) if body_el else det_soup.get_text(" ", strip=True)
-                    sleep(0.5)   # polite rate limit between detail fetches
-                except Exception as det_err:
-                    log.debug(f"  PNV: detail fetch failed for {source_url}: {det_err}")
+            while True:
+                log.info(f"  PNV: collecting notice URLs from results page {page_num}")
 
-            address          = parse_address_from_notice(full_text)
-            sale_date, sale_time = parse_sale_datetime(full_text)
-            lender           = parse_lender(full_text)
-            trustee          = parse_trustee(full_text)
+                # Extract notice links from grid rows on this page.
+                # Skip pagination links (page numbers, Next, Prev, >, <).
+                urls_on_page: list[str] = page.evaluate("""
+                    () => {
+                        const seen = new Set();
+                        const out  = [];
+                        const SKIP = /^(next|prev|previous|first|last|[0-9]+|>|<|>>|<<)$/i;
+                        // Try known grid IDs first, fall back to first <table>
+                        const grid = (
+                            document.querySelector('[id*="WSGrid"]') ||
+                            document.querySelector('[id*="updateWSGrid"]') ||
+                            document.querySelector('table')
+                        );
+                        if (!grid) return out;
+                        for (const row of grid.querySelectorAll('tr')) {
+                            if (row.querySelector('th')) continue;  // header row
+                            const link = row.querySelector('a[href]');
+                            if (!link) continue;
+                            const txt  = link.textContent.trim();
+                            const href = link.href || '';
+                            if (href && !SKIP.test(txt) && !seen.has(href)) {
+                                seen.add(href);
+                                out.push(href);
+                            }
+                        }
+                        return out;
+                    }
+                """)
 
-            # Identify which target county this notice belongs to.
-            # Since we search statewide, skip notices that don't mention any
-            # of our 12 target counties — they're from other parts of Virginia.
-            county_key = None
-            text_lower = full_text.lower()
-            for c in TARGET_COUNTIES:
-                if c in text_lower:
-                    county_key = c
+                all_notice_urls.extend(urls_on_page)
+                log.info(f"  PNV: page {page_num} → {len(urls_on_page)} notice link(s)")
+
+                # ── Try to advance to the next page ──────────────────────────
+                # ASP.NET GridView pager: "Next" text link or ">" symbol link
+                next_btn = (
+                    page.query_selector('a:text-is("Next")') or
+                    page.query_selector('a:text-is(">")') or
+                    page.query_selector('a[title*="Next" i]') or
+                    page.query_selector('a[title*="next page" i]')
+                )
+                if next_btn and next_btn.is_visible():
+                    next_btn.click()
+                    page.wait_for_load_state("networkidle", timeout=20_000)
+                    page.wait_for_timeout(1_500)
+                    page_num += 1
+                else:
+                    log.info(f"  PNV: no more pages (last page = {page_num})")
                     break
-            if county_key is None:
-                log.debug(f"  PNV: skipping notice (no target county found): {text_raw[:80]!r}")
-                continue
 
-            listings.append({
-                "id":               make_id(address, sale_date),
-                "address":          address,
-                "city":             county_city(county_key),
-                "county":           county_display(county_key),
-                "zip":              None,
-                "stage":            "auction" if sale_date else "pre-fc",
-                "property_type":    "single-family",
-                "assessed_value":   None,
-                "asking_price":     None,
-                "sale_date":        sale_date,
-                "sale_time":        sale_time,
-                "sale_location":    courthouse_location(county_key),
-                "days_until_sale":  None,
-                "notice_date":      date.today().isoformat(),
-                "days_in_foreclosure": 0,
-                "lender":           lender,
-                "trustee":          trustee,
-                "source":           "publicnoticevirginia",
-                "source_url":       source_url,
-            })
+            # Deduplicate across pages
+            all_notice_urls = list(dict.fromkeys(all_notice_urls))
+            log.info(f"  PNV: {len(all_notice_urls)} unique notice URLs across {page_num} page(s)")
 
-        sleep(1)
+            # ── Fetch each notice detail page and parse ───────────────────────
+            for notice_url in all_notice_urls:
+                try:
+                    page.goto(notice_url, wait_until="load", timeout=20_000)
+                    page.wait_for_timeout(600)
+                    full_text = page.inner_text("body")
+
+                    # Must mention a trustee/foreclosure keyword to be relevant
+                    if not re.search(
+                        r"trustee|deed of trust|sale of real property|foreclos|judicial sale",
+                        full_text, re.I
+                    ):
+                        continue
+
+                    address              = parse_address_from_notice(full_text)
+                    sale_date, sale_time = parse_sale_datetime(full_text)
+                    lender               = parse_lender(full_text)
+                    trustee              = parse_trustee(full_text)
+
+                    # Filter to target counties
+                    county_key = None
+                    text_lower = full_text.lower()
+                    for c in TARGET_COUNTIES:
+                        if c in text_lower:
+                            county_key = c
+                            break
+                    if county_key is None:
+                        log.debug(f"  PNV: no target county in notice — skipping")
+                        continue
+
+                    listings.append({
+                        "id":               make_id(address, sale_date),
+                        "address":          address,
+                        "city":             county_city(county_key),
+                        "county":           county_display(county_key),
+                        "zip":              None,
+                        "stage":            "auction" if sale_date else "pre-fc",
+                        "property_type":    "single-family",
+                        "assessed_value":   None,
+                        "asking_price":     None,
+                        "sale_date":        sale_date,
+                        "sale_time":        sale_time,
+                        "sale_location":    courthouse_location(county_key),
+                        "days_until_sale":  None,
+                        "notice_date":      date.today().isoformat(),
+                        "days_in_foreclosure": 0,
+                        "lender":           lender,
+                        "trustee":          trustee,
+                        "source":           "publicnoticevirginia",
+                        "source_url":       notice_url,
+                    })
+
+                    sleep(0.3)   # polite rate limit between notice page fetches
+
+                except Exception as e:
+                    log.warning(f"  PNV: error fetching notice {notice_url}: {e}")
+
+            browser.close()
 
     except Exception as e:
         log.error(f"  PNV error: {e}", exc_info=True)
