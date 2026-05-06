@@ -97,15 +97,14 @@ Fredericksburg City, Stafford, Spotsylvania, Caroline, Fauquier, Culpeper, King 
 
 ## Data sources
 
-### Foreclosure notices (primary)
+### Foreclosure notices (active — 2 sources only)
 | Source | URL | Notes |
 |--------|-----|-------|
-| Public Notice Virginia (PNV) | publicnoticevirginia.com | Best single source — free, statewide, structured. All 12 counties. Virginia Code §55.1-321 requires trustee sale notices here. |
+| Public Notice Virginia (PNV) | publicnoticevirginia.com | Primary source — free, statewide, structured. All 12 counties. Virginia Code §55.1-321 requires trustee sale notices here. |
 | fredericksburg.column.us | fredericksburg.column.us | Fredericksburg/Spotsylvania supplement. Next.js + Firebase — requires Playwright. Individual notice URLs at `/notice/<slug>`. |
-| Auction.com | auction.com | Bank-owned & pre-foreclosure auctions. XML sitemap + detail pages. |
-| HUD Homes | hudhomestore.gov | FHA REO listings. JSON in hidden input. |
-| Fannie Mae HomePath | homepath.fanniemae.com | Fannie REO. Bounding-box JSON API. Owner hardcoded "Fannie Mae". |
-| Freddie Mac HomeSteps | homesteps.com | Freddie REO. Server-rendered Drupal HTML. Owner hardcoded "Freddie Mac". |
+
+### Removed sources (2026-05)
+Auction.com, HUD Homes, Fannie Mae HomePath, Freddie Mac HomeSteps are no longer active. Their functions remain in `scraper.py` with an early `return []` for reference but are not called by `run()`.
 
 ### Property data + owner info
 | Source | URL | Notes |

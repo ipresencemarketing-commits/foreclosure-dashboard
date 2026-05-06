@@ -3,16 +3,11 @@ from __future__ import annotations
 """
 Fredericksburg Metro Foreclosure Scraper
 -----------------------------------------
-Pulls trustee sale notices, auction listings, and REO properties
-from free public sources and saves to data/foreclosures.json.
+Pulls trustee sale notices from free public sources and saves to data/foreclosures.json.
 
 Sources:
   1. PublicNoticeVirginia.com            — trustee sale notices (VA legal requirement)
   2. Fredericksburg Free-Lance Star      — Column.us public notice portal (Playwright)
-  3. Auction.com                         — active foreclosure auctions
-  4. HUD Homes                           — FHA REO listings
-  5. Fannie Mae HomePath                 — Fannie Mae REO listings
-  6. Freddie Mac HomeSteps               — Freddie Mac REO listings
 
 Target counties: Fredericksburg City, Stafford, Spotsylvania, Caroline, Fauquier,
                   Culpeper, King George, Hanover, Richmond City, Chesterfield, Henrico, Louisa
@@ -339,12 +334,16 @@ def scrape_public_notice_va() -> list:
     log.info(f"  PublicNoticeVA: found {len(listings)} listings")
     return listings
 
-
 # ---------------------------------------------------------------------------
-# Source 2: Auction.com
+# REMOVED SOURCES (kept for reference — not called by run())
+# Auction.com, HUD Homes, Fannie Mae HomePath, Freddie Mac HomeSteps
+# were removed 2026-05 — pipeline now uses PNV + Column.us only.
 # ---------------------------------------------------------------------------
 
 def scrape_auction_com() -> list:
+    """REMOVED — not called. Scrapes Auction.com for foreclosure listings."""
+    return []
+    # Original implementation preserved below for reference.
     """
     Scrapes Auction.com for foreclosure listings near Fredericksburg, VA.
 
@@ -611,6 +610,8 @@ def scrape_auction_com() -> list:
 # ---------------------------------------------------------------------------
 
 def scrape_hud_homes() -> list:
+    """REMOVED — not called."""
+    return []
     """
     Scrapes HUD REO listings for Virginia from HUD Homestore.
 
@@ -764,6 +765,8 @@ def scrape_hud_homes() -> list:
 # ---------------------------------------------------------------------------
 
 def scrape_homepath() -> list:
+    """REMOVED — not called."""
+    return []
     """
     Fetches Fannie Mae REO listings from HomePath's JSON API.
 
@@ -1194,6 +1197,8 @@ def scrape_column_us() -> list:
 # ---------------------------------------------------------------------------
 
 def scrape_homesteps() -> list:
+    """REMOVED — not called."""
+    return []
     """
     Scrapes Freddie Mac HomeSteps REO listings for Virginia.
 
@@ -2145,10 +2150,6 @@ def normalize_address_key(address: str) -> str:
 _SOURCE_PRIORITY = {
     "publicnoticevirginia": 0,
     "column_us":            1,
-    "auction.com":          2,
-    "hud_homes":            3,
-    "homepath":             4,
-    "homesteps":            5,
 }
 
 
@@ -2204,25 +2205,8 @@ def run():
     log.info("--- Fredericksburg Free-Lance Star (Column.us) ---")
     all_listings.extend(scrape_column_us())
 
-    log.info("--- Auction.com ---")
-    all_listings.extend(scrape_auction_com())
-
-    log.info("--- HUD Homes ---")
-    all_listings.extend(scrape_hud_homes())
-
-    log.info("--- Fannie Mae HomePath ---")
-    all_listings.extend(scrape_homepath())
-
-    log.info("--- Freddie Mac HomeSteps ---")
-    all_listings.extend(scrape_homesteps())
-
     all_listings = deduplicate(all_listings)
     log.info(f"Total after dedup: {len(all_listings)} listings")
-
-    # Redfin enrichment disabled — Redfin blocks automated requests (403).
-    # Property detail enrichment (beds/baths/sqft/AVM) is a Phase 2 item.
-    # Revisit with county GIS portals or ATTOM Data API.
-    # all_listings = enrich_with_redfin(all_listings)
 
     # Owner enrichment — queries each county's public ArcGIS parcel REST API
     # to populate owner_name and owner_mailing_address.
