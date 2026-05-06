@@ -528,6 +528,45 @@ def scrape_auction_com() -> list:
                     except (json.JSONDecodeError, TypeError, ValueError):
                         pass
 
+                # --- Parse property characteristics from the detail page ---
+                # Auction.com embeds property data as JSON key-value pairs in
+                # the page HTML (inside script tags / __NEXT_DATA__ / etc.).
+                # We search for known field names directly rather than trying
+                # to parse the full nested JSON, which is fragile.
+                def _auc_int(pattern_keys):
+                    for key in pattern_keys:
+                        m = re.search(rf'"{key}"\s*:\s*(\d+)', html)
+                        if m:
+                            v = int(m.group(1))
+                            if v > 0:
+                                return v
+                    return None
+
+                def _auc_float(pattern_keys):
+                    for key in pattern_keys:
+                        m = re.search(rf'"{key}"\s*:\s*([\d.]+)', html)
+                        if m:
+                            v = float(m.group(1))
+                            if v > 0:
+                                return v
+                    return None
+
+                beds_val  = _auc_int(["bedrooms", "beds", "num_bedrooms", "bedroom_count"])
+                baths_val = _auc_float(["bathrooms", "baths", "num_bathrooms", "bathroom_count", "full_baths"])
+                sqft_val  = _auc_int(["square_feet", "sqft", "total_sqft", "living_sqft",
+                                       "gross_area", "above_grade_sqft", "heated_area"])
+                yr_val    = _auc_int(["year_built", "yearBuilt", "year_of_construction"])
+                if yr_val and not (1800 < yr_val <= 2030):
+                    yr_val = None   # reject placeholder values like 0 or 9999
+
+                lot_sf_val  = _auc_int(["lot_size_sqft", "lot_sqft", "lot_square_feet"])
+                lot_ac_val  = _auc_float(["lot_size_acres", "lot_acres"])
+                lot_size_str = None
+                if lot_ac_val:
+                    lot_size_str = f"{lot_ac_val:.2f} ac"
+                elif lot_sf_val and lot_sf_val > 500:
+                    lot_size_str = f"{lot_sf_val / 43560:.2f} ac"
+
                 listings.append({
                     "id":               make_id(detail_url, sale_date),
                     "address":          street,
@@ -548,6 +587,12 @@ def scrape_auction_com() -> list:
                     "trustee":          None,
                     "source":           "auction.com",
                     "source_url":       detail_url,
+                    # Property characteristics (may be None if not on the page)
+                    "beds":             beds_val,
+                    "baths":            baths_val,
+                    "sqft":             sqft_val,
+                    "year_built":       yr_val,
+                    "lot_size":         lot_size_str,
                 })
                 sleep(0.4)
 

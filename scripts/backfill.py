@@ -1163,6 +1163,18 @@ def run() -> None:
         zip_code   = val(row, "ZIP")
         county_key = DISPLAY_TO_KEY.get(county_dn)
         if not county_key:
+            # Fallback: derive county from City field (handles "Unknown" rows
+            # from Auction.com/Column.us where county couldn't be parsed at
+            # scrape time but the city is known).
+            city = val(row, "City")
+            if city:
+                derived = city_to_county(city)
+                county_key = DISPLAY_TO_KEY.get(derived)
+                if county_key:
+                    log.debug(f"  row {i+2}: county '{county_dn}' → resolved via city '{city}' → '{derived}'")
+                    # Write the resolved county back so future passes don't repeat this
+                    queue(i, "County", derived)
+        if not county_key:
             log.debug(f"  row {i+2}: county '{county_dn}' not in registry — skipping GIS")
             continue
 

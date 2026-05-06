@@ -155,8 +155,12 @@ def listing_to_row(listing: dict) -> list:
         beds_baths_sqft = " / ".join(parts_bbs)
 
     year_built = listing.get("year_built") or ""
-    lot_sqft   = listing.get("lot_sqft")
-    lot_size   = f"{lot_sqft:,} sqft" if lot_sqft else ""
+    # lot_size: accept pre-formatted string (e.g. "0.45 ac") from scraper,
+    # or fall back to raw lot_sqft integer and convert to sqft label.
+    lot_size = (
+        listing.get("lot_size")
+        or (f"{listing['lot_sqft']:,} sqft" if listing.get("lot_sqft") else "")
+    )
 
     last_sold_date  = listing.get("last_sold_date") or ""
     last_sold_price = _fmt_price(listing.get("last_sold_price"))
@@ -277,10 +281,24 @@ def run() -> None:
         log.error(f"Could not read sheet: {e}")
         return
 
+    # ── Detect column-order mismatch and clear if needed ────────────────────
+    # If the existing header row doesn't exactly match COLUMNS, the sheet data
+    # is misaligned with the code.  The only safe fix is a full clear-and-rewrite.
+    # This happens whenever the COLUMNS list is reordered in the code.
+    existing_header = all_values[0] if all_values else []
+    # Trim trailing empty cells before comparing
+    existing_header_trimmed = [c.strip() for c in existing_header if c.strip()]
+    if existing_header_trimmed and existing_header_trimmed != COLUMNS:
+        log.warning(
+            f"  Header mismatch detected — clearing sheet and rewriting.\n"
+            f"    Expected: {COLUMNS[:5]}…\n"
+            f"    Found:    {existing_header_trimmed[:5]}…"
+        )
+        sheet.clear()
+        all_values = []   # treat sheet as empty so all rows are appended fresh
+        log.info("  Sheet cleared — will rewrite all rows.")
+
     # ── Always write the canonical header row ────────────────────────────────
-    # A single sheet.update() call writes all 29 headers at once and
-    # auto-expands the grid beyond column Z if needed — no add_cols gymnastics.
-    # This is idempotent: if headers are already correct it just re-confirms them.
     try:
         sheet.update([COLUMNS], "A1", value_input_option="RAW")
         log.info(f"  Header row confirmed ({len(COLUMNS)} columns)")
