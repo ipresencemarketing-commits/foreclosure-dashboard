@@ -119,20 +119,25 @@ def scrape_public_notice_va() -> list:
     """
     Scrapes trustee sale notices from publicnoticevirginia.com using Playwright.
 
-    Switched from requests to Playwright to handle three issues:
-      1. First-visit human verification check — Playwright passes as a real browser
-      2. ASP.NET pagination — clicks "Next" through all result pages
-      3. Broader keyword coverage — uses PNV's own "popular searches" keyword set
+    Page architecture (discovered via DOM inspection):
+      - Grid ID: ctl00_ContentPlaceHolder1_WSExtendedGridNP1_GridView1
+      - Notice IDs stored in hidden fields: input[id$="hdnPKValue"]  (e.g. value="470136")
+      - VIEW buttons are form submits (NOT <a> links) — clicking them POSTs to Details.aspx
+      - Detail URL pattern: Details.aspx?SID=<session_id>&ID=<notice_id>
+      - Detail pages show a reCAPTCHA; we fall back to card text excerpt if blocked
+      - Search mode must be "Any Words" (rdoType_1) for OR logic across keywords
+      - Pagination: <a> links with text ">" in the grid footer row
 
     Approach:
       1. Open site in headless Chromium (spoof webdriver flag)
-      2. Fill the search box with the popular searches keyword set
+      2. Fill search box with popular-searches keyword set; select "Any Words" mode
       3. Submit and wait for results
-      4. Loop: collect all notice URLs on current page → click Next → repeat
-      5. Navigate to each notice detail page and parse text
-      6. Filter to target counties; build listing dict
+      4. Loop pages: extract (notice_id, card_text) from hdnPKValue hidden fields → click ">" → repeat
+      5. Construct detail URLs from session ID + notice IDs
+      6. Navigate to each detail page; use full text if available, card excerpt as fallback
+      7. Filter to target counties; build listing dict
 
-    Virginia requires trustee sale notices per VA Code § 55.1-321.
+    Virginia Code §55.1-321 requires all trustee sale notices on PNV.
     """
     listings = []
 
@@ -141,17 +146,14 @@ def scrape_public_notice_va() -> list:
     except ImportError:
         log.warning(
             "  PNV: playwright not installed — skipping.\n"
-            "    Install with:  pip3 install playwright --break-system-packages\n"
-            "                   playwright install chromium"
+            "    Install with:  pip3 install playwright\n"
+            "                   python3 -m playwright install chromium"
         )
         return listings
 
-    # Full keyword set from PNV's "popular searches" dropdown.
-    # Space-separated terms = OR search on PNV — maximises notice coverage.
-    SEARCH_KEYWORDS = (
-        "real estate foreclosure foreclosed foreclose "
-        "judicial sale judgment notice of sale forfeiture forfeit"
-    )
+    # All three words appear in every Virginia trustee sale notice by statute.
+    # "All Words" (AND) mode: trustee AND sale AND Virginia — filters to VA only.
+    SEARCH_KEYWORDS = "trustee sale Virginia"
 
     try:
         with sync_playwright() as pw:
@@ -163,7 +165,7 @@ def scrape_public_notice_va() -> list:
                 user_agent=HEADERS["User-Agent"],
                 java_script_enabled=True,
             )
-            # Spoof navigator.webdriver so the human-check JS doesn't flag us
+            # Spoof navigator.webdriver so bot-detection JS doesn't flag us
             context.add_init_script(
                 "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
             )
@@ -171,11 +173,10 @@ def scrape_public_notice_va() -> list:
 
             log.info("  PNV: opening site with Playwright")
             page.goto("https://www.publicnoticevirginia.com/", wait_until="load", timeout=45_000)
-            # Give the page time to finish any JS challenges / redirects
-            page.wait_for_timeout(5_000)
+            page.wait_for_timeout(3_000)
 
             # ── Fill search box ───────────────────────────────────────────────
-            search_sel = 'input[name*="txtSearch"], input[id*="txtSearch"]'
+            search_sel = 'input[id*="txtSearch"]'
             try:
                 page.wait_for_selector(search_sel, timeout=15_000)
             except PWTimeout:
@@ -187,130 +188,164 @@ def scrape_public_notice_va() -> list:
                 return listings
 
             page.fill(search_sel, SEARCH_KEYWORDS)
-            log.info(f"  PNV: search box filled")
+            log.info("  PNV: search box filled")
 
             # ── Submit ────────────────────────────────────────────────────────
-            btn_sel = 'input[name*="btnGo"], input[id*="btnGo"], input[value="Search"], input[type="submit"]'
-            page.click(btn_sel)
+            # "trustee sale" works with default "All Words" (AND) mode — both
+            # words appear in every VA notice, so no radio button change needed.
+            page.click('input[id*="btnGo"]')
             page.wait_for_load_state("networkidle", timeout=30_000)
             page.wait_for_timeout(2_000)
 
+            # Wait for the results grid to be present before evaluating DOM
+            GRID_ID = "ctl00_ContentPlaceHolder1_WSExtendedGridNP1_GridView1"
+            try:
+                page.wait_for_selector(f"#{GRID_ID}", state="attached", timeout=15_000)
+                page.wait_for_timeout(500)
+            except PWTimeout:
+                log.warning("  PNV: results grid not visible — search returned no results or page changed")
+                browser.close()
+                return listings
+
             # ── Paginate through all result pages ────────────────────────────
-            all_notice_urls: list[str] = []
+            # Each notice row has a hidden field id ending in "hdnPKValue" whose
+            # value is the integer notice ID used in the detail URL.
+            all_notice_items: list[dict] = []   # [{id, card_text}, ...]
             page_num = 1
 
             while True:
-                log.info(f"  PNV: collecting notice URLs from results page {page_num}")
+                log.info(f"  PNV: collecting notice IDs from results page {page_num}")
 
-                # Extract notice links from grid rows on this page.
-                # Skip pagination links (page numbers, Next, Prev, >, <).
-                urls_on_page: list[str] = page.evaluate("""
-                    () => {
-                        const seen = new Set();
-                        const out  = [];
-                        const SKIP = /^(next|prev|previous|first|last|[0-9]+|>|<|>>|<<)$/i;
-                        // Try known grid IDs first, fall back to first <table>
-                        const grid = (
-                            document.querySelector('[id*="WSGrid"]') ||
-                            document.querySelector('[id*="updateWSGrid"]') ||
-                            document.querySelector('table')
-                        );
+                items_on_page: list[dict] = page.evaluate(
+                    """(gridId) => {
+                        const out = [];
+                        const grid = document.getElementById(gridId);
                         if (!grid) return out;
-                        for (const row of grid.querySelectorAll('tr')) {
-                            if (row.querySelector('th')) continue;  // header row
-                            const link = row.querySelector('a[href]');
-                            if (!link) continue;
-                            const txt  = link.textContent.trim();
-                            const href = link.href || '';
-                            if (href && !SKIP.test(txt) && !seen.has(href)) {
-                                seen.add(href);
-                                out.push(href);
-                            }
-                        }
+                        const fields = grid.querySelectorAll('input[id$="hdnPKValue"]');
+                        fields.forEach(field => {
+                            const nid = field.value;
+                            if (!nid) return;
+                            const row = field.closest('tr');
+                            const text = row
+                                ? row.textContent.replace(/\\s+/g, ' ').trim()
+                                : '';
+                            out.push({ id: nid, card_text: text });
+                        });
                         return out;
-                    }
-                """)
-
-                all_notice_urls.extend(urls_on_page)
-                log.info(f"  PNV: page {page_num} → {len(urls_on_page)} notice link(s)")
-
-                # ── Try to advance to the next page ──────────────────────────
-                # ASP.NET GridView pager: "Next" text link or ">" symbol link
-                next_btn = (
-                    page.query_selector('a:text-is("Next")') or
-                    page.query_selector('a:text-is(">")') or
-                    page.query_selector('a[title*="Next" i]') or
-                    page.query_selector('a[title*="next page" i]')
+                    }""",
+                    GRID_ID,
                 )
-                if next_btn and next_btn.is_visible():
+
+                all_notice_items.extend(items_on_page)
+                log.info(f"  PNV: page {page_num} → {len(items_on_page)} notice(s)")
+
+                # ── Advance to next page ──────────────────────────────────────
+                # PNV pager uses input[type="image"] buttons, not <a> links.
+                # The next-page button has id ending in "btnNext".
+                next_btn = (
+                    page.query_selector('input[id$="btnNext"]') or
+                    page.query_selector('input[name$="btnNext"]')
+                )
+                if next_btn and next_btn.is_visible() and next_btn.is_enabled():
                     next_btn.click()
                     page.wait_for_load_state("networkidle", timeout=20_000)
-                    page.wait_for_timeout(1_500)
+                    page.wait_for_timeout(1_200)
                     page_num += 1
                 else:
                     log.info(f"  PNV: no more pages (last page = {page_num})")
                     break
 
-            # Deduplicate across pages
-            all_notice_urls = list(dict.fromkeys(all_notice_urls))
-            log.info(f"  PNV: {len(all_notice_urls)} unique notice URLs across {page_num} page(s)")
+            # Deduplicate by notice ID
+            seen_ids: set[str] = set()
+            unique_items: list[dict] = []
+            for item in all_notice_items:
+                if item["id"] not in seen_ids:
+                    seen_ids.add(item["id"])
+                    unique_items.append(item)
 
-            # ── Fetch each notice detail page and parse ───────────────────────
-            for notice_url in all_notice_urls:
+            log.info(
+                f"  PNV: {len(unique_items)} unique notices across {page_num} page(s)"
+            )
+
+            # ── Extract session ID for detail URL construction ────────────────
+            # URL format: //(S(<session_id>))/Search.aspx
+            session_match = re.search(r'\(S\(([^)]+)\)\)', page.url)
+            session_id = session_match.group(1) if session_match else ""
+            log.info(f"  PNV: session_id = {session_id or '(not found)'}")
+
+            # ── Fetch each notice detail page ─────────────────────────────────
+            # Always navigate to the full detail page to get complete notice text.
+            # This is stored in Notice_Text column for review.
+            # Falls back to card excerpt only if reCAPTCHA blocks access.
+            for item in unique_items:
+                nid       = item["id"]
+                card_text = item["card_text"]
+
+                detail_url = (
+                    f"https://www.publicnoticevirginia.com"
+                    f"/(S({session_id}))/Details.aspx?SID={session_id}&ID={nid}"
+                )
+
                 try:
-                    page.goto(notice_url, wait_until="load", timeout=20_000)
-                    page.wait_for_timeout(600)
-                    full_text = page.inner_text("body")
+                    page.goto(detail_url, wait_until="load", timeout=20_000)
+                    page.wait_for_timeout(500)
 
-                    # Must mention a trustee/foreclosure keyword to be relevant
-                    if not re.search(
-                        r"trustee|deed of trust|sale of real property|foreclos|judicial sale",
-                        full_text, re.I
-                    ):
-                        continue
-
-                    address              = parse_address_from_notice(full_text)
-                    sale_date, sale_time = parse_sale_datetime(full_text)
-                    lender               = parse_lender(full_text)
-                    trustee              = parse_trustee(full_text)
-
-                    # Filter to target counties
-                    county_key = None
-                    text_lower = full_text.lower()
-                    for c in TARGET_COUNTIES:
-                        if c in text_lower:
-                            county_key = c
-                            break
-                    if county_key is None:
-                        log.debug(f"  PNV: no target county in notice — skipping")
-                        continue
-
-                    listings.append({
-                        "id":               make_id(address, sale_date),
-                        "address":          address,
-                        "city":             county_city(county_key),
-                        "county":           county_display(county_key),
-                        "zip":              None,
-                        "stage":            "auction" if sale_date else "pre-fc",
-                        "property_type":    "single-family",
-                        "assessed_value":   None,
-                        "asking_price":     None,
-                        "sale_date":        sale_date,
-                        "sale_time":        sale_time,
-                        "sale_location":    courthouse_location(county_key),
-                        "days_until_sale":  None,
-                        "notice_date":      date.today().isoformat(),
-                        "days_in_foreclosure": 0,
-                        "lender":           lender,
-                        "trustee":          trustee,
-                        "source":           "publicnoticevirginia",
-                        "source_url":       notice_url,
-                    })
-
-                    sleep(0.3)   # polite rate limit between notice page fetches
+                    # If reCAPTCHA is shown, fall back to card excerpt
+                    if page.query_selector('iframe[src*="recaptcha"], #g-recaptcha'):
+                        log.debug(f"  PNV: reCAPTCHA on notice {nid} — using card text")
+                        full_text = card_text
+                    else:
+                        full_text = page.inner_text("body")
 
                 except Exception as e:
-                    log.warning(f"  PNV: error fetching notice {notice_url}: {e}")
+                    log.warning(f"  PNV: could not fetch detail {nid}: {e} — using card text")
+                    full_text = card_text
+
+                # Must contain a foreclosure keyword to be relevant
+                if not re.search(
+                    r"trustee|deed of trust|sale of real property|foreclos|judicial sale",
+                    full_text, re.I
+                ):
+                    continue
+
+                address              = parse_address_from_notice(full_text)
+                sale_date, sale_time = parse_sale_datetime(full_text)
+                lender               = parse_lender(full_text)
+                trustee              = parse_trustee(full_text)
+                notice_text          = re.sub(r'\s+', ' ', full_text).strip()[:5000]
+
+                # Best-effort county/city parse from notice text — not used as a filter
+                county_key = None
+                text_lower = full_text.lower()
+                for c in TARGET_COUNTIES:
+                    if c in text_lower:
+                        county_key = c
+                        break
+
+                listings.append({
+                    "id":                  make_id(address, sale_date),
+                    "address":             address,
+                    "city":                county_city(county_key) if county_key else "",
+                    "county":              county_display(county_key) if county_key else "",
+                    "zip":                 None,
+                    "stage":               "auction" if sale_date else "pre-fc",
+                    "property_type":       "single-family",
+                    "assessed_value":      None,
+                    "asking_price":        None,
+                    "sale_date":           sale_date,
+                    "sale_time":           sale_time,
+                    "sale_location":       courthouse_location(county_key) if county_key else "",
+                    "days_until_sale":     None,
+                    "notice_date":         date.today().isoformat(),
+                    "days_in_foreclosure": 0,
+                    "lender":              lender,
+                    "trustee":             trustee,
+                    "notice_text":         notice_text,
+                    "source":              "publicnoticevirginia",
+                    "source_url":          detail_url,
+                })
+
+                sleep(0.3)   # polite rate limit between detail page fetches
 
             browser.close()
 

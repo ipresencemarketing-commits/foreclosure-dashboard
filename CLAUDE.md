@@ -94,6 +94,7 @@ Fredericksburg City, Stafford, Spotsylvania, Caroline, Fauquier, Culpeper, King 
 | AA | Listing_URL | Individual notice URL or source URL |
 | AB | Notes | Sale location, lender, trustee, source tag |
 | AC | Date_Checked | ISO date of last sync |
+| AD | Notice_Text | Full text of the foreclosure notice (up to 5000 chars) |
 
 ## Data sources
 

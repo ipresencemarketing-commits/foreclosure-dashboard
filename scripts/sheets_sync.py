@@ -77,6 +77,7 @@ COLUMNS = [
     "Listing_URL",                          # AA
     "Notes",                                # AB
     "Date_Checked",                         # AC
+    "Notice_Text",                          # AD — full text of the foreclosure notice
 ]
 
 
@@ -230,6 +231,7 @@ def listing_to_row(listing: dict) -> list:
         listing_url,                              # AA Listing_URL
         notes,                                    # AB Notes
         date.today().isoformat(),                 # AC Date_Checked
+        listing.get("notice_text") or "",         # AD Notice_Text
     ]
 
 
