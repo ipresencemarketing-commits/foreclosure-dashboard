@@ -1193,7 +1193,7 @@ def scrape_column_us() -> list:
                         # Strip any residual "of / the / county / city" prefix artifacts
                         raw_county = re.sub(r'^(?:of|the|county|city)\s+', '', raw_county, flags=re.I).strip()
                         raw_county = " ".join(raw_county.split()[:2])
-                        county = county_display(raw_county.lower())
+                        county = valid_va_county(raw_county)
                     else:
                         county = ""   # unknown county — include anyway
 
@@ -1664,7 +1664,8 @@ def parse_price(text: str):
 
 def county_display(county: str) -> str:
     return {
-        "fredericksburg": "Fredericksburg City",
+        # Original target counties
+        "fredericksburg":  "Fredericksburg City",
         "stafford":        "Stafford",
         "spotsylvania":    "Spotsylvania",
         "caroline":        "Caroline",
@@ -1676,7 +1677,170 @@ def county_display(county: str) -> str:
         "chesterfield":    "Chesterfield",
         "henrico":         "Henrico",
         "louisa":          "Louisa",
-    }.get(county.lower(), county.title())
+        # Roanoke area
+        "roanoke":         "Roanoke",
+        "roanoke city":    "Roanoke City",
+        "salem":           "Salem",
+        "botetourt":       "Botetourt",
+        "bedford":         "Bedford",
+        "franklin":        "Franklin",
+        "montgomery":      "Montgomery",
+        "radford":         "Radford",
+        # Lynchburg area
+        "lynchburg":       "Lynchburg City",
+        "campbell":        "Campbell",
+        "appomattox":      "Appomattox",
+        "amherst":         "Amherst",
+        # Charlottesville area
+        "charlottesville": "Charlottesville City",
+        "albemarle":       "Albemarle",
+        "fluvanna":        "Fluvanna",
+        "greene":          "Greene",
+        "nelson":          "Nelson",
+        # Shenandoah Valley
+        "rockingham":      "Rockingham",
+        "harrisonburg":    "Harrisonburg City",
+        "page":            "Page",
+        "shenandoah":      "Shenandoah",
+        "augusta":         "Augusta",
+        "staunton":        "Staunton City",
+        "waynesboro":      "Waynesboro City",
+        "warren":          "Warren",
+        "frederick":       "Frederick",
+        "winchester":      "Winchester City",
+        "clarke":          "Clarke",
+        # Martinsville / Danville area
+        "martinsville":    "Martinsville City",
+        "henry":           "Henry",
+        "patrick":         "Patrick",
+        "danville":        "Danville City",
+        "danville city":   "Danville City",
+        "pittsylvania":    "Pittsylvania",
+        "halifax":         "Halifax",
+        # Northern Neck / Middle Peninsula
+        "westmoreland":    "Westmoreland",
+        "northumberland":  "Northumberland",
+        "lancaster":       "Lancaster",
+        "essex":           "Essex",
+        "richmond county": "Richmond County",
+        "middlesex":       "Middlesex",
+        "gloucester":      "Gloucester",
+        "mathews":         "Mathews",
+        # Northern Virginia
+        "fairfax":         "Fairfax",
+        "fairfax city":    "Fairfax City",
+        "arlington":       "Arlington",
+        "alexandria":      "Alexandria City",
+        "loudoun":         "Loudoun",
+        "prince william":  "Prince William",
+        "manassas":        "Manassas City",
+        # SW Virginia
+        "pulaski":         "Pulaski",
+        "giles":           "Giles",
+        "bland":           "Bland",
+        "smyth":           "Smyth",
+        "wythe":           "Wythe",
+        "grayson":         "Grayson",
+        "carroll":         "Carroll",
+        "galax":           "Galax City",
+        "washington":      "Washington",
+        "bristol":         "Bristol City",
+        "scott":           "Scott",
+        "lee":             "Lee",
+        "wise":            "Wise",
+        "norton":          "Norton City",
+        "dickenson":       "Dickenson",
+        "buchanan":        "Buchanan",
+        "russell":         "Russell",
+        "tazewell":        "Tazewell",
+        # Other
+        "bath":            "Bath",
+        "highland":        "Highland",
+        "alleghany":       "Alleghany",
+        "rockbridge":      "Rockbridge",
+        "lexington":       "Lexington City",
+        "buena vista":     "Buena Vista City",
+        "craig":           "Craig",
+        "floyd":           "Floyd",
+        "goochland":       "Goochland",
+        "powhatan":        "Powhatan",
+        "buckingham":      "Buckingham",
+        "charlotte":       "Charlotte",
+        "lunenburg":       "Lunenburg",
+        "mecklenburg":     "Mecklenburg",
+        "brunswick":       "Brunswick",
+        "greensville":     "Greensville",
+        "emporia":         "Emporia City",
+        "dinwiddie":       "Dinwiddie",
+        "colonial heights":"Colonial Heights City",
+        "petersburg":      "Petersburg City",
+        "hopewell":        "Hopewell City",
+        "prince george":   "Prince George",
+        "charles city":    "Charles City",
+        "new kent":        "New Kent",
+        "surry":           "Surry",
+        "sussex":          "Sussex",
+        "accomack":        "Accomack",
+        "northampton":     "Northampton",
+        "york":            "York",
+        "james city":      "James City",
+        "williamsburg":    "Williamsburg City",
+        "poquoson":        "Poquoson City",
+        "hampton":         "Hampton City",
+        "newport news":    "Newport News City",
+        "norfolk":         "Norfolk City",
+        "virginia beach":  "Virginia Beach City",
+        "chesapeake":      "Chesapeake City",
+        "suffolk":         "Suffolk City",
+        "portsmouth":      "Portsmouth City",
+        "isle of wight":   "Isle of Wight",
+        "southampton":     "Southampton",
+        "franklin city":   "Franklin City",
+    }.get(county.lower(), "")   # return "" for unrecognised values — never title-case garbage
+
+
+# First words of valid Virginia county/city names (lowercase).
+# Used to validate text captured by the Circuit Court regex before
+# calling county_display() — filters out non-county phrases like
+# "Building For", "Entrance", etc.
+_VA_COUNTY_FIRST_WORDS = {
+    "stafford", "spotsylvania", "caroline", "fauquier", "culpeper",
+    "king", "hanover", "richmond", "chesterfield", "henrico", "louisa",
+    "roanoke", "salem", "botetourt", "bedford", "franklin", "montgomery",
+    "radford", "lynchburg", "campbell", "appomattox", "amherst",
+    "charlottesville", "albemarle", "fluvanna", "greene", "nelson",
+    "rockingham", "harrisonburg", "page", "shenandoah", "augusta",
+    "staunton", "waynesboro", "warren", "frederick", "winchester",
+    "clarke", "martinsville", "henry", "patrick", "danville",
+    "pittsylvania", "halifax", "westmoreland", "northumberland",
+    "lancaster", "essex", "middlesex", "gloucester", "mathews",
+    "fairfax", "arlington", "alexandria", "loudoun", "prince", "manassas",
+    "pulaski", "giles", "bland", "smyth", "wythe", "grayson", "carroll",
+    "galax", "washington", "bristol", "scott", "lee", "wise", "norton",
+    "dickenson", "buchanan", "russell", "tazewell", "bath", "highland",
+    "alleghany", "rockbridge", "lexington", "buena", "craig", "floyd",
+    "goochland", "powhatan", "buckingham", "charlotte", "lunenburg",
+    "mecklenburg", "brunswick", "greensville", "emporia", "dinwiddie",
+    "colonial", "petersburg", "hopewell", "surry", "sussex", "accomack",
+    "northampton", "york", "james", "williamsburg", "poquoson", "hampton",
+    "newport", "norfolk", "virginia", "chesapeake", "suffolk", "portsmouth",
+    "isle", "southampton", "fredericksburg", "new", "charles", "goochland",
+}
+
+
+def valid_va_county(raw: str) -> str:
+    """
+    Validate a county name captured by the Circuit Court regex.
+    Returns the county_display() result if the first word is a known
+    Virginia county/city first word; otherwise returns '' so garbage
+    phrases like 'Building For' or 'Entrance' are silently dropped.
+    """
+    if not raw:
+        return ""
+    first_word = raw.strip().split()[0].lower()
+    if first_word not in _VA_COUNTY_FIRST_WORDS:
+        return ""
+    return county_display(raw.lower()) or raw.strip().title()
 
 
 def county_city(county: str) -> str:

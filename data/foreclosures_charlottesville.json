@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-05-11T09:14:10",
+    "last_updated": "2026-05-11T11:17:47",
     "source": "https://dailyprogress.column.us/search?noticeType=Foreclosure+Sale",
     "total_count": 31,
     "new_today": 1
@@ -37,7 +37,7 @@
       "id": "fc-6007ae3a",
       "address": "620 PEA RIDGE ROAD",
       "city": "Stanardsville",
-      "county": "Building For",
+      "county": "",
       "zip": "22973",
       "stage": "auction",
       "property_type": "single-family",
@@ -45,7 +45,7 @@
       "asking_price": null,
       "sale_date": "2026-07-06",
       "sale_time": "9:30AM",
-      "sale_location": "Courthouse steps \u2014 verify with trustee",
+      "sale_location": "",
       "days_until_sale": 56,
       "notice_date": "2026-05-11",
       "days_in_foreclosure": 0,
@@ -145,7 +145,7 @@
       "id": "fc-3c3c4613",
       "address": "294 FAIRLANE DRIVE",
       "city": "Stanardsville",
-      "county": "Building For",
+      "county": "",
       "zip": "22973",
       "stage": "auction",
       "property_type": "single-family",
@@ -153,7 +153,7 @@
       "asking_price": null,
       "sale_date": "2026-07-06",
       "sale_time": "9:30AM",
-      "sale_location": "Courthouse steps \u2014 verify with trustee",
+      "sale_location": "",
       "days_until_sale": 56,
       "notice_date": "2026-05-11",
       "days_in_foreclosure": 0,

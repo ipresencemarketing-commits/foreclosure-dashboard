@@ -33,7 +33,7 @@ from scraper import (
     parse_sale_datetime, parse_original_principal,
     parse_deposit, parse_deed_of_trust_date,
     parse_lender, parse_trustee,
-    city_to_county, county_display, courthouse_location,
+    city_to_county, county_display, courthouse_location, valid_va_county,
 )
 
 # ── Config ──────────────────────────────────────────────────────────────────
@@ -279,7 +279,7 @@ def scrape() -> list:
                         raw_county = county_m.group(1).strip()
                         raw_county = re.sub(r'^(?:of|the|county|city)\s+', '', raw_county, flags=re.I).strip()
                         raw_county = " ".join(raw_county.split()[:2])
-                        county = county_display(raw_county.lower())
+                        county = valid_va_county(raw_county)
                     else:
                         county = ""
 
