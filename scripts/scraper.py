@@ -1067,69 +1067,43 @@ def scrape_column_us() -> list:
                     break
 
             # ── Capture individual notice detail URLs from the DOM ────────────
-            # Each notice card on Column.us has a link to its canonical detail
-            # page (the URL surfaced by the "Copy link" button on fredericksburg.com).
-            # These links appear in DOM order, which matches the text-block order
-            # we derive below, so we can zip them together 1-to-1.
-            #
-            # Selector: any <a> whose href contains "/notice/" (not just "/notices"
-            # nav links) — Column.us detail pages follow the pattern:
-            #   https://fredericksburg.column.us/notice/<slug>
-            #   https://fredericksburg.column.us/notices/<id>
+            # ── Extract per-notice data directly from DOM cards ───────────────
+            # Walk up from each notice link to its card container so text is
+            # scoped to exactly that one notice — no cross-notice bleed from
+            # body-text splitting.
             try:
-                notice_urls: list = page.evaluate("""
+                notice_data: list = page.evaluate("""
                     () => {
-                        const seen  = new Set();
-                        const links = document.querySelectorAll('a[href]');
-                        const out   = [];
-                        for (const a of links) {
+                        const seen = new Set();
+                        const out  = [];
+                        for (const a of document.querySelectorAll('a[href]')) {
                             const h = a.href || '';
-                            // Match /notice/<something> or /notices/<something>
-                            if (/\\/notice[s]?\\/[\\w-]+/i.test(h) && !seen.has(h)) {
-                                seen.add(h);
-                                out.push(h);
+                            if (!/\\/notice[s]?\\/[\\w-]+/i.test(h) || seen.has(h)) continue;
+                            seen.add(h);
+                            let el = a;
+                            for (let i = 0; i < 12 && el.parentElement; i++) {
+                                el = el.parentElement;
+                                if ((el.innerText || '').trim().length > 150) break;
                             }
+                            out.push({ url: h, text: (el.innerText || '').trim() });
                         }
                         return out;
                     }
                 """)
             except Exception as e:
-                log.debug(f"  Column.us: could not extract notice URLs from DOM: {e}")
-                notice_urls = []
+                log.debug(f"  Column.us: DOM card extraction failed: {e}")
+                notice_data = []
 
-            log.info(f"  Column.us: {len(notice_urls)} individual notice URL(s) found")
-
-            # ── Extract notices from full body text ───────────────────────────
-            # CSS class names vary between browser/headless renders (Tailwind
-            # purging, React hydration timing). Splitting by the newspaper
-            # header line is resilient to any DOM structure changes.
-            body_text = page.inner_text("body")
-
-            # Each notice block starts with "FREDERICKSBURG FREE-LANCE STAR"
-            raw_blocks = re.split(r"FREDERICKSBURG FREE-LANCE STAR", body_text, flags=re.I)
-            # First element is the page chrome (search form etc.) — drop it
-            notice_blocks = raw_blocks[1:]
-            total_blocks = len(notice_blocks)
-            log.info(f"  Column.us: {total_blocks} total listings found")
+            total_blocks = len(notice_data)
+            log.info(f"  Column.us: {total_blocks} notice card(s) found in DOM")
 
             kept = skipped_addr = 0
-            listing_num = 0
 
-            # Pair each notice block with its individual detail URL.
-            # Both sequences are in DOM order, so zip works 1-to-1.
-            # If the counts differ (DOM query missed some), fall back to the
-            # search page URL for unmatched blocks.
-            from itertools import zip_longest
-            block_url_pairs = zip_longest(notice_blocks, notice_urls, fillvalue=None)
-
-            for block_text, notice_url in block_url_pairs:
-                if not block_text:
-                    continue   # extra URL with no matching text block — skip
-                listing_num += 1
-                text = block_text.strip()
-
-                # Column.us already filters to "Foreclosure Sale" notices —
-                # no additional keyword filter needed here.
+            for listing_num, item in enumerate(notice_data, 1):
+                notice_url = item.get("url") or url
+                text       = item.get("text", "").strip()
+                if not text:
+                    continue
 
                 # ── Address ────────────────────────────────────────────────
                 addr_raw, street, city, zip_code = extract_address(text)
