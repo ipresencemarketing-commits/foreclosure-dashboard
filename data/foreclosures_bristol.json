@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-05-11T11:20:36",
+    "last_updated": "2026-05-11T14:51:01",
     "source": "https://heraldcourier.column.us/search?noticeType=Foreclosure+Sale",
     "total_count": 3,
     "new_today": 0
@@ -8,7 +8,7 @@
   "listings": [
     {
       "id": "fc-92344639",
-      "address": "14489 CHIP RIDGE RD",
+      "address": "14489 CHIP RIDGE RD, ABINGDON, VA 24210",
       "city": "Abingdon",
       "county": "",
       "zip": "24210",
@@ -35,7 +35,7 @@
     },
     {
       "id": "fc-da89a915",
-      "address": "29065 WINDING WAY",
+      "address": "29065 WINDING WAY, MEADOWVIEW, VA 24361",
       "city": "Meadowview",
       "county": "",
       "zip": "24361",
@@ -62,7 +62,7 @@
     },
     {
       "id": "fc-0ad8bb65",
-      "address": "2005 NEWTON STREET",
+      "address": "2005 NEWTON STREET, BRISTOL, VA 24201",
       "city": "Bristol",
       "county": "",
       "zip": "24201",

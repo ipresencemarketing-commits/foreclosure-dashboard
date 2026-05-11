@@ -1112,69 +1112,13 @@ def scrape_column_us() -> list:
                 # no additional keyword filter needed here.
 
                 # ── Address ────────────────────────────────────────────────
-                # Primary: match a Virginia street address directly.
-                # Handles all observed notice formats:
-                #   "TRUSTEE'S SALE OF 256 MANCHESTER DR, RUTHER GLEN, VA 22546 In execution..."
-                #   "Trustee's Sale 9422 WILDWOOD KNL FARM LN, SPOTSYLVANIA, VA 22551 (Parcel..."
-                #   "TRUSTEE'S SALE OF 12219 WARD RD, KING GEORGE, VA 22485"
-                #   "Trustee's Sale\n1 Saint Marys Lane, Stafford, Virginia 22556"  ← "Virginia" spelled out
-                # Pattern: house-number + street text + comma + city + ", VA/Virginia " + ZIP
-                addr_raw = None
-                direct_m = re.search(
-                    r"(\d+\s+[A-Z0-9][^,\n]{4,60},\s*[A-Z][^,\n]{1,35},\s*(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
-                    text, re.I
-                )
-                if direct_m:
-                    addr_raw = re.sub(r"\s+", " ", direct_m.group(1)).strip()
-
-                # Fallback A: "TRUSTEE'S SALE OF {address}" with flexible terminator
-                if not addr_raw:
-                    addr_m = re.search(
-                        r"TRUSTEE.{0,3}S\s+SALE\s+OF\s+([\w\d].*?)(?=\n\n|\n?In\s+execution|\nDefault|\(Parcel)",
-                        text, re.I | re.S
-                    )
-                    if addr_m:
-                        addr_raw = re.sub(r"\s+", " ", addr_m.group(1)).strip()
-
-                # Fallback B: "SUBSTITUTE TRUSTEE SALE / NOTICE\n{address}"
-                if not addr_raw:
-                    sub_m = re.search(
-                        r"(?:NOTICE OF )?SUBSTITUTE TRUSTEE.{0,10}SALE\s+([\w\d].*?)(?=\n\n|\n?In\s+execution|\nBy virtue)",
-                        text, re.I | re.S
-                    )
-                    if sub_m:
-                        addr_raw = re.sub(r"\s+", " ", sub_m.group(1)).strip()
-
-                # Fallback C: "Trustee's Sale\n{address}" — address on its own line, no "OF"
-                # Seen in notices like: "Trustee's Sale\n1 Saint Marys Lane, Stafford, Virginia 22556"
-                if not addr_raw:
-                    newline_m = re.search(
-                        r"TRUSTEE.{0,3}S\s+SALE\s*\n\s*(\d+\s+[A-Z0-9][^,\n]{4,60},\s*[A-Z][^,\n]{1,35},\s*(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
-                        text, re.I
-                    )
-                    if newline_m:
-                        addr_raw = re.sub(r"\s+", " ", newline_m.group(1)).strip()
+                addr_raw, street, city, zip_code = extract_address(text)
 
                 if not addr_raw:
                     snippet = re.sub(r'\s+', ' ', text[:100]).strip()
                     log.info(f"  [{listing_num}/{total_blocks}] SKIPPED — reason: no address found | snippet: {snippet!r}")
                     skipped_addr += 1
                     continue
-
-                # Parse "Street, City, ST/State ZIP" from address line
-                # Handles both "VA" and "Virginia" as state
-                parsed = re.match(
-                    r"^(.*?),\s*([^,]+),\s*(?:VA|Virginia)\s+(\d{5}(?:-\d{4})?)",
-                    addr_raw, re.I
-                )
-                if parsed:
-                    street   = parsed.group(1).strip()
-                    city     = parsed.group(2).strip()
-                    zip_code = parsed.group(3)
-                else:
-                    street   = addr_raw[:80]
-                    city     = ""
-                    zip_code = None
 
                 # Derive county — best effort, not used as a filter
                 county = city_to_county(city)
@@ -1218,7 +1162,7 @@ def scrape_column_us() -> list:
                 )
                 listings.append({
                     "id":               make_id(street, sale_date),
-                    "address":          street,
+                    "address":          addr_raw,
                     "city":             city.title(),
                     "county":           county,
                     "zip":              zip_code,
@@ -1656,6 +1600,75 @@ def parse_price(text: str):
     """Parse a dollar amount string into an integer."""
     match = re.search(r"\$([\d,]+)", text)
     return int(match.group(1).replace(",", "")) if match else None
+
+
+def extract_address(text: str):
+    """
+    Extract full address (street, city, VA, ZIP) from foreclosure notice text.
+
+    Returns (addr_raw, street, city, zip_code) or (None, None, None, None).
+
+    Tries four patterns in priority order:
+      1. Direct: house number + street + city + VA + ZIP anywhere in text
+      2. TRUSTEE'S SALE OF <address VA ZIP>
+      3. SUBSTITUTE TRUSTEE SALE <address VA ZIP>  (handles "OF SUBSTITUTE..." prefix)
+      4. TRUSTEE'S SALE newline then address on next line
+    """
+    addr_raw = None
+
+    # Pattern 1 — Direct: house# street, city, VA/Virginia XXXXX
+    m = re.search(
+        r"(\d+\s+[A-Z0-9][^,\n]{4,60},\s*[A-Z][^,\n]{1,35},\s*(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
+        text, re.I
+    )
+    if m:
+        addr_raw = re.sub(r"\s+", " ", m.group(1)).strip()
+
+    # Pattern 2 — TRUSTEE'S SALE OF <address incl VA ZIP>
+    if not addr_raw:
+        m = re.search(
+            r"TRUSTEE.{0,3}S\s+SALE\s+OF\s+(\d+[^\n]*?(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
+            text, re.I
+        )
+        if m:
+            addr_raw = re.sub(r"\s+", " ", m.group(1)).strip()
+
+    # Pattern 3 — (OF) (NOTICE OF) SUBSTITUTE TRUSTEE SALE <address incl VA ZIP>
+    if not addr_raw:
+        m = re.search(
+            r"(?:OF\s+)?(?:NOTICE\s+OF\s+)?SUBSTITUTE\s+TRUSTEE.{0,10}SALE\s+(\d+[^\n]*?(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
+            text, re.I
+        )
+        if m:
+            addr_raw = re.sub(r"\s+", " ", m.group(1)).strip()
+
+    # Pattern 4 — TRUSTEE'S SALE newline, address on next line
+    if not addr_raw:
+        m = re.search(
+            r"TRUSTEE.{0,3}S\s+SALE\s*\n\s*(\d+\s+[A-Z0-9][^,\n]{4,60},\s*[A-Z][^,\n]{1,35},\s*(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
+            text, re.I
+        )
+        if m:
+            addr_raw = re.sub(r"\s+", " ", m.group(1)).strip()
+
+    if not addr_raw:
+        return None, None, None, None
+
+    # Parse components from full address
+    parsed = re.match(
+        r"^(.*?),\s*([^,]+),\s*(?:VA|Virginia)\s+(\d{5}(?:-\d{4})?)",
+        addr_raw, re.I
+    )
+    if parsed:
+        street   = parsed.group(1).strip()
+        city     = parsed.group(2).strip()
+        zip_code = parsed.group(3)
+    else:
+        street   = addr_raw[:80]
+        city     = ""
+        zip_code = None
+
+    return addr_raw, street, city, zip_code
 
 
 # ---------------------------------------------------------------------------

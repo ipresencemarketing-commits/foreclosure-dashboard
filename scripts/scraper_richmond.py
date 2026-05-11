@@ -34,6 +34,7 @@ from scraper import (
     parse_deposit, parse_deed_of_trust_date,
     parse_lender, parse_trustee,
     city_to_county, county_display, courthouse_location, valid_va_county,
+    extract_address,
 )
 
 # ── Config ──────────────────────────────────────────────────────────────────
@@ -208,63 +209,13 @@ def scrape() -> list:
                 text = block_text.strip()
 
                 # ── Address extraction ─────────────────────────────────────
-                # Same 4-pattern logic as the Fredericksburg scraper.
-                addr_raw = None
-
-                # Primary: house number + street + city + VA/Virginia + ZIP
-                direct_m = re.search(
-                    r"(\d+\s+[A-Z0-9][^,\n]{4,60},\s*[A-Z][^,\n]{1,35},\s*(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
-                    text, re.I
-                )
-                if direct_m:
-                    addr_raw = re.sub(r"\s+", " ", direct_m.group(1)).strip()
-
-                # Fallback A: TRUSTEE'S SALE OF {address}
-                if not addr_raw:
-                    addr_m = re.search(
-                        r"TRUSTEE.{0,3}S\s+SALE\s+OF\s+([\w\d].*?)(?=\n\n|\n?In\s+execution|\nDefault|\(Parcel)",
-                        text, re.I | re.S
-                    )
-                    if addr_m:
-                        addr_raw = re.sub(r"\s+", " ", addr_m.group(1)).strip()
-
-                # Fallback B: SUBSTITUTE TRUSTEE SALE {address}
-                if not addr_raw:
-                    sub_m = re.search(
-                        r"(?:NOTICE OF )?SUBSTITUTE TRUSTEE.{0,10}SALE\s+([\w\d].*?)(?=\n\n|\n?In\s+execution|\nBy virtue)",
-                        text, re.I | re.S
-                    )
-                    if sub_m:
-                        addr_raw = re.sub(r"\s+", " ", sub_m.group(1)).strip()
-
-                # Fallback C: Trustee's Sale\n{address} — address on its own line
-                if not addr_raw:
-                    newline_m = re.search(
-                        r"TRUSTEE.{0,3}S\s+SALE\s*\n\s*(\d+\s+[A-Z0-9][^,\n]{4,60},\s*[A-Z][^,\n]{1,35},\s*(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
-                        text, re.I
-                    )
-                    if newline_m:
-                        addr_raw = re.sub(r"\s+", " ", newline_m.group(1)).strip()
+                addr_raw, street, city, zip_code = extract_address(text)
 
                 if not addr_raw:
                     snippet = re.sub(r'\s+', ' ', text[:100]).strip()
                     log.info(f"  [{listing_num}/{total_blocks}] SKIPPED — no address | snippet: {snippet!r}")
                     skipped_addr += 1
                     continue
-
-                # Parse street / city / ZIP from address line
-                parsed = re.match(
-                    r"^(.*?),\s*([^,]+),\s*(?:VA|Virginia)\s+(\d{5}(?:-\d{4})?)",
-                    addr_raw, re.I
-                )
-                if parsed:
-                    street   = parsed.group(1).strip()
-                    city     = parsed.group(2).strip()
-                    zip_code = parsed.group(3)
-                else:
-                    street   = addr_raw[:80]
-                    city     = ""
-                    zip_code = None
 
                 # Derive county from city; fall back to Circuit Court mention in text
                 county = city_to_county(city)
@@ -298,7 +249,7 @@ def scrape() -> list:
                 )
                 listings.append({
                     "id":                  make_id(street, sale_date),
-                    "address":             street,
+                    "address":             addr_raw,
                     "city":                city.title(),
                     "county":              county,
                     "zip":                 zip_code,

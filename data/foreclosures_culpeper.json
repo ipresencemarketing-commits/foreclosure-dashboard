@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-05-11T11:16:46",
+    "last_updated": "2026-05-11T14:47:14",
     "source": "https://starexponent.column.us/search?noticeType=Foreclosure+Sale",
     "total_count": 6,
     "new_today": 0
@@ -8,7 +8,7 @@
   "listings": [
     {
       "id": "fc-fecfd12b",
-      "address": "15160 Douglas Street",
+      "address": "15160 Douglas Street, Culpeper, VA 22701",
       "city": "Culpeper",
       "county": "Culpeper",
       "zip": "22701",
@@ -35,7 +35,7 @@
     },
     {
       "id": "fc-fecfd12b",
-      "address": "15160 Douglas Street",
+      "address": "15160 Douglas Street, Culpeper, VA 22701",
       "city": "Culpeper",
       "county": "Culpeper",
       "zip": "22701",
@@ -62,7 +62,7 @@
     },
     {
       "id": "fc-86abb24d",
-      "address": "2278 Blue Spruce Dr",
+      "address": "2278 Blue Spruce Dr, Culpeper, VA 22701",
       "city": "Culpeper",
       "county": "Culpeper",
       "zip": "22701",
@@ -89,7 +89,7 @@
     },
     {
       "id": "fc-543721e4",
-      "address": "11457 Homeland Rd",
+      "address": "11457 Homeland Rd, Rixeyville, VA 22737",
       "city": "Rixeyville",
       "county": "",
       "zip": "22737",
@@ -116,7 +116,7 @@
     },
     {
       "id": "fc-86abb24d",
-      "address": "2278 Blue Spruce Dr",
+      "address": "2278 Blue Spruce Dr, Culpeper, VA 22701",
       "city": "Culpeper",
       "county": "Culpeper",
       "zip": "22701",
@@ -143,7 +143,7 @@
     },
     {
       "id": "fc-543721e4",
-      "address": "11457 Homeland Rd",
+      "address": "11457 Homeland Rd, Rixeyville, VA 22737",
       "city": "Rixeyville",
       "county": "",
       "zip": "22737",

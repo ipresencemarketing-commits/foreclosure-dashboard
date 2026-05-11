@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-05-11T11:16:31",
+    "last_updated": "2026-05-11T14:46:59",
     "source": "https://richmond.column.us/search?noticeType=Foreclosure+Sale",
     "total_count": 209,
     "new_today": 0
@@ -8,7 +8,7 @@
   "listings": [
     {
       "id": "fc-c04dca58",
-      "address": "2806 Virginia Street",
+      "address": "2806 Virginia Street, Hopewell, VA 23860",
       "city": "Hopewell",
       "county": "",
       "zip": "23860",
@@ -35,7 +35,7 @@
     },
     {
       "id": "fc-ef74a214",
-      "address": "2711 Cheatham Street",
+      "address": "2711 Cheatham Street, Richmond, VA 23234",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23234",
@@ -62,7 +62,7 @@
     },
     {
       "id": "fc-ef08eac1",
-      "address": "3600 CEDAR MANOR ROAD",
+      "address": "3600 CEDAR MANOR ROAD, RICHMOND, VA 23223",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23223",
@@ -89,7 +89,7 @@
     },
     {
       "id": "fc-5aaf5ce2",
-      "address": "13404 QUEEN STREET",
+      "address": "13404 QUEEN STREET, DISPUTANTA, VA 23842",
       "city": "Disputanta",
       "county": "",
       "zip": "23842",
@@ -116,7 +116,7 @@
     },
     {
       "id": "fc-50258d53",
-      "address": "4011 Barth Road",
+      "address": "4011 Barth Road, Richmond, Virginia 23234",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23234",
@@ -143,7 +143,7 @@
     },
     {
       "id": "fc-a8f32e98",
-      "address": "2506 Blackburn Road",
+      "address": "2506 Blackburn Road, Glen Allen, VA 23060",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23060",
@@ -170,7 +170,7 @@
     },
     {
       "id": "fc-a8e28158",
-      "address": "2800 Buford Road",
+      "address": "2800 Buford Road, Suite 201 Richmond, VA 23235",
       "city": "Suite 201 Richmond",
       "county": "Richmond City",
       "zip": "23235",
@@ -197,7 +197,7 @@
     },
     {
       "id": "fc-b3f883b0",
-      "address": "4007 West End Drive",
+      "address": "4007 West End Drive, Henrico, VA 23294",
       "city": "Henrico",
       "county": "",
       "zip": "23294",
@@ -224,7 +224,7 @@
     },
     {
       "id": "fc-1be430dc",
-      "address": "9737 Graves Road",
+      "address": "9737 Graves Road, South Chesterfield, VA 23803",
       "city": "South Chesterfield",
       "county": "Chesterfield",
       "zip": "23803",
@@ -251,7 +251,7 @@
     },
     {
       "id": "fc-ee5817e0",
-      "address": "2910 TRIPLE NOTCH COURT",
+      "address": "2910 TRIPLE NOTCH COURT, HENRICO, VA 23233",
       "city": "Henrico",
       "county": "",
       "zip": "23233",
@@ -278,7 +278,7 @@
     },
     {
       "id": "fc-cbb22934",
-      "address": "7704 Hungary Woods Place",
+      "address": "7704 Hungary Woods Place, Glen Allen, VA 23060",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23060",
@@ -305,7 +305,7 @@
     },
     {
       "id": "fc-d16e24c1",
-      "address": "4639 HAWORTH ROAD",
+      "address": "4639 HAWORTH ROAD, RICHMOND, VA 23234",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23234",
@@ -332,7 +332,7 @@
     },
     {
       "id": "fc-13598efa",
-      "address": "8205 DIANE LANE",
+      "address": "8205 DIANE LANE, RICHMOND, VA 23227",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23227",
@@ -359,7 +359,7 @@
     },
     {
       "id": "fc-adfc7393",
-      "address": "400 N. 9th Street",
+      "address": "400 N. 9th Street, Richmond, Virginia 23219",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23219",
@@ -386,7 +386,7 @@
     },
     {
       "id": "fc-433c95f5",
-      "address": "8300 CHURCH LANE",
+      "address": "8300 CHURCH LANE, CHARLES CITY, VA 23030",
       "city": "Charles City",
       "county": "",
       "zip": "23030",
@@ -413,7 +413,7 @@
     },
     {
       "id": "fc-49c7216c",
-      "address": "6530 HAGUEMAN DR",
+      "address": "6530 HAGUEMAN DR, RICHMOND, VA 23225",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23225",
@@ -440,7 +440,7 @@
     },
     {
       "id": "fc-f14497dc",
-      "address": "234 TROLL LANE",
+      "address": "234 TROLL LANE, WAVERLY, VA 23890",
       "city": "Waverly",
       "county": "",
       "zip": "23890",
@@ -467,7 +467,7 @@
     },
     {
       "id": "fc-ced23752",
-      "address": "2008 HIGHLAND DRIVE",
+      "address": "2008 HIGHLAND DRIVE, POWHATAN, VA 23139",
       "city": "Powhatan",
       "county": "",
       "zip": "23139",
@@ -494,7 +494,7 @@
     },
     {
       "id": "fc-d54ba52c",
-      "address": "227 Ellisville Dr",
+      "address": "227 Ellisville Dr, Louisa, VA 23093",
       "city": "Louisa",
       "county": "Louisa",
       "zip": "23093",
@@ -521,7 +521,7 @@
     },
     {
       "id": "fc-5d01e16d",
-      "address": "3209 Stockton Street",
+      "address": "3209 Stockton Street, Richmond, VA 23224",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23224",
@@ -548,7 +548,7 @@
     },
     {
       "id": "fc-d98a9bcf",
-      "address": "7411 DUNCAN ROAD",
+      "address": "7411 DUNCAN ROAD, PETERSBURG A/R/T/A NORTH DINWIDDIE, VA 23803",
       "city": "Petersburg A/R/T/A North Dinwiddie",
       "county": "",
       "zip": "23803",
@@ -575,7 +575,7 @@
     },
     {
       "id": "fc-dbb79dae",
-      "address": "4080 BASSWOOD RD",
+      "address": "4080 BASSWOOD RD, DISPUTANTA, VA 23842",
       "city": "Disputanta",
       "county": "",
       "zip": "23842",
@@ -602,7 +602,7 @@
     },
     {
       "id": "fc-8abd8a48",
-      "address": "5805 MEADOWVIEW DR",
+      "address": "5805 MEADOWVIEW DR, SOUTH CHESTERFIELD, VA 23803",
       "city": "South Chesterfield",
       "county": "Chesterfield",
       "zip": "23803",
@@ -629,7 +629,7 @@
     },
     {
       "id": "fc-de982bdf",
-      "address": "1309 TREE RIDGE ROAD",
+      "address": "1309 TREE RIDGE ROAD, RICHMOND A/R/T/A HENRICO, VA 23231",
       "city": "Richmond A/R/T/A Henrico",
       "county": "Richmond City",
       "zip": "23231",
@@ -656,7 +656,7 @@
     },
     {
       "id": "fc-33b17811",
-      "address": "2849 OAK POINT LANE",
+      "address": "2849 OAK POINT LANE, RICHMOND, VA 23233",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23233",
@@ -683,7 +683,7 @@
     },
     {
       "id": "fc-2218fddf",
-      "address": "11454 RIVER RUN DRIVE",
+      "address": "11454 RIVER RUN DRIVE, GLEN ALLEN, VA 23059",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23059",
@@ -710,7 +710,7 @@
     },
     {
       "id": "fc-a17ca2c3",
-      "address": "4601 EANES LANE",
+      "address": "4601 EANES LANE, HENRICO, VA 23231",
       "city": "Henrico",
       "county": "",
       "zip": "23231",
@@ -737,7 +737,7 @@
     },
     {
       "id": "fc-6e73c181",
-      "address": "10972 ELMONT WOODS DRIVE",
+      "address": "10972 ELMONT WOODS DRIVE, GLEN ALLEN, VA 23059",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23059",
@@ -764,7 +764,7 @@
     },
     {
       "id": "fc-4b7c6bd0",
-      "address": "11804 BRITAIN WAY",
+      "address": "11804 BRITAIN WAY, HENRICO, VA 23238",
       "city": "Henrico",
       "county": "",
       "zip": "23238",
@@ -791,7 +791,7 @@
     },
     {
       "id": "fc-bf5a9cc3",
-      "address": "2481 FALKLAND ROAD",
+      "address": "2481 FALKLAND ROAD, MEHERRIN, VA 23954",
       "city": "Meherrin",
       "county": "",
       "zip": "23954",
@@ -818,7 +818,7 @@
     },
     {
       "id": "fc-0cd7b9b6",
-      "address": "701 QUARTERPATH LANE",
+      "address": "701 QUARTERPATH LANE, SOUTH CHESTERFIELD I/R/T/A COLONIAL HEIGHT, VA 23834",
       "city": "South Chesterfield I/R/T/A Colonial Height",
       "county": "Chesterfield",
       "zip": "23834",
@@ -845,7 +845,7 @@
     },
     {
       "id": "fc-cda6c2e7",
-      "address": "8700 HERMITAGE TRACE CIRCLE",
+      "address": "8700 HERMITAGE TRACE CIRCLE, RICHMOND A/R/T/A HENRICO, VA 23228",
       "city": "Richmond A/R/T/A Henrico",
       "county": "Richmond City",
       "zip": "23228",
@@ -872,7 +872,7 @@
     },
     {
       "id": "fc-3747e075",
-      "address": "27 Seaboard Street",
+      "address": "27 Seaboard Street, Petersburg, Virginia 23803",
       "city": "Petersburg",
       "county": "",
       "zip": "23803",
@@ -899,7 +899,7 @@
     },
     {
       "id": "fc-fc7a0a59",
-      "address": "2965 MOUNTAIN ROAD",
+      "address": "2965 MOUNTAIN ROAD, GLEN ALLEN, VA 23060",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23060",
@@ -926,7 +926,7 @@
     },
     {
       "id": "fc-318eeab0",
-      "address": "3413 MAURY STREET",
+      "address": "3413 MAURY STREET, RICHMOND, VA 23224",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23224",
@@ -953,7 +953,7 @@
     },
     {
       "id": "fc-362a0e3f",
-      "address": "2321 BURNLEY AVENUE",
+      "address": "2321 BURNLEY AVENUE, HENRICO, VA 23228",
       "city": "Henrico",
       "county": "",
       "zip": "23228",
@@ -980,7 +980,7 @@
     },
     {
       "id": "fc-747cc758",
-      "address": "10006 MOULTRIE ROAD",
+      "address": "10006 MOULTRIE ROAD, GLEN ALLEN, VA 23060",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23060",
@@ -1007,7 +1007,7 @@
     },
     {
       "id": "fc-58db2de7",
-      "address": "4604 COURTHOUSE ROAD",
+      "address": "4604 COURTHOUSE ROAD, PRINCE GEORGE, VA 23875",
       "city": "Prince George",
       "county": "",
       "zip": "23875",
@@ -1034,7 +1034,7 @@
     },
     {
       "id": "fc-ef929182",
-      "address": "8279 CARNEAL LANE",
+      "address": "8279 CARNEAL LANE, MECHANICSVILLE, VA 23111",
       "city": "Mechanicsville",
       "county": "Hanover",
       "zip": "23111",
@@ -1061,7 +1061,7 @@
     },
     {
       "id": "fc-55a84057",
-      "address": "18024 JONES RUN TRAIL",
+      "address": "18024 JONES RUN TRAIL, MOSELEY, VA 23120",
       "city": "Moseley",
       "county": "",
       "zip": "23120",
@@ -1088,7 +1088,7 @@
     },
     {
       "id": "fc-e001d761",
-      "address": "404 Bancroft Avenue",
+      "address": "404 Bancroft Avenue, Richmond, VA 23222",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23222",
@@ -1115,7 +1115,7 @@
     },
     {
       "id": "fc-7f6ccc32",
-      "address": "348 ARGYLL CIRCLE",
+      "address": "348 ARGYLL CIRCLE, HIGHLAND SPRINGS, VA 23075",
       "city": "Highland Springs",
       "county": "Henrico",
       "zip": "23075",
@@ -1142,7 +1142,7 @@
     },
     {
       "id": "fc-956f6510",
-      "address": "10320 COURTHOUSE ROAD",
+      "address": "10320 COURTHOUSE ROAD, CHARLES CITY, VA 23030",
       "city": "Charles City",
       "county": "",
       "zip": "23030",
@@ -1169,7 +1169,7 @@
     },
     {
       "id": "fc-21462c5d",
-      "address": "22 RODES AVENUE",
+      "address": "22 RODES AVENUE, SANDSTON, VA 23150",
       "city": "Sandston",
       "county": "Henrico",
       "zip": "23150",
@@ -1196,7 +1196,7 @@
     },
     {
       "id": "fc-23194667",
-      "address": "6003 BELRUN PLACE",
+      "address": "6003 BELRUN PLACE, NORTH CHESTERFIELD A/R/T/A RICHMOND, VA 23234",
       "city": "North Chesterfield A/R/T/A Richmond",
       "county": "Richmond City",
       "zip": "23234",
@@ -1223,7 +1223,7 @@
     },
     {
       "id": "fc-78ff9018",
-      "address": "504 MANGO CT",
+      "address": "504 MANGO CT, RICHMOND, VA 23223",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23223",
@@ -1250,7 +1250,7 @@
     },
     {
       "id": "fc-c5544061",
-      "address": "8201 HUNGARY ROAD",
+      "address": "8201 HUNGARY ROAD, GLEN ALLEN, VA 23060",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23060",
@@ -1277,7 +1277,7 @@
     },
     {
       "id": "fc-19ed5232",
-      "address": "200 SEATON DRIVE",
+      "address": "200 SEATON DRIVE, RICHMOND A/R/T/A HENRICO, VA 23223",
       "city": "Richmond A/R/T/A Henrico",
       "county": "Richmond City",
       "zip": "23223",
@@ -1304,7 +1304,7 @@
     },
     {
       "id": "fc-d341d187",
-      "address": "4513 BROOKRIDGE ROAD",
+      "address": "4513 BROOKRIDGE ROAD, CHESTERFIELD, VA 23832",
       "city": "Chesterfield",
       "county": "Chesterfield",
       "zip": "23832",
@@ -1331,7 +1331,7 @@
     },
     {
       "id": "fc-c63f9bac",
-      "address": "6 W CLAY STREET",
+      "address": "6 W CLAY STREET, RICHMOND, VA 23220",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23220",
@@ -1358,7 +1358,7 @@
     },
     {
       "id": "fc-b5192d95",
-      "address": "1005 HASKELL STREET",
+      "address": "1005 HASKELL STREET, HOPEWELL, VA 23860",
       "city": "Hopewell",
       "county": "",
       "zip": "23860",
@@ -1385,7 +1385,7 @@
     },
     {
       "id": "fc-1dcbdd84",
-      "address": "8317 FULHAM COURT",
+      "address": "8317 FULHAM COURT, RICHMOND, VA 23227",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23227",
@@ -1412,7 +1412,7 @@
     },
     {
       "id": "fc-dfe87b0e",
-      "address": "9397 E PATRICK HENRY ROAD",
+      "address": "9397 E PATRICK HENRY ROAD, ASHLAND, VA 23005",
       "city": "Ashland",
       "county": "Hanover",
       "zip": "23005",
@@ -1439,7 +1439,7 @@
     },
     {
       "id": "fc-ea7f6a00",
-      "address": "1512 MANGROVE BAY TERRACE",
+      "address": "1512 MANGROVE BAY TERRACE, CHESTER, VA 23836",
       "city": "Chester",
       "county": "Chesterfield",
       "zip": "23836",
@@ -1466,7 +1466,7 @@
     },
     {
       "id": "fc-80746155",
-      "address": "4601 HOPKINS ROAD",
+      "address": "4601 HOPKINS ROAD, RICHMOND, VA 23234",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23234",
@@ -1493,7 +1493,7 @@
     },
     {
       "id": "fc-06f24720",
-      "address": "1220 W HIGH STREET",
+      "address": "1220 W HIGH STREET, PETERSBURG, VA 23803",
       "city": "Petersburg",
       "county": "",
       "zip": "23803",
@@ -1520,7 +1520,7 @@
     },
     {
       "id": "fc-1ba68c27",
-      "address": "12575 Webb Road",
+      "address": "12575 Webb Road, Disputanta, VA 23842",
       "city": "Disputanta",
       "county": "",
       "zip": "23842",
@@ -1547,7 +1547,7 @@
     },
     {
       "id": "fc-c04dca58",
-      "address": "2806 Virginia Street",
+      "address": "2806 Virginia Street, Hopewell, VA 23860",
       "city": "Hopewell",
       "county": "",
       "zip": "23860",
@@ -1574,7 +1574,7 @@
     },
     {
       "id": "fc-283a117c",
-      "address": "605 Lynnhaven Parkway",
+      "address": "605 Lynnhaven Parkway, Suite 100 Virginia Beach, VA 23452",
       "city": "Suite 100 Virginia Beach",
       "county": "",
       "zip": "23452",
@@ -1601,7 +1601,7 @@
     },
     {
       "id": "fc-9139dafd",
-      "address": "10368 HOMEBOUND RD",
+      "address": "10368 HOMEBOUND RD, ASHLAND, VA 23005",
       "city": "Ashland",
       "county": "Hanover",
       "zip": "23005",
@@ -1628,7 +1628,7 @@
     },
     {
       "id": "fc-a8e28158",
-      "address": "2800 Buford Road",
+      "address": "2800 Buford Road, Suite 201 Richmond, VA 23235",
       "city": "Suite 201 Richmond",
       "county": "Richmond City",
       "zip": "23235",
@@ -1655,7 +1655,7 @@
     },
     {
       "id": "fc-b3f883b0",
-      "address": "4007 West End Drive",
+      "address": "4007 West End Drive, Henrico, VA 23294",
       "city": "Henrico",
       "county": "",
       "zip": "23294",
@@ -1682,7 +1682,7 @@
     },
     {
       "id": "fc-1be430dc",
-      "address": "9737 Graves Road",
+      "address": "9737 Graves Road, South Chesterfield, VA 23803",
       "city": "South Chesterfield",
       "county": "Chesterfield",
       "zip": "23803",
@@ -1709,7 +1709,7 @@
     },
     {
       "id": "fc-6fe86150",
-      "address": "13781 SANDY POINT ROAD",
+      "address": "13781 SANDY POINT ROAD, CHARLES CITY, VA 23030",
       "city": "Charles City",
       "county": "",
       "zip": "23030",
@@ -1736,7 +1736,7 @@
     },
     {
       "id": "fc-ef74a214",
-      "address": "2711 Cheatham Street",
+      "address": "2711 Cheatham Street, Richmond, VA 23234",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23234",
@@ -1763,7 +1763,7 @@
     },
     {
       "id": "fc-cbb22934",
-      "address": "7704 Hungary Woods Place",
+      "address": "7704 Hungary Woods Place, Glen Allen, VA 23060",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23060",
@@ -1790,7 +1790,7 @@
     },
     {
       "id": "fc-49c7216c",
-      "address": "6530 HAGUEMAN DR",
+      "address": "6530 HAGUEMAN DR, RICHMOND, VA 23225",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23225",
@@ -1817,7 +1817,7 @@
     },
     {
       "id": "fc-adfc7393",
-      "address": "400 N. 9th Street",
+      "address": "400 N. 9th Street, Richmond, Virginia 23219",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23219",
@@ -1844,7 +1844,7 @@
     },
     {
       "id": "fc-f6bcb1df",
-      "address": "8060 PEBBLEPATH PARKWAY",
+      "address": "8060 PEBBLEPATH PARKWAY, MECHANICSVILLE, VA 23111",
       "city": "Mechanicsville",
       "county": "Hanover",
       "zip": "23111",
@@ -1871,7 +1871,7 @@
     },
     {
       "id": "fc-046b68ea",
-      "address": "3417 COURTHOUSE RD",
+      "address": "3417 COURTHOUSE RD, HOPEWELL, VA 23860",
       "city": "Hopewell",
       "county": "",
       "zip": "23860",
@@ -1898,7 +1898,7 @@
     },
     {
       "id": "fc-7b12d526",
-      "address": "2384 A RED LANE ROAD",
+      "address": "2384 A RED LANE ROAD, POWHATAN, VIRGINIA 23139",
       "city": "Powhatan",
       "county": "",
       "zip": "23139",
@@ -1925,7 +1925,7 @@
     },
     {
       "id": "fc-0a089be4",
-      "address": "100 West Main Street",
+      "address": "100 West Main Street, Louisa, VA 23093",
       "city": "Louisa",
       "county": "Louisa",
       "zip": "23093",
@@ -1952,7 +1952,7 @@
     },
     {
       "id": "fc-dc18e2f4",
-      "address": "510 OLD TOWN DRIVE, NO. 510",
+      "address": "510 OLD TOWN DRIVE, NO. 510, COLONIAL HEIGHTS, VA 23834",
       "city": "Colonial Heights",
       "county": "",
       "zip": "23834",
@@ -1979,7 +1979,7 @@
     },
     {
       "id": "fc-ced23752",
-      "address": "2008 HIGHLAND DRIVE",
+      "address": "2008 HIGHLAND DRIVE, POWHATAN, VA 23139",
       "city": "Powhatan",
       "county": "",
       "zip": "23139",
@@ -2006,7 +2006,7 @@
     },
     {
       "id": "fc-a9c83351",
-      "address": "2117 BISHOP STREET",
+      "address": "2117 BISHOP STREET, PETERSBURG, VA 23805",
       "city": "Petersburg",
       "county": "",
       "zip": "23805",
@@ -2033,7 +2033,7 @@
     },
     {
       "id": "fc-8edb83ca",
-      "address": "9813 COLEMANS LAKE ROAD",
+      "address": "9813 COLEMANS LAKE ROAD, FORD, VA 23850",
       "city": "Ford",
       "county": "",
       "zip": "23850",
@@ -2059,8 +2059,35 @@
       "is_new": false
     },
     {
+      "id": "fc-9c8f5aa3",
+      "address": "8406 MACANDREW TERRACE, CHESTERFIELD, VA 23838",
+      "city": "Chesterfield",
+      "county": "Chesterfield",
+      "zip": "23838",
+      "stage": "auction",
+      "property_type": "single-family",
+      "assessed_value": null,
+      "asking_price": null,
+      "sale_date": "2026-06-22",
+      "sale_time": "2:30PM",
+      "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
+      "days_until_sale": 42,
+      "notice_date": "2026-05-11",
+      "days_in_foreclosure": 0,
+      "lender": "chase",
+      "trustee": null,
+      "original_principal": "$374,100.00",
+      "deposit": null,
+      "deed_of_trust_date": "2016-02-01",
+      "notice_text": "Foreclosure Sale TRUSTEE\u2019S SALE OF 8406 MACANDREW TERRACE, CHESTERFIELD, VA 23838 In execution of a certain Deed of Trust dated February 1, 2016, in the original principal amount of $374,100.00 recorded in the Clerk\u2019s Office, Circuit Court for Chesterfield County, Virginia, in Book 11123 at Page 0304 as Instrument No. 4041. The undersigned Substitute Trustee will offer for sale at public auction in the front of the Circuit Court building for the City of Richmond, John Marshall Courts Building, 400 North 9th Street, Richmond, Virginia, on June 22, 2026, at 2:30 PM, the property described in said Deed of Trust, located at the above address, and more particularly described as follows: ALL THAT CERTAIN LOT. PIECE OR PARCEL OF LAND, WITH IMPROVEMENTS THEREON AND APPURTENANCES THERETO, BELONGING, LYING AND BEING IN DALE DISTRICT, CHESTERFIELD COUNTY, VIRGINIA, KNOWN, NUMBERED AND DESIGNATED AS LOT 33, ON THAT CERTAIN PLAT ENTITLED `ALLERDICE AT THE HIGHLANDS. DALE DISTRICT, CHESTERFIELD COUNTY, VIRGINIA. MADE BY CHARLES C. TOWNES & ASSOCIATES, P.C., CIVIL ENGINEERS, PLANNERS, LAND SURVEYORS, DATED MAY 10, 2002. REVISED JULY 24, 2002. DECEMBER 27, 2002, AND FEBRUARY 13. 2003 AND RECORDED MARCH 31, 2003 IN THE CLERK`S OFFICE, CIRCUIT COURT, CHESTERFIELD COUNTY, VIRGINIA IN PLAT BOOK 133, PAGES 1 THROUGH 5, TO WHICH PLAT REFERENCE IS HEREBY MADE FOR A MORE PARTICULAR DESCRIPTION OF THE PROPERTY HEREIN CONVEYED. TERMS OF SALE: ALL CASH. A bidder\u2019s deposit of ten percent (10%) of the sale price or ten percent (10%) of the original principal balance of the subject Deed of Trust, whichever is lower, in the form of cash or certified funds payable to the Substitute Trustee must be present at the time of the sale. The balance of the purchase price will be due within fifteen (15) days of sale, otherwise Purchaser\u2019s deposit may be forfeited to Trustee. Time is of the essence. If the sale is set aside for any reason, the Purchaser at the sale shall be entitled to a return of the deposit paid. The Purchaser may, if provided by the terms of the Trustee\u2019s Memorandum of Foreclosure Sale, be entitled to a $50 cancellation fee from the Substitute Trustee, but shall have no further recourse against the Mortgagor, the Mortgagee or the Mortgagee\u2019s attorney. A form copy of the Trustee\u2019s memorandum of foreclosure sale and contract to purchase real property is available for viewing at www.aldridgepite.com. Additional terms, if any, to be announced at the sale and the Purchaser may be given the option to execute the contract of sale electronically. This is a communication from a debt collector and any information obtained will be used for that purpose. The sale is subject to seller confirmation. Substitute Trustee: Equity Trustees, LLC, 8100 Three Chopt Road, Suite 240, Richmond, VA 23229. If you have any questions or concerns, please contact the Virginia Pre-Sale Department of counsel for Equity Trustees, LLC at 301-961-6555, website: www.aldridgepite.com. VA-383271-1. COL-7006606 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-30",
+      "source": "column_us_richmond",
+      "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale",
+      "first_seen": "2026-05-08",
+      "is_new": false
+    },
+    {
       "id": "fc-fe4c0aa2",
-      "address": "3809 JAMESTOWN DRIVE",
+      "address": "3809 JAMESTOWN DRIVE, HOPEWELL, VA 23860",
       "city": "Hopewell",
       "county": "",
       "zip": "23860",
@@ -2087,7 +2114,7 @@
     },
     {
       "id": "fc-5e8c57de",
-      "address": "830 WEAVER ROAD",
+      "address": "830 WEAVER ROAD, GREEN BAY, VA 23942",
       "city": "Green Bay",
       "county": "",
       "zip": "23942",
@@ -2113,35 +2140,8 @@
       "is_new": false
     },
     {
-      "id": "fc-9c8f5aa3",
-      "address": "8406 MACANDREW TERRACE",
-      "city": "Chesterfield",
-      "county": "Chesterfield",
-      "zip": "23838",
-      "stage": "auction",
-      "property_type": "single-family",
-      "assessed_value": null,
-      "asking_price": null,
-      "sale_date": "2026-06-22",
-      "sale_time": "2:30PM",
-      "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 42,
-      "notice_date": "2026-05-11",
-      "days_in_foreclosure": 0,
-      "lender": "chase",
-      "trustee": null,
-      "original_principal": "$374,100.00",
-      "deposit": null,
-      "deed_of_trust_date": "2016-02-01",
-      "notice_text": "Foreclosure Sale TRUSTEE\u2019S SALE OF 8406 MACANDREW TERRACE, CHESTERFIELD, VA 23838 In execution of a certain Deed of Trust dated February 1, 2016, in the original principal amount of $374,100.00 recorded in the Clerk\u2019s Office, Circuit Court for Chesterfield County, Virginia, in Book 11123 at Page 0304 as Instrument No. 4041. The undersigned Substitute Trustee will offer for sale at public auction in the front of the Circuit Court building for the City of Richmond, John Marshall Courts Building, 400 North 9th Street, Richmond, Virginia, on June 22, 2026, at 2:30 PM, the property described in said Deed of Trust, located at the above address, and more particularly described as follows: ALL THAT CERTAIN LOT. PIECE OR PARCEL OF LAND, WITH IMPROVEMENTS THEREON AND APPURTENANCES THERETO, BELONGING, LYING AND BEING IN DALE DISTRICT, CHESTERFIELD COUNTY, VIRGINIA, KNOWN, NUMBERED AND DESIGNATED AS LOT 33, ON THAT CERTAIN PLAT ENTITLED `ALLERDICE AT THE HIGHLANDS. DALE DISTRICT, CHESTERFIELD COUNTY, VIRGINIA. MADE BY CHARLES C. TOWNES & ASSOCIATES, P.C., CIVIL ENGINEERS, PLANNERS, LAND SURVEYORS, DATED MAY 10, 2002. REVISED JULY 24, 2002. DECEMBER 27, 2002, AND FEBRUARY 13. 2003 AND RECORDED MARCH 31, 2003 IN THE CLERK`S OFFICE, CIRCUIT COURT, CHESTERFIELD COUNTY, VIRGINIA IN PLAT BOOK 133, PAGES 1 THROUGH 5, TO WHICH PLAT REFERENCE IS HEREBY MADE FOR A MORE PARTICULAR DESCRIPTION OF THE PROPERTY HEREIN CONVEYED. TERMS OF SALE: ALL CASH. A bidder\u2019s deposit of ten percent (10%) of the sale price or ten percent (10%) of the original principal balance of the subject Deed of Trust, whichever is lower, in the form of cash or certified funds payable to the Substitute Trustee must be present at the time of the sale. The balance of the purchase price will be due within fifteen (15) days of sale, otherwise Purchaser\u2019s deposit may be forfeited to Trustee. Time is of the essence. If the sale is set aside for any reason, the Purchaser at the sale shall be entitled to a return of the deposit paid. The Purchaser may, if provided by the terms of the Trustee\u2019s Memorandum of Foreclosure Sale, be entitled to a $50 cancellation fee from the Substitute Trustee, but shall have no further recourse against the Mortgagor, the Mortgagee or the Mortgagee\u2019s attorney. A form copy of the Trustee\u2019s memorandum of foreclosure sale and contract to purchase real property is available for viewing at www.aldridgepite.com. Additional terms, if any, to be announced at the sale and the Purchaser may be given the option to execute the contract of sale electronically. This is a communication from a debt collector and any information obtained will be used for that purpose. The sale is subject to seller confirmation. Substitute Trustee: Equity Trustees, LLC, 8100 Three Chopt Road, Suite 240, Richmond, VA 23229. If you have any questions or concerns, please contact the Virginia Pre-Sale Department of counsel for Equity Trustees, LLC at 301-961-6555, website: www.aldridgepite.com. VA-383271-1. COL-7006606 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-30",
-      "source": "column_us_richmond",
-      "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale",
-      "first_seen": "2026-05-08",
-      "is_new": false
-    },
-    {
       "id": "fc-3459ddee",
-      "address": "607 POLLOCK ST",
+      "address": "607 POLLOCK ST, RICHMOND, VA 23222",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23222",
@@ -2168,7 +2168,7 @@
     },
     {
       "id": "fc-d54ba52c",
-      "address": "227 Ellisville Dr",
+      "address": "227 Ellisville Dr, Louisa, VA 23093",
       "city": "Louisa",
       "county": "Louisa",
       "zip": "23093",
@@ -2195,7 +2195,7 @@
     },
     {
       "id": "fc-c22b90bf",
-      "address": "4446 Kings Bishop Road",
+      "address": "4446 Kings Bishop Road, Henrico, Virginia 23231",
       "city": "Henrico",
       "county": "",
       "zip": "23231",
@@ -2222,7 +2222,7 @@
     },
     {
       "id": "fc-1a85b415",
-      "address": "10340 Charleston Road",
+      "address": "10340 Charleston Road, Mechanicsville, Virginia 23116",
       "city": "Mechanicsville",
       "county": "Hanover",
       "zip": "23116",
@@ -2249,7 +2249,7 @@
     },
     {
       "id": "fc-eadfc6c9",
-      "address": "24210 Millen Dr TRUSTEE SALE 24210 Millen Dr",
+      "address": "24210 Millen Dr TRUSTEE SALE 24210 Millen Dr, Amelia Court House, VA 23002",
       "city": "Amelia Court House",
       "county": "",
       "zip": "23002",
@@ -2276,7 +2276,7 @@
     },
     {
       "id": "fc-98031a71",
-      "address": "8601 ERIKA HILL DRIVE",
+      "address": "8601 ERIKA HILL DRIVE, MIDLOTHIAN, VA 23112",
       "city": "Midlothian",
       "county": "Chesterfield",
       "zip": "23112",
@@ -2303,7 +2303,7 @@
     },
     {
       "id": "fc-fdd2e2b1",
-      "address": "9085 WILLIAMSVILLE ROAD",
+      "address": "9085 WILLIAMSVILLE ROAD, MECHANICSVILLE, VA 23116",
       "city": "Mechanicsville",
       "county": "Hanover",
       "zip": "23116",
@@ -2330,7 +2330,7 @@
     },
     {
       "id": "fc-42107be3",
-      "address": "2204 N 21ST STREET",
+      "address": "2204 N 21ST STREET, RICHMOND, VA 23223",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23223",
@@ -2357,7 +2357,7 @@
     },
     {
       "id": "fc-8abd8a48",
-      "address": "5805 MEADOWVIEW DR",
+      "address": "5805 MEADOWVIEW DR, SOUTH CHESTERFIELD, VA 23803",
       "city": "South Chesterfield",
       "county": "Chesterfield",
       "zip": "23803",
@@ -2384,7 +2384,7 @@
     },
     {
       "id": "fc-dc661ccd",
-      "address": "3016 Heather Ridge Drive",
+      "address": "3016 Heather Ridge Drive, Henrico, Virginia 23231",
       "city": "Henrico",
       "county": "",
       "zip": "23231",
@@ -2411,7 +2411,7 @@
     },
     {
       "id": "fc-5d01e16d",
-      "address": "3209 Stockton Street",
+      "address": "3209 Stockton Street, Richmond, VA 23224",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23224",
@@ -2438,7 +2438,7 @@
     },
     {
       "id": "fc-dbb79dae",
-      "address": "4080 BASSWOOD RD",
+      "address": "4080 BASSWOOD RD, DISPUTANTA, VA 23842",
       "city": "Disputanta",
       "county": "",
       "zip": "23842",
@@ -2465,7 +2465,7 @@
     },
     {
       "id": "fc-3747e075",
-      "address": "27 Seaboard Street",
+      "address": "27 Seaboard Street, Petersburg, Virginia 23803",
       "city": "Petersburg",
       "county": "",
       "zip": "23803",
@@ -2492,7 +2492,7 @@
     },
     {
       "id": "fc-4ef907ff",
-      "address": "2611 NORTHWIND DRIVE",
+      "address": "2611 NORTHWIND DRIVE, HENRICO, VA 23233",
       "city": "Henrico",
       "county": "",
       "zip": "23233",
@@ -2519,7 +2519,7 @@
     },
     {
       "id": "fc-ef929182",
-      "address": "8279 CARNEAL LANE",
+      "address": "8279 CARNEAL LANE, MECHANICSVILLE, VA 23111",
       "city": "Mechanicsville",
       "county": "Hanover",
       "zip": "23111",
@@ -2546,7 +2546,7 @@
     },
     {
       "id": "fc-c63f9bac",
-      "address": "6 W CLAY STREET",
+      "address": "6 W CLAY STREET, RICHMOND, VA 23220",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23220",
@@ -2573,7 +2573,7 @@
     },
     {
       "id": "fc-b5192d95",
-      "address": "1005 HASKELL STREET",
+      "address": "1005 HASKELL STREET, HOPEWELL, VA 23860",
       "city": "Hopewell",
       "county": "",
       "zip": "23860",
@@ -2600,7 +2600,7 @@
     },
     {
       "id": "fc-362a0e3f",
-      "address": "2321 BURNLEY AVENUE",
+      "address": "2321 BURNLEY AVENUE, HENRICO, VA 23228",
       "city": "Henrico",
       "county": "",
       "zip": "23228",
@@ -2627,7 +2627,7 @@
     },
     {
       "id": "fc-ea7f6a00",
-      "address": "1512 MANGROVE BAY TERRACE",
+      "address": "1512 MANGROVE BAY TERRACE, CHESTER, VA 23836",
       "city": "Chester",
       "county": "Chesterfield",
       "zip": "23836",
@@ -2654,7 +2654,7 @@
     },
     {
       "id": "fc-747cc758",
-      "address": "10006 MOULTRIE ROAD",
+      "address": "10006 MOULTRIE ROAD, GLEN ALLEN, VA 23060",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23060",
@@ -2681,7 +2681,7 @@
     },
     {
       "id": "fc-f473317c",
-      "address": "10206 NATURAL BRIDGE ROAD",
+      "address": "10206 NATURAL BRIDGE ROAD, RICHMOND, VA 23236",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23236",
@@ -2708,7 +2708,7 @@
     },
     {
       "id": "fc-c8575894",
-      "address": "517 BYSWICK LANE",
+      "address": "517 BYSWICK LANE, RICHMOND, VA 23225",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23225",
@@ -2735,7 +2735,7 @@
     },
     {
       "id": "fc-a8f32e98",
-      "address": "2506 Blackburn Road",
+      "address": "2506 Blackburn Road, Glen Allen, VA 23060",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23060",
@@ -2762,7 +2762,7 @@
     },
     {
       "id": "fc-d740b33d",
-      "address": "14003 Fortunes Ridge",
+      "address": "14003 Fortunes Ridge, Midlothian, VA 23112",
       "city": "Midlothian",
       "county": "Chesterfield",
       "zip": "23112",
@@ -2789,7 +2789,7 @@
     },
     {
       "id": "fc-f4563754",
-      "address": "5540 Kingsland Road",
+      "address": "5540 Kingsland Road, North Chesterfield, VA 23237",
       "city": "North Chesterfield",
       "county": "Chesterfield",
       "zip": "23237",
@@ -2816,7 +2816,7 @@
     },
     {
       "id": "fc-b432845d",
-      "address": "8404 PAMELA DRIVE",
+      "address": "8404 PAMELA DRIVE, RICHMOND A/R/T/A HENRICO, VA 23229",
       "city": "Richmond A/R/T/A Henrico",
       "county": "Richmond City",
       "zip": "23229",
@@ -2843,7 +2843,7 @@
     },
     {
       "id": "fc-e001d761",
-      "address": "404 Bancroft Avenue",
+      "address": "404 Bancroft Avenue, Richmond, VA 23222",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23222",
@@ -2870,7 +2870,7 @@
     },
     {
       "id": "fc-6d098fd4",
-      "address": "8391 SUMMER WALK PKWY",
+      "address": "8391 SUMMER WALK PKWY, MECHANICSVILLE, VA 23116",
       "city": "Mechanicsville",
       "county": "Hanover",
       "zip": "23116",
@@ -2897,7 +2897,7 @@
     },
     {
       "id": "fc-d341d187",
-      "address": "4513 BROOKRIDGE ROAD",
+      "address": "4513 BROOKRIDGE ROAD, CHESTERFIELD, VA 23832",
       "city": "Chesterfield",
       "county": "Chesterfield",
       "zip": "23832",
@@ -2924,7 +2924,7 @@
     },
     {
       "id": "fc-318eeab0",
-      "address": "3413 MAURY STREET",
+      "address": "3413 MAURY STREET, RICHMOND, VA 23224",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23224",
@@ -2951,7 +2951,7 @@
     },
     {
       "id": "fc-33b17811",
-      "address": "2849 OAK POINT LANE",
+      "address": "2849 OAK POINT LANE, RICHMOND, VA 23233",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23233",
@@ -2978,7 +2978,7 @@
     },
     {
       "id": "fc-1dcbdd84",
-      "address": "8317 FULHAM COURT",
+      "address": "8317 FULHAM COURT, RICHMOND, VA 23227",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23227",
@@ -3005,7 +3005,7 @@
     },
     {
       "id": "fc-dfe87b0e",
-      "address": "9397 E PATRICK HENRY ROAD",
+      "address": "9397 E PATRICK HENRY ROAD, ASHLAND, VA 23005",
       "city": "Ashland",
       "county": "Hanover",
       "zip": "23005",
@@ -3032,7 +3032,7 @@
     },
     {
       "id": "fc-ae367be9",
-      "address": "4300 HOLLY FORK ROAD",
+      "address": "4300 HOLLY FORK ROAD, BARHAMSVILLE, VA 23011",
       "city": "Barhamsville",
       "county": "",
       "zip": "23011",
@@ -3059,7 +3059,7 @@
     },
     {
       "id": "fc-80746155",
-      "address": "4601 HOPKINS ROAD",
+      "address": "4601 HOPKINS ROAD, RICHMOND, VA 23234",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23234",
@@ -3086,7 +3086,7 @@
     },
     {
       "id": "fc-bb824bba",
-      "address": "4141 SUSSEX DRIVE",
+      "address": "4141 SUSSEX DRIVE, CHESTERFIELD, VA 23832",
       "city": "Chesterfield",
       "county": "Chesterfield",
       "zip": "23832",
@@ -3113,7 +3113,7 @@
     },
     {
       "id": "fc-27e7c00e",
-      "address": "222 Henry Clay Road",
+      "address": "222 Henry Clay Road, Ashland, VA 23005",
       "city": "Ashland",
       "county": "Hanover",
       "zip": "23005",
@@ -3140,7 +3140,7 @@
     },
     {
       "id": "fc-1ba68c27",
-      "address": "12575 Webb Road",
+      "address": "12575 Webb Road, Disputanta, VA 23842",
       "city": "Disputanta",
       "county": "",
       "zip": "23842",
@@ -3167,7 +3167,7 @@
     },
     {
       "id": "fc-ab6602a0",
-      "address": "10302 GENTION PL",
+      "address": "10302 GENTION PL, CHESTERFIELD, VA 23832",
       "city": "Chesterfield",
       "county": "Chesterfield",
       "zip": "23832",
@@ -3194,7 +3194,7 @@
     },
     {
       "id": "fc-283a117c",
-      "address": "605 Lynnhaven Parkway",
+      "address": "605 Lynnhaven Parkway, Suite 100 Virginia Beach, VA 23452",
       "city": "Suite 100 Virginia Beach",
       "county": "",
       "zip": "23452",
@@ -3221,7 +3221,7 @@
     },
     {
       "id": "fc-9e88913e",
-      "address": "3241 RANSOM HILLS ROAD",
+      "address": "3241 RANSOM HILLS ROAD, NORTH CHESTERFIELD, VA 23237",
       "city": "North Chesterfield",
       "county": "Chesterfield",
       "zip": "23237",
@@ -3248,7 +3248,7 @@
     },
     {
       "id": "fc-21b3a9c5",
-      "address": "7337 CHATEAUGAY LANE",
+      "address": "7337 CHATEAUGAY LANE, MIDLOTHIAN, VA 23112",
       "city": "Midlothian",
       "county": "Chesterfield",
       "zip": "23112",
@@ -3275,7 +3275,7 @@
     },
     {
       "id": "fc-0eae0618",
-      "address": "31 Cosner Road",
+      "address": "31 Cosner Road, Louisa, VA 23093",
       "city": "Louisa",
       "county": "Louisa",
       "zip": "23093",
@@ -3302,7 +3302,7 @@
     },
     {
       "id": "fc-bf983e82",
-      "address": "2808 SINGLETARY COURT",
+      "address": "2808 SINGLETARY COURT, RICHMOND, VA 23223",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23223",
@@ -3329,7 +3329,7 @@
     },
     {
       "id": "fc-a9c83351",
-      "address": "2117 BISHOP STREET",
+      "address": "2117 BISHOP STREET, PETERSBURG, VA 23805",
       "city": "Petersburg",
       "county": "",
       "zip": "23805",
@@ -3356,7 +3356,7 @@
     },
     {
       "id": "fc-8edb83ca",
-      "address": "9813 COLEMANS LAKE ROAD",
+      "address": "9813 COLEMANS LAKE ROAD, FORD, VA 23850",
       "city": "Ford",
       "county": "",
       "zip": "23850",
@@ -3383,7 +3383,7 @@
     },
     {
       "id": "fc-3459ddee",
-      "address": "607 POLLOCK ST",
+      "address": "607 POLLOCK ST, RICHMOND, VA 23222",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23222",
@@ -3409,8 +3409,35 @@
       "is_new": false
     },
     {
+      "id": "fc-9c8f5aa3",
+      "address": "8406 MACANDREW TERRACE, CHESTERFIELD, VA 23838",
+      "city": "Chesterfield",
+      "county": "Chesterfield",
+      "zip": "23838",
+      "stage": "auction",
+      "property_type": "single-family",
+      "assessed_value": null,
+      "asking_price": null,
+      "sale_date": "2026-06-22",
+      "sale_time": "2:30PM",
+      "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
+      "days_until_sale": 42,
+      "notice_date": "2026-05-11",
+      "days_in_foreclosure": 0,
+      "lender": "chase",
+      "trustee": null,
+      "original_principal": "$374,100.00",
+      "deposit": null,
+      "deed_of_trust_date": "2016-02-01",
+      "notice_text": "Foreclosure Sale TRUSTEE\u2019S SALE OF 8406 MACANDREW TERRACE, CHESTERFIELD, VA 23838 In execution of a certain Deed of Trust dated February 1, 2016, in the original principal amount of $374,100.00 recorded in the Clerk\u2019s Office, Circuit Court for Chesterfield County, Virginia, in Book 11123 at Page 0304 as Instrument No. 4041. The undersigned Substitute Trustee will offer for sale at public auction in the front of the Circuit Court building for the City of Richmond, John Marshall Courts Building, 400 North 9th Street, Richmond, Virginia, on June 22, 2026, at 2:30 PM, the property described in said Deed of Trust, located at the above address, and more particularly described as follows: ALL THAT CERTAIN LOT. PIECE OR PARCEL OF LAND, WITH IMPROVEMENTS THEREON AND APPURTENANCES THERETO, BELONGING, LYING AND BEING IN DALE DISTRICT, CHESTERFIELD COUNTY, VIRGINIA, KNOWN, NUMBERED AND DESIGNATED AS LOT 33, ON THAT CERTAIN PLAT ENTITLED `ALLERDICE AT THE HIGHLANDS. DALE DISTRICT, CHESTERFIELD COUNTY, VIRGINIA. MADE BY CHARLES C. TOWNES & ASSOCIATES, P.C., CIVIL ENGINEERS, PLANNERS, LAND SURVEYORS, DATED MAY 10, 2002. REVISED JULY 24, 2002. DECEMBER 27, 2002, AND FEBRUARY 13. 2003 AND RECORDED MARCH 31, 2003 IN THE CLERK`S OFFICE, CIRCUIT COURT, CHESTERFIELD COUNTY, VIRGINIA IN PLAT BOOK 133, PAGES 1 THROUGH 5, TO WHICH PLAT REFERENCE IS HEREBY MADE FOR A MORE PARTICULAR DESCRIPTION OF THE PROPERTY HEREIN CONVEYED. TERMS OF SALE: ALL CASH. A bidder\u2019s deposit of ten percent (10%) of the sale price or ten percent (10%) of the original principal balance of the subject Deed of Trust, whichever is lower, in the form of cash or certified funds payable to the Substitute Trustee must be present at the time of the sale. The balance of the purchase price will be due within fifteen (15) days of sale, otherwise Purchaser\u2019s deposit may be forfeited to Trustee. Time is of the essence. If the sale is set aside for any reason, the Purchaser at the sale shall be entitled to a return of the deposit paid. The Purchaser may, if provided by the terms of the Trustee\u2019s Memorandum of Foreclosure Sale, be entitled to a $50 cancellation fee from the Substitute Trustee, but shall have no further recourse against the Mortgagor, the Mortgagee or the Mortgagee\u2019s attorney. A form copy of the Trustee\u2019s memorandum of foreclosure sale and contract to purchase real property is available for viewing at www.aldridgepite.com. Additional terms, if any, to be announced at the sale and the Purchaser may be given the option to execute the contract of sale electronically. This is a communication from a debt collector and any information obtained will be used for that purpose. The sale is subject to seller confirmation. Substitute Trustee: Equity Trustees, LLC, 8100 Three Chopt Road, Suite 240, Richmond, VA 23229. If you have any questions or concerns, please contact the Virginia Pre-Sale Department of counsel for Equity Trustees, LLC at 301-961-6555, website: www.aldridgepite.com. VA-383271-1. COL-7006606 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-23",
+      "source": "column_us_richmond",
+      "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale",
+      "first_seen": "2026-05-08",
+      "is_new": false
+    },
+    {
       "id": "fc-cbb22934",
-      "address": "7704 Hungary Woods Place",
+      "address": "7704 Hungary Woods Place, Glen Allen, VA 23060",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23060",
@@ -3437,7 +3464,7 @@
     },
     {
       "id": "fc-0a089be4",
-      "address": "100 West Main Street",
+      "address": "100 West Main Street, Louisa, VA 23093",
       "city": "Louisa",
       "county": "Louisa",
       "zip": "23093",
@@ -3464,7 +3491,7 @@
     },
     {
       "id": "fc-d326e072",
-      "address": "10035 WYCLIFF ROAD",
+      "address": "10035 WYCLIFF ROAD, NORTH CHESTERFIELD, VA 23236",
       "city": "North Chesterfield",
       "county": "Chesterfield",
       "zip": "23236",
@@ -3490,35 +3517,8 @@
       "is_new": false
     },
     {
-      "id": "fc-9c8f5aa3",
-      "address": "8406 MACANDREW TERRACE",
-      "city": "Chesterfield",
-      "county": "Chesterfield",
-      "zip": "23838",
-      "stage": "auction",
-      "property_type": "single-family",
-      "assessed_value": null,
-      "asking_price": null,
-      "sale_date": "2026-06-22",
-      "sale_time": "2:30PM",
-      "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 42,
-      "notice_date": "2026-05-11",
-      "days_in_foreclosure": 0,
-      "lender": "chase",
-      "trustee": null,
-      "original_principal": "$374,100.00",
-      "deposit": null,
-      "deed_of_trust_date": "2016-02-01",
-      "notice_text": "Foreclosure Sale TRUSTEE\u2019S SALE OF 8406 MACANDREW TERRACE, CHESTERFIELD, VA 23838 In execution of a certain Deed of Trust dated February 1, 2016, in the original principal amount of $374,100.00 recorded in the Clerk\u2019s Office, Circuit Court for Chesterfield County, Virginia, in Book 11123 at Page 0304 as Instrument No. 4041. The undersigned Substitute Trustee will offer for sale at public auction in the front of the Circuit Court building for the City of Richmond, John Marshall Courts Building, 400 North 9th Street, Richmond, Virginia, on June 22, 2026, at 2:30 PM, the property described in said Deed of Trust, located at the above address, and more particularly described as follows: ALL THAT CERTAIN LOT. PIECE OR PARCEL OF LAND, WITH IMPROVEMENTS THEREON AND APPURTENANCES THERETO, BELONGING, LYING AND BEING IN DALE DISTRICT, CHESTERFIELD COUNTY, VIRGINIA, KNOWN, NUMBERED AND DESIGNATED AS LOT 33, ON THAT CERTAIN PLAT ENTITLED `ALLERDICE AT THE HIGHLANDS. DALE DISTRICT, CHESTERFIELD COUNTY, VIRGINIA. MADE BY CHARLES C. TOWNES & ASSOCIATES, P.C., CIVIL ENGINEERS, PLANNERS, LAND SURVEYORS, DATED MAY 10, 2002. REVISED JULY 24, 2002. DECEMBER 27, 2002, AND FEBRUARY 13. 2003 AND RECORDED MARCH 31, 2003 IN THE CLERK`S OFFICE, CIRCUIT COURT, CHESTERFIELD COUNTY, VIRGINIA IN PLAT BOOK 133, PAGES 1 THROUGH 5, TO WHICH PLAT REFERENCE IS HEREBY MADE FOR A MORE PARTICULAR DESCRIPTION OF THE PROPERTY HEREIN CONVEYED. TERMS OF SALE: ALL CASH. A bidder\u2019s deposit of ten percent (10%) of the sale price or ten percent (10%) of the original principal balance of the subject Deed of Trust, whichever is lower, in the form of cash or certified funds payable to the Substitute Trustee must be present at the time of the sale. The balance of the purchase price will be due within fifteen (15) days of sale, otherwise Purchaser\u2019s deposit may be forfeited to Trustee. Time is of the essence. If the sale is set aside for any reason, the Purchaser at the sale shall be entitled to a return of the deposit paid. The Purchaser may, if provided by the terms of the Trustee\u2019s Memorandum of Foreclosure Sale, be entitled to a $50 cancellation fee from the Substitute Trustee, but shall have no further recourse against the Mortgagor, the Mortgagee or the Mortgagee\u2019s attorney. A form copy of the Trustee\u2019s memorandum of foreclosure sale and contract to purchase real property is available for viewing at www.aldridgepite.com. Additional terms, if any, to be announced at the sale and the Purchaser may be given the option to execute the contract of sale electronically. This is a communication from a debt collector and any information obtained will be used for that purpose. The sale is subject to seller confirmation. Substitute Trustee: Equity Trustees, LLC, 8100 Three Chopt Road, Suite 240, Richmond, VA 23229. If you have any questions or concerns, please contact the Virginia Pre-Sale Department of counsel for Equity Trustees, LLC at 301-961-6555, website: www.aldridgepite.com. VA-383271-1. COL-7006606 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-23",
-      "source": "column_us_richmond",
-      "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale",
-      "first_seen": "2026-05-08",
-      "is_new": false
-    },
-    {
       "id": "fc-9549f330",
-      "address": "14204 FIDDLERS RIDGE PL",
+      "address": "14204 FIDDLERS RIDGE PL, MIDLOTHIAN, VA 23112-2524",
       "city": "Midlothian",
       "county": "Chesterfield",
       "zip": "23112-2524",
@@ -3545,7 +3545,7 @@
     },
     {
       "id": "fc-1a85b415",
-      "address": "10340 Charleston Road",
+      "address": "10340 Charleston Road, Mechanicsville, Virginia 23116",
       "city": "Mechanicsville",
       "county": "Hanover",
       "zip": "23116",
@@ -3572,7 +3572,7 @@
     },
     {
       "id": "fc-6daab370",
-      "address": "10868 White Dogwood Drive",
+      "address": "10868 White Dogwood Drive, Providence Forge, Virginia 23140",
       "city": "Providence Forge",
       "county": "",
       "zip": "23140",
@@ -3599,7 +3599,7 @@
     },
     {
       "id": "fc-39374771",
-      "address": "10321 Cheathams Rd",
+      "address": "10321 Cheathams Rd, Amelia Court House, VA 23002",
       "city": "Amelia Court House",
       "county": "",
       "zip": "23002",
@@ -3626,7 +3626,7 @@
     },
     {
       "id": "fc-09e66ddd",
-      "address": "127 N FERN AVE",
+      "address": "127 N FERN AVE, HENRICO, VA 23075",
       "city": "Henrico",
       "county": "",
       "zip": "23075",
@@ -3653,7 +3653,7 @@
     },
     {
       "id": "fc-2169560e",
-      "address": "12325 PETREL XING",
+      "address": "12325 PETREL XING, MIDLOTHIAN, VA 23112",
       "city": "Midlothian",
       "county": "Chesterfield",
       "zip": "23112",
@@ -3680,7 +3680,7 @@
     },
     {
       "id": "fc-42107be3",
-      "address": "2204 N 21ST STREET",
+      "address": "2204 N 21ST STREET, RICHMOND, VA 23223",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23223",
@@ -3707,7 +3707,7 @@
     },
     {
       "id": "fc-8abd8a48",
-      "address": "5805 MEADOWVIEW DR",
+      "address": "5805 MEADOWVIEW DR, SOUTH CHESTERFIELD, VA 23803",
       "city": "South Chesterfield",
       "county": "Chesterfield",
       "zip": "23803",
@@ -3734,7 +3734,7 @@
     },
     {
       "id": "fc-c22b90bf",
-      "address": "4446 Kings Bishop Road",
+      "address": "4446 Kings Bishop Road, Henrico, Virginia 23231",
       "city": "Henrico",
       "county": "",
       "zip": "23231",
@@ -3761,7 +3761,7 @@
     },
     {
       "id": "fc-dc661ccd",
-      "address": "3016 Heather Ridge Drive",
+      "address": "3016 Heather Ridge Drive, Henrico, Virginia 23231",
       "city": "Henrico",
       "county": "",
       "zip": "23231",
@@ -3788,7 +3788,7 @@
     },
     {
       "id": "fc-98031a71",
-      "address": "8601 ERIKA HILL DRIVE",
+      "address": "8601 ERIKA HILL DRIVE, MIDLOTHIAN, VA 23112",
       "city": "Midlothian",
       "county": "Chesterfield",
       "zip": "23112",
@@ -3815,7 +3815,7 @@
     },
     {
       "id": "fc-c496e0a7",
-      "address": "4225 FORDHAM ROAD",
+      "address": "4225 FORDHAM ROAD, NORTH CHESTERFIELD, VA 23236",
       "city": "North Chesterfield",
       "county": "Chesterfield",
       "zip": "23236",
@@ -3842,7 +3842,7 @@
     },
     {
       "id": "fc-c9e5481d",
-      "address": "4036 Bolling Road",
+      "address": "4036 Bolling Road, Richmond, VA 23223",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23223",
@@ -3869,7 +3869,7 @@
     },
     {
       "id": "fc-fdd2e2b1",
-      "address": "9085 WILLIAMSVILLE ROAD",
+      "address": "9085 WILLIAMSVILLE ROAD, MECHANICSVILLE, VA 23116",
       "city": "Mechanicsville",
       "county": "Hanover",
       "zip": "23116",
@@ -3896,7 +3896,7 @@
     },
     {
       "id": "fc-7a10e0f9",
-      "address": "2505 CORRYVILLE CT",
+      "address": "2505 CORRYVILLE CT , NORTH CHESTERFIELD, VA 23236",
       "city": "North Chesterfield",
       "county": "Chesterfield",
       "zip": "23236",
@@ -3923,7 +3923,7 @@
     },
     {
       "id": "fc-12c04cdb",
-      "address": "4086 Darbytown Road",
+      "address": "4086 Darbytown Road, Richmond, VA 23231",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23231",
@@ -3950,7 +3950,7 @@
     },
     {
       "id": "fc-f4563754",
-      "address": "5540 Kingsland Road",
+      "address": "5540 Kingsland Road, North Chesterfield, VA 23237",
       "city": "North Chesterfield",
       "county": "Chesterfield",
       "zip": "23237",
@@ -3977,7 +3977,7 @@
     },
     {
       "id": "fc-6d098fd4",
-      "address": "8391 SUMMER WALK PKWY",
+      "address": "8391 SUMMER WALK PKWY, MECHANICSVILLE, VA 23116",
       "city": "Mechanicsville",
       "county": "Hanover",
       "zip": "23116",
@@ -4004,7 +4004,7 @@
     },
     {
       "id": "fc-ddfa76f9",
-      "address": "7300 KEY DEER COURT",
+      "address": "7300 KEY DEER COURT, MIDLOTHIAN, VA 23112",
       "city": "Midlothian",
       "county": "Chesterfield",
       "zip": "23112",
@@ -4031,7 +4031,7 @@
     },
     {
       "id": "fc-6cfae93f",
-      "address": "1623 STONES ROAD",
+      "address": "1623 STONES ROAD, WALKERTON, VA 23177",
       "city": "Walkerton",
       "county": "",
       "zip": "23177",
@@ -4058,7 +4058,7 @@
     },
     {
       "id": "fc-54355c6d",
-      "address": "8653 MILLSTREAM DRIVE",
+      "address": "8653 MILLSTREAM DRIVE, RICHMOND, VA 23228",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23228",
@@ -4085,7 +4085,7 @@
     },
     {
       "id": "fc-53bb295e",
-      "address": "4030 WARWICK ROAD",
+      "address": "4030 WARWICK ROAD, RICHMOND, VA 23234",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23234",
@@ -4112,7 +4112,7 @@
     },
     {
       "id": "fc-80746155",
-      "address": "4601 HOPKINS ROAD",
+      "address": "4601 HOPKINS ROAD, RICHMOND, VA 23234",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23234",
@@ -4139,7 +4139,7 @@
     },
     {
       "id": "fc-4ef907ff",
-      "address": "2611 NORTHWIND DRIVE",
+      "address": "2611 NORTHWIND DRIVE, HENRICO, VA 23233",
       "city": "Henrico",
       "county": "",
       "zip": "23233",
@@ -4166,7 +4166,7 @@
     },
     {
       "id": "fc-95543cd1",
-      "address": "10300 SPRING RUN ROAD",
+      "address": "10300 SPRING RUN ROAD, CHESTERFIELD, VA 23832",
       "city": "Chesterfield",
       "county": "Chesterfield",
       "zip": "23832",
@@ -4193,7 +4193,7 @@
     },
     {
       "id": "fc-4a4b4a53",
-      "address": "6404 GOLDENROD COURT",
+      "address": "6404 GOLDENROD COURT, RICHMOND, VA 23231",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23231",
@@ -4220,7 +4220,7 @@
     },
     {
       "id": "fc-818ee63e",
-      "address": "1810 MAPLEWOOD AVENUE",
+      "address": "1810 MAPLEWOOD AVENUE, RICHMOND, VA 23220",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23220",
@@ -4247,7 +4247,7 @@
     },
     {
       "id": "fc-dbae116d",
-      "address": "3918 ROSEDALE AVENUE",
+      "address": "3918 ROSEDALE AVENUE, RICHMOND, VA 23227",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23227",
@@ -4274,7 +4274,7 @@
     },
     {
       "id": "fc-ae367be9",
-      "address": "4300 HOLLY FORK ROAD",
+      "address": "4300 HOLLY FORK ROAD, BARHAMSVILLE, VA 23011",
       "city": "Barhamsville",
       "county": "",
       "zip": "23011",
@@ -4301,7 +4301,7 @@
     },
     {
       "id": "fc-74de8058",
-      "address": "3412 CHAPEL DR",
+      "address": "3412 CHAPEL DR, RICHMOND, VA 23224",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23224",
@@ -4328,7 +4328,7 @@
     },
     {
       "id": "fc-bb824bba",
-      "address": "4141 SUSSEX DRIVE",
+      "address": "4141 SUSSEX DRIVE, CHESTERFIELD, VA 23832",
       "city": "Chesterfield",
       "county": "Chesterfield",
       "zip": "23832",
@@ -4355,7 +4355,7 @@
     },
     {
       "id": "fc-f473317c",
-      "address": "10206 NATURAL BRIDGE ROAD",
+      "address": "10206 NATURAL BRIDGE ROAD, RICHMOND, VA 23236",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23236",
@@ -4382,7 +4382,7 @@
     },
     {
       "id": "fc-c8575894",
-      "address": "517 BYSWICK LANE",
+      "address": "517 BYSWICK LANE, RICHMOND, VA 23225",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23225",
@@ -4409,7 +4409,7 @@
     },
     {
       "id": "fc-1ba68c27",
-      "address": "12575 Webb Road",
+      "address": "12575 Webb Road, Disputanta, VA 23842",
       "city": "Disputanta",
       "county": "",
       "zip": "23842",
@@ -4436,7 +4436,7 @@
     },
     {
       "id": "fc-27e7c00e",
-      "address": "222 Henry Clay Road",
+      "address": "222 Henry Clay Road, Ashland, VA 23005",
       "city": "Ashland",
       "county": "Hanover",
       "zip": "23005",
@@ -4463,7 +4463,7 @@
     },
     {
       "id": "fc-0291b719",
-      "address": "3812 RIDDLES BRIDGE ROAD",
+      "address": "3812 RIDDLES BRIDGE ROAD, GOOCHLAND, VA 23063",
       "city": "Goochland",
       "county": "",
       "zip": "23063",
@@ -4490,7 +4490,7 @@
     },
     {
       "id": "fc-9d4af7b6",
-      "address": "605 Lynnhaven Parkway",
+      "address": "605 Lynnhaven Parkway, Suite 100 Virginia Beach , VA 23452",
       "city": "Suite 100 Virginia Beach",
       "county": "",
       "zip": "23452",
@@ -4517,7 +4517,7 @@
     },
     {
       "id": "fc-0eae0618",
-      "address": "31 Cosner Road",
+      "address": "31 Cosner Road, Louisa, VA 23093",
       "city": "Louisa",
       "county": "Louisa",
       "zip": "23093",
@@ -4544,7 +4544,7 @@
     },
     {
       "id": "fc-0b56dee7",
-      "address": "1205 NORTH 31ST STREET",
+      "address": "1205 NORTH 31ST STREET, RICHMOND, VA 23223",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23223",
@@ -4571,7 +4571,7 @@
     },
     {
       "id": "fc-5456feb9",
-      "address": "10384 SLIDINGROCK DRIVE",
+      "address": "10384 SLIDINGROCK DRIVE, MECHANICSVILLE, VA 23116",
       "city": "Mechanicsville",
       "county": "Hanover",
       "zip": "23116",
@@ -4598,7 +4598,7 @@
     },
     {
       "id": "fc-cbb22934",
-      "address": "7704 Hungary Woods Place",
+      "address": "7704 Hungary Woods Place, Glen Allen, VA 23060",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23060",
@@ -4625,7 +4625,7 @@
     },
     {
       "id": "fc-0a089be4",
-      "address": "100 West Main Street",
+      "address": "100 West Main Street, Louisa, VA 23093",
       "city": "Louisa",
       "county": "Louisa",
       "zip": "23093",
@@ -4652,7 +4652,7 @@
     },
     {
       "id": "fc-9d4af7b6",
-      "address": "605 Lynnhaven Parkway",
+      "address": "605 Lynnhaven Parkway, Suite 100 Virginia Beach , VA 23452",
       "city": "Suite 100 Virginia Beach",
       "county": "",
       "zip": "23452",
@@ -4679,7 +4679,7 @@
     },
     {
       "id": "fc-9549f330",
-      "address": "14204 FIDDLERS RIDGE PL",
+      "address": "14204 FIDDLERS RIDGE PL, MIDLOTHIAN, VA 23112-2524",
       "city": "Midlothian",
       "county": "Chesterfield",
       "zip": "23112-2524",
@@ -4706,7 +4706,7 @@
     },
     {
       "id": "fc-ce7ce36b",
-      "address": "7432 TRAILING ROCK ROAD",
+      "address": "7432 TRAILING ROCK ROAD, PRINCE GEORGE, VA 23875",
       "city": "Prince George",
       "county": "",
       "zip": "23875",
@@ -4733,7 +4733,7 @@
     },
     {
       "id": "fc-46ee71d2",
-      "address": "3515 CHESDIN BOULEVARD",
+      "address": "3515 CHESDIN BOULEVARD, SUTHERLAND, VA 23885",
       "city": "Sutherland",
       "county": "",
       "zip": "23885",
@@ -4760,7 +4760,7 @@
     },
     {
       "id": "fc-09e66ddd",
-      "address": "127 N FERN AVE",
+      "address": "127 N FERN AVE, HENRICO, VA 23075",
       "city": "Henrico",
       "county": "",
       "zip": "23075",
@@ -4787,7 +4787,7 @@
     },
     {
       "id": "fc-7f8187d9",
-      "address": "1803 DINWIDDIE AVENUE",
+      "address": "1803 DINWIDDIE AVENUE, RICHMOND, VA 23224",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23224",
@@ -4814,7 +4814,7 @@
     },
     {
       "id": "fc-0a7abc67",
-      "address": "5926 E STONEPATH GARDEN DRIVE",
+      "address": "5926 E STONEPATH GARDEN DRIVE, CHESTER, VA 23831",
       "city": "Chester",
       "county": "Chesterfield",
       "zip": "23831",
@@ -4841,7 +4841,7 @@
     },
     {
       "id": "fc-2f815935",
-      "address": "3829 Pinewood Glen Lane",
+      "address": "3829 Pinewood Glen Lane, Richmond, VA 23223",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23223",
@@ -4868,7 +4868,7 @@
     },
     {
       "id": "fc-d9b9fe42",
-      "address": "9212 STEPHENS MANOR DRIVE",
+      "address": "9212 STEPHENS MANOR DRIVE, MECHANICSVILLE, VA 23116",
       "city": "Mechanicsville",
       "county": "Hanover",
       "zip": "23116",
@@ -4895,7 +4895,7 @@
     },
     {
       "id": "fc-2fa70867",
-      "address": "1881 SHALLOW WELL ROAD",
+      "address": "1881 SHALLOW WELL ROAD, MANAKIN SABOT, VA 23103",
       "city": "Manakin Sabot",
       "county": "",
       "zip": "23103",
@@ -4922,7 +4922,7 @@
     },
     {
       "id": "fc-c496e0a7",
-      "address": "4225 FORDHAM ROAD",
+      "address": "4225 FORDHAM ROAD, NORTH CHESTERFIELD, VA 23236",
       "city": "North Chesterfield",
       "county": "Chesterfield",
       "zip": "23236",
@@ -4949,7 +4949,7 @@
     },
     {
       "id": "fc-2ec5ae9f",
-      "address": "232 VIRGINIA AVENUE",
+      "address": "232 VIRGINIA AVENUE, COLONIAL HEIGHTS, VA 23834",
       "city": "Colonial Heights",
       "county": "",
       "zip": "23834",
@@ -4976,7 +4976,7 @@
     },
     {
       "id": "fc-6daab370",
-      "address": "10868 White Dogwood Drive",
+      "address": "10868 White Dogwood Drive, Providence Forge, Virginia 23140",
       "city": "Providence Forge",
       "county": "",
       "zip": "23140",
@@ -5003,7 +5003,7 @@
     },
     {
       "id": "fc-2169560e",
-      "address": "12325 PETREL XING",
+      "address": "12325 PETREL XING, MIDLOTHIAN, VA 23112",
       "city": "Midlothian",
       "county": "Chesterfield",
       "zip": "23112",
@@ -5030,7 +5030,7 @@
     },
     {
       "id": "fc-7af8fea0",
-      "address": "1513 LINCOLN PLACE",
+      "address": "1513 LINCOLN PLACE, HOPEWELL, VA 23860",
       "city": "Hopewell",
       "county": "",
       "zip": "23860",
@@ -5057,7 +5057,7 @@
     },
     {
       "id": "fc-8abd8a48",
-      "address": "5805 MEADOWVIEW DR",
+      "address": "5805 MEADOWVIEW DR, SOUTH CHESTERFIELD, VA 23803",
       "city": "South Chesterfield",
       "county": "Chesterfield",
       "zip": "23803",
@@ -5084,7 +5084,7 @@
     },
     {
       "id": "fc-7a10e0f9",
-      "address": "2505 CORRYVILLE CT",
+      "address": "2505 CORRYVILLE CT , NORTH CHESTERFIELD, VA 23236",
       "city": "North Chesterfield",
       "county": "Chesterfield",
       "zip": "23236",
@@ -5111,7 +5111,7 @@
     },
     {
       "id": "fc-12c04cdb",
-      "address": "4086 Darbytown Road",
+      "address": "4086 Darbytown Road, Richmond, VA 23231",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23231",
@@ -5138,7 +5138,7 @@
     },
     {
       "id": "fc-956f6510",
-      "address": "10320 COURTHOUSE ROAD",
+      "address": "10320 COURTHOUSE ROAD, CHARLES CITY, VA 23030",
       "city": "Charles City",
       "county": "",
       "zip": "23030",
@@ -5165,7 +5165,7 @@
     },
     {
       "id": "fc-c383971d",
-      "address": "21312 WARREN AVE",
+      "address": "21312 WARREN AVE, SOUTH CHESTERFIELD, VA 23803",
       "city": "South Chesterfield",
       "county": "Chesterfield",
       "zip": "23803",
@@ -5192,7 +5192,7 @@
     },
     {
       "id": "fc-98c7048d",
-      "address": "8801 BLACK CREEK ROAD",
+      "address": "8801 BLACK CREEK ROAD, QUINTON, VA 23141",
       "city": "Quinton",
       "county": "",
       "zip": "23141",
@@ -5219,7 +5219,7 @@
     },
     {
       "id": "fc-9e65749f",
-      "address": "2305 BROCKWAY LANE",
+      "address": "2305 BROCKWAY LANE, RICHMOND, VA 23223",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23223",
@@ -5246,7 +5246,7 @@
     },
     {
       "id": "fc-4a4b4a53",
-      "address": "6404 GOLDENROD COURT",
+      "address": "6404 GOLDENROD COURT, RICHMOND, VA 23231",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23231",
@@ -5273,7 +5273,7 @@
     },
     {
       "id": "fc-54355c6d",
-      "address": "8653 MILLSTREAM DRIVE",
+      "address": "8653 MILLSTREAM DRIVE, RICHMOND, VA 23228",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23228",
@@ -5300,7 +5300,7 @@
     },
     {
       "id": "fc-818ee63e",
-      "address": "1810 MAPLEWOOD AVENUE",
+      "address": "1810 MAPLEWOOD AVENUE, RICHMOND, VA 23220",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23220",
@@ -5327,7 +5327,7 @@
     },
     {
       "id": "fc-53bb295e",
-      "address": "4030 WARWICK ROAD",
+      "address": "4030 WARWICK ROAD, RICHMOND, VA 23234",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23234",
@@ -5354,7 +5354,7 @@
     },
     {
       "id": "fc-0670701a",
-      "address": "3805 REDSTONE DRIVE",
+      "address": "3805 REDSTONE DRIVE, RICHMOND, VA 23294",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23294",
@@ -5381,7 +5381,7 @@
     },
     {
       "id": "fc-80746155",
-      "address": "4601 HOPKINS ROAD",
+      "address": "4601 HOPKINS ROAD, RICHMOND, VA 23234",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23234",
@@ -5408,7 +5408,7 @@
     },
     {
       "id": "fc-f4563754",
-      "address": "5540 Kingsland Road",
+      "address": "5540 Kingsland Road, North Chesterfield, VA 23237",
       "city": "North Chesterfield",
       "county": "Chesterfield",
       "zip": "23237",
@@ -5435,7 +5435,7 @@
     },
     {
       "id": "fc-31bc9454",
-      "address": "10400 CROOKED BRANCH TERRACE",
+      "address": "10400 CROOKED BRANCH TERRACE, NORTH CHESTERFIELD, VA 23237",
       "city": "North Chesterfield",
       "county": "Chesterfield",
       "zip": "23237",
@@ -5462,7 +5462,7 @@
     },
     {
       "id": "fc-a4633278",
-      "address": "3203 EDGEWOOD AVENUE",
+      "address": "3203 EDGEWOOD AVENUE, RICHMOND, VA 23222",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23222",
@@ -5489,7 +5489,7 @@
     },
     {
       "id": "fc-74de8058",
-      "address": "3412 CHAPEL DR",
+      "address": "3412 CHAPEL DR, RICHMOND, VA 23224",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23224",
@@ -5516,7 +5516,7 @@
     },
     {
       "id": "fc-9cd8275e",
-      "address": "13321 KINGSMILL RD",
+      "address": "13321 KINGSMILL RD, MIDLOTHIAN, VA 23113",
       "city": "Midlothian",
       "county": "Chesterfield",
       "zip": "23113",
@@ -5543,7 +5543,7 @@
     },
     {
       "id": "fc-0ea54eb9",
-      "address": "3700 FERNDALE CIRCLE",
+      "address": "3700 FERNDALE CIRCLE, NORTH DINWIDDIE, VA 23803",
       "city": "North Dinwiddie",
       "county": "",
       "zip": "23803",
@@ -5570,7 +5570,7 @@
     },
     {
       "id": "fc-27e7c00e",
-      "address": "222 Henry Clay Road",
+      "address": "222 Henry Clay Road, Ashland, VA 23005",
       "city": "Ashland",
       "county": "Hanover",
       "zip": "23005",
@@ -5597,7 +5597,7 @@
     },
     {
       "id": "fc-1ba68c27",
-      "address": "12575 Webb Road",
+      "address": "12575 Webb Road, Disputanta, VA 23842",
       "city": "Disputanta",
       "county": "",
       "zip": "23842",
@@ -5624,7 +5624,7 @@
     },
     {
       "id": "fc-b552d1f6",
-      "address": "2709 Maurice Walk Ct TRUSTEE SALE 2709 Maurice Walk Ct",
+      "address": "2709 Maurice Walk Ct TRUSTEE SALE 2709 Maurice Walk Ct, Glen Allen, VA 23060",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23060",

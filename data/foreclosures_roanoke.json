@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-05-11T11:17:08",
+    "last_updated": "2026-05-11T14:47:37",
     "source": "https://roanoke.column.us/search?noticeType=Foreclosure+Sale",
     "total_count": 85,
     "new_today": 0
@@ -8,7 +8,7 @@
   "listings": [
     {
       "id": "fc-5b5886e8",
-      "address": "3937 Kentucky Ave. NW",
+      "address": "3937 Kentucky Ave. NW, Roanoke, VA 24017",
       "city": "Roanoke",
       "county": "",
       "zip": "24017",
@@ -35,7 +35,7 @@
     },
     {
       "id": "fc-1c9d2157",
-      "address": "1151 Penmar Ave SE TRUSTEE SALE 1151 Penmar Ave SE",
+      "address": "1151 Penmar Ave SE TRUSTEE SALE 1151 Penmar Ave SE, Roanoke, VA 24013",
       "city": "Roanoke",
       "county": "",
       "zip": "24013",
@@ -62,7 +62,7 @@
     },
     {
       "id": "fc-3b7e22eb",
-      "address": "4457 Northridge St. NE",
+      "address": "4457 Northridge St. NE, Roanoke, VA 24012",
       "city": "Roanoke",
       "county": "",
       "zip": "24012",
@@ -89,7 +89,7 @@
     },
     {
       "id": "fc-6b7013c3",
-      "address": "5115 Cave Spring Lane",
+      "address": "5115 Cave Spring Lane, Roanoke, VA 24018",
       "city": "Roanoke",
       "county": "",
       "zip": "24018",
@@ -116,7 +116,7 @@
     },
     {
       "id": "fc-1525cd60",
-      "address": "1152 AUGUSTA PLACE",
+      "address": "1152 AUGUSTA PLACE, LYNCHBURG, VA 24503",
       "city": "Lynchburg",
       "county": "",
       "zip": "24503",
@@ -143,7 +143,7 @@
     },
     {
       "id": "fc-a172b412",
-      "address": "2629 TUCK ROAD",
+      "address": "2629 TUCK ROAD, MONETA, VA 24121",
       "city": "Moneta",
       "county": "",
       "zip": "24121",
@@ -170,7 +170,7 @@
     },
     {
       "id": "fc-f35bbf54",
-      "address": "5346 WEST RIVER ROAD",
+      "address": "5346 WEST RIVER ROAD, SALEM, VA 24153",
       "city": "Salem",
       "county": "",
       "zip": "24153",
@@ -197,7 +197,7 @@
     },
     {
       "id": "fc-ffa3e035",
-      "address": "3828 Woodleigh Road NW",
+      "address": "3828 Woodleigh Road NW, Roanoke, VA 24017",
       "city": "Roanoke",
       "county": "",
       "zip": "24017",
@@ -224,7 +224,7 @@
     },
     {
       "id": "fc-2613c621",
-      "address": "6113 GAUGIN CIRCLE",
+      "address": "6113 GAUGIN CIRCLE, ROANOKE, VA 24018",
       "city": "Roanoke",
       "county": "",
       "zip": "24018",
@@ -251,7 +251,7 @@
     },
     {
       "id": "fc-ae7986a4",
-      "address": "1608 NICOPOLIS DRIVE",
+      "address": "1608 NICOPOLIS DRIVE, BEDFORD, VA 24523",
       "city": "Bedford",
       "county": "",
       "zip": "24523",
@@ -278,7 +278,7 @@
     },
     {
       "id": "fc-8dc186d1",
-      "address": "512 CHESTNUT AVENUE NW",
+      "address": "512 CHESTNUT AVENUE NW, ROANOKE, VA 24016",
       "city": "Roanoke",
       "county": "",
       "zip": "24016",
@@ -305,7 +305,7 @@
     },
     {
       "id": "fc-3997b7fc",
-      "address": "5290 RIVER BEND LANE",
+      "address": "5290 RIVER BEND LANE, SALEM, VA 24153",
       "city": "Salem",
       "county": "",
       "zip": "24153",
@@ -332,7 +332,7 @@
     },
     {
       "id": "fc-f35f0ac1",
-      "address": "3306 Garden City Blvd SE",
+      "address": "3306 Garden City Blvd SE, Roanoke, VA 24014",
       "city": "Roanoke",
       "county": "",
       "zip": "24014",
@@ -359,7 +359,7 @@
     },
     {
       "id": "fc-23c6a1e6",
-      "address": "109 MIDWAY ST",
+      "address": "109 MIDWAY ST, NARROWS, VA 24124",
       "city": "Narrows",
       "county": "",
       "zip": "24124",
@@ -386,7 +386,7 @@
     },
     {
       "id": "fc-9d781e92",
-      "address": "525 Westwood Boulevard Northwest",
+      "address": "525 Westwood Boulevard Northwest, Roanoke, VA 24017",
       "city": "Roanoke",
       "county": "",
       "zip": "24017",
@@ -413,7 +413,7 @@
     },
     {
       "id": "fc-e1f5d55d",
-      "address": "3324 BANDY ROAD",
+      "address": "3324 BANDY ROAD, ROANOKE, VA 24014",
       "city": "Roanoke",
       "county": "",
       "zip": "24014",
@@ -440,7 +440,7 @@
     },
     {
       "id": "fc-f770737f",
-      "address": "645 HIGHLAND AVENUE SE",
+      "address": "645 HIGHLAND AVENUE SE, ROANOKE, VIRGINIA 24013",
       "city": "Roanoke",
       "county": "",
       "zip": "24013",
@@ -467,7 +467,7 @@
     },
     {
       "id": "fc-a5459c3f",
-      "address": "167 BOYD STREET",
+      "address": "167 BOYD STREET, BUCHANAN, VA 24066",
       "city": "Buchanan",
       "county": "",
       "zip": "24066",
@@ -494,7 +494,7 @@
     },
     {
       "id": "fc-0586b9e0",
-      "address": "4202 OLD MOUNTAIN ROAD NE",
+      "address": "4202 OLD MOUNTAIN ROAD NE, ROANOKE, VA 24019",
       "city": "Roanoke",
       "county": "",
       "zip": "24019",
@@ -521,7 +521,7 @@
     },
     {
       "id": "fc-920bfaea",
-      "address": "3234 Forest Hill Avenue NW",
+      "address": "3234 Forest Hill Avenue NW, Roanoke, VA 24012",
       "city": "Roanoke",
       "county": "",
       "zip": "24012",
@@ -548,7 +548,7 @@
     },
     {
       "id": "fc-74a5bcd0",
-      "address": "99402 Attorney Aldridge Pite LLP 8100 Three Chopt Rd.",
+      "address": "99402 Attorney Aldridge Pite LLP 8100 Three Chopt Rd., Ste. 240 Richmond, VA 23229",
       "city": "Ste. 240 Richmond",
       "county": "Richmond City",
       "zip": "23229",
@@ -575,7 +575,7 @@
     },
     {
       "id": "fc-64a7dcc0",
-      "address": "1206 Floyd Avenue SW",
+      "address": "1206 Floyd Avenue SW, Roanoke, Virginia 24015",
       "city": "Roanoke",
       "county": "",
       "zip": "24015",
@@ -602,7 +602,7 @@
     },
     {
       "id": "fc-02082d5a",
-      "address": "580 East Main Street",
+      "address": "580 East Main Street, Suite 600 Norfolk, VA 23510",
       "city": "Suite 600 Norfolk",
       "county": "",
       "zip": "23510",
@@ -629,7 +629,7 @@
     },
     {
       "id": "fc-5b5886e8",
-      "address": "3937 Kentucky Ave. NW",
+      "address": "3937 Kentucky Ave. NW, Roanoke, VA 24017",
       "city": "Roanoke",
       "county": "",
       "zip": "24017",
@@ -656,7 +656,7 @@
     },
     {
       "id": "fc-1535ef03",
-      "address": "1002 MURRAY AVE SE",
+      "address": "1002 MURRAY AVE SE, ROANOKE, VA 24013",
       "city": "Roanoke",
       "county": "",
       "zip": "24013",
@@ -683,7 +683,7 @@
     },
     {
       "id": "fc-3d9ebaa4",
-      "address": "234 CHESTNUT STREET",
+      "address": "234 CHESTNUT STREET, SALEM, VA 24153",
       "city": "Salem",
       "county": "",
       "zip": "24153",
@@ -710,7 +710,7 @@
     },
     {
       "id": "fc-3b7e22eb",
-      "address": "4457 Northridge St. NE",
+      "address": "4457 Northridge St. NE, Roanoke, VA 24012",
       "city": "Roanoke",
       "county": "",
       "zip": "24012",
@@ -737,7 +737,7 @@
     },
     {
       "id": "fc-da827e5c",
-      "address": "301 Bertha Street",
+      "address": "301 Bertha Street, Pulaski, VA 24301",
       "city": "Pulaski",
       "county": "",
       "zip": "24301",
@@ -764,7 +764,7 @@
     },
     {
       "id": "fc-c04dd413",
-      "address": "307 CHESTNUT AVENUE",
+      "address": "307 CHESTNUT AVENUE, RURAL RETREAT, VA 24368",
       "city": "Rural Retreat",
       "county": "",
       "zip": "24368",
@@ -791,7 +791,7 @@
     },
     {
       "id": "fc-85e3530a",
-      "address": "4525 Cumberland Drive",
+      "address": "4525 Cumberland Drive, Christiansburg, VA 24073",
       "city": "Christiansburg",
       "county": "",
       "zip": "24073",
@@ -818,7 +818,7 @@
     },
     {
       "id": "fc-f35bbf54",
-      "address": "5346 WEST RIVER ROAD",
+      "address": "5346 WEST RIVER ROAD, SALEM, VA 24153",
       "city": "Salem",
       "county": "",
       "zip": "24153",
@@ -845,7 +845,7 @@
     },
     {
       "id": "fc-2ad441d3",
-      "address": "2034 Clinton Avenue SE",
+      "address": "2034 Clinton Avenue SE, Roanoke, VA 24013",
       "city": "Roanoke",
       "county": "",
       "zip": "24013",
@@ -872,7 +872,7 @@
     },
     {
       "id": "fc-ddcdeb84",
-      "address": "66 WOOD LANE",
+      "address": "66 WOOD LANE, TROUTVILLE, VA 24175",
       "city": "Troutville",
       "county": "",
       "zip": "24175",
@@ -899,7 +899,7 @@
     },
     {
       "id": "fc-5aefbdcc",
-      "address": "135 KNOLLWOOD DRIVE",
+      "address": "135 KNOLLWOOD DRIVE, TROUTVILLE, VA 24175",
       "city": "Troutville",
       "county": "",
       "zip": "24175",
@@ -926,7 +926,7 @@
     },
     {
       "id": "fc-cb8cab5b",
-      "address": "111 PEMBROKE STREET",
+      "address": "111 PEMBROKE STREET, PEMBROKE, VA 24136",
       "city": "Pembroke",
       "county": "",
       "zip": "24136",
@@ -953,7 +953,7 @@
     },
     {
       "id": "fc-f35f0ac1",
-      "address": "3306 Garden City Blvd SE",
+      "address": "3306 Garden City Blvd SE, Roanoke, VA 24014",
       "city": "Roanoke",
       "county": "",
       "zip": "24014",
@@ -980,7 +980,7 @@
     },
     {
       "id": "fc-7ef9843a",
-      "address": "2629 AVENEL AVE SW",
+      "address": "2629 AVENEL AVE SW, ROANOKE, VA 24015",
       "city": "Roanoke",
       "county": "",
       "zip": "24015",
@@ -1007,7 +1007,7 @@
     },
     {
       "id": "fc-9ba29d37",
-      "address": "1872 CROCKETT ROAD",
+      "address": "1872 CROCKETT ROAD, FOREST, VA 24551",
       "city": "Forest",
       "county": "",
       "zip": "24551",
@@ -1034,7 +1034,7 @@
     },
     {
       "id": "fc-b908f08d",
-      "address": "2826 BEAVER BROOK DRIVE",
+      "address": "2826 BEAVER BROOK DRIVE, SALEM, VA 24153",
       "city": "Salem",
       "county": "",
       "zip": "24153",
@@ -1061,7 +1061,7 @@
     },
     {
       "id": "fc-e1f5d55d",
-      "address": "3324 BANDY ROAD",
+      "address": "3324 BANDY ROAD, ROANOKE, VA 24014",
       "city": "Roanoke",
       "county": "",
       "zip": "24014",
@@ -1088,7 +1088,7 @@
     },
     {
       "id": "fc-f770737f",
-      "address": "645 HIGHLAND AVENUE SE",
+      "address": "645 HIGHLAND AVENUE SE, ROANOKE, VIRGINIA 24013",
       "city": "Roanoke",
       "county": "",
       "zip": "24013",
@@ -1115,7 +1115,7 @@
     },
     {
       "id": "fc-5a4885dc",
-      "address": "1334 Morton Ave SE TRUSTEE SALE 1334 Morton Ave SE",
+      "address": "1334 Morton Ave SE TRUSTEE SALE 1334 Morton Ave SE, Roanoke, VA 24013",
       "city": "Roanoke",
       "county": "",
       "zip": "24013",
@@ -1142,7 +1142,7 @@
     },
     {
       "id": "fc-37004e26",
-      "address": "528 MCDOWELL AVENUE NW",
+      "address": "528 MCDOWELL AVENUE NW, ROANOKE, VA 24016",
       "city": "Roanoke",
       "county": "",
       "zip": "24016",
@@ -1169,7 +1169,7 @@
     },
     {
       "id": "fc-b4a01c5c",
-      "address": "3921 HYDE PARK DRIVE",
+      "address": "3921 HYDE PARK DRIVE, ROANOKE, VA 24018",
       "city": "Roanoke",
       "county": "",
       "zip": "24018",
@@ -1196,7 +1196,7 @@
     },
     {
       "id": "fc-0586b9e0",
-      "address": "4202 OLD MOUNTAIN ROAD NE",
+      "address": "4202 OLD MOUNTAIN ROAD NE, ROANOKE, VA 24019",
       "city": "Roanoke",
       "county": "",
       "zip": "24019",
@@ -1223,7 +1223,7 @@
     },
     {
       "id": "fc-920bfaea",
-      "address": "3234 Forest Hill Avenue NW",
+      "address": "3234 Forest Hill Avenue NW, Roanoke, VA 24012",
       "city": "Roanoke",
       "county": "",
       "zip": "24012",
@@ -1250,7 +1250,7 @@
     },
     {
       "id": "fc-74a5bcd0",
-      "address": "99402 Attorney Aldridge Pite LLP 8100 Three Chopt Rd.",
+      "address": "99402 Attorney Aldridge Pite LLP 8100 Three Chopt Rd., Ste. 240 Richmond, VA 23229",
       "city": "Ste. 240 Richmond",
       "county": "Richmond City",
       "zip": "23229",
@@ -1277,7 +1277,7 @@
     },
     {
       "id": "fc-64a7dcc0",
-      "address": "1206 Floyd Avenue SW",
+      "address": "1206 Floyd Avenue SW, Roanoke, Virginia 24015",
       "city": "Roanoke",
       "county": "",
       "zip": "24015",
@@ -1304,7 +1304,7 @@
     },
     {
       "id": "fc-02082d5a",
-      "address": "580 East Main Street",
+      "address": "580 East Main Street, Suite 600 Norfolk, VA 23510",
       "city": "Suite 600 Norfolk",
       "county": "",
       "zip": "23510",
@@ -1331,7 +1331,7 @@
     },
     {
       "id": "fc-da827e5c",
-      "address": "301 Bertha Street",
+      "address": "301 Bertha Street, Pulaski, VA 24301",
       "city": "Pulaski",
       "county": "",
       "zip": "24301",
@@ -1358,7 +1358,7 @@
     },
     {
       "id": "fc-c04dd413",
-      "address": "307 CHESTNUT AVENUE",
+      "address": "307 CHESTNUT AVENUE, RURAL RETREAT, VA 24368",
       "city": "Rural Retreat",
       "county": "",
       "zip": "24368",
@@ -1385,7 +1385,7 @@
     },
     {
       "id": "fc-81434c87",
-      "address": "1059 SHANE MEADOW COURT",
+      "address": "1059 SHANE MEADOW COURT, FOREST, VA 24551",
       "city": "Forest",
       "county": "",
       "zip": "24551",
@@ -1412,7 +1412,7 @@
     },
     {
       "id": "fc-e7c13f05",
-      "address": "6009 COUNTRY HOMES RD",
+      "address": "6009 COUNTRY HOMES RD, ROANOKE, VA 24018",
       "city": "Roanoke",
       "county": "",
       "zip": "24018",
@@ -1439,7 +1439,7 @@
     },
     {
       "id": "fc-ddcdeb84",
-      "address": "66 WOOD LANE",
+      "address": "66 WOOD LANE, TROUTVILLE, VA 24175",
       "city": "Troutville",
       "county": "",
       "zip": "24175",
@@ -1466,7 +1466,7 @@
     },
     {
       "id": "fc-7c5381c7",
-      "address": "810 Ruddel Rd.",
+      "address": "810 Ruddel Rd., Vinton, VA 24179",
       "city": "Vinton",
       "county": "",
       "zip": "24179",
@@ -1493,7 +1493,7 @@
     },
     {
       "id": "fc-1bd49f92",
-      "address": "146 Hannah Circle",
+      "address": "146 Hannah Circle, New Castle, VA 24127",
       "city": "New Castle",
       "county": "",
       "zip": "24127",
@@ -1520,7 +1520,7 @@
     },
     {
       "id": "fc-5aefbdcc",
-      "address": "135 KNOLLWOOD DRIVE",
+      "address": "135 KNOLLWOOD DRIVE, TROUTVILLE, VA 24175",
       "city": "Troutville",
       "county": "",
       "zip": "24175",
@@ -1547,7 +1547,7 @@
     },
     {
       "id": "fc-cb8cab5b",
-      "address": "111 PEMBROKE STREET",
+      "address": "111 PEMBROKE STREET, PEMBROKE, VA 24136",
       "city": "Pembroke",
       "county": "",
       "zip": "24136",
@@ -1574,7 +1574,7 @@
     },
     {
       "id": "fc-f35f0ac1",
-      "address": "3306 Garden City Blvd SE",
+      "address": "3306 Garden City Blvd SE, Roanoke, VA 24014",
       "city": "Roanoke",
       "county": "",
       "zip": "24014",
@@ -1601,7 +1601,7 @@
     },
     {
       "id": "fc-7ef9843a",
-      "address": "2629 AVENEL AVE SW",
+      "address": "2629 AVENEL AVE SW, ROANOKE, VA 24015",
       "city": "Roanoke",
       "county": "",
       "zip": "24015",
@@ -1628,7 +1628,7 @@
     },
     {
       "id": "fc-2c2dfc5c",
-      "address": "6409 Parrott Mountain Road",
+      "address": "6409 Parrott Mountain Road, Parrott, Virginia 24132",
       "city": "Parrott",
       "county": "",
       "zip": "24132",
@@ -1655,7 +1655,7 @@
     },
     {
       "id": "fc-5a4885dc",
-      "address": "1334 Morton Ave SE TRUSTEE SALE 1334 Morton Ave SE",
+      "address": "1334 Morton Ave SE TRUSTEE SALE 1334 Morton Ave SE, Roanoke, VA 24013",
       "city": "Roanoke",
       "county": "",
       "zip": "24013",
@@ -1682,7 +1682,7 @@
     },
     {
       "id": "fc-920bfaea",
-      "address": "3234 Forest Hill Avenue NW",
+      "address": "3234 Forest Hill Avenue NW, Roanoke, VA 24012",
       "city": "Roanoke",
       "county": "",
       "zip": "24012",
@@ -1709,7 +1709,7 @@
     },
     {
       "id": "fc-74a5bcd0",
-      "address": "99402 Attorney Aldridge Pite LLP 8100 Three Chopt Rd.",
+      "address": "99402 Attorney Aldridge Pite LLP 8100 Three Chopt Rd., Ste. 240 Richmond, VA 23229",
       "city": "Ste. 240 Richmond",
       "county": "Richmond City",
       "zip": "23229",
@@ -1736,7 +1736,7 @@
     },
     {
       "id": "fc-64a7dcc0",
-      "address": "1206 Floyd Avenue SW",
+      "address": "1206 Floyd Avenue SW, Roanoke, Virginia 24015",
       "city": "Roanoke",
       "county": "",
       "zip": "24015",
@@ -1763,7 +1763,7 @@
     },
     {
       "id": "fc-02082d5a",
-      "address": "580 East Main Street",
+      "address": "580 East Main Street, Suite 600 Norfolk, VA 23510",
       "city": "Suite 600 Norfolk",
       "county": "",
       "zip": "23510",
@@ -1790,7 +1790,7 @@
     },
     {
       "id": "fc-c6885de9",
-      "address": "251 NIXON RD",
+      "address": "251 NIXON RD, WYTHEVILLE, VA 24382",
       "city": "Wytheville",
       "county": "",
       "zip": "24382",
@@ -1817,7 +1817,7 @@
     },
     {
       "id": "fc-57f13729",
-      "address": "4022 VERMONT AVE NW",
+      "address": "4022 VERMONT AVE NW, ROANOKE, VA 24017",
       "city": "Roanoke",
       "county": "",
       "zip": "24017",
@@ -1844,7 +1844,7 @@
     },
     {
       "id": "fc-14c220c1",
-      "address": "1938 AVON ROAD SW",
+      "address": "1938 AVON ROAD SW, ROANOKE, VA 24015",
       "city": "Roanoke",
       "county": "",
       "zip": "24015",
@@ -1871,7 +1871,7 @@
     },
     {
       "id": "fc-c62994b5",
-      "address": "318 DENTS ROAD",
+      "address": "318 DENTS ROAD, ROANOKE, VA 24019",
       "city": "Roanoke",
       "county": "",
       "zip": "24019",
@@ -1898,7 +1898,7 @@
     },
     {
       "id": "fc-1525cd60",
-      "address": "1152 AUGUSTA PLACE",
+      "address": "1152 AUGUSTA PLACE, LYNCHBURG, VA 24503",
       "city": "Lynchburg",
       "county": "",
       "zip": "24503",
@@ -1925,7 +1925,7 @@
     },
     {
       "id": "fc-7c5381c7",
-      "address": "810 Ruddel Rd.",
+      "address": "810 Ruddel Rd., Vinton, VA 24179",
       "city": "Vinton",
       "county": "",
       "zip": "24179",
@@ -1952,7 +1952,7 @@
     },
     {
       "id": "fc-e7c13f05",
-      "address": "6009 COUNTRY HOMES RD",
+      "address": "6009 COUNTRY HOMES RD, ROANOKE, VA 24018",
       "city": "Roanoke",
       "county": "",
       "zip": "24018",
@@ -1979,7 +1979,7 @@
     },
     {
       "id": "fc-354ab1d5",
-      "address": "216 Nancy Drive NW",
+      "address": "216 Nancy Drive NW, Roanoke, Virginia 24017",
       "city": "Roanoke",
       "county": "",
       "zip": "24017",
@@ -2006,7 +2006,7 @@
     },
     {
       "id": "fc-1bd49f92",
-      "address": "146 Hannah Circle",
+      "address": "146 Hannah Circle, New Castle, VA 24127",
       "city": "New Castle",
       "county": "",
       "zip": "24127",
@@ -2033,7 +2033,7 @@
     },
     {
       "id": "fc-e8c68e30",
-      "address": "166 VERNDALE DRIVE",
+      "address": "166 VERNDALE DRIVE, ROANOKE, VA 24019",
       "city": "Roanoke",
       "county": "",
       "zip": "24019",
@@ -2060,7 +2060,7 @@
     },
     {
       "id": "fc-2c2dfc5c",
-      "address": "6409 Parrott Mountain Road",
+      "address": "6409 Parrott Mountain Road, Parrott, Virginia 24132",
       "city": "Parrott",
       "county": "",
       "zip": "24132",
@@ -2087,7 +2087,7 @@
     },
     {
       "id": "fc-9d35432c",
-      "address": "892 Barrens Village Lane",
+      "address": "892 Barrens Village Lane, Roanoke, VA 24019",
       "city": "Roanoke",
       "county": "",
       "zip": "24019",
@@ -2114,7 +2114,7 @@
     },
     {
       "id": "fc-6054a02d",
-      "address": "3716 NORWAY AVENUE NW",
+      "address": "3716 NORWAY AVENUE NW, ROANOKE, VA 24017",
       "city": "Roanoke",
       "county": "",
       "zip": "24017",
@@ -2141,7 +2141,7 @@
     },
     {
       "id": "fc-eaddaf01",
-      "address": "1245 BOONSBORO MEADOWS DRIVE",
+      "address": "1245 BOONSBORO MEADOWS DRIVE, LYNCHBURG, VA 24503",
       "city": "Lynchburg",
       "county": "",
       "zip": "24503",
@@ -2168,7 +2168,7 @@
     },
     {
       "id": "fc-4e6c0e80",
-      "address": "929 Logan Street",
+      "address": "929 Logan Street, Salem, VA 24153",
       "city": "Salem",
       "county": "",
       "zip": "24153",
@@ -2195,7 +2195,7 @@
     },
     {
       "id": "fc-920bfaea",
-      "address": "3234 Forest Hill Avenue NW",
+      "address": "3234 Forest Hill Avenue NW, Roanoke, VA 24012",
       "city": "Roanoke",
       "county": "",
       "zip": "24012",
@@ -2222,7 +2222,7 @@
     },
     {
       "id": "fc-74a5bcd0",
-      "address": "99402 Attorney Aldridge Pite LLP 8100 Three Chopt Rd.",
+      "address": "99402 Attorney Aldridge Pite LLP 8100 Three Chopt Rd., Ste. 240 Richmond, VA 23229",
       "city": "Ste. 240 Richmond",
       "county": "Richmond City",
       "zip": "23229",
@@ -2249,7 +2249,7 @@
     },
     {
       "id": "fc-64a7dcc0",
-      "address": "1206 Floyd Avenue SW",
+      "address": "1206 Floyd Avenue SW, Roanoke, Virginia 24015",
       "city": "Roanoke",
       "county": "",
       "zip": "24015",
@@ -2276,7 +2276,7 @@
     },
     {
       "id": "fc-02082d5a",
-      "address": "580 East Main Street",
+      "address": "580 East Main Street, Suite 600 Norfolk, VA 23510",
       "city": "Suite 600 Norfolk",
       "county": "",
       "zip": "23510",

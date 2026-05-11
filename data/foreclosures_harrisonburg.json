@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-05-11T11:19:06",
+    "last_updated": "2026-05-11T14:49:32",
     "source": "https://dnronline.column.us/search?noticeType=Foreclosure+Sale",
     "total_count": 10,
     "new_today": 0
@@ -8,7 +8,7 @@
   "listings": [
     {
       "id": "fc-a8df1039",
-      "address": "165 Southampton Dr",
+      "address": "165 Southampton Dr, Harrisonburg, VA 22801",
       "city": "Harrisonburg",
       "county": "Rockingham",
       "zip": "22801",
@@ -35,7 +35,7 @@
     },
     {
       "id": "fc-a8df1039",
-      "address": "165 Southampton Dr",
+      "address": "165 Southampton Dr, Harrisonburg, VA 22801",
       "city": "Harrisonburg",
       "county": "Rockingham",
       "zip": "22801",
@@ -62,7 +62,7 @@
     },
     {
       "id": "fc-18b19e34",
-      "address": "939 Acres of Unimproved Real Estate Located on Limestone Lane",
+      "address": "939 Acres of Unimproved Real Estate Located on Limestone Lane, Dayton, VA 22821",
       "city": "Dayton",
       "county": "",
       "zip": "22821",
@@ -89,7 +89,7 @@
     },
     {
       "id": "fc-f3e9373b",
-      "address": "194 THOMPSON DRIVE",
+      "address": "194 THOMPSON DRIVE, STANLEY, VA 22851",
       "city": "Stanley",
       "county": "",
       "zip": "22851",
@@ -116,7 +116,7 @@
     },
     {
       "id": "fc-18b19e34",
-      "address": "939 Acres of Unimproved Real Estate Located on Limestone Lane",
+      "address": "939 Acres of Unimproved Real Estate Located on Limestone Lane, Dayton, VA 22821",
       "city": "Dayton",
       "county": "",
       "zip": "22821",
@@ -143,7 +143,7 @@
     },
     {
       "id": "fc-1731b989",
-      "address": "804 5TH STREET",
+      "address": "804 5TH STREET, SHENANDOAH, VA 22849",
       "city": "Shenandoah",
       "county": "",
       "zip": "22849",
@@ -170,7 +170,7 @@
     },
     {
       "id": "fc-a8034da0",
-      "address": "92 North Liberty Street",
+      "address": "92 North Liberty Street, Harrisonburg, VA 22802",
       "city": "Harrisonburg",
       "county": "",
       "zip": "22802",
@@ -197,7 +197,7 @@
     },
     {
       "id": "fc-a8034da0",
-      "address": "92 North Liberty Street",
+      "address": "92 North Liberty Street, Harrisonburg, VA 22802",
       "city": "Harrisonburg",
       "county": "",
       "zip": "22802",
@@ -224,7 +224,7 @@
     },
     {
       "id": "fc-1731b989",
-      "address": "804 5TH STREET",
+      "address": "804 5TH STREET, SHENANDOAH, VA 22849",
       "city": "Shenandoah",
       "county": "",
       "zip": "22849",
@@ -251,7 +251,7 @@
     },
     {
       "id": "fc-a8034da0",
-      "address": "92 North Liberty Street",
+      "address": "92 North Liberty Street, Harrisonburg, VA 22802",
       "city": "Harrisonburg",
       "county": "",
       "zip": "22802",

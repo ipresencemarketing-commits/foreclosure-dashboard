@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-05-11T11:18:36",
+    "last_updated": "2026-05-11T14:49:02",
     "source": "https://godanriver.column.us/search?noticeType=Foreclosure+Sale",
     "total_count": 26,
     "new_today": 0
@@ -8,7 +8,7 @@
   "listings": [
     {
       "id": "fc-7f645b2e",
-      "address": "216 CEDAR RIDGE RD",
+      "address": "216 CEDAR RIDGE RD, DRY FORK, VA 24549",
       "city": "Dry Fork",
       "county": "",
       "zip": "24549",
@@ -35,7 +35,7 @@
     },
     {
       "id": "fc-c13b5f08",
-      "address": "97 Bishop Avenue",
+      "address": "97 Bishop Avenue, Danville, VA 24541",
       "city": "Danville",
       "county": "Danville City",
       "zip": "24541",
@@ -62,7 +62,7 @@
     },
     {
       "id": "fc-18dca2a2",
-      "address": "160 PRITCHETT FARM ROAD",
+      "address": "160 PRITCHETT FARM ROAD, DRY FORK, VA 24549",
       "city": "Dry Fork",
       "county": "",
       "zip": "24549",
@@ -89,7 +89,7 @@
     },
     {
       "id": "fc-6571c3c7",
-      "address": "216 ROCKY KNOLL LANE",
+      "address": "216 ROCKY KNOLL LANE, DANVILLE, VA 24541",
       "city": "Danville",
       "county": "",
       "zip": "24541",
@@ -116,7 +116,7 @@
     },
     {
       "id": "fc-7f645b2e",
-      "address": "216 CEDAR RIDGE RD",
+      "address": "216 CEDAR RIDGE RD, DRY FORK, VA 24549",
       "city": "Dry Fork",
       "county": "",
       "zip": "24549",
@@ -143,7 +143,7 @@
     },
     {
       "id": "fc-af21c95a",
-      "address": "1380 Pumpkin Creek Ln TRUSTEE SALE 1380 Pumpkin Creek Ln",
+      "address": "1380 Pumpkin Creek Ln TRUSTEE SALE 1380 Pumpkin Creek Ln, Danville, VA 24541",
       "city": "Danville",
       "county": "",
       "zip": "24541",
@@ -170,7 +170,7 @@
     },
     {
       "id": "fc-6571c3c7",
-      "address": "216 ROCKY KNOLL LANE",
+      "address": "216 ROCKY KNOLL LANE, DANVILLE, VA 24541",
       "city": "Danville",
       "county": "",
       "zip": "24541",
@@ -197,7 +197,7 @@
     },
     {
       "id": "fc-9839a7b0",
-      "address": "206 Northmont Boulevard",
+      "address": "206 Northmont Boulevard, Danville, Virginia 24540",
       "city": "Danville",
       "county": "",
       "zip": "24540",
@@ -224,7 +224,7 @@
     },
     {
       "id": "fc-c98d710b",
-      "address": "468 Slayton Rd",
+      "address": "468 Slayton Rd, Sutherlin, VA 24594",
       "city": "Sutherlin",
       "county": "Pittsylvania",
       "zip": "24594",
@@ -251,7 +251,7 @@
     },
     {
       "id": "fc-63b9ac3b",
-      "address": "5560 FRANKLIN TPKE",
+      "address": "5560 FRANKLIN TPKE, DANVILLE, VA 24540",
       "city": "Danville",
       "county": "",
       "zip": "24540",
@@ -278,7 +278,7 @@
     },
     {
       "id": "fc-71d729db",
-      "address": "316 SOUTHLAND DRIVE",
+      "address": "316 SOUTHLAND DRIVE, DANVILLE, VA 24541",
       "city": "Danville",
       "county": "",
       "zip": "24541",
@@ -305,7 +305,7 @@
     },
     {
       "id": "fc-6c284d64",
-      "address": "2140 STRAWBERRY ROAD",
+      "address": "2140 STRAWBERRY ROAD, CHATHAM, VA 24531",
       "city": "Chatham",
       "county": "",
       "zip": "24531",
@@ -332,7 +332,7 @@
     },
     {
       "id": "fc-7f645b2e",
-      "address": "216 CEDAR RIDGE RD",
+      "address": "216 CEDAR RIDGE RD, DRY FORK, VA 24549",
       "city": "Dry Fork",
       "county": "",
       "zip": "24549",
@@ -359,7 +359,7 @@
     },
     {
       "id": "fc-cc3c517f",
-      "address": "165 RIVIERA DRIVE",
+      "address": "165 RIVIERA DRIVE, DANVILLE, VA 24540",
       "city": "Danville",
       "county": "",
       "zip": "24540",
@@ -386,7 +386,7 @@
     },
     {
       "id": "fc-a2fea27c",
-      "address": "3006 Westover Dr.",
+      "address": "3006 Westover Dr., Danville, VA 24541",
       "city": "Danville",
       "county": "",
       "zip": "24541",
@@ -413,7 +413,7 @@
     },
     {
       "id": "fc-404c444b",
-      "address": "187 HOLCOMB STREET",
+      "address": "187 HOLCOMB STREET, DANVILLE, VA 24541",
       "city": "Danville",
       "county": "",
       "zip": "24541",
@@ -440,7 +440,7 @@
     },
     {
       "id": "fc-71d729db",
-      "address": "316 SOUTHLAND DRIVE",
+      "address": "316 SOUTHLAND DRIVE, DANVILLE, VA 24541",
       "city": "Danville",
       "county": "",
       "zip": "24541",
@@ -467,7 +467,7 @@
     },
     {
       "id": "fc-63b9ac3b",
-      "address": "5560 FRANKLIN TPKE",
+      "address": "5560 FRANKLIN TPKE, DANVILLE, VA 24540",
       "city": "Danville",
       "county": "",
       "zip": "24540",
@@ -494,7 +494,7 @@
     },
     {
       "id": "fc-c98d710b",
-      "address": "468 Slayton Rd",
+      "address": "468 Slayton Rd, Sutherlin, VA 24594",
       "city": "Sutherlin",
       "county": "Pittsylvania",
       "zip": "24594",
@@ -521,7 +521,7 @@
     },
     {
       "id": "fc-6c284d64",
-      "address": "2140 STRAWBERRY ROAD",
+      "address": "2140 STRAWBERRY ROAD, CHATHAM, VA 24531",
       "city": "Chatham",
       "county": "",
       "zip": "24531",
@@ -548,7 +548,7 @@
     },
     {
       "id": "fc-7f645b2e",
-      "address": "216 CEDAR RIDGE RD",
+      "address": "216 CEDAR RIDGE RD, DRY FORK, VA 24549",
       "city": "Dry Fork",
       "county": "",
       "zip": "24549",
@@ -575,7 +575,7 @@
     },
     {
       "id": "fc-a2fea27c",
-      "address": "3006 Westover Dr.",
+      "address": "3006 Westover Dr., Danville, VA 24541",
       "city": "Danville",
       "county": "",
       "zip": "24541",
@@ -602,7 +602,7 @@
     },
     {
       "id": "fc-cc3c517f",
-      "address": "165 RIVIERA DRIVE",
+      "address": "165 RIVIERA DRIVE, DANVILLE, VA 24540",
       "city": "Danville",
       "county": "",
       "zip": "24540",
@@ -629,7 +629,7 @@
     },
     {
       "id": "fc-404c444b",
-      "address": "187 HOLCOMB STREET",
+      "address": "187 HOLCOMB STREET, DANVILLE, VA 24541",
       "city": "Danville",
       "county": "",
       "zip": "24541",
@@ -656,7 +656,7 @@
     },
     {
       "id": "fc-6cf5ecd8",
-      "address": "348 Martin Avenue",
+      "address": "348 Martin Avenue, Danville, VA 24540",
       "city": "Danville",
       "county": "Danville City",
       "zip": "24540",
@@ -683,7 +683,7 @@
     },
     {
       "id": "fc-7f645b2e",
-      "address": "216 CEDAR RIDGE RD",
+      "address": "216 CEDAR RIDGE RD, DRY FORK, VA 24549",
       "city": "Dry Fork",
       "county": "",
       "zip": "24549",
