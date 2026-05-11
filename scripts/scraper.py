@@ -267,46 +267,59 @@ def scrape_public_notice_va() -> list:
                 f"  PNV: {len(unique_items)} unique notices across {page_num} page(s)"
             )
 
-            # ── Extract session ID for detail URL construction ────────────────
-            # URL format: //(S(<session_id>))/Search.aspx
+            # ── Extract session ID + cookies before closing browser ───────────────
+            # We'll use these with plain HTTP requests to fetch detail pages.
+            # HTTP requests don't execute JavaScript, so reCAPTCHA never runs —
+            # the server just returns the raw HTML with notice text inside.
             session_match = re.search(r'\(S\(([^)]+)\)\)', page.url)
-            session_id = session_match.group(1) if session_match else ""
+            session_id    = session_match.group(1) if session_match else ""
+            http_cookies  = {c["name"]: c["value"] for c in context.cookies()}
             log.info(f"  PNV: session_id = {session_id or '(not found)'}")
 
-            # ── Fetch each notice detail page ─────────────────────────────────
-            # Always navigate to the full detail page to get complete notice text.
-            # This is stored in Notice_Text column for review.
-            # Falls back to card excerpt only if reCAPTCHA blocks access.
-            for item in unique_items:
+            browser.close()
+
+            # ── Fetch detail pages via HTTP (no JS = no reCAPTCHA) ───────────────
+            import requests as _req
+            http_sess = _req.Session()
+            http_sess.cookies.update(http_cookies)
+            http_sess.headers.update(HEADERS)
+
+            log.info(f"  PNV: fetching {len(unique_items)} detail pages via HTTP…")
+
+            for i, item in enumerate(unique_items, 1):
                 nid       = item["id"]
                 card_text = item["card_text"]
 
-                detail_url = (
-                    f"https://www.publicnoticevirginia.com"
-                    f"/(S({session_id}))/Details.aspx?SID={session_id}&ID={nid}"
-                )
+                if session_id:
+                    detail_url = (
+                        f"https://www.publicnoticevirginia.com"
+                        f"/(S({session_id}))/Details.aspx?SID={session_id}&ID={nid}"
+                    )
+                else:
+                    detail_url = (
+                        f"https://www.publicnoticevirginia.com/Details.aspx?ID={nid}"
+                    )
 
                 try:
-                    page.goto(detail_url, wait_until="load", timeout=20_000)
-                    page.wait_for_timeout(500)
-
-                    # If reCAPTCHA is shown, fall back to card excerpt
-                    if page.query_selector('iframe[src*="recaptcha"], #g-recaptcha'):
-                        log.debug(f"  PNV: reCAPTCHA on notice {nid} — using card text")
-                        full_text = card_text
-                    else:
-                        full_text = page.inner_text("body")
-
+                    resp = http_sess.get(detail_url, timeout=15)
+                    # Strip scripts, styles, and HTML tags to get plain text
+                    raw = re.sub(r'<script[^>]*>.*?</script>', ' ', resp.text, flags=re.DOTALL | re.I)
+                    raw = re.sub(r'<style[^>]*>.*?</style>',  ' ', raw,       flags=re.DOTALL | re.I)
+                    raw = re.sub(r'<[^>]+>', ' ', raw)
+                    full_text = re.sub(r'\s+', ' ', raw).strip()
                 except Exception as e:
-                    log.warning(f"  PNV: could not fetch detail {nid}: {e} — using card text")
+                    log.warning(f"  PNV: HTTP fetch failed for {nid}: {e} — using card text")
                     full_text = card_text
 
-                # Must contain a foreclosure keyword to be relevant
+                # Verify we got actual notice content (not an error/redirect page)
                 if not re.search(
                     r"trustee|deed of trust|sale of real property|foreclos|judicial sale",
                     full_text, re.I
                 ):
-                    continue
+                    full_text = card_text   # fall back to row excerpt
+
+                if i % 100 == 0:
+                    log.info(f"  PNV: processed {i}/{len(unique_items)} detail pages…")
 
                 address              = parse_address_from_notice(full_text)
                 sale_date, sale_time = parse_sale_datetime(full_text)
@@ -314,7 +327,7 @@ def scrape_public_notice_va() -> list:
                 trustee              = parse_trustee(full_text)
                 notice_text          = re.sub(r'\s+', ' ', full_text).strip()[:5000]
 
-                # Best-effort county/city parse from notice text — not used as a filter
+                # Best-effort county/city parse from notice text — not used as filter
                 county_key = None
                 text_lower = full_text.lower()
                 for c in TARGET_COUNTIES:
@@ -345,9 +358,7 @@ def scrape_public_notice_va() -> list:
                     "source_url":          detail_url,
                 })
 
-                sleep(0.3)   # polite rate limit between detail page fetches
-
-            browser.close()
+                sleep(0.25)   # polite rate limit
 
     except Exception as e:
         log.error(f"  PNV error: {e}", exc_info=True)
@@ -945,7 +956,6 @@ def scrape_column_us() -> list:
 
     Requires: pip3 install playwright && playwright install chromium
     """
-    return []   # REMOVED 2026-05 — PNV covers all statewide notices
     listings = []
 
     try:
@@ -1004,16 +1014,36 @@ def scrape_column_us() -> list:
                 browser.close()
                 return listings
 
-            # Click "Load more notices" until exhausted to get all pages
+            # Click "Load more notices" until exhausted to get all pages.
+            # Uses JavaScript to find the button by text content — more reliable
+            # than Playwright CSS pseudo-selectors (:has-text / :text-matches)
+            # which vary by Playwright version.
+            load_more_clicks = 0
             while True:
                 try:
-                    btn = page.query_selector('button:has-text("Load more")')
-                    if btn and btn.is_visible():
-                        btn.click()
-                        page.wait_for_timeout(2000)
+                    clicked = page.evaluate("""
+                        () => {
+                            const buttons = Array.from(document.querySelectorAll('button'));
+                            const btn = buttons.find(b =>
+                                b.innerText && b.innerText.trim().toLowerCase().includes('load more')
+                            );
+                            if (btn) {
+                                btn.scrollIntoView({block: 'center'});
+                                btn.click();
+                                return true;
+                            }
+                            return false;
+                        }
+                    """)
+                    if clicked:
+                        load_more_clicks += 1
+                        log.info(f"  Column.us: clicked 'Load more' ({load_more_clicks}x)")
+                        page.wait_for_timeout(2500)
                     else:
+                        log.info(f"  Column.us: 'Load more' exhausted after {load_more_clicks} click(s)")
                         break
-                except Exception:
+                except Exception as ex:
+                    log.debug(f"  Column.us: 'Load more' loop ended: {ex}")
                     break
 
             # ── Capture individual notice detail URLs from the DOM ────────────
@@ -1059,9 +1089,11 @@ def scrape_column_us() -> list:
             raw_blocks = re.split(r"FREDERICKSBURG FREE-LANCE STAR", body_text, flags=re.I)
             # First element is the page chrome (search form etc.) — drop it
             notice_blocks = raw_blocks[1:]
-            log.info(f"  Column.us: {len(notice_blocks)} notice blocks found")
+            total_blocks = len(notice_blocks)
+            log.info(f"  Column.us: {total_blocks} total listings found")
 
-            kept = skipped_trust = skipped_addr = skipped_county = 0
+            kept = skipped_addr = 0
+            listing_num = 0
 
             # Pair each notice block with its individual detail URL.
             # Both sequences are in DOM order, so zip works 1-to-1.
@@ -1073,18 +1105,11 @@ def scrape_column_us() -> list:
             for block_text, notice_url in block_url_pairs:
                 if not block_text:
                     continue   # extra URL with no matching text block — skip
+                listing_num += 1
                 text = block_text.strip()
 
-                # Column.us already filters to "Foreclosure Sale" notices, but
-                # the block may contain editorial text, ads, or other filler.
-                # Accept any block that mentions trustee, substitute trustee,
-                # or foreclosure sale — all are VA auction notice patterns.
-                if not re.search(
-                    r"trustee.{0,15}sale|substitute trustee|foreclosure sale",
-                    text, re.I
-                ):
-                    skipped_trust += 1
-                    continue
+                # Column.us already filters to "Foreclosure Sale" notices —
+                # no additional keyword filter needed here.
 
                 # ── Address ────────────────────────────────────────────────
                 # Primary: match a Virginia street address directly.
@@ -1092,10 +1117,11 @@ def scrape_column_us() -> list:
                 #   "TRUSTEE'S SALE OF 256 MANCHESTER DR, RUTHER GLEN, VA 22546 In execution..."
                 #   "Trustee's Sale 9422 WILDWOOD KNL FARM LN, SPOTSYLVANIA, VA 22551 (Parcel..."
                 #   "TRUSTEE'S SALE OF 12219 WARD RD, KING GEORGE, VA 22485"
-                # Pattern: house-number + street text + comma + city + ", VA " + ZIP
+                #   "Trustee's Sale\n1 Saint Marys Lane, Stafford, Virginia 22556"  ← "Virginia" spelled out
+                # Pattern: house-number + street text + comma + city + ", VA/Virginia " + ZIP
                 addr_raw = None
                 direct_m = re.search(
-                    r"(\d+\s+[A-Z0-9][^,\n]{4,60},\s*[A-Z][^,\n]{1,35},\s*VA\s+\d{5}(?:-\d{4})?)",
+                    r"(\d+\s+[A-Z0-9][^,\n]{4,60},\s*[A-Z][^,\n]{1,35},\s*(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
                     text, re.I
                 )
                 if direct_m:
@@ -1104,7 +1130,7 @@ def scrape_column_us() -> list:
                 # Fallback A: "TRUSTEE'S SALE OF {address}" with flexible terminator
                 if not addr_raw:
                     addr_m = re.search(
-                        r"TRUSTEE.{0,3}S\s+SALE\s+OF\s+([\w\d].*?)(?=\n\n|\n?In\s+execution|\nDefault|\nVirginia|\(Parcel)",
+                        r"TRUSTEE.{0,3}S\s+SALE\s+OF\s+([\w\d].*?)(?=\n\n|\n?In\s+execution|\nDefault|\(Parcel)",
                         text, re.I | re.S
                     )
                     if addr_m:
@@ -1113,57 +1139,63 @@ def scrape_column_us() -> list:
                 # Fallback B: "SUBSTITUTE TRUSTEE SALE / NOTICE\n{address}"
                 if not addr_raw:
                     sub_m = re.search(
-                        r"(?:NOTICE OF )?SUBSTITUTE TRUSTEE.{0,10}SALE\s+([\w\d].*?)(?=\n\n|\n?In\s+execution|\nBy virtue|\nVirginia)",
+                        r"(?:NOTICE OF )?SUBSTITUTE TRUSTEE.{0,10}SALE\s+([\w\d].*?)(?=\n\n|\n?In\s+execution|\nBy virtue)",
                         text, re.I | re.S
                     )
                     if sub_m:
                         addr_raw = re.sub(r"\s+", " ", sub_m.group(1)).strip()
 
+                # Fallback C: "Trustee's Sale\n{address}" — address on its own line, no "OF"
+                # Seen in notices like: "Trustee's Sale\n1 Saint Marys Lane, Stafford, Virginia 22556"
                 if not addr_raw:
-                    log.info(f"  Column.us: no address found — snippet: {text[:120]!r}")
+                    newline_m = re.search(
+                        r"TRUSTEE.{0,3}S\s+SALE\s*\n\s*(\d+\s+[A-Z0-9][^,\n]{4,60},\s*[A-Z][^,\n]{1,35},\s*(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
+                        text, re.I
+                    )
+                    if newline_m:
+                        addr_raw = re.sub(r"\s+", " ", newline_m.group(1)).strip()
+
+                if not addr_raw:
+                    snippet = re.sub(r'\s+', ' ', text[:100]).strip()
+                    log.info(f"  [{listing_num}/{total_blocks}] SKIPPED — reason: no address found | snippet: {snippet!r}")
                     skipped_addr += 1
                     continue
 
-                # Parse "Street, City, ST ZIP" from address line
+                # Parse "Street, City, ST/State ZIP" from address line
+                # Handles both "VA" and "Virginia" as state
                 parsed = re.match(
-                    r"^(.*?),\s*([^,]+),\s*([A-Z]{2})\s+(\d{5}(?:-\d{4})?)",
-                    addr_raw
+                    r"^(.*?),\s*([^,]+),\s*(?:VA|Virginia)\s+(\d{5}(?:-\d{4})?)",
+                    addr_raw, re.I
                 )
                 if parsed:
                     street   = parsed.group(1).strip()
                     city     = parsed.group(2).strip()
-                    zip_code = parsed.group(4)
+                    zip_code = parsed.group(3)
                 else:
                     street   = addr_raw[:80]
                     city     = ""
                     zip_code = None
 
-                # Derive county; skip if outside our target area
+                # Derive county — best effort, not used as a filter
                 county = city_to_county(city)
                 if county == "Unknown":
-                    # Try extracting county name from Circuit Court reference
+                    # Try extracting county name from Circuit Court reference.
+                    # Use [A-Za-z ]+ (no newlines, no commas) to avoid over-capturing
+                    # across line breaks. Also handle "County of X" and "City of X" prefixes.
                     county_m = re.search(
-                        r"Circuit Court(?:\s+for)?\s+(?:the\s+)?(?:City of\s+)?(\w[\w\s]+?)"
-                        r"(?:\s+County)?,\s+(?:Main|Courthouse|\d)",
+                        r"Circuit Court(?:\s+for)?\s+(?:the\s+)?"
+                        r"(?:(?:City|County)\s+of\s+)?([A-Za-z][A-Za-z ]{1,25}?)"
+                        r"(?:\s+County(?:\s+City)?)?,\s+(?:Main|Courthouse|\d)",
                         text, re.I
                     )
                     if county_m:
-                        # Trim to first 2 words — county names are at most 2 words
-                        # (e.g. "King George"); lazy regex can over-capture trailing
-                        # text like "Spotsylvania County On June 1"
-                        raw_county = " ".join(county_m.group(1).strip().split()[:2])
+                        raw_county = county_m.group(1).strip()
+                        # Strip any residual "of / the / county / city" prefix artifacts
+                        raw_county = re.sub(r'^(?:of|the|county|city)\s+', '', raw_county, flags=re.I).strip()
+                        raw_county = " ".join(raw_county.split()[:2])
                         county = county_display(raw_county.lower())
                     else:
-                        log.info(f"  Column.us: unknown county for city='{city}' addr='{addr_raw[:60]}'")
-                        skipped_county += 1
-                        continue
-
-                if county.lower().replace(" city", "").replace(" county", "") not in [
-                    c.lower() for c in TARGET_COUNTIES
-                ]:
-                    log.info(f"  Column.us: county '{county}' not in target list — skipping")
-                    skipped_county += 1
-                    continue
+                        county = ""   # unknown county — include anyway
 
                 kept += 1
 
@@ -1174,6 +1206,16 @@ def scrape_column_us() -> list:
                 lender  = parse_lender(text)
                 trustee = parse_trustee(text)
 
+                # ── New enrichment fields from notice text ─────────────────
+                original_principal  = parse_original_principal(text)
+                deposit             = parse_deposit(text)
+                deed_of_trust_date  = parse_deed_of_trust_date(text)
+
+                county_key = county.lower().replace(" city","").replace(" county","").strip()
+                log.info(
+                    f"  [{listing_num}/{total_blocks}] ADDED — {street}, {city} | "
+                    f"county: {county or 'unknown'} | sale: {sale_date or 'TBD'}"
+                )
                 listings.append({
                     "id":               make_id(street, sale_date),
                     "address":          street,
@@ -1186,26 +1228,24 @@ def scrape_column_us() -> list:
                     "asking_price":     None,
                     "sale_date":        sale_date,
                     "sale_time":        sale_time,
-                    "sale_location":    courthouse_location(
-                                            county.lower().replace(" city","").replace(" county","").strip()
-                                        ),
+                    "sale_location":    courthouse_location(county_key) if county_key else "",
                     "days_until_sale":  None,
                     "notice_date":      date.today().isoformat(),
                     "days_in_foreclosure": 0,
-                    "lender":           lender,
-                    "trustee":          trustee,
-                    "source":           "column_us",
-                    # Individual notice detail page URL (the link behind "Copy link").
-                    # Falls back to the search page URL if the DOM query didn't
-                    # return a matching link for this block.
-                    "source_url":       notice_url or url,
+                    "lender":               lender,
+                    "trustee":              trustee,
+                    "original_principal":   original_principal,
+                    "deposit":              deposit,
+                    "deed_of_trust_date":   deed_of_trust_date,
+                    "notice_text":          re.sub(r'\s+', ' ', text).strip()[:5000],
+                    "source":               "column_us",
+                    "source_url":           notice_url or url,
                 })
 
             log.info(
-                f"  Column.us: {kept} kept | "
-                f"{skipped_trust} dropped (not trustee/foreclosure) | "
-                f"{skipped_addr} dropped (no address) | "
-                f"{skipped_county} dropped (county outside target)"
+                f"  Column.us summary: {kept} added | "
+                f"{skipped_addr} skipped (no address parsed) | "
+                f"{total_blocks} total blocks"
             )
             browser.close()
 
@@ -1372,23 +1412,24 @@ def parse_address_from_notice(text: str) -> str:
 def parse_sale_datetime(text: str):
     """Extract sale date and time from Virginia trustee sale notice text.
 
-    Three patterns tried in order, most-specific first:
+    Patterns tried in order, most-specific first:
 
-    1. Auction keyword pattern (PNV):
-         "auction will be on June 11, 2026 at 11:00AM"
-         "auction on May 27, 2026, at 1:00 PM"
-
-    2. General "on [Date], at [Time]" (PNV / Column.us standard VA phrase):
-         "...on June 22, 2026, at 9:00 AM"
-
-    3. Fallback: scan entire body for any date + time independently.
+    1.  "auction [will be] on June 11, 2026 at 11:00 AM"
+        "there will be an auction on May 22, 2026 at 1:30 PM"
+    1b. "public auction on 5/28/2026 at 10:45 AM"          (numeric date)
+    2.  "...on June 22, 2026, at 9:00 AM"                  (general VA phrase)
+    2b. "...on 5/28/2026 at 10:45 AM"                      (numeric, general)
+    3.  "May 22, 2026 at 1:30 PM"                          (date + at + time, no "on")
+    3b. "5/28/2026 at 10:45 AM"                            (numeric, no "on")
+    4.  Fallback: scan body for any date and time independently.
     """
     sale_date = None
     sale_time = None
 
-    TIME_PAT  = r'(\d{1,2}:\d{2}\s*(?:AM|PM|a\.m\.|p\.m\.))'
-    DATE_PAT  = r'(\w+\s+\d{1,2},?\s*\d{4})'
-    DATE_FMTS = ("%B %d, %Y", "%B %d %Y")
+    TIME_PAT      = r'(\d{1,2}:\d{2}\s*(?:AM|PM|a\.m\.|p\.m\.)?)'  # AM/PM optional — e.g. "9:00"
+    DATE_PAT      = r'(\w+\s+\d{1,2},?\s*\d{4})'        # "June 22, 2026"
+    DATE_PAT_NUM  = r'(\d{1,2}/\d{1,2}/\d{4})'           # "5/28/2026"
+    DATE_FMTS     = ("%B %d, %Y", "%B %d %Y")
 
     def _parse_date(raw: str):
         raw = raw.strip()
@@ -1399,12 +1440,22 @@ def parse_sale_datetime(text: str):
                 continue
         return None
 
+    def _parse_date_num(raw: str):
+        """Parse M/D/YYYY or MM/DD/YYYY numeric date."""
+        raw = raw.strip()
+        try:
+            return datetime.strptime(raw, "%m/%d/%Y").date().isoformat()
+        except ValueError:
+            return None
+
     def _clean_time(raw: str) -> str:
         return (raw.strip().upper()
                 .replace("A.M.", "AM").replace("P.M.", "PM")
                 .replace(" ", ""))   # "11:00 AM" → "11:00AM" for consistency
 
-    # ── Pattern 1: "auction [will be] on [Date] at [Time]" ───────────────────
+    # ── Pattern 1: "auction [will be] on [Month Day, Year] at [Time]" ─────────
+    # Covers: "public auction on June 3, 2026 at 10:00 AM"
+    #         "there will be an auction on May 22, 2026 at 1:30 PM"
     auction_m = re.search(
         r'auction(?:\s+will\s+be)?\s+on\s+' + DATE_PAT + r',?\s+at\s+' + TIME_PAT,
         text, re.IGNORECASE
@@ -1415,7 +1466,20 @@ def parse_sale_datetime(text: str):
         if d:
             return d, t
 
-    # ── Pattern 2: "on [Date], at [Time]" — general VA trustee sale phrase ───
+    # ── Pattern 1b: "auction on M/D/YYYY at [Time]" — numeric date ────────────
+    # Covers: "public auction on 5/28/2026 at 10:45 AM"
+    auction_num_m = re.search(
+        r'auction(?:\s+will\s+be)?\s+on\s+' + DATE_PAT_NUM + r',?\s+at\s+' + TIME_PAT,
+        text, re.IGNORECASE
+    )
+    if auction_num_m:
+        d = _parse_date_num(auction_num_m.group(1))
+        t = _clean_time(auction_num_m.group(2))
+        if d:
+            return d, t
+
+    # ── Pattern 2: "on [Month Day, Year], at [Time]" — general VA phrase ──────
+    # Covers: "will sell at public auction on June 3, 2026, at 10:00 AM"
     general_m = re.search(
         r'\bon\s+' + DATE_PAT + r',?\s+at\s+' + TIME_PAT,
         text, re.IGNORECASE
@@ -1426,7 +1490,42 @@ def parse_sale_datetime(text: str):
         if d:
             return d, t
 
-    # ── Pattern 3: fallback — scan for any date and time independently ────────
+    # ── Pattern 2b: "on M/D/YYYY at [Time]" — numeric date, general phrase ────
+    general_num_m = re.search(
+        r'\bon\s+' + DATE_PAT_NUM + r',?\s+at\s+' + TIME_PAT,
+        text, re.IGNORECASE
+    )
+    if general_num_m:
+        d = _parse_date_num(general_num_m.group(1))
+        t = _clean_time(general_num_m.group(2))
+        if d:
+            return d, t
+
+    # ── Pattern 3: "[Month Day, Year] at [Time]" — date + time, no "on" ───────
+    # Covers: "May 22, 2026 at 1:30 PM"
+    bare_m = re.search(
+        DATE_PAT + r',?\s+at\s+' + TIME_PAT,
+        text, re.IGNORECASE
+    )
+    if bare_m:
+        d = _parse_date(bare_m.group(1))
+        t = _clean_time(bare_m.group(2))
+        if d:
+            return d, t
+
+    # ── Pattern 3b: "M/D/YYYY at [Time]" — numeric date, no "on" ─────────────
+    # Covers: "5/28/2026 at 10:45 AM"
+    bare_num_m = re.search(
+        DATE_PAT_NUM + r',?\s+at\s+' + TIME_PAT,
+        text, re.IGNORECASE
+    )
+    if bare_num_m:
+        d = _parse_date_num(bare_num_m.group(1))
+        t = _clean_time(bare_num_m.group(2))
+        if d:
+            return d, t
+
+    # ── Pattern 4: fallback — scan body for any date and time independently ───
     date_match = re.search(r"(\w+ \d{1,2},?\s*\d{4}|\d{1,2}/\d{1,2}/\d{4})", text)
     time_match = re.search(r"(\d{1,2}:\d{2}\s*(?:AM|PM|a\.m\.|p\.m\.))", text, re.IGNORECASE)
 
@@ -1443,6 +1542,91 @@ def parse_sale_datetime(text: str):
         sale_time = _clean_time(time_match.group(1))
 
     return sale_date, sale_time
+
+
+def parse_original_principal(text: str):
+    """Extract original principal amount from notice text.
+
+    Patterns tried in order:
+    1. "the original principal amount of $447,740.00"
+    2. "a loan which was originally $356,684.00"
+    Returns: "$447,740.00" as a string, or None.
+    """
+    # Pattern 1: "original principal amount of $X"
+    m1 = re.search(
+        r'original\s+principal\s+amount\s+of\s+(\$[\d,]+(?:\.\d{2})?)',
+        text, re.IGNORECASE
+    )
+    if m1:
+        return m1.group(1).strip()
+
+    # Pattern 2: "a loan which was originally $X"
+    m2 = re.search(
+        r'loan\s+which\s+was\s+originally\s+(\$[\d,]+(?:\.\d{2})?)',
+        text, re.IGNORECASE
+    )
+    if m2:
+        return m2.group(1).strip()
+
+    return None
+
+
+def parse_deposit(text: str):
+    """Extract deposit requirement from notice text.
+
+    Matches: "A deposit of $45,000.00 or 10% of the successful bid amount"
+    Returns the full deposit clause as a string, or None.
+    """
+    match = re.search(
+        r'((?:A\s+)?deposit\s+of\s+\$[\d,]+(?:\.\d{2})?[^.]{0,80})',
+        text, re.IGNORECASE
+    )
+    return match.group(1).strip() if match else None
+
+
+def parse_deed_of_trust_date(text: str):
+    """Extract the Deed of Trust date from notice text.
+
+    Patterns tried in order:
+
+    1. "Deed of Trust dated June 4, 2021"          — explicit DOT reference
+       "Deed of Trust dated 06/04/2021"
+    2. "original principal amount of $305,000.00 dated December 23, 2005"
+       — dollar amount followed by "dated [date]"
+
+    Returns ISO date string (YYYY-MM-DD), or None.
+    """
+    DATE_FMTS = ("%B %d, %Y", "%B %d %Y", "%b %d, %Y", "%b %d %Y",
+                 "%m/%d/%Y", "%m-%d-%Y", "%Y-%m-%d")
+
+    def _try_parse(raw: str):
+        raw = raw.strip().rstrip(',')
+        for fmt in DATE_FMTS:
+            try:
+                return datetime.strptime(raw, fmt).date().isoformat()
+            except ValueError:
+                continue
+        return raw  # return raw string if no format matched
+
+    # ── Pattern 1: "Deed of Trust dated [date]" ───────────────────────────────
+    m1 = re.search(
+        r'Deed\s+of\s+Trust\s+dated\s+([\w/,\s]+?\d{4})',
+        text, re.IGNORECASE
+    )
+    if m1:
+        return _try_parse(m1.group(1))
+
+    # ── Pattern 2: "principal amount of $X.XX[,] dated [date]" ───────────────
+    # Covers: "original principal amount of $305,000.00 dated December 23, 2005"
+    #         "original principal amount of $235,125.00, dated March 1, 2013"
+    m2 = re.search(
+        r'principal\s+amount\s+of\s+\$[\d,]+(?:\.\d{2})?\s*,?\s*dated\s+([\w/,\s]+?\d{4})',
+        text, re.IGNORECASE
+    )
+    if m2:
+        return _try_parse(m2.group(1))
+
+    return None
 
 
 def parse_lender(text: str) -> str:
@@ -2219,11 +2403,15 @@ def deduplicate(listings: list) -> list:
 
 
 def run():
-    log.info("Starting Virginia foreclosure scraper (12 counties)…")
+    log.info("Starting Virginia foreclosure scraper…")
     all_listings = []
 
-    log.info("--- PublicNoticeVirginia.com ---")
-    all_listings.extend(scrape_public_notice_va())
+    # PNV paused — reCAPTCHA blocks notice text; re-enable once solved
+    # log.info("--- PublicNoticeVirginia.com ---")
+    # all_listings.extend(scrape_public_notice_va())
+
+    log.info("--- Column.us (Fredericksburg Free-Lance Star) ---")
+    all_listings.extend(scrape_column_us())
 
     all_listings = deduplicate(all_listings)
     log.info(f"Total after dedup: {len(all_listings)} listings")

@@ -48,36 +48,36 @@ CREDS_FILE   = os.path.join(PROJECT_ROOT, "credentials", "service-account.json")
 # The header is rewritten on every sync run, so changing this list
 # automatically re-orders the spreadsheet on the next run.
 COLUMNS = [
-    "Address",                              # A  — property street address
-    "County",                               # B  — moved to front for quick scanning
-    "F_Sale_Date",                          # C  — foreclosure sale date (most time-critical)
-    "F_Sale_Time",                          # D  — foreclosure sale time
-    "Status",                               # E
-    "Investment_Priority",                  # F
-    "Listing_Price",                        # G
-    "Current_Est_Value",                    # H
-    "Rough_Equity_Est",                     # I
-    "Est_Profit_Potential",                 # J
-    "Beds_Baths_Sqft",                      # K
-    "Year_Built",                           # L
-    "Lot_Size",                             # M
-    "Last_Sold_Date",                       # N
-    "Last_Sold_Price",                      # O
-    "Years_Since_Last_Sale",                # P
-    "City",                                 # Q
-    "ZIP",                                  # R
-    "State",                                # S
-    "Property_Type",                        # T
-    "Is_Auction",                           # U
-    "Owner_Name",                           # V
-    "Owner_Mailing_Address",                # W
-    "Owner_Mailing_Differs_From_Property",  # X
-    "Estimated_Phone",                      # Y
-    "Estimated_Email",                      # Z
-    "Listing_URL",                          # AA
-    "Notes",                                # AB
-    "Date_Checked",                         # AC
-    "Notice_Text",                          # AD — full text of the foreclosure notice
+    "Address",                              # A
+    "County",                               # B
+    "F_Sale_Date",                          # C
+    "F_Sale_Time",                          # D
+    "Deed_Of_Trust_Date",                   # E
+    "Original_Principal",                   # F
+    "Deposit",                              # G
+    "Date_Checked",                         # H
+    "Notice_Text",                          # I
+    "Status",                               # J
+    "Investment_Priority",                  # K
+    "Listing_Price",                        # L
+    "Current_Est_Value",                    # M
+    "Rough_Equity_Est",                     # N
+    "Est_Profit_Potential",                 # O
+    "Last_Sold_Date",                       # P
+    "Last_Sold_Price",                      # Q
+    "Years_Since_Last_Sale",                # R
+    "City",                                 # S
+    "ZIP",                                  # T
+    "State",                                # U
+    "Property_Type",                        # V
+    "Is_Auction",                           # W
+    "Owner_Name",                           # X
+    "Owner_Mailing_Address",                # Y
+    "Owner_Mailing_Differs_From_Property",  # Z
+    "Estimated_Phone",                      # AA
+    "Estimated_Email",                      # AB
+    "Listing_URL",                          # AC
+    "Notes",                                # AD
 ]
 
 
@@ -143,26 +143,6 @@ def listing_to_row(listing: dict) -> list:
     else:
         priority = "Low"   # REO
 
-    # ── Enrichment fields (from HomePath / Redfin) ───────────────────────────
-    beds   = listing.get("beds")
-    baths  = listing.get("baths")
-    sqft   = listing.get("sqft")
-    beds_baths_sqft = ""
-    if beds or baths or sqft:
-        parts_bbs = []
-        if beds  is not None: parts_bbs.append(f"{int(beds)}bd")
-        if baths is not None: parts_bbs.append(f"{baths}ba")
-        if sqft  is not None: parts_bbs.append(f"{int(sqft):,} sqft")
-        beds_baths_sqft = " / ".join(parts_bbs)
-
-    year_built = listing.get("year_built") or ""
-    # lot_size: accept pre-formatted string (e.g. "0.45 ac") from scraper,
-    # or fall back to raw lot_sqft integer and convert to sqft label.
-    lot_size = (
-        listing.get("lot_size")
-        or (f"{listing['lot_sqft']:,} sqft" if listing.get("lot_sqft") else "")
-    )
-
     last_sold_date  = listing.get("last_sold_date") or ""
     last_sold_price = _fmt_price(listing.get("last_sold_price"))
 
@@ -201,37 +181,37 @@ def listing_to_row(listing: dict) -> list:
     notes = " | ".join(note_parts)
 
     return [
-        listing.get("address")  or "",            # A  Address
-        listing.get("county")   or "",            # B  County
-        listing.get("sale_date")  or "",          # C  F_Sale_Date
-        listing.get("sale_time")  or "",          # D  F_Sale_Time
-        status,                                   # E  Status
-        priority,                                 # F  Investment_Priority
-        price_str,                                # G  Listing_Price
-        est_value_str,                            # H  Current_Est_Value
-        rough_equity,                             # I  Rough_Equity_Est
-        est_profit_pct,                           # J  Est_Profit_Potential
-        beds_baths_sqft,                          # K  Beds_Baths_Sqft
-        str(year_built) if year_built else "",    # L  Year_Built
-        lot_size,                                 # M  Lot_Size
-        last_sold_date,                           # N  Last_Sold_Date
-        last_sold_price,                          # O  Last_Sold_Price
-        years_since_sale,                         # P  Years_Since_Last_Sale
-        listing.get("city") or "",                # Q  City
-        listing.get("zip")  or "",                # R  ZIP
-        "VA",                                     # S  State
+        listing.get("address")   or "",                           # A  Address
+        listing.get("county")    or "",                           # B  County
+        listing.get("sale_date") or "",                           # C  F_Sale_Date
+        listing.get("sale_time") or "",                           # D  F_Sale_Time
+        listing.get("deed_of_trust_date") or "",                  # E  Deed_Of_Trust_Date
+        listing.get("original_principal") or "",                  # F  Original_Principal
+        listing.get("deposit")   or "",                           # G  Deposit
+        date.today().isoformat(),                                 # H  Date_Checked
+        listing.get("notice_text") or "",                         # I  Notice_Text
+        status,                                                   # J  Status
+        priority,                                                 # K  Investment_Priority
+        price_str,                                                # L  Listing_Price
+        est_value_str,                                            # M  Current_Est_Value
+        rough_equity,                                             # N  Rough_Equity_Est
+        est_profit_pct,                                           # O  Est_Profit_Potential
+        last_sold_date,                                           # P  Last_Sold_Date
+        last_sold_price,                                          # Q  Last_Sold_Price
+        years_since_sale,                                         # R  Years_Since_Last_Sale
+        listing.get("city") or "",                                # S  City
+        listing.get("zip")  or "",                                # T  ZIP
+        "VA",                                                     # U  State
         "SFR" if listing.get("property_type") == "single-family"
-             else (listing.get("property_type") or "SFR"),  # T  Property_Type
-        "Yes" if stage == "auction" else "No",    # U  Is_Auction
-        listing.get("owner_name") or "",          # V  Owner_Name
-        listing.get("owner_mailing_address") or "",  # W  Owner_Mailing_Address
-        listing.get("owner_mailing_differs") or "",  # X  Owner_Mailing_Differs_From_Property
-        listing.get("owner_phone") or "",         # Y  Estimated_Phone
-        listing.get("owner_email") or "",         # Z  Estimated_Email
-        listing_url,                              # AA Listing_URL
-        notes,                                    # AB Notes
-        date.today().isoformat(),                 # AC Date_Checked
-        listing.get("notice_text") or "",         # AD Notice_Text
+             else (listing.get("property_type") or "SFR"),        # V  Property_Type
+        "Yes" if stage == "auction" else "No",                    # W  Is_Auction
+        listing.get("owner_name") or "",                          # X  Owner_Name
+        listing.get("owner_mailing_address") or "",               # Y  Owner_Mailing_Address
+        listing.get("owner_mailing_differs") or "",               # Z  Owner_Mailing_Differs_From_Property
+        listing.get("owner_phone") or "",                         # AA Estimated_Phone
+        listing.get("owner_email") or "",                         # AB Estimated_Email
+        listing_url,                                              # AC Listing_URL
+        notes,                                                    # AD Notes
     ]
 
 
@@ -513,4 +493,52 @@ def update_summary_tab(spreadsheet: gspread.Spreadsheet, data_sheet: gspread.Wor
 
 
 if __name__ == "__main__":
+    import sys
+
+    # ── --file <path>: override the default data file ────────────────────────
+    # Allows separate pipelines (Richmond, Culpeper) to sync their own JSON.
+    # Example: python3 scripts/sheets_sync.py --file data/foreclosures_richmond.json
+    if "--file" in sys.argv:
+        _file_idx = sys.argv.index("--file")
+        if _file_idx + 1 < len(sys.argv):
+            _override = sys.argv[_file_idx + 1]
+            # Accept both absolute paths and paths relative to project root
+            if not os.path.isabs(_override):
+                DATA_FILE = os.path.join(PROJECT_ROOT, _override)
+            else:
+                DATA_FILE = _override
+            log.info(f"--file: using data file {DATA_FILE}")
+
+    # ── --clear-only: wipe sheet + write header, then exit (no data appended) ─
+    # Used by update_statewide.sh before running pipelines so every statewide
+    # run starts from a clean sheet regardless of prior column-order history.
+    if "--clear-only" in sys.argv:
+        _creds_path = find_creds_file()
+        if not _creds_path:
+            log.error("No credentials file found — cannot clear sheet.")
+            sys.exit(1)
+        _creds  = Credentials.from_service_account_file(_creds_path, scopes=SCOPES)
+        _client = gspread.authorize(_creds)
+        _sheet  = _client.open_by_key(SHEET_ID).get_worksheet(SHEET_TAB)
+        log.info("--clear-only: clearing sheet and writing canonical header…")
+        _sheet.clear()
+        _sheet.update([COLUMNS], "A1", value_input_option="RAW")
+        log.info(f"  ✓ Sheet cleared. Header written ({len(COLUMNS)} columns). Exiting.")
+        sys.exit(0)
+
+    # ── --reset: wipe sheet and rebuild from current DATA_FILE ───────────────
+    if "--reset" in sys.argv:
+        # Use this once to fix column order / missing columns, then run normally.
+        import gspread as _gs
+        from google.oauth2.service_account import Credentials as _Creds
+        _creds_path = find_creds_file()
+        if not _creds_path:
+            log.error("No credentials file found — cannot reset.")
+            sys.exit(1)
+        _creds  = _Creds.from_service_account_file(_creds_path, scopes=SCOPES)
+        _client = _gs.authorize(_creds)
+        _sheet  = _client.open_by_key(SHEET_ID).get_worksheet(SHEET_TAB)
+        log.info("--reset: clearing sheet…")
+        _sheet.clear()
+        log.info("  Sheet cleared. Running full sync…")
     run()
