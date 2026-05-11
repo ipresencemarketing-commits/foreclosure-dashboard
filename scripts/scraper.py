@@ -1067,43 +1067,54 @@ def scrape_column_us() -> list:
                     break
 
             # ── Capture individual notice detail URLs from the DOM ────────────
-            # ── Extract per-notice data directly from DOM cards ───────────────
-            # Walk up from each notice link to its card container so text is
-            # scoped to exactly that one notice — no cross-notice bleed from
-            # body-text splitting.
+            # ── Extract individual notice URLs from DOM ────────────────────────
             try:
-                notice_data: list = page.evaluate("""
+                notice_urls: list = page.evaluate("""
                     () => {
-                        const seen = new Set();
-                        const out  = [];
-                        for (const a of document.querySelectorAll('a[href]')) {
+                        const seen  = new Set();
+                        const links = document.querySelectorAll('a[href]');
+                        const out   = [];
+                        for (const a of links) {
                             const h = a.href || '';
-                            if (!/\\/notice[s]?\\/[\\w-]+/i.test(h) || seen.has(h)) continue;
-                            seen.add(h);
-                            let el = a;
-                            for (let i = 0; i < 12 && el.parentElement; i++) {
-                                el = el.parentElement;
-                                if ((el.innerText || '').trim().length > 150) break;
+                            if (/\\/notice[s]?\\/[\\w-]+/i.test(h) && !seen.has(h)) {
+                                seen.add(h);
+                                out.push(h);
                             }
-                            out.push({ url: h, text: (el.innerText || '').trim() });
                         }
                         return out;
                     }
                 """)
             except Exception as e:
-                log.debug(f"  Column.us: DOM card extraction failed: {e}")
-                notice_data = []
+                log.debug(f"  Column.us: could not extract notice URLs from DOM: {e}")
+                notice_urls = []
 
-            total_blocks = len(notice_data)
-            log.info(f"  Column.us: {total_blocks} notice card(s) found in DOM")
+            log.info(f"  Column.us: {len(notice_urls)} individual notice URL(s) found")
+
+            # ── Split body text into per-notice blocks by newspaper header ─────
+            body_text = page.inner_text("body")
+            raw_blocks = re.split(r"FREE LANCE-STAR", body_text, flags=re.I)
+            notice_blocks = raw_blocks[1:]
+            total_blocks = len(notice_blocks)
+            log.info(f"  Column.us: {total_blocks} total listings found")
 
             kept = skipped_addr = 0
 
-            for listing_num, item in enumerate(notice_data, 1):
-                notice_url = item.get("url") or url
-                text       = item.get("text", "").strip()
-                if not text:
+            from itertools import zip_longest
+            for listing_num, (block_text, notice_url) in enumerate(
+                zip_longest(notice_blocks, notice_urls, fillvalue=None), 1
+            ):
+                if not block_text:
                     continue
+                text = block_text.strip()
+
+                # Truncate block at the start of a second notice to prevent
+                # cross-notice bleed when the paper name appears within a notice body.
+                second_m = re.search(
+                    r'\n\s*(?:NOTICE\s+OF\s+)?(?:TRUSTEE.{0,5}S\s+SALE|SUBSTITUTE\s+TRUSTEE)',
+                    text[50:], re.I
+                )
+                if second_m:
+                    text = text[:50 + second_m.start()].strip()
 
                 # ── Address ────────────────────────────────────────────────
                 addr_raw, street, city, zip_code = extract_address(text)

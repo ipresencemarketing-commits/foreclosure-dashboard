@@ -33,6 +33,7 @@ import os
 import sys
 import logging
 from datetime import date, datetime, timedelta
+from itertools import zip_longest
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)s  %(message)s")
 log = logging.getLogger(__name__)
@@ -217,46 +218,58 @@ def scrape(url: str, paper_header: str, source_tag: str, label: str, detect_mode
                     log.debug(f"  {tag}: 'Load more' loop ended: {ex}")
                     break
 
-            # ── Extract per-notice data directly from DOM cards ───────────────
-            # Walking up from each notice link to its card container guarantees
-            # the text belongs to exactly that notice — no cross-notice bleed
-            # from body-text splitting by newspaper header.
+            # ── Extract individual notice URLs from DOM ────────────────────────
             try:
-                notice_data: list = page.evaluate("""
+                notice_urls: list = page.evaluate("""
                     () => {
-                        const seen = new Set();
-                        const out  = [];
-                        for (const a of document.querySelectorAll('a[href]')) {
+                        const seen  = new Set();
+                        const links = document.querySelectorAll('a[href]');
+                        const out   = [];
+                        for (const a of links) {
                             const h = a.href || '';
-                            if (!/\\/notice[s]?\\/[\\w-]+/i.test(h) || seen.has(h)) continue;
-                            seen.add(h);
-                            // Walk up from the link to find a card element with
-                            // enough text to be a full notice (>150 chars).
-                            let el = a;
-                            for (let i = 0; i < 12 && el.parentElement; i++) {
-                                el = el.parentElement;
-                                const t = (el.innerText || '').trim();
-                                if (t.length > 150) break;
+                            if (/\\/notice[s]?\\/[\\w-]+/i.test(h) && !seen.has(h)) {
+                                seen.add(h);
+                                out.push(h);
                             }
-                            out.push({ url: h, text: (el.innerText || '').trim() });
                         }
                         return out;
                     }
                 """)
             except Exception as e:
-                log.debug(f"  {tag}: DOM card extraction failed: {e}")
-                notice_data = []
+                log.debug(f"  {tag}: could not extract notice URLs: {e}")
+                notice_urls = []
 
-            total_blocks = len(notice_data)
-            log.info(f"  {tag}: {total_blocks} notice card(s) found in DOM")
+            log.info(f"  {tag}: {len(notice_urls)} individual notice URL(s) found")
+
+            # ── Split body text into per-notice blocks by newspaper header ─────
+            # Column.us renders notice cards separated by the paper name.
+            # Each block = one notice. We pair with the URL list via zip_longest.
+            body_text     = page.inner_text("body")
+            raw_blocks    = re.split(paper_header, body_text, flags=re.I)
+            notice_blocks = raw_blocks[1:]   # first element is page chrome — drop it
+            total_blocks  = len(notice_blocks)
+            log.info(f"  {tag}: {total_blocks} total listings found")
 
             kept = skipped_addr = 0
 
-            for listing_num, item in enumerate(notice_data, 1):
-                notice_url = item.get("url") or url
-                text       = item.get("text", "").strip()
-                if not text:
+            for listing_num, (block_text, notice_url) in enumerate(
+                zip_longest(notice_blocks, notice_urls, fillvalue=None), 1
+            ):
+                if not block_text:
                     continue
+                text = block_text.strip()
+
+                # ── Truncate block at the start of a second notice ────────────
+                # Guards against cross-notice bleed when the paper name appears
+                # inside a notice body (e.g. "Published in FREE LANCE-STAR...").
+                # A second "TRUSTEE SALE" or "SUBSTITUTE TRUSTEE" phrase marks
+                # the start of a new notice within an oversized block.
+                second_m = re.search(
+                    r'\n\s*(?:NOTICE\s+OF\s+)?(?:TRUSTEE.{0,5}S\s+SALE|SUBSTITUTE\s+TRUSTEE)',
+                    text[50:], re.I
+                )
+                if second_m:
+                    text = text[:50 + second_m.start()].strip()
 
                 # ── Address extraction ────────────────────────────────────
                 addr_raw, street, city, zip_code = extract_address(text)
