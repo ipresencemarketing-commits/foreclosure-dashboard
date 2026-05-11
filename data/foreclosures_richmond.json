@@ -1,9 +1,9 @@
 {
   "meta": {
-    "last_updated": "2026-05-11T15:02:40",
+    "last_updated": "2026-05-11T16:01:44",
     "source": "https://richmond.column.us/search?noticeType=Foreclosure+Sale",
     "total_count": 209,
-    "new_today": 0
+    "new_today": 15
   },
   "listings": [
     {
@@ -169,18 +169,18 @@
       "is_new": false
     },
     {
-      "id": "fc-a8e28158",
-      "address": "2800 Buford Road, Suite 201 Richmond, VA 23235",
-      "city": "Suite 201 Richmond",
-      "county": "Richmond City",
-      "zip": "23235",
+      "id": "fc-193bd946",
+      "address": "31.8 Acres+/- Parsons Road Beaverdam District Hanover County, Virginia Tax Map Parcel Nos. 7815-63-2552, 7815-64-9318 & 7815-64-6825 Default having been made in the terms of a certain Deed of Trust dated May 3, 2022, and of record in the Clerk's Office, Circuit Court, Hanover County, Virginia, on May 4, 2022, in Deed Book 3352, Page 2027, W. Richard Hairfield, the undersigned Trustee having been requested to do so by the holder of the Note secured, will proceed to sell at public auction, for cash, on Thursday, May 21, 2026 at 11:00 a.m. in front of the Hanover County Courthouse, Hanover County, Virginia, the above-described property. At the sale, a $5,000.00 bidder's deposit may be required at the sole discretion of the Trustee and a purchaser's deposit of ten percent (10%) of the gross sales price of the property shall be required in cash, cashier's check or certified check, at the time of sale, with settlement to be made within ten (10) days thereafter. The property is being sold AS IS. The parcels may be sold separately or in bulk, at the discretion of the Trustee. Additional terms will be announced at the sale. Sale subject to post sale seller confirmation. For information contact: FORREST A. SANFORD, TRUSTEE Relationship Manager Colonial Farm Credit, ACA 7104 Mechanicsville Turnpike Mechanicsville, Virginia 23111",
+      "city": "Aca 7104 Mechanicsville Turnpike Mechanicsville",
+      "county": "Hanover",
+      "zip": "23111",
       "stage": "auction",
       "property_type": "single-family",
       "assessed_value": null,
       "asking_price": null,
       "sale_date": "2026-05-21",
       "sale_time": "11:00AM",
-      "sale_location": "Front steps, Richmond City Circuit Court, 400 N 9th St",
+      "sale_location": "Front steps, Hanover Circuit Court, 7507 Library Dr",
       "days_until_sale": 10,
       "notice_date": "2026-05-11",
       "days_in_foreclosure": 0,
@@ -192,8 +192,8 @@
       "notice_text": "Foreclosure Sale TRUSTEE'S SALE OF 31.8 Acres+/- Parsons Road Beaverdam District Hanover County, Virginia Tax Map Parcel Nos. 7815-63-2552, 7815-64-9318 & 7815-64-6825 Default having been made in the terms of a certain Deed of Trust dated May 3, 2022, and of record in the Clerk's Office, Circuit Court, Hanover County, Virginia, on May 4, 2022, in Deed Book 3352, Page 2027, W. Richard Hairfield, the undersigned Trustee having been requested to do so by the holder of the Note secured, will proceed to sell at public auction, for cash, on Thursday, May 21, 2026 at 11:00 a.m. in front of the Hanover County Courthouse, Hanover County, Virginia, the above-described property. At the sale, a $5,000.00 bidder's deposit may be required at the sole discretion of the Trustee and a purchaser's deposit of ten percent (10%) of the gross sales price of the property shall be required in cash, cashier's check or certified check, at the time of sale, with settlement to be made within ten (10) days thereafter. The property is being sold AS IS. The parcels may be sold separately or in bulk, at the discretion of the Trustee. Additional terms will be announced at the sale. Sale subject to post sale seller confirmation. For information contact: FORREST A. SANFORD, TRUSTEE Relationship Manager Colonial Farm Credit, ACA 7104 Mechanicsville Turnpike Mechanicsville, Virginia 23111 (804) 746-4581 ext. 1154 fsanford@colonialfarmcredit.com W. RICHARD HAIRFIELD 2800 Buford Road, Suite 201 Richmond, VA 23235 (804) 320-6600 rhairfield@hmalaw.com COL-7006592 CITY OF RICHMOND COUNTY, VIRGINIA 2026-05-08",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-b3f883b0",
@@ -223,33 +223,6 @@
       "is_new": false
     },
     {
-      "id": "fc-1be430dc",
-      "address": "9737 Graves Road, South Chesterfield, VA 23803",
-      "city": "South Chesterfield",
-      "county": "Chesterfield",
-      "zip": "23803",
-      "stage": "auction",
-      "property_type": "single-family",
-      "assessed_value": null,
-      "asking_price": null,
-      "sale_date": "2026-05-13",
-      "sale_time": "11:00AM",
-      "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 2,
-      "notice_date": "2026-05-11",
-      "days_in_foreclosure": 0,
-      "lender": "chase",
-      "trustee": null,
-      "original_principal": "$202,268.00",
-      "deposit": "A deposit of $20,000.00 or 10% of the successful bid amount (whichever is lower) will be required immed",
-      "deed_of_trust_date": "2020-03-20",
-      "notice_text": "Foreclosure Sale TRUSTEE SALE OF 9737 Graves Road, South Chesterfield, VA 23803 In execution of the Deed of Trust dated March 20, 2020, in the original principal amount of $202,268.00, recorded in Deed Book 12674, page 689, assigned in Deed Book 15153, page 925, in the Clerk\u2019s Office of the Circuit Court for the County of Chesterfield, Virginia, default having occurred in the payment of the indebtedness thereby secured and at the request of the holder of the note, the undersigned, as Substitute Trustee, will sell at public auction at the front entrance of the Circuit Court for the County of Chesterfield on May 13, 2026, at 11:00 a.m., the property located at the above address and described as Lot 1, Block C, Section 1, Grayson Estates, County of Chesterfield. TERMS: CASH. PROPERTY SOLD AS IS WITH SPECIAL WARRANTY OF TITLE. A deposit of $20,000.00 or 10% of the successful bid amount (whichever is lower) will be required immediately of the successful bidder, in cashier\u2019s check or certified funds only payable to or signed over to \u201cDOLANREID PLLC, TRUSTEE\u201d, no personal checks accepted. Balance is due within 15 days from date of sale VIA BANKWIRE ONLY. Sale is subject to post sale confirmation and audit of the status of the loan including, but not limited to, determination of whether the borrower filed for and obtained bankruptcy protection, entered into any repayment agreement, reinstated or paid off the loan prior to the sale. In any such event, or if trustee is unable to complete the sale, or if it is set aside or not fully completed for any reason except purchaser\u2019s default, the sale shall be null and void, and the purchaser\u2019s sole remedy, in law or equity, shall be the return of the deposit without interest. Upon purchaser\u2019s default, the deposit shall be forfeited and the property resold at the risk and costs of the defaulting purchaser. Sale is subject to all prior liens, easements, restrictions, covenants, reservations and conditions, if any, of record, as well as inchoate liens and any other matters which would be disclosed by an accurate survey or inspection of the premises. Real estate taxes will be adjusted to the date of sale. All costs of conveyance, deed, examination of title, recording charges, grantor\u2019s tax and possession will be at the expense of the purchaser. All risks of casualty immediately pass to the successful bidder. Time is of the essence. Winning bidder must sign a memorandum of sale immediately upon completion of sale. Additional terms may be announced at the time of sale. Trustee\u2019s affidavit and a copy of the notice of sale available at the foreclosure sale. The opening bid is not announced until the sale. Current sale status available at dolanreid.com/foreclosure-sales. THIS IS A COMMUNICATION FROM A DEBT COLLECTOR. ANY INFORMATION OBTAINED WILL BE USED FOR THAT PURPOSE. For Information Contact: DolanReid PLLC, Substitute Trustee(s) 12610 Patrick Henry Dr., Ste. D, Newport News, VA 23602; (757) 320-0255, Ext. 220 or Ext. 260 Publish On: May 1 & 8, 2026 COL-7006279 CITY OF RICHMOND COUNTY, VIRGINIA 2026-05-08",
-      "source": "column_us_richmond",
-      "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
-    },
-    {
       "id": "fc-ee5817e0",
       "address": "2910 TRIPLE NOTCH COURT, HENRICO, VA 23233",
       "city": "Henrico",
@@ -271,6 +244,33 @@
       "deposit": null,
       "deed_of_trust_date": "2014-12-29",
       "notice_text": "Foreclosure Sale TRUSTEE\u2019S SALE OF 2910 TRIPLE NOTCH COURT, HENRICO, VA 23233 In execution of a certain Deed of Trust dated December 29, 2014, in the original principal amount of $372,984.00 recorded in the Clerk\u2019s Office, Circuit Court for Henrico County, Virginia, in Book 5325 at Page 0862 as Instrument No. 36136. The undersigned Substitute Trustee will offer for sale at public auction in the front of the Circuit Court building for the City of Richmond, John Marshall Courts Building, 400 North 9th Street, Richmond, Virginia, on June 1, 2026, at 2:30 PM, the property described in said Deed of Trust, located at the above address, and more particularly described as follows: ALL THAT CERTAIN LOT, PIECE OR PARCEL OF LAND, WITH ALL IMPROVEMENTS THEREON AND APPURTENANCES THERETO BELONGING, LYING AND BEING IN THREE CHOPT DISTRICT, HENRICO COUNTY, VIRGINIA, KNOWN AND DESIGNATED AS LOT 6, BLOCK P, OF THREE NOTCH PLACE, AS SHOWN ON A PLAT ENTITLED \"THREE NOTCH PLACE THREE CHOPT DISTRICT, HENRICO COUNTY, VIRGINIA\" AND PREPARED BY BALZER & ASSOCIATES, INC., DATED APRIL 22, 2005, AND RECORDED JULY 11, 2005 IN THE CLERK`S OFFICE OF THE CIRCUIT COURT OF HENRICO COUNTY, VIRGINIA, IN PLAT BOOK 121, PAGES 112-116 AND BY \"CORRECTED PLAT OF THREE NOTCH PLACE, BLOCKS `A, B, K, L, M, N, O, P AND Q`\" DATED FEBRUARY 8, 2007, REVISED MARCH 20, 2007, REVISED MAY 16, 2007 AND RECORDED JULY 11, 2007 IN PLAT BOOK 123, PAGES 89 AND 90 AND BY \"CORRECTED PLAT OF THREE NOTCH PLACE, BLOCKS B, N, O, P AND Q\", DATED MARCH 23, 2011, RECORDED MARCH 29, 2011 IN PLAT BOOK 127, PAGES 96-97, AND BY \"CORRECTED PLAT OF THREE NOTCH PLACE, BLOCKS `P & Q`\", DATED APRIL 18, 2013 AND RECORDED JUNE 14, 2013 IN PLAT BOOK 129, PAGE 168. REFERENCE IS HEREBY MADE TO SAID PLAT FOR A MORE PARTICULAR METES AND BOUNDS DESCRIPTION AS CONTAINED IN SAID PLATS. THE DESCRIPTION CONTAINED IN SAID PLATS IS INCORPORATED HEREIN BY REFERENCE AS IF THE SAME WERE TEXTUALLY HEREIN CONTAINED. TERMS OF SALE: ALL CASH. A bidder\u2019s deposit of ten percent (10%) of the sale price or ten percent (10%) of the original principal balance of the subject Deed of Trust, whichever is lower, in the form of cash or certified funds payable to the Substitute Trustee must be present at the time of the sale. The balance of the purchase price will be due within fifteen (15) days of sale, otherwise Purchaser\u2019s deposit may be forfeited to Trustee. Time is of the essence. If the sale is set aside for any reason, the Purchaser at the sale shall be entitled to a return of the deposit paid. The Purchaser may, if provided by the terms of the Trustee\u2019s Memorandum of Foreclosure Sale, be entitled to a $50 cancellation fee from the Substitute Trustee, but shall have no further recourse against the Mortgagor, the Mortgagee or the Mortgagee\u2019s attorney. A form copy of the Trustee\u2019s memorandum of foreclosure sale and contract to purchase real property is available for viewing at www.aldridgepite.com. Additional terms, if any, to be announced at the sale and the Purchaser may be given the option to execute the contract of sale electronically. This is a communication from a debt collector and any information obtained will be used for that purpose. The sale is subject to seller confirmation. Substitute Trustee: Equity Trustees, LLC, 8100 Three Chopt Road, Suite 240, Richmond, VA 23229. If you have any questions or concerns, please contact the Virginia Pre-Sale Department of counsel for Equity Trustees, LLC at 301-961-6555, website: www.aldridgepite.com. VA-377061-1. COL-7006477 CITY OF RICHMOND COUNTY, VIRGINIA 2026-05-08",
+      "source": "column_us_richmond",
+      "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
+      "first_seen": "2026-05-08",
+      "is_new": false
+    },
+    {
+      "id": "fc-1be430dc",
+      "address": "9737 Graves Road, South Chesterfield, VA 23803",
+      "city": "South Chesterfield",
+      "county": "Chesterfield",
+      "zip": "23803",
+      "stage": "auction",
+      "property_type": "single-family",
+      "assessed_value": null,
+      "asking_price": null,
+      "sale_date": "2026-05-13",
+      "sale_time": "11:00AM",
+      "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
+      "days_until_sale": 2,
+      "notice_date": "2026-05-11",
+      "days_in_foreclosure": 0,
+      "lender": "chase",
+      "trustee": null,
+      "original_principal": "$202,268.00",
+      "deposit": "A deposit of $20,000.00 or 10% of the successful bid amount (whichever is lower) will be required immed",
+      "deed_of_trust_date": "2020-03-20",
+      "notice_text": "Foreclosure Sale TRUSTEE SALE OF 9737 Graves Road, South Chesterfield, VA 23803 In execution of the Deed of Trust dated March 20, 2020, in the original principal amount of $202,268.00, recorded in Deed Book 12674, page 689, assigned in Deed Book 15153, page 925, in the Clerk\u2019s Office of the Circuit Court for the County of Chesterfield, Virginia, default having occurred in the payment of the indebtedness thereby secured and at the request of the holder of the note, the undersigned, as Substitute Trustee, will sell at public auction at the front entrance of the Circuit Court for the County of Chesterfield on May 13, 2026, at 11:00 a.m., the property located at the above address and described as Lot 1, Block C, Section 1, Grayson Estates, County of Chesterfield. TERMS: CASH. PROPERTY SOLD AS IS WITH SPECIAL WARRANTY OF TITLE. A deposit of $20,000.00 or 10% of the successful bid amount (whichever is lower) will be required immediately of the successful bidder, in cashier\u2019s check or certified funds only payable to or signed over to \u201cDOLANREID PLLC, TRUSTEE\u201d, no personal checks accepted. Balance is due within 15 days from date of sale VIA BANKWIRE ONLY. Sale is subject to post sale confirmation and audit of the status of the loan including, but not limited to, determination of whether the borrower filed for and obtained bankruptcy protection, entered into any repayment agreement, reinstated or paid off the loan prior to the sale. In any such event, or if trustee is unable to complete the sale, or if it is set aside or not fully completed for any reason except purchaser\u2019s default, the sale shall be null and void, and the purchaser\u2019s sole remedy, in law or equity, shall be the return of the deposit without interest. Upon purchaser\u2019s default, the deposit shall be forfeited and the property resold at the risk and costs of the defaulting purchaser. Sale is subject to all prior liens, easements, restrictions, covenants, reservations and conditions, if any, of record, as well as inchoate liens and any other matters which would be disclosed by an accurate survey or inspection of the premises. Real estate taxes will be adjusted to the date of sale. All costs of conveyance, deed, examination of title, recording charges, grantor\u2019s tax and possession will be at the expense of the purchaser. All risks of casualty immediately pass to the successful bidder. Time is of the essence. Winning bidder must sign a memorandum of sale immediately upon completion of sale. Additional terms may be announced at the time of sale. Trustee\u2019s affidavit and a copy of the notice of sale available at the foreclosure sale. The opening bid is not announced until the sale. Current sale status available at dolanreid.com/foreclosure-sales. THIS IS A COMMUNICATION FROM A DEBT COLLECTOR. ANY INFORMATION OBTAINED WILL BE USED FOR THAT PURPOSE. For Information Contact: DolanReid PLLC, Substitute Trustee(s) 12610 Patrick Henry Dr., Ste. D, Newport News, VA 23602; (757) 320-0255, Ext. 220 or Ext. 260 Publish On: May 1 & 8, 2026 COL-7006279 CITY OF RICHMOND COUNTY, VIRGINIA 2026-05-08",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
       "first_seen": "2026-05-08",
@@ -358,18 +358,18 @@
       "is_new": false
     },
     {
-      "id": "fc-adfc7393",
-      "address": "400 N. 9th Street, Richmond, Virginia 23219",
-      "city": "Richmond",
-      "county": "Richmond City",
-      "zip": "23219",
+      "id": "fc-2e40f1c2",
+      "address": "2226 HILDREDTH STREET RICHMOND, VA 23223",
+      "city": "",
+      "county": "",
+      "zip": null,
       "stage": "auction",
       "property_type": "single-family",
       "assessed_value": null,
       "asking_price": null,
       "sale_date": "2026-05-11",
       "sale_time": "8:30AM",
-      "sale_location": "Front steps, Richmond City Circuit Court, 400 N 9th St",
+      "sale_location": "",
       "days_until_sale": 0,
       "notice_date": "2026-05-11",
       "days_in_foreclosure": 0,
@@ -381,8 +381,8 @@
       "notice_text": "Foreclosure Sale SUBSTITUTE TRUSTEE'S SALE 2226 HILDREDTH STREET RICHMOND, VA 23223 TAX MAP NO.: E000-0755/020 In execution of a certain Deed of Trust from Obadiah B. White and Jeanette L. White to Archie C. Berkeley, Jr., Trustee, dated January 24, 2011, recorded January 28, 2011, in the Clerk's Office, Circuit Court, City of Richmond, Virginia, as Instrument Number 11-1633, page 0234, (Lafayette Whitlock Fischer Hughes PLC, a Virginia professional limited liability company, having been appointed as Substitute Trustee by instrument duly recorded in the aforesaid Clerk's Office), default having been made in the payment of the indebtedness secured thereby, and being required so to do by the Noteholder, the undersigned, in accordance with the provisions of the aforesaid Deed of Trust, and after having given at least sixty (60) days prior written notice to the owner of the real estate of the date, time, place and terms of the sale, will offer for sale to the highest bidder at public auction on May 11, 2026 at 8:30 a.m., at the front steps of the building housing the Circuit Court of the City of Richmond, John Marshall Courts Building, 400 N. 9th Street, Richmond, Virginia 23219, all of the property with any improvements thereon located in City of Richmond, known as 2226 Hildredth Street, Richmond, VA 23223, described as Lot 14 and the southern 15 feet of Lot 15, Block B, on the Revised Plan of Eastview, having a Tax Map Designation of E000-0755/020, together with any interest the Substitute Trustee may have in the Personal Property located on or used in the operation of the Real Property. The Real Property and the Personal Property being hereinafter referred to as the Property. TERMS OF SALE: All cash at settlement. A bidder\u2019s deposit of 10% of the sale price, in cash or certified check, shall be required at time of sale from all bidders except the holder of the Note secured by the Deed of Trust. The balance shall be paid at settlement, to be held within twenty (20) days from the date of sale. The sale is subject to post sale confirmation that the borrower(s) did not file for protection under the U.S. Bankruptcy Code prior to the sale. In such event, the sale shall be null and void, and the Purchaser's sole remedy, in law or equity, shall be the return of the deposit without interest. The Substitute Trustee reserves the right to: (i) waive the deposit requirement; (ii) approve the creditworthiness of any bidder and final purchaser; (iii) withdraw the Property from sale at any time prior to the termination of the bidding; (iv) keep the bidding open for any length of time; and (v) reject any and all bids. In the event that the purchaser fails to go to settlement as required, the aforementioned deposit shall be forfeited, and the Property shall be resold at the purchaser's risk and expense. All closing costs, including preparation of the deed and the grantor's tax, shall be borne by the successful bidder. Real estate taxes shall be prorated to the date of sale. Rents and other expenses of the Property, if any, shall not be prorated. The Real Property shall be conveyed by special warranty deed. The Property shall be sold \"AS IS\" without representation or warranty of any kind, and SUBJECT TO conditions, restrictions, rights-of-way, easements, and reservations, if any, contained in the deeds forming chain of title thereto, and all other matters of record taking priority over the Deed of Trust, if any. Delivery of possession of the Property will not be performed by the Substitute Trustee but will be the responsibility of the Purchaser. The Purchaser will be required to execute a Memorandum of Sale and Contract concerning the purchase of the Property, a copy of which will be available immediately before announcing the sale. This is a communication from a debt collector and any information obtained will be used for that purpose. LAFAYETTE WHITLOCK FISCHER HUGHES PLC, SUBSTITUTE TRUSTEE, 10160 Staples Mill Road, Suite 105, Glen Allen, Virginia 23060. Telephone: (804) 545-6256. FOR INFORMATION CONTACT: C. DANIEL WATERS, ESQ., Lafayette Whitlock Fischer Hughes PLC. Telephone: (804) 545-6256 or (804) 545-6250. COL-7006243 CITY OF RICHMOND COUNTY, VIRGINIA 2026-05-07",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-433c95f5",
@@ -1087,8 +1087,8 @@
       "is_new": false
     },
     {
-      "id": "fc-e001d761",
-      "address": "404 Bancroft Avenue, Richmond, VA 23222",
+      "id": "fc-0a9c5a3e",
+      "address": "404 BANCROFT AVENUE, RICHMOND, VA, 23222 In execution of a Deed of Trust in the original principal amount of $15,716.48, with an annual interest rate of 14.98 dated May 11, 2007, recorded among the land records of the Circuit Court for RICHMOND City as Deed Instrument Number 070016518, the undersigned appointed Substitute Trustee will offer for sale at public auction all that property located in the RICHMOND City, at the front of the Circuit Court building for the City of RICHMOND located at 400 NORTH NINTH STREET, RICHMOND, VIRGINIA on May 12, 2026 at 11:00AM, the property with improvements to wit: 404 Bancroft Avenue, Richmond, VA 23222",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23222",
@@ -1110,8 +1110,8 @@
       "notice_text": "Foreclosure Sale NOTICE OF SUBSTITUTE TRUSTEE\u2019S SALE TRUSTEE'S SALE OF 404 BANCROFT AVENUE, RICHMOND, VA, 23222 In execution of a Deed of Trust in the original principal amount of $15,716.48, with an annual interest rate of 14.98 dated May 11, 2007, recorded among the land records of the Circuit Court for RICHMOND City as Deed Instrument Number 070016518, the undersigned appointed Substitute Trustee will offer for sale at public auction all that property located in the RICHMOND City, at the front of the Circuit Court building for the City of RICHMOND located at 400 NORTH NINTH STREET, RICHMOND, VIRGINIA on May 12, 2026 at 11:00AM, the property with improvements to wit: 404 Bancroft Avenue, Richmond, VA 23222. THAT CERTAIN LOT LAYING IN THE CITY OF RICHMOND, VIRGINIA, DESIGNATED AS 404 BANCROFT AVENUE, SHOWN ON PLAT OF SURVEY BY BREMNER, YOUNGBLOOD SHARP, INCORPORATED, CONSULTING ENGINEERS, DATED MARCH 12, 1974, AND ACCORDING TO WHICH PLAT SUCH PARCEL IS DESCRIBED AS FOLLOWS: BEGINNING AT A POINT ON THE NOTHERN LINE OF BANCROFT AVE WHICH POINT OF 81.42 FEET IN A WESTERLY DIRECTION FROM A POINT AT THE INTERSECTION OF THE WESTERN LINE OF RICHMOND HENRICO TURNPIKE (SECOND STREET ROAD) AND THE NORTHERN LINE OF BANCROFT AVE; THENCE IN A WESTERNLY DIRECTION AND ALONG NORTHERN LINE OF BANCROFT AVENUE 50.10 FEET TO A DIRECTION 130.22 FEET MORE OR LESS, TO AN ALLEY; THENCE IN AN EASTERLY DIRECTION ALONG THE SOUTHERN LINE OF THE SOUTHERN LINE OF THE AFORESAID ALLEY 50.23 FEET TO A POINT; THENCE IN A SOUTHERNLY DIRECTION 127.87 FEET TO THE POINT OF BEGINNING BEING THE SAME FEE SIMPLE PROPERTY CONVEYED BY DEED FROM CHRISTOPHER T BYNUM AND TYSHA K. BYNUM HUSBAND AND WIFE TO MAJOR ROBINISON JR, DATED 09/08/2005 RECORDED ON 10/28/2005 IN INSTRUMENT NO 050037695 IN RICHMOND CITY RECORDS, COMMONWEALTH OF VA. Tax Map No. N0001258046 THIS COMMUNICATION IS FROM A DEBT COLLECTOR. TERMS OF SALE: The purchase price in the form of immediately available funds will be due and payable on the closing date. A deposit in the form of immediately available funds in the initial amount of $6,000.00 will be required at the time of sale from the successful bidder, which deposit amount may have to be increased by the successful bidder within two business days of the foreclosure sale to an amount that equals 10% of the total bid price. The successful bidder will be required to close within thirty (30) days of the date of sale. Time will be of the essence as to the closing date and the payment of the purchase price. In the event an auctioneer is used in connection with the sale of the Property, there will be included a buyer's premium of 10% of the purchase price that must be paid by the successful bidder. All loss or damage to the Property from the time of sale and before settlement shall be at the risk of the successful bidder. The Property will be sold \"AS IS\" and the Real Property will be conveyed by Special Warranty Deed, subject to all rights, reservations, leases, covenants, conditions, easements and restrictions, as they may lawfully affect the Property. Any Personal Property will be conveyed by Bill of Sale, without warranty. Neither the Substitute Trustee nor the holder of the note secured by the Deed of Trust will deliver physical possession of the Property to the successful bidder. The purchaser at the sale will be required to pay all closing costs, including the Grantor's recording tax. Real estate taxes will be pro-rated as of the foreclosure sale date. Additional terms may be announced at the sale. . A bidder's deposit of 10% of the sale price, will be required in cash, certified or cashier's check. Settlement within fifteen (15) days of sale, otherwise Trustees may forfeit deposit. Additional terms to be announced at sale. Loan Type Conventional. Reference Number 9160056912. BTG Trustee, LLC, Substitute Trustees, C/O GALLAGHER ELDEN LAW, 1906 Towne Centre Blvd. Ste 265, Annapolis, MD 21401 (410) 271-6518. COL-7006291 CITY OF RICHMOND COUNTY, VIRGINIA 2026-05-05",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-7f6ccc32",
@@ -1573,11 +1573,11 @@
       "is_new": false
     },
     {
-      "id": "fc-283a117c",
-      "address": "605 Lynnhaven Parkway, Suite 100 Virginia Beach, VA 23452",
-      "city": "Suite 100 Virginia Beach",
+      "id": "fc-67c23d6f",
+      "address": "3013 Moss Side Avenue Richmond, Virginia 23222",
+      "city": "",
       "county": "",
-      "zip": "23452",
+      "zip": null,
       "stage": "auction",
       "property_type": "single-family",
       "assessed_value": null,
@@ -1596,8 +1596,8 @@
       "notice_text": "Foreclosure Sale Trustee's Sale of 3013 Moss Side Avenue Richmond, Virginia 23222 In execution of a Deed of Trust dated June 7, 2024, recorded in the Clerk's Office, Circuit Court, City of Richmond, as Instrument Number 240009167, the undersigned will offer for sale at public auction the property described in and conveyed by said Deed of Trust, being known and designated as: All that certain lot in the City of Richmond, Virginia with the improvements thereon: BEGINNING at a point on the East side of Moss Side Avenue two hundred and ninety (290') feet North of the Northern line of Brookland Park Boulevard, thence running along the Eastern line of Moss Side Avenue in a Northerly direction fifty (50') feet, and back Eastwardly from said front, between parallel lines, one hundred and forty-five (145,) feet to an alley in the rear; being Lot No. 36 in Block D on the Plan of Ginter Park Terrace, recorded in the Clerk's Office of the Circuit Court of Henrico County, Virginia, in Plat Book 10, page 56. Sale shall take place on May 6, 2026, at 12:30 p.m. at the front entrance of the Circuit Court building, City of Richmond, Virginia. Sale shall be subject to all matters of record lawfully affecting the title to the property. The property will be sold \"as is\" without any guaranty or representation as to condition or title and will be subject to such other terms and conditions as may be announced at the sale. The successful bidder may be required to deposit 10% of the sale price in cash or by cashiers or certified check at the time his bid is accepted. Settlement in full shall take place within 10 days of sale and shall be in cash or by cashiers or certified check. M. RICHARD EPPS, P.C., Substitute Trustee FOR INFORMATION CONTACT: M. Richard Epps, P.C., Substitute Trustee 605 Lynnhaven Parkway, Suite 100 Virginia Beach, VA 23452 757-498-9600 COL-7006561 CITY OF RICHMOND COUNTY, VIRGINIA 2026-05-01",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-9139dafd",
@@ -1627,18 +1627,18 @@
       "is_new": false
     },
     {
-      "id": "fc-a8e28158",
-      "address": "2800 Buford Road, Suite 201 Richmond, VA 23235",
-      "city": "Suite 201 Richmond",
-      "county": "Richmond City",
-      "zip": "23235",
+      "id": "fc-193bd946",
+      "address": "31.8 Acres+/- Parsons Road Beaverdam District Hanover County, Virginia Tax Map Parcel Nos. 7815-63-2552, 7815-64-9318 & 7815-64-6825 Default having been made in the terms of a certain Deed of Trust dated May 3, 2022, and of record in the Clerk's Office, Circuit Court, Hanover County, Virginia, on May 4, 2022, in Deed Book 3352, Page 2027, W. Richard Hairfield, the undersigned Trustee having been requested to do so by the holder of the Note secured, will proceed to sell at public auction, for cash, on Thursday, May 21, 2026 at 11:00 a.m. in front of the Hanover County Courthouse, Hanover County, Virginia, the above-described property. At the sale, a $5,000.00 bidder's deposit may be required at the sole discretion of the Trustee and a purchaser's deposit of ten percent (10%) of the gross sales price of the property shall be required in cash, cashier's check or certified check, at the time of sale, with settlement to be made within ten (10) days thereafter. The property is being sold AS IS. The parcels may be sold separately or in bulk, at the discretion of the Trustee. Additional terms will be announced at the sale. Sale subject to post sale seller confirmation. For information contact: FORREST A. SANFORD, TRUSTEE Relationship Manager Colonial Farm Credit, ACA 7104 Mechanicsville Turnpike Mechanicsville, Virginia 23111",
+      "city": "Aca 7104 Mechanicsville Turnpike Mechanicsville",
+      "county": "Hanover",
+      "zip": "23111",
       "stage": "auction",
       "property_type": "single-family",
       "assessed_value": null,
       "asking_price": null,
       "sale_date": "2026-05-21",
       "sale_time": "11:00AM",
-      "sale_location": "Front steps, Richmond City Circuit Court, 400 N 9th St",
+      "sale_location": "Front steps, Hanover Circuit Court, 7507 Library Dr",
       "days_until_sale": 10,
       "notice_date": "2026-05-11",
       "days_in_foreclosure": 0,
@@ -1650,8 +1650,8 @@
       "notice_text": "Foreclosure Sale TRUSTEE'S SALE OF 31.8 Acres+/- Parsons Road Beaverdam District Hanover County, Virginia Tax Map Parcel Nos. 7815-63-2552, 7815-64-9318 & 7815-64-6825 Default having been made in the terms of a certain Deed of Trust dated May 3, 2022, and of record in the Clerk's Office, Circuit Court, Hanover County, Virginia, on May 4, 2022, in Deed Book 3352, Page 2027, W. Richard Hairfield, the undersigned Trustee having been requested to do so by the holder of the Note secured, will proceed to sell at public auction, for cash, on Thursday, May 21, 2026 at 11:00 a.m. in front of the Hanover County Courthouse, Hanover County, Virginia, the above-described property. At the sale, a $5,000.00 bidder's deposit may be required at the sole discretion of the Trustee and a purchaser's deposit of ten percent (10%) of the gross sales price of the property shall be required in cash, cashier's check or certified check, at the time of sale, with settlement to be made within ten (10) days thereafter. The property is being sold AS IS. The parcels may be sold separately or in bulk, at the discretion of the Trustee. Additional terms will be announced at the sale. Sale subject to post sale seller confirmation. For information contact: FORREST A. SANFORD, TRUSTEE Relationship Manager Colonial Farm Credit, ACA 7104 Mechanicsville Turnpike Mechanicsville, Virginia 23111 (804) 746-4581 ext. 1154 fsanford@colonialfarmcredit.com W. RICHARD HAIRFIELD 2800 Buford Road, Suite 201 Richmond, VA 23235 (804) 320-6600 rhairfield@hmalaw.com COL-7006592 CITY OF RICHMOND COUNTY, VIRGINIA 2026-05-01",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-b3f883b0",
@@ -1816,18 +1816,18 @@
       "is_new": false
     },
     {
-      "id": "fc-adfc7393",
-      "address": "400 N. 9th Street, Richmond, Virginia 23219",
-      "city": "Richmond",
-      "county": "Richmond City",
-      "zip": "23219",
+      "id": "fc-2e40f1c2",
+      "address": "2226 HILDREDTH STREET RICHMOND, VA 23223",
+      "city": "",
+      "county": "",
+      "zip": null,
       "stage": "auction",
       "property_type": "single-family",
       "assessed_value": null,
       "asking_price": null,
       "sale_date": "2026-05-11",
       "sale_time": "8:30AM",
-      "sale_location": "Front steps, Richmond City Circuit Court, 400 N 9th St",
+      "sale_location": "",
       "days_until_sale": 0,
       "notice_date": "2026-05-11",
       "days_in_foreclosure": 0,
@@ -1839,8 +1839,8 @@
       "notice_text": "Foreclosure Sale SUBSTITUTE TRUSTEE'S SALE 2226 HILDREDTH STREET RICHMOND, VA 23223 TAX MAP NO.: E000-0755/020 In execution of a certain Deed of Trust from Obadiah B. White and Jeanette L. White to Archie C. Berkeley, Jr., Trustee, dated January 24, 2011, recorded January 28, 2011, in the Clerk's Office, Circuit Court, City of Richmond, Virginia, as Instrument Number 11-1633, page 0234, (Lafayette Whitlock Fischer Hughes PLC, a Virginia professional limited liability company, having been appointed as Substitute Trustee by instrument duly recorded in the aforesaid Clerk's Office), default having been made in the payment of the indebtedness secured thereby, and being required so to do by the Noteholder, the undersigned, in accordance with the provisions of the aforesaid Deed of Trust, and after having given at least sixty (60) days prior written notice to the owner of the real estate of the date, time, place and terms of the sale, will offer for sale to the highest bidder at public auction on May 11, 2026 at 8:30 a.m., at the front steps of the building housing the Circuit Court of the City of Richmond, John Marshall Courts Building, 400 N. 9th Street, Richmond, Virginia 23219, all of the property with any improvements thereon located in City of Richmond, known as 2226 Hildredth Street, Richmond, VA 23223, described as Lot 14 and the southern 15 feet of Lot 15, Block B, on the Revised Plan of Eastview, having a Tax Map Designation of E000-0755/020, together with any interest the Substitute Trustee may have in the Personal Property located on or used in the operation of the Real Property. The Real Property and the Personal Property being hereinafter referred to as the Property. TERMS OF SALE: All cash at settlement. A bidder\u2019s deposit of 10% of the sale price, in cash or certified check, shall be required at time of sale from all bidders except the holder of the Note secured by the Deed of Trust. The balance shall be paid at settlement, to be held within twenty (20) days from the date of sale. The sale is subject to post sale confirmation that the borrower(s) did not file for protection under the U.S. Bankruptcy Code prior to the sale. In such event, the sale shall be null and void, and the Purchaser's sole remedy, in law or equity, shall be the return of the deposit without interest. The Substitute Trustee reserves the right to: (i) waive the deposit requirement; (ii) approve the creditworthiness of any bidder and final purchaser; (iii) withdraw the Property from sale at any time prior to the termination of the bidding; (iv) keep the bidding open for any length of time; and (v) reject any and all bids. In the event that the purchaser fails to go to settlement as required, the aforementioned deposit shall be forfeited, and the Property shall be resold at the purchaser's risk and expense. All closing costs, including preparation of the deed and the grantor's tax, shall be borne by the successful bidder. Real estate taxes shall be prorated to the date of sale. Rents and other expenses of the Property, if any, shall not be prorated. The Real Property shall be conveyed by special warranty deed. The Property shall be sold \"AS IS\" without representation or warranty of any kind, and SUBJECT TO conditions, restrictions, rights-of-way, easements, and reservations, if any, contained in the deeds forming chain of title thereto, and all other matters of record taking priority over the Deed of Trust, if any. Delivery of possession of the Property will not be performed by the Substitute Trustee but will be the responsibility of the Purchaser. The Purchaser will be required to execute a Memorandum of Sale and Contract concerning the purchase of the Property, a copy of which will be available immediately before announcing the sale. This is a communication from a debt collector and any information obtained will be used for that purpose. LAFAYETTE WHITLOCK FISCHER HUGHES PLC, SUBSTITUTE TRUSTEE, 10160 Staples Mill Road, Suite 105, Glen Allen, Virginia 23060. Telephone: (804) 545-6256. FOR INFORMATION CONTACT: C. DANIEL WATERS, ESQ., Lafayette Whitlock Fischer Hughes PLC. Telephone: (804) 545-6256 or (804) 545-6250. COL-7006243 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-30",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-f6bcb1df",
@@ -1897,8 +1897,8 @@
       "is_new": false
     },
     {
-      "id": "fc-7b12d526",
-      "address": "2384 A RED LANE ROAD, POWHATAN, VIRGINIA 23139",
+      "id": "fc-713d2cdd",
+      "address": "2384A RED LANE ROAD, POWHATAN, VA 23139",
       "city": "Powhatan",
       "county": "",
       "zip": "23139",
@@ -1920,8 +1920,8 @@
       "notice_text": "Foreclosure Sale TRUSTEE\u2019S SALE OF 2384A RED LANE ROAD, POWHATAN, VA 23139 In execution of a certain Deed of Trust dated December 31, 2001, in the original principal amount of $132,184.00 recorded in the Clerk\u2019s Office, Circuit Court for Powhatan County, Virginia, in Book 454 at Page 506 . The undersigned Substitute Trustee will offer for sale at public auction in the front of the Circuit Court building for Powhatan County, Virginia, 3880 Old Buckingham Road, Powhatan, Virginia, or any such temporary alternative Circuit Court location designated by the Judges of the Circuit Court, on May 29, 2026, at 9:00 AM, the property described in said Deed of Trust, located at the above address, and more particularly described as follows: ALL THAT CERTAIN TRACT, PIECE OR PARCEL OF LAND LYING AND BEING IN HUGUENOT DISTRICT, POWHATAN COUNTY, VIRGINIA, CONTAINING 2.086 ACRES, HAVING THE ADDRESS OF 2384 A RED LANE ROAD, POWHATAN, VIRGINIA 23139, ACCORDING TO PLAT OF SURVEY OF WOODROW K. COFER, INC. CERTIFIED LAND SURVEYOR, DATED JUNE 14,1995, REVISED OCTOBER 26,1995, ENTITLED \"PLAT SHOWING 2.086 ACRES OF LAND LYING EAST OF STATE ROUTE NO. 628\", A COPY OF WHICH PLAT OF SURVEY IS ATTACHED HERETO AND MADE A PART HEREOF AND TO WHICH PLAT REFERENCE IS HEREBY MADE FOR A MORE PARTICULAR DESCRIPTION OF SAID PROPERTY. TOGETHER WITH AND SUBJECT TO A FIFTY FOOT (50`) WIDE ACCESS EASEMENT TO STATE ROUTE NO. 628 AS IS MORE PARTICULARLY DESCRIBED ACCORDING TO THE ABOVE-MENTIONED PLAT OF WOODROW K. COFER, INC., DATED JUNE 14, 1995 AND REVISED OCTOBER 26, 1995, AND TO WHICH PLAT REFERENCE IS HEREBY MADE FOR A MORE PARTICULAR DESCRIPTION OF THE EASEMENT HEREBY CONVEYED AND MADE SUBJECT TO. TERMS OF SALE: ALL CASH. A bidder\u2019s deposit of ten percent (10%) of the sale price or ten percent (10%) of the original principal balance of the subject Deed of Trust, whichever is lower, in the form of cash or certified funds payable to the Substitute Trustee must be present at the time of the sale. The balance of the purchase price will be due within fifteen (15) days of sale, otherwise Purchaser\u2019s deposit may be forfeited to Trustee. Time is of the essence. If the sale is set aside for any reason, the Purchaser at the sale shall be entitled to a return of the deposit paid. The Purchaser may, if provided by the terms of the Trustee\u2019s Memorandum of Foreclosure Sale, be entitled to a $50 cancellation fee from the Substitute Trustee, but shall have no further recourse against the Mortgagor, the Mortgagee or the Mortgagee\u2019s attorney. A form copy of the Trustee\u2019s memorandum of foreclosure sale and contract to purchase real property is available for viewing at www.aldridgepite.com. Additional terms, if any, to be announced at the sale and the Purchaser may be given the option to execute the contract of sale electronically. This is a communication from a debt collector and any information obtained will be used for that purpose. The sale is subject to seller confirmation. Substitute Trustee: Equity Trustees, LLC, 8100 Three Chopt Road, Suite 240, Richmond, VA 23229. If you have any questions or concerns, please contact the Virginia Pre-Sale Department of counsel for Equity Trustees, LLC at 301-961-6555, website: www.aldridgepite.com. VA-376490-1. COL-7006398 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-30",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-0a089be4",
@@ -2248,8 +2248,8 @@
       "is_new": false
     },
     {
-      "id": "fc-eadfc6c9",
-      "address": "24210 Millen Dr TRUSTEE SALE 24210 Millen Dr, Amelia Court House, VA 23002",
+      "id": "fc-1a9fdd6c",
+      "address": "24210 Millen Dr, Amelia Court House, VA 23002",
       "city": "Amelia Court House",
       "county": "",
       "zip": "23002",
@@ -2271,8 +2271,8 @@
       "notice_text": "Foreclosure Sale Trustee Sale: 95797, 24210 Millen Dr TRUSTEE SALE 24210 Millen Dr, Amelia Court House, VA 23002 Amelia County In execution of a Deed of Trust in the original principal amount of $225,121.00, dated March 17, 2023 recorded in the Clerk's Office of the Circuit Court of the Amelia County, Virginia, in Document No. 202300362, at the request of the holder of the Note, the undersigned Substitute Trustee and will offer for sale at public auction at the entrance to the Circuit Court of Amelia County, 16441 Court Street, Amelia, on July 7, 2026 at 12:00 PM the property described in said deed, located at the above address and briefly described as: Containing 1.2525 acres, more or less, per plat recorded in Plat Cabinet B, Slide 42, with any improvements thereon Subject to any and all covenants, conditions, restrictions, easements, and all other matters of record taking priority over the Deed of Trust, if any, affecting the aforesaid property. TERMS OF SALE: CASH: A deposit of $20,000.00 or 10% of the sales price, whichever is lower, cash or certified check will be required at the time of sale, but no more than $9,000.00 of cash will be accepted, with settlement within fifteen (15) days from the date of sale. Sale is subject to post sale confirmation that the borrower did not file for protection under the U.S. Bankruptcy Code prior to the sale which affects the validity of the sale, as well as to post-sale confirmation of the status of the loan with the loan servicer including, but not limited to, determination of whether the borrower entered into any repayment agreement, reinstated or paid off the loan prior to the sale. Sale is also subject to buyer providing Trustee with information needed for reporting requirements required by Federal Law including FinCen requirements (31 CFR Chapter X) within 15 days from date of sale. In any such event, the sale shall be null and void, and the Purchaser\u2019s sole remedy, in law or equity, shall be the return of his deposit without interest. Additional terms may be announced at the time of sale. Pursuant to the Federal Fair Debt Collection Practices Act, we advise you that this firm is a debt collector attempting to collect the indebtedness referred to herein and any information we obtain will be used for that purpose. SAMUEL I. WHITE, P.C., Substitute Trustee This is a communication from a debt collector. FOR INFORMATION CONTACT: SAMUEL I. WHITE, P.C. (95797) 448 Viking Drive Suite 350 Virginia Beach, VA 23452 757-457-1460 - Call Between 9:00 a.m. and 5:00 p.m. or visit our website at www.siwpc.net COL-7006652 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-29",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-98031a71",
@@ -2842,8 +2842,8 @@
       "is_new": false
     },
     {
-      "id": "fc-e001d761",
-      "address": "404 Bancroft Avenue, Richmond, VA 23222",
+      "id": "fc-0a9c5a3e",
+      "address": "404 BANCROFT AVENUE, RICHMOND, VA, 23222 In execution of a Deed of Trust in the original principal amount of $15,716.48, with an annual interest rate of 14.98 dated May 11, 2007, recorded among the land records of the Circuit Court for RICHMOND City as Deed Instrument Number 070016518, the undersigned appointed Substitute Trustee will offer for sale at public auction all that property located in the RICHMOND City, at the front of the Circuit Court building for the City of RICHMOND located at 400 NORTH NINTH STREET, RICHMOND, VIRGINIA on May 12, 2026 at 11:00AM, the property with improvements to wit: 404 Bancroft Avenue, Richmond, VA 23222",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23222",
@@ -2865,8 +2865,8 @@
       "notice_text": "Foreclosure Sale NOTICE OF SUBSTITUTE TRUSTEE\u2019S SALE TRUSTEE'S SALE OF 404 BANCROFT AVENUE, RICHMOND, VA, 23222 In execution of a Deed of Trust in the original principal amount of $15,716.48, with an annual interest rate of 14.98 dated May 11, 2007, recorded among the land records of the Circuit Court for RICHMOND City as Deed Instrument Number 070016518, the undersigned appointed Substitute Trustee will offer for sale at public auction all that property located in the RICHMOND City, at the front of the Circuit Court building for the City of RICHMOND located at 400 NORTH NINTH STREET, RICHMOND, VIRGINIA on May 12, 2026 at 11:00AM, the property with improvements to wit: 404 Bancroft Avenue, Richmond, VA 23222. THAT CERTAIN LOT LAYING IN THE CITY OF RICHMOND, VIRGINIA, DESIGNATED AS 404 BANCROFT AVENUE, SHOWN ON PLAT OF SURVEY BY BREMNER, YOUNGBLOOD SHARP, INCORPORATED, CONSULTING ENGINEERS, DATED MARCH 12, 1974, AND ACCORDING TO WHICH PLAT SUCH PARCEL IS DESCRIBED AS FOLLOWS: BEGINNING AT A POINT ON THE NOTHERN LINE OF BANCROFT AVE WHICH POINT OF 81.42 FEET IN A WESTERLY DIRECTION FROM A POINT AT THE INTERSECTION OF THE WESTERN LINE OF RICHMOND HENRICO TURNPIKE (SECOND STREET ROAD) AND THE NORTHERN LINE OF BANCROFT AVE; THENCE IN A WESTERNLY DIRECTION AND ALONG NORTHERN LINE OF BANCROFT AVENUE 50.10 FEET TO A DIRECTION 130.22 FEET MORE OR LESS, TO AN ALLEY; THENCE IN AN EASTERLY DIRECTION ALONG THE SOUTHERN LINE OF THE SOUTHERN LINE OF THE AFORESAID ALLEY 50.23 FEET TO A POINT; THENCE IN A SOUTHERNLY DIRECTION 127.87 FEET TO THE POINT OF BEGINNING BEING THE SAME FEE SIMPLE PROPERTY CONVEYED BY DEED FROM CHRISTOPHER T BYNUM AND TYSHA K. BYNUM HUSBAND AND WIFE TO MAJOR ROBINISON JR, DATED 09/08/2005 RECORDED ON 10/28/2005 IN INSTRUMENT NO 050037695 IN RICHMOND CITY RECORDS, COMMONWEALTH OF VA. Tax Map No. N0001258046 THIS COMMUNICATION IS FROM A DEBT COLLECTOR. TERMS OF SALE: The purchase price in the form of immediately available funds will be due and payable on the closing date. A deposit in the form of immediately available funds in the initial amount of $6,000.00 will be required at the time of sale from the successful bidder, which deposit amount may have to be increased by the successful bidder within two business days of the foreclosure sale to an amount that equals 10% of the total bid price. The successful bidder will be required to close within thirty (30) days of the date of sale. Time will be of the essence as to the closing date and the payment of the purchase price. In the event an auctioneer is used in connection with the sale of the Property, there will be included a buyer's premium of 10% of the purchase price that must be paid by the successful bidder. All loss or damage to the Property from the time of sale and before settlement shall be at the risk of the successful bidder. The Property will be sold \"AS IS\" and the Real Property will be conveyed by Special Warranty Deed, subject to all rights, reservations, leases, covenants, conditions, easements and restrictions, as they may lawfully affect the Property. Any Personal Property will be conveyed by Bill of Sale, without warranty. Neither the Substitute Trustee nor the holder of the note secured by the Deed of Trust will deliver physical possession of the Property to the successful bidder. The purchaser at the sale will be required to pay all closing costs, including the Grantor's recording tax. Real estate taxes will be pro-rated as of the foreclosure sale date. Additional terms may be announced at the sale. . A bidder's deposit of 10% of the sale price, will be required in cash, certified or cashier's check. Settlement within fifteen (15) days of sale, otherwise Trustees may forfeit deposit. Additional terms to be announced at sale. Loan Type Conventional. Reference Number 9160056912. BTG Trustee, LLC, Substitute Trustees, C/O GALLAGHER ELDEN LAW, 1906 Towne Centre Blvd. Ste 265, Annapolis, MD 21401 (410) 271-6518. COL-7006291 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-28",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-6d098fd4",
@@ -3193,11 +3193,11 @@
       "is_new": false
     },
     {
-      "id": "fc-283a117c",
-      "address": "605 Lynnhaven Parkway, Suite 100 Virginia Beach, VA 23452",
-      "city": "Suite 100 Virginia Beach",
+      "id": "fc-67c23d6f",
+      "address": "3013 Moss Side Avenue Richmond, Virginia 23222",
+      "city": "",
       "county": "",
-      "zip": "23452",
+      "zip": null,
       "stage": "auction",
       "property_type": "single-family",
       "assessed_value": null,
@@ -3216,8 +3216,8 @@
       "notice_text": "Foreclosure Sale Trustee's Sale of 3013 Moss Side Avenue Richmond, Virginia 23222 In execution of a Deed of Trust dated June 7, 2024, recorded in the Clerk's Office, Circuit Court, City of Richmond, as Instrument Number 240009167, the undersigned will offer for sale at public auction the property described in and conveyed by said Deed of Trust, being known and designated as: All that certain lot in the City of Richmond, Virginia with the improvements thereon: BEGINNING at a point on the East side of Moss Side Avenue two hundred and ninety (290') feet North of the Northern line of Brookland Park Boulevard, thence running along the Eastern line of Moss Side Avenue in a Northerly direction fifty (50') feet, and back Eastwardly from said front, between parallel lines, one hundred and forty-five (145,) feet to an alley in the rear; being Lot No. 36 in Block D on the Plan of Ginter Park Terrace, recorded in the Clerk's Office of the Circuit Court of Henrico County, Virginia, in Plat Book 10, page 56. Sale shall take place on May 6, 2026, at 12:30 p.m. at the front entrance of the Circuit Court building, City of Richmond, Virginia. Sale shall be subject to all matters of record lawfully affecting the title to the property. The property will be sold \"as is\" without any guaranty or representation as to condition or title and will be subject to such other terms and conditions as may be announced at the sale. The successful bidder may be required to deposit 10% of the sale price in cash or by cashiers or certified check at the time his bid is accepted. Settlement in full shall take place within 10 days of sale and shall be in cash or by cashiers or certified check. M. RICHARD EPPS, P.C., Substitute Trustee FOR INFORMATION CONTACT: M. Richard Epps, P.C., Substitute Trustee 605 Lynnhaven Parkway, Suite 100 Virginia Beach, VA 23452 757-498-9600 COL-7006561 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-24",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-9e88913e",
@@ -4084,8 +4084,8 @@
       "is_new": false
     },
     {
-      "id": "fc-53bb295e",
-      "address": "4030 WARWICK ROAD, RICHMOND, VA 23234",
+      "id": "fc-b98d22e1",
+      "address": "4030 OLD WARWICK ROAD, A/R/T/A 4030 WARWICK ROAD, RICHMOND, VA 23234",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23234",
@@ -4107,8 +4107,8 @@
       "notice_text": "Foreclosure Sale TRUSTEE\u2019S SALE OF 4030 OLD WARWICK ROAD, A/R/T/A 4030 WARWICK ROAD, RICHMOND, VA 23234 In execution of a certain Deed of Trust dated October 26, 2007, in the original principal amount of $49,700.00 recorded in the Clerk\u2019s Office, Circuit Court for Richmond City, Virginia as Instrument No. 070037943. The undersigned Substitute Trustee will offer for sale at public auction in the front of the Circuit Court building for the City of Richmond, John Marshall Courts Building, 400 North 9th Street, Richmond, Virginia, on June 15, 2026, at 2:30 PM, the property described in said Deed of Trust, located at the above address, and more particularly described as follows: THAT CERTAIN PIECE OR PARCEL OF LAND, AND THE BUILDINGS AND IMPROVEMENTS THEREON, KNOWN AS: 4030 WARWICK RD IN THE TOWN OF: RICHMOND COUNTY OF: RICHMOND CITY STATE OF: VIRGINIA BEJNG MORE PARTICULARLY DESCRIBED IN A DEED RECORDED IN: BOOK: 520 PAGE: 275 PROPERTY IDENTIFICATION: PIN: C009-0631-006 PROPERTY DESCRIPTION: LOT:6 SUBDIVISION: DEERBOURNE. TERMS OF SALE: ALL CASH. A bidder\u2019s deposit of ten percent (10%) of the sale price or ten percent (10%) of the original principal balance of the subject Deed of Trust, whichever is lower, in the form of cash or certified funds payable to the Substitute Trustee must be present at the time of the sale. The balance of the purchase price will be due within fifteen (15) days of sale, otherwise Purchaser\u2019s deposit may be forfeited to Trustee. Time is of the essence. Substitute Trustee has identified an unreleased security instrument which may be superior to the subject Deed of Trust. Substitute Trustee disclaims any implication that the Property will be sold free and clear of all liens. If the sale is set aside for any reason, the Purchaser at the sale shall be entitled to a return of the deposit paid. The Purchaser may, if provided by the terms of the Trustee\u2019s Memorandum of Foreclosure Sale, be entitled to a $50 cancellation fee from the Substitute Trustee, but shall have no further recourse against the Mortgagor, the Mortgagee or the Mortgagee\u2019s attorney. A form copy of the Trustee\u2019s memorandum of foreclosure sale and contract to purchase real property is available for viewing at www.aldridgepite.com. Additional terms, if any, to be announced at the sale and the Purchaser may be given the option to execute the contract of sale electronically. This is a communication from a debt collector and any information obtained will be used for that purpose. The sale is subject to seller confirmation. Substitute Trustee: Equity Trustees, LLC, 8100 Three Chopt Road, Suite 240, Richmond, VA 23229. If you have any questions or concerns, please contact the Virginia Pre-Sale Department of counsel for Equity Trustees, LLC at 301-961-6555, website: www.aldridgepite.com. VA-380265-1. COL-7006531 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-21",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-80746155",
@@ -4489,11 +4489,11 @@
       "is_new": false
     },
     {
-      "id": "fc-9d4af7b6",
-      "address": "605 Lynnhaven Parkway, Suite 100 Virginia Beach , VA 23452",
-      "city": "Suite 100 Virginia Beach",
+      "id": "fc-cb0882c7",
+      "address": "3016 Royal Virginia Parkway Louisa, VA 23093",
+      "city": "",
       "county": "",
-      "zip": "23452",
+      "zip": null,
       "stage": "pre-fc",
       "property_type": "single-family",
       "assessed_value": null,
@@ -4512,8 +4512,8 @@
       "notice_text": "Foreclosure Sale Trustee's Sale of 3016 Royal Virginia Parkway Louisa, VA 23093 In execution of a Deed of Trust dated December 31, 2024 , recorded in the Clerk's Office, Circuit Court, Goochland County , as Instrument Number 250000020 as Modified by Instruments recorded as Instrument Numbers Instrument No. 250000464 and 250002654, the undersigned will offer for sale at public auction the property described in and conveyed by said Deed of Trust, being known and designated as: The Land referred to herein below is situated in the County of Goochland, State of Virginia, and is described as follows: All those certain tracts or parcels of land, with improvements thereon and appurtenances thereto, situated in the County of Goochland, Virginia, containing 151.50 acres and .230 acre, more or less, Tax Map Parcels: 5 24 B & 5 24 Bl, shown as Parcels 1 and 2, respectively, on a plat by Koontz- Bryant, P.C., dated February 27, 2008, and recorded in the Clerk's Office of the Circuit Court of the County of Goochland, Virginia, in Plat Cabinet E, Slide 57. Sale shall take place on April 20, 2026 , at 11:00 a.m. at the front entrance of the Circuit Court building, Goochland County , Virginia. Sale shall be subject to all matters of record lawfully affecting the title to the property. The property will be sold \"as is\" without any guaranty or representation as to condition or title and will be subject to such other terms and conditions as may be announced at the sale. The successful bidder may be required to deposit 10% of the sale price in cash or by cashiers or certified check at the time his bid is accepted. Settlement in full shall take place within 10 days of sale and shall be in cash or by cashiers or certified check. M. RICHARD EPPS, P.C., Substitute Trustee FOR INFORMATION CONTACT: M. Richard Epps, P.C., Substitute Trustee 605 Lynnhaven Parkway, Suite 100 Virginia Beach , VA 23452 757-498-9600 COL-7006380 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-17",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-0eae0618",
@@ -4651,11 +4651,11 @@
       "is_new": false
     },
     {
-      "id": "fc-9d4af7b6",
-      "address": "605 Lynnhaven Parkway, Suite 100 Virginia Beach , VA 23452",
-      "city": "Suite 100 Virginia Beach",
+      "id": "fc-cb0882c7",
+      "address": "3016 Royal Virginia Parkway Louisa, VA 23093",
+      "city": "",
       "county": "",
-      "zip": "23452",
+      "zip": null,
       "stage": "pre-fc",
       "property_type": "single-family",
       "assessed_value": null,
@@ -4674,8 +4674,8 @@
       "notice_text": "Foreclosure Sale Trustee's Sale of 3016 Royal Virginia Parkway Louisa, VA 23093 In execution of a Deed of Trust dated December 31, 2024 , recorded in the Clerk's Office, Circuit Court, Goochland County , as Instrument Number 250000020 as Modified by Instruments recorded as Instrument Numbers Instrument No. 250000464 and 250002654, the undersigned will offer for sale at public auction the property described in and conveyed by said Deed of Trust, being known and designated as: The Land referred to herein below is situated in the County of Goochland, State of Virginia, and is described as follows: All those certain tracts or parcels of land, with improvements thereon and appurtenances thereto, situated in the County of Goochland, Virginia, containing 151.50 acres and .230 acre, more or less, Tax Map Parcels: 5 24 B & 5 24 Bl, shown as Parcels 1 and 2, respectively, on a plat by Koontz- Bryant, P.C., dated February 27, 2008, and recorded in the Clerk's Office of the Circuit Court of the County of Goochland, Virginia, in Plat Cabinet E, Slide 57. Sale shall take place on April 20, 2026 , at 11:00 a.m. at the front entrance of the Circuit Court building, Goochland County , Virginia. Sale shall be subject to all matters of record lawfully affecting the title to the property. The property will be sold \"as is\" without any guaranty or representation as to condition or title and will be subject to such other terms and conditions as may be announced at the sale. The successful bidder may be required to deposit 10% of the sale price in cash or by cashiers or certified check at the time his bid is accepted. Settlement in full shall take place within 10 days of sale and shall be in cash or by cashiers or certified check. M. RICHARD EPPS, P.C., Substitute Trustee FOR INFORMATION CONTACT: M. Richard Epps, P.C., Substitute Trustee 605 Lynnhaven Parkway, Suite 100 Virginia Beach , VA 23452 757-498-9600 COL-7006380 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-16",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-9549f330",
@@ -5326,8 +5326,8 @@
       "is_new": false
     },
     {
-      "id": "fc-53bb295e",
-      "address": "4030 WARWICK ROAD, RICHMOND, VA 23234",
+      "id": "fc-b98d22e1",
+      "address": "4030 OLD WARWICK ROAD, A/R/T/A 4030 WARWICK ROAD, RICHMOND, VA 23234",
       "city": "Richmond",
       "county": "Richmond City",
       "zip": "23234",
@@ -5349,8 +5349,8 @@
       "notice_text": "Foreclosure Sale TRUSTEE\u2019S SALE OF 4030 OLD WARWICK ROAD, A/R/T/A 4030 WARWICK ROAD, RICHMOND, VA 23234 In execution of a certain Deed of Trust dated October 26, 2007, in the original principal amount of $49,700.00 recorded in the Clerk\u2019s Office, Circuit Court for Richmond City, Virginia as Instrument No. 070037943. The undersigned Substitute Trustee will offer for sale at public auction in the front of the Circuit Court building for the City of Richmond, John Marshall Courts Building, 400 North 9th Street, Richmond, Virginia, on June 15, 2026, at 2:30 PM, the property described in said Deed of Trust, located at the above address, and more particularly described as follows: THAT CERTAIN PIECE OR PARCEL OF LAND, AND THE BUILDINGS AND IMPROVEMENTS THEREON, KNOWN AS: 4030 WARWICK RD IN THE TOWN OF: RICHMOND COUNTY OF: RICHMOND CITY STATE OF: VIRGINIA BEJNG MORE PARTICULARLY DESCRIBED IN A DEED RECORDED IN: BOOK: 520 PAGE: 275 PROPERTY IDENTIFICATION: PIN: C009-0631-006 PROPERTY DESCRIPTION: LOT:6 SUBDIVISION: DEERBOURNE. TERMS OF SALE: ALL CASH. A bidder\u2019s deposit of ten percent (10%) of the sale price or ten percent (10%) of the original principal balance of the subject Deed of Trust, whichever is lower, in the form of cash or certified funds payable to the Substitute Trustee must be present at the time of the sale. The balance of the purchase price will be due within fifteen (15) days of sale, otherwise Purchaser\u2019s deposit may be forfeited to Trustee. Time is of the essence. Substitute Trustee has identified an unreleased security instrument which may be superior to the subject Deed of Trust. Substitute Trustee disclaims any implication that the Property will be sold free and clear of all liens. If the sale is set aside for any reason, the Purchaser at the sale shall be entitled to a return of the deposit paid. The Purchaser may, if provided by the terms of the Trustee\u2019s Memorandum of Foreclosure Sale, be entitled to a $50 cancellation fee from the Substitute Trustee, but shall have no further recourse against the Mortgagor, the Mortgagee or the Mortgagee\u2019s attorney. A form copy of the Trustee\u2019s memorandum of foreclosure sale and contract to purchase real property is available for viewing at www.aldridgepite.com. Additional terms, if any, to be announced at the sale and the Purchaser may be given the option to execute the contract of sale electronically. This is a communication from a debt collector and any information obtained will be used for that purpose. The sale is subject to seller confirmation. Substitute Trustee: Equity Trustees, LLC, 8100 Three Chopt Road, Suite 240, Richmond, VA 23229. If you have any questions or concerns, please contact the Virginia Pre-Sale Department of counsel for Equity Trustees, LLC at 301-961-6555, website: www.aldridgepite.com. VA-380265-1. COL-7006531 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-14",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-0670701a",
@@ -5623,8 +5623,8 @@
       "is_new": false
     },
     {
-      "id": "fc-b552d1f6",
-      "address": "2709 Maurice Walk Ct TRUSTEE SALE 2709 Maurice Walk Ct, Glen Allen, VA 23060",
+      "id": "fc-fea7a94b",
+      "address": "2709 Maurice Walk Ct, Glen Allen, VA 23060",
       "city": "Glen Allen",
       "county": "Henrico",
       "zip": "23060",
@@ -5646,8 +5646,8 @@
       "notice_text": "Foreclosure Sale Trustee Sale: 2709 Maurice Walk Ct TRUSTEE SALE 2709 Maurice Walk Ct, Glen Allen, VA 23060 Henrico County In execution of a Deed of Trust in the original principal amount of $30,000.00, dated July 19, 2005 recorded in the Clerk's Office of the Circuit Court of the Henrico County, Virginia, in Document No. 055308, in Book No. 3966, at Page 2094 and modified in Document No. 6468, in Book No. 4473, at Page 0968 and modified in Document No. 202100034145, in Book No. 06229, at Page 0445, at the request of the holder of the Note, the undersigned Substitute Trustee and will offer for sale at public auction at the entrance to the Circuit Court Building of the County of Henrico, 4301 East Parham Road, Henrico, VA 23273, on May 5, 2026 at 10:30 AM the property described in said deed, located at the above address and briefly described as: Lot 10, Block A, Maurice Walk, with any improvements thereon Subject to any and all covenants, conditions, restrictions, easements, and all other matters of record taking priority over the Deed of Trust, if any, affecting the aforesaid property. TERMS OF SALE: CASH: A deposit of $20,000.00 or 10% of the sales price, whichever is lower, cash or certified check will be required at the time of sale, but no more than $9,000.00 of cash will be accepted, with settlement within fifteen (15) days from the date of sale. Sale is subject to post sale confirmation that the borrower did not file for protection under the U.S. Bankruptcy Code prior to the sale which affects the validity of the sale, as well as to post-sale confirmation of the status of the loan with the loan servicer including, but not limited to, determination of whether the borrower entered into any repayment agreement, reinstated or paid off the loan prior to the sale. Sale is also subject to buyer providing Trustee with information needed for reporting requirements required by Federal Law including FinCen requirements (31 CFR Chapter X) within 15 days from date of sale. In any such event, the sale shall be null and void, and the Purchaser\u2019s sole remedy, in law or equity, shall be the return of his deposit without interest. Additional terms may be announced at the time of sale. Pursuant to the Federal Fair Debt Collection Practices Act, we advise you that this firm is a debt collector attempting to collect the indebtedness referred to herein and any information we obtain will be used for that purpose. SAMUEL I. WHITE, P.C., Substitute Trustee This is a communication from a debt collector. FOR INFORMATION CONTACT: SAMUEL I. WHITE, P.C. (70962) 448 Viking Drive Suite 350 Virginia Beach, VA 23452 757-457-1460 - Call Between 9:00 a.m. and 5:00 p.m. or visit our website at www.siwpc.net To: Richmond Times COL-7006490 CITY OF RICHMOND COUNTY, VIRGINIA 2026-04-11",
       "source": "column_us_richmond",
       "source_url": "https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     }
   ]
 }

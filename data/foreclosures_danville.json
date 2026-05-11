@@ -1,9 +1,9 @@
 {
   "meta": {
-    "last_updated": "2026-05-11T15:04:43",
+    "last_updated": "2026-05-11T16:03:49",
     "source": "https://godanriver.column.us/search?noticeType=Foreclosure+Sale",
     "total_count": 26,
-    "new_today": 0
+    "new_today": 1
   },
   "listings": [
     {
@@ -142,8 +142,8 @@
       "is_new": false
     },
     {
-      "id": "fc-af21c95a",
-      "address": "1380 Pumpkin Creek Ln TRUSTEE SALE 1380 Pumpkin Creek Ln, Danville, VA 24541",
+      "id": "fc-03047f46",
+      "address": "1380 Pumpkin Creek Ln, Danville, VA 24541",
       "city": "Danville",
       "county": "",
       "zip": "24541",
@@ -165,8 +165,8 @@
       "notice_text": "Foreclosure Sale Trustee Sale: 95645, 1380 Pumpkin Creek Ln TRUSTEE SALE 1380 Pumpkin Creek Ln, Danville, VA 24541 City of Danville In execution of a Deed of Trust in the original principal amount of $119,298.00, dated May 13, 2016 recorded in the Clerk's Office of the Circuit Court of the City of Danville, Virginia, in Document No. 160001600, at Page 0122, at the request of the holder of the Note, the undersigned Substitute Trustee and will offer for sale at public auction at the entrance to the Circuit Court of the City of Danville, 401 Patton Street, Danville, on July 2, 2026 at 1:00 PM the property described in said deed, located at the above address and briefly described as: Lot A, per plat recorded as Instrument No. 10-4996, with any improvements thereon Subject to any and all covenants, conditions, restrictions, easements, and all other matters of record taking priority over the Deed of Trust, if any, affecting the aforesaid property. TERMS OF SALE: CASH: A deposit of $20,000.00 or 10% of the sales price, whichever is lower, cash or certified check will be required at the time of sale, but no more than $9,000.00 of cash will be accepted, with settlement within fifteen (15) days from the date of sale. Sale is subject to post sale confirmation that the borrower did not file for protection under the U.S. Bankruptcy Code prior to the sale which affects the validity of the sale, as well as to post-sale confirmation of the status of the loan with the loan servicer including, but not limited to, determination of whether the borrower entered into any repayment agreement, reinstated or paid off the loan prior to the sale. Sale is also subject to buyer providing Trustee with information needed for reporting requirements required by Federal Law including FinCen requirements (31 CFR Chapter X) within 15 days from date of sale. In any such event, the sale shall be null and void, and the Purchaser\u2019s sole remedy, in law or equity, shall be the return of his deposit without interest. Additional terms may be announced at the time of sale. Pursuant to the Federal Fair Debt Collection Practices Act, we advise you that this firm is a debt collector attempting to collect the indebtedness referred to herein and any information we obtain will be used for that purpose. SAMUEL I. WHITE, P.C., Substitute Trustee This is a communication from a debt collector. FOR INFORMATION CONTACT: SAMUEL I. WHITE, P.C. (95645) 448 Viking Drive Suite 350 Virginia Beach, VA 23452 757-457-1460 - Call Between 9:00 a.m. and 5:00 p.m. or visit our website at www.siwpc.net To: Danville",
       "source": "column_us_danville",
       "source_url": "https://godanriver.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-6571c3c7",

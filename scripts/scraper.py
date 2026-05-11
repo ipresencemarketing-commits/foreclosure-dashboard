@@ -1628,32 +1628,28 @@ def extract_address(text: str):
 
     Returns (addr_raw, street, city, zip_code) or (None, None, None, None).
 
-    Tries four patterns in priority order:
-      1. Direct: house number + street + city + VA + ZIP anywhere in text
-      2. TRUSTEE'S SALE OF <address VA ZIP>
-      3. SUBSTITUTE TRUSTEE SALE <address VA ZIP>  (handles "OF SUBSTITUTE..." prefix)
-      4. TRUSTEE'S SALE newline then address on next line
+    Priority order — "SALE" anchored patterns first so that when a notice
+    contains multiple addresses (property + courthouse + trustee office), we
+    always pick the one that immediately follows a sale reference:
+
+      1. TRUSTEE'S SALE OF <address VA ZIP>
+      2. SUBSTITUTE TRUSTEE SALE <address VA ZIP>  (handles "OF SUBSTITUTE..." prefix)
+      3. TRUSTEE'S SALE newline then address on next line
+      4. Any "SALE" immediately followed by an address (general fallback)
+      5. Direct: house number + street + city + VA + ZIP anywhere in text
+         (last resort — may pick up courthouse/trustee address if no sale anchor found)
     """
     addr_raw = None
 
-    # Pattern 1 — Direct: house# street, city, VA/Virginia XXXXX
+    # Pattern 1 — TRUSTEE'S SALE OF <address incl VA ZIP>
     m = re.search(
-        r"(\d+\s+[A-Z0-9][^,\n]{4,60},\s*[A-Z][^,\n]{1,35},\s*(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
+        r"TRUSTEE.{0,3}S\s+SALE\s+OF\s+(\d+[^\n]*?(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
         text, re.I
     )
     if m:
         addr_raw = re.sub(r"\s+", " ", m.group(1)).strip()
 
-    # Pattern 2 — TRUSTEE'S SALE OF <address incl VA ZIP>
-    if not addr_raw:
-        m = re.search(
-            r"TRUSTEE.{0,3}S\s+SALE\s+OF\s+(\d+[^\n]*?(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
-            text, re.I
-        )
-        if m:
-            addr_raw = re.sub(r"\s+", " ", m.group(1)).strip()
-
-    # Pattern 3 — (OF) (NOTICE OF) SUBSTITUTE TRUSTEE SALE <address incl VA ZIP>
+    # Pattern 2 — (OF) (NOTICE OF) SUBSTITUTE TRUSTEE SALE <address incl VA ZIP>
     if not addr_raw:
         m = re.search(
             r"(?:OF\s+)?(?:NOTICE\s+OF\s+)?SUBSTITUTE\s+TRUSTEE.{0,10}SALE\s+(\d+[^\n]*?(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
@@ -1662,10 +1658,28 @@ def extract_address(text: str):
         if m:
             addr_raw = re.sub(r"\s+", " ", m.group(1)).strip()
 
-    # Pattern 4 — TRUSTEE'S SALE newline, address on next line
+    # Pattern 3 — TRUSTEE'S SALE newline, address on next line
     if not addr_raw:
         m = re.search(
             r"TRUSTEE.{0,3}S\s+SALE\s*\n\s*(\d+\s+[A-Z0-9][^,\n]{4,60},\s*[A-Z][^,\n]{1,35},\s*(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
+            text, re.I
+        )
+        if m:
+            addr_raw = re.sub(r"\s+", " ", m.group(1)).strip()
+
+    # Pattern 4 — Generic: any word "SALE" immediately before an address
+    if not addr_raw:
+        m = re.search(
+            r"\bSALE\b\s+(?:OF\s+)?(\d+[^\n]*?(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
+            text, re.I
+        )
+        if m:
+            addr_raw = re.sub(r"\s+", " ", m.group(1)).strip()
+
+    # Pattern 5 — Direct: any VA address in text (last resort)
+    if not addr_raw:
+        m = re.search(
+            r"(\d+\s+[A-Z0-9][^,\n]{4,60},\s*[A-Z][^,\n]{1,35},\s*(?:VA|Virginia)\s+\d{5}(?:-\d{4})?)",
             text, re.I
         )
         if m:

@@ -1,14 +1,14 @@
 {
   "meta": {
-    "last_updated": "2026-05-11T15:03:38",
+    "last_updated": "2026-05-11T16:02:42",
     "source": "https://newsadvance.column.us/search?noticeType=Foreclosure+Sale",
     "total_count": 50,
-    "new_today": 3
+    "new_today": 9
   },
   "listings": [
     {
-      "id": "fc-858cd8d8",
-      "address": "113 Taylor Street, Amherst, Virginia 24521",
+      "id": "fc-8f582ec0",
+      "address": "229 WINESAP ROAD AND \u00be ACRE LOT, MADISON HEIGHTS TAX MAP NOS. 147C-8B-85A, 86-90, 91A-93A and 147C-8-B-117A COUNTY OF AMHERST, VIRGINIA In execution of a Credit Line Deed of Trust dated March 16, 2007, in the original principal sum of $40,000.00 recorded in the Amherst County Circuit Court Clerk\u2019s Office in Deed Book 1074, Page 421, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payment of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property locally known as 229 Winesap Road described as \u201cAll of lots 86, 87, 88, 89, 90, and part of Lots 85, 91, 92, 93, Block B, MIDWAY HEIGHTS, shown on a plat dated April 21, 1941, recorded in Plat Book C, at Page 1\u201d and a \u00be acre lot described on a plat dated May 11, 1953 recorded in Deed Book 338, Page 163, which said properties are located in Madison Heights, Virginia. Reference is hereby made to the Credit Line Deed of Trust for a more particular description of the properties. This sale of real property will be held on Wednesday, May 13, 2026, at 9:00 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Amherst, Virginia, located at 113 Taylor Street, Amherst, Virginia 24521",
       "city": "Amherst",
       "county": "",
       "zip": "24521",
@@ -30,8 +30,8 @@
       "notice_text": "Foreclosure Sale TRUSTEE'S SALE OF 229 WINESAP ROAD AND \u00be ACRE LOT, MADISON HEIGHTS TAX MAP NOS. 147C-8B-85A, 86-90, 91A-93A and 147C-8-B-117A COUNTY OF AMHERST, VIRGINIA In execution of a Credit Line Deed of Trust dated March 16, 2007, in the original principal sum of $40,000.00 recorded in the Amherst County Circuit Court Clerk\u2019s Office in Deed Book 1074, Page 421, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payment of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property locally known as 229 Winesap Road described as \u201cAll of lots 86, 87, 88, 89, 90, and part of Lots 85, 91, 92, 93, Block B, MIDWAY HEIGHTS, shown on a plat dated April 21, 1941, recorded in Plat Book C, at Page 1\u201d and a \u00be acre lot described on a plat dated May 11, 1953 recorded in Deed Book 338, Page 163, which said properties are located in Madison Heights, Virginia. Reference is hereby made to the Credit Line Deed of Trust for a more particular description of the properties. This sale of real property will be held on Wednesday, May 13, 2026, at 9:00 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Amherst, Virginia, located at 113 Taylor Street, Amherst, Virginia 24521. TERMS: Cash or certified check made payable to Caskie & Frost; bidder\u2019s deposit of $5,000.00 will be required at the sale. Settlement shall be within thirty (30) days of the sale. The property and any improvements thereon will be sold \u201cAS IS\u201d, without representations or warranties of any kind. Conveyance shall be made by Special Warranty Deed. The Substitute Trustee will not deliver possession of the Property. Other terms and conditions may be announced at the sale. Announcements made on day of sale take precedence over all other advertised terms and conditions. Sale shall be made SUBJECT TO a Deed of Trust dated September 6, 2011, and recorded in the aforesaid Clerk\u2019s Office in Deed Book 1194, Page 267 in the original principal amount of $130,700.00. Pursuant to the Federal Fair Debt Collection Practices Act, we advise you that this communication is from a debt collector attempting to collect the indebtedness referred to herein and any information we obtain will be used for that purpose. John R. Alford, Jr. Substitute Trustee P. O. Box 6320 Lynchburg, Virginia 24505 Telephone No.: (434) 846-2731 COL-4401426 CAMPBELL COUNTY, VIRGINIA 2026-05-10 LYNCHBURG",
       "source": "column_us_lynchburg",
       "source_url": "https://newsadvance.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-1db99958",
@@ -412,8 +412,8 @@
       "is_new": true
     },
     {
-      "id": "fc-858cd8d8",
-      "address": "113 Taylor Street, Amherst, Virginia 24521",
+      "id": "fc-8f582ec0",
+      "address": "229 WINESAP ROAD AND \u00be ACRE LOT, MADISON HEIGHTS TAX MAP NOS. 147C-8B-85A, 86-90, 91A-93A and 147C-8-B-117A COUNTY OF AMHERST, VIRGINIA In execution of a Credit Line Deed of Trust dated March 16, 2007, in the original principal sum of $40,000.00 recorded in the Amherst County Circuit Court Clerk\u2019s Office in Deed Book 1074, Page 421, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payment of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property locally known as 229 Winesap Road described as \u201cAll of lots 86, 87, 88, 89, 90, and part of Lots 85, 91, 92, 93, Block B, MIDWAY HEIGHTS, shown on a plat dated April 21, 1941, recorded in Plat Book C, at Page 1\u201d and a \u00be acre lot described on a plat dated May 11, 1953 recorded in Deed Book 338, Page 163, which said properties are located in Madison Heights, Virginia. Reference is hereby made to the Credit Line Deed of Trust for a more particular description of the properties. This sale of real property will be held on Wednesday, May 13, 2026, at 9:00 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Amherst, Virginia, located at 113 Taylor Street, Amherst, Virginia 24521",
       "city": "Amherst",
       "county": "",
       "zip": "24521",
@@ -435,8 +435,8 @@
       "notice_text": "Foreclosure Sale TRUSTEE'S SALE OF 229 WINESAP ROAD AND \u00be ACRE LOT, MADISON HEIGHTS TAX MAP NOS. 147C-8B-85A, 86-90, 91A-93A and 147C-8-B-117A COUNTY OF AMHERST, VIRGINIA In execution of a Credit Line Deed of Trust dated March 16, 2007, in the original principal sum of $40,000.00 recorded in the Amherst County Circuit Court Clerk\u2019s Office in Deed Book 1074, Page 421, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payment of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property locally known as 229 Winesap Road described as \u201cAll of lots 86, 87, 88, 89, 90, and part of Lots 85, 91, 92, 93, Block B, MIDWAY HEIGHTS, shown on a plat dated April 21, 1941, recorded in Plat Book C, at Page 1\u201d and a \u00be acre lot described on a plat dated May 11, 1953 recorded in Deed Book 338, Page 163, which said properties are located in Madison Heights, Virginia. Reference is hereby made to the Credit Line Deed of Trust for a more particular description of the properties. This sale of real property will be held on Wednesday, May 13, 2026, at 9:00 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Amherst, Virginia, located at 113 Taylor Street, Amherst, Virginia 24521. TERMS: Cash or certified check made payable to Caskie & Frost; bidder\u2019s deposit of $5,000.00 will be required at the sale. Settlement shall be within thirty (30) days of the sale. The property and any improvements thereon will be sold \u201cAS IS\u201d, without representations or warranties of any kind. Conveyance shall be made by Special Warranty Deed. The Substitute Trustee will not deliver possession of the Property. Other terms and conditions may be announced at the sale. Announcements made on day of sale take precedence over all other advertised terms and conditions. Sale shall be made SUBJECT TO a Deed of Trust dated September 6, 2011, and recorded in the aforesaid Clerk\u2019s Office in Deed Book 1194, Page 267 in the original principal amount of $130,700.00. Pursuant to the Federal Fair Debt Collection Practices Act, we advise you that this communication is from a debt collector attempting to collect the indebtedness referred to herein and any information we obtain will be used for that purpose. John R. Alford, Jr. Substitute Trustee P. O. Box 6320 Lynchburg, Virginia 24505 Telephone No.: (434) 846-2731 COL-4401426 CAMPBELL COUNTY, VIRGINIA 2026-05-03 LYNCHBURG",
       "source": "column_us_lynchburg",
       "source_url": "https://newsadvance.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-1db99958",
@@ -493,8 +493,8 @@
       "is_new": false
     },
     {
-      "id": "fc-5f0b6d91",
-      "address": "732 Village Highway, Rustburg, VA 24588",
+      "id": "fc-a59268bb",
+      "address": "144 Whispering Oaks Ln, Bear Creek Road, Rustburg, VA 24588",
       "city": "Rustburg",
       "county": "",
       "zip": "24588",
@@ -516,8 +516,8 @@
       "notice_text": "Foreclosure Sale Trustee's Sale 144 Whispering Oaks Ln, Bear Creek Road, Rustburg, VA 24588 (Parcel ID: 000422200) Default having been made in the terms of a certain Deed of Trust dated November 3, 2023, in the original principal amount of $245,325.00 and recorded in the Clerk's Office of the Circuit Court of the County of Campbell, Virginia on November 6, 2023, as Instrument Number 230005218, the undersigned Substitute Trustees will sell at public auction on May 27, 2026 at 1:15 PM, in front of the building housing the County of Campbell Circuit Court, 732 Village Highway, Rustburg, VA 24588, the property designated as All that certain lot or parcel of land, together with all buildings and improvements thereon, and privileges and appurtenances thereunto belonging, situate, lying and being in Long Mountain Magisterial District, Campbell County, Virginia, containing 1.500 acres, more or less, and designated as Parcel \"A-I\" on a plat of survey entitled `Plat Showing Family Division of No. 5026 Bear Creek Road Parcel `A`, Property of Ronald Cowart,` made by Russell E. Nixon dated August 30, 2023, a copy of which is found of record in the Clerk`s Office of the Circuit Court of Campbell County, Virginia in Plat Cabinet 7, Slide 275, page 2747. Sale is subject to all prior liens, easements, restrictions, covenants, and conditions, if any, of record, or other matters which would be disclosed by an accurate survey or inspection of the premises. TERMS: CASH. A deposit of $25,000.00 or 10% of the sale price, whichever is lower, will be required of the successful bidder at time of sale. Prior to the sale, interested bidders will be required to register with and must present a bid deposit which may be held during the sale by the trustee. The bid deposit must be certified funds and/or cash, but no more than $9,900.00 of cash will be accepted. The successful bidder's deposit will be retained at the sale and applied to the sale price. If held by the trustee, all other bid deposits will be returned to the unsuccessful bidders. Settlement is to be made within 15 days. The successful bidder will be responsible for obtaining possession of the property, and for all costs and fees related to recording the Trustee's Deed, including the grantors tax. The successful bidder will be required to execute a Memorandum of Trustee's Sale, available for review upon request before the sale, outlining additional terms of sale and settlement. A Trustee's Deed will be prepared by Trustee's attorney at high bidder's expense. This is a communication from a debt collector. Tromberg, Miller, Morris & Partners, PLLC on behalf of Southeast Equity Trustees, LLC and/or NFPDS-VA LLC, Substitute Trustee(s), 5310 Markel Road, Suite 201, Richmond, VA 23230, File No. 26-000567, Tel: 804-525-1570. COL-4401390 CAMPBELL COUNTY, VIRGINIA 2026-04-30 LYNCHBURG",
       "source": "column_us_lynchburg",
       "source_url": "https://newsadvance.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-77c02a5e",
@@ -925,8 +925,8 @@
       "is_new": false
     },
     {
-      "id": "fc-858cd8d8",
-      "address": "113 Taylor Street, Amherst, Virginia 24521",
+      "id": "fc-8f582ec0",
+      "address": "229 WINESAP ROAD AND \u00be ACRE LOT, MADISON HEIGHTS TAX MAP NOS. 147C-8B-85A, 86-90, 91A-93A and 147C-8-B-117A COUNTY OF AMHERST, VIRGINIA In execution of a Credit Line Deed of Trust dated March 16, 2007, in the original principal sum of $40,000.00 recorded in the Amherst County Circuit Court Clerk\u2019s Office in Deed Book 1074, Page 421, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payment of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property locally known as 229 Winesap Road described as \u201cAll of lots 86, 87, 88, 89, 90, and part of Lots 85, 91, 92, 93, Block B, MIDWAY HEIGHTS, shown on a plat dated April 21, 1941, recorded in Plat Book C, at Page 1\u201d and a \u00be acre lot described on a plat dated May 11, 1953 recorded in Deed Book 338, Page 163, which said properties are located in Madison Heights, Virginia. Reference is hereby made to the Credit Line Deed of Trust for a more particular description of the properties. This sale of real property will be held on Wednesday, May 13, 2026, at 9:00 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Amherst, Virginia, located at 113 Taylor Street, Amherst, Virginia 24521",
       "city": "Amherst",
       "county": "",
       "zip": "24521",
@@ -948,12 +948,12 @@
       "notice_text": "Foreclosure Sale TRUSTEE'S SALE OF 229 WINESAP ROAD AND \u00be ACRE LOT, MADISON HEIGHTS TAX MAP NOS. 147C-8B-85A, 86-90, 91A-93A and 147C-8-B-117A COUNTY OF AMHERST, VIRGINIA In execution of a Credit Line Deed of Trust dated March 16, 2007, in the original principal sum of $40,000.00 recorded in the Amherst County Circuit Court Clerk\u2019s Office in Deed Book 1074, Page 421, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payment of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property locally known as 229 Winesap Road described as \u201cAll of lots 86, 87, 88, 89, 90, and part of Lots 85, 91, 92, 93, Block B, MIDWAY HEIGHTS, shown on a plat dated April 21, 1941, recorded in Plat Book C, at Page 1\u201d and a \u00be acre lot described on a plat dated May 11, 1953 recorded in Deed Book 338, Page 163, which said properties are located in Madison Heights, Virginia. Reference is hereby made to the Credit Line Deed of Trust for a more particular description of the properties. This sale of real property will be held on Wednesday, May 13, 2026, at 9:00 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Amherst, Virginia, located at 113 Taylor Street, Amherst, Virginia 24521. TERMS: Cash or certified check made payable to Caskie & Frost; bidder\u2019s deposit of $5,000.00 will be required at the sale. Settlement shall be within thirty (30) days of the sale. The property and any improvements thereon will be sold \u201cAS IS\u201d, without representations or warranties of any kind. Conveyance shall be made by Special Warranty Deed. The Substitute Trustee will not deliver possession of the Property. Other terms and conditions may be announced at the sale. Announcements made on day of sale take precedence over all other advertised terms and conditions. Sale shall be made SUBJECT TO a Deed of Trust dated September 6, 2011, and recorded in the aforesaid Clerk\u2019s Office in Deed Book 1194, Page 267 in the original principal amount of $130,700.00. Pursuant to the Federal Fair Debt Collection Practices Act, we advise you that this communication is from a debt collector attempting to collect the indebtedness referred to herein and any information we obtain will be used for that purpose. John R. Alford, Jr. Substitute Trustee P. O. Box 6320 Lynchburg, Virginia 24505 Telephone No.: (434) 846-2731 COL-4401426 CAMPBELL COUNTY, VIRGINIA 2026-04-26 LYNCHBURG",
       "source": "column_us_lynchburg",
       "source_url": "https://newsadvance.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
-      "id": "fc-5f0b6d91",
-      "address": "732 Village Highway, Rustburg, VA 24588",
+      "id": "fc-a59268bb",
+      "address": "144 Whispering Oaks Ln, Bear Creek Road, Rustburg, VA 24588",
       "city": "Rustburg",
       "county": "",
       "zip": "24588",
@@ -975,8 +975,8 @@
       "notice_text": "Foreclosure Sale Trustee's Sale 144 Whispering Oaks Ln, Bear Creek Road, Rustburg, VA 24588 (Parcel ID: 000422200) Default having been made in the terms of a certain Deed of Trust dated November 3, 2023, in the original principal amount of $245,325.00 and recorded in the Clerk's Office of the Circuit Court of the County of Campbell, Virginia on November 6, 2023, as Instrument Number 230005218, the undersigned Substitute Trustees will sell at public auction on May 27, 2026 at 1:15 PM, in front of the building housing the County of Campbell Circuit Court, 732 Village Highway, Rustburg, VA 24588, the property designated as All that certain lot or parcel of land, together with all buildings and improvements thereon, and privileges and appurtenances thereunto belonging, situate, lying and being in Long Mountain Magisterial District, Campbell County, Virginia, containing 1.500 acres, more or less, and designated as Parcel \"A-I\" on a plat of survey entitled `Plat Showing Family Division of No. 5026 Bear Creek Road Parcel `A`, Property of Ronald Cowart,` made by Russell E. Nixon dated August 30, 2023, a copy of which is found of record in the Clerk`s Office of the Circuit Court of Campbell County, Virginia in Plat Cabinet 7, Slide 275, page 2747. Sale is subject to all prior liens, easements, restrictions, covenants, and conditions, if any, of record, or other matters which would be disclosed by an accurate survey or inspection of the premises. TERMS: CASH. A deposit of $25,000.00 or 10% of the sale price, whichever is lower, will be required of the successful bidder at time of sale. Prior to the sale, interested bidders will be required to register with and must present a bid deposit which may be held during the sale by the trustee. The bid deposit must be certified funds and/or cash, but no more than $9,900.00 of cash will be accepted. The successful bidder's deposit will be retained at the sale and applied to the sale price. If held by the trustee, all other bid deposits will be returned to the unsuccessful bidders. Settlement is to be made within 15 days. The successful bidder will be responsible for obtaining possession of the property, and for all costs and fees related to recording the Trustee's Deed, including the grantors tax. The successful bidder will be required to execute a Memorandum of Trustee's Sale, available for review upon request before the sale, outlining additional terms of sale and settlement. A Trustee's Deed will be prepared by Trustee's attorney at high bidder's expense. This is a communication from a debt collector. Tromberg, Miller, Morris & Partners, PLLC on behalf of Southeast Equity Trustees, LLC and/or NFPDS-VA LLC, Substitute Trustee(s), 5310 Markel Road, Suite 201, Richmond, VA 23230, File No. 26-000567, Tel: 804-525-1570. COL-4401390 CAMPBELL COUNTY, VIRGINIA 2026-04-23 LYNCHBURG",
       "source": "column_us_lynchburg",
       "source_url": "https://newsadvance.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-f888fbde",
@@ -1141,8 +1141,8 @@
       "is_new": true
     },
     {
-      "id": "fc-858cd8d8",
-      "address": "113 Taylor Street, Amherst, Virginia 24521",
+      "id": "fc-8f582ec0",
+      "address": "229 WINESAP ROAD AND \u00be ACRE LOT, MADISON HEIGHTS TAX MAP NOS. 147C-8B-85A, 86-90, 91A-93A and 147C-8-B-117A COUNTY OF AMHERST, VIRGINIA In execution of a Credit Line Deed of Trust dated March 16, 2007, in the original principal sum of $40,000.00 recorded in the Amherst County Circuit Court Clerk\u2019s Office in Deed Book 1074, Page 421, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payment of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property locally known as 229 Winesap Road described as \u201cAll of lots 86, 87, 88, 89, 90, and part of Lots 85, 91, 92, 93, Block B, MIDWAY HEIGHTS, shown on a plat dated April 21, 1941, recorded in Plat Book C, at Page 1\u201d and a \u00be acre lot described on a plat dated May 11, 1953 recorded in Deed Book 338, Page 163, which said properties are located in Madison Heights, Virginia. Reference is hereby made to the Credit Line Deed of Trust for a more particular description of the properties. This sale of real property will be held on Wednesday, May 13, 2026, at 9:00 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Amherst, Virginia, located at 113 Taylor Street, Amherst, Virginia 24521",
       "city": "Amherst",
       "county": "",
       "zip": "24521",
@@ -1164,8 +1164,8 @@
       "notice_text": "Foreclosure Sale TRUSTEE'S SALE OF 229 WINESAP ROAD AND \u00be ACRE LOT, MADISON HEIGHTS TAX MAP NOS. 147C-8B-85A, 86-90, 91A-93A and 147C-8-B-117A COUNTY OF AMHERST, VIRGINIA In execution of a Credit Line Deed of Trust dated March 16, 2007, in the original principal sum of $40,000.00 recorded in the Amherst County Circuit Court Clerk\u2019s Office in Deed Book 1074, Page 421, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payment of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property locally known as 229 Winesap Road described as \u201cAll of lots 86, 87, 88, 89, 90, and part of Lots 85, 91, 92, 93, Block B, MIDWAY HEIGHTS, shown on a plat dated April 21, 1941, recorded in Plat Book C, at Page 1\u201d and a \u00be acre lot described on a plat dated May 11, 1953 recorded in Deed Book 338, Page 163, which said properties are located in Madison Heights, Virginia. Reference is hereby made to the Credit Line Deed of Trust for a more particular description of the properties. This sale of real property will be held on Wednesday, May 13, 2026, at 9:00 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Amherst, Virginia, located at 113 Taylor Street, Amherst, Virginia 24521. TERMS: Cash or certified check made payable to Caskie & Frost; bidder\u2019s deposit of $5,000.00 will be required at the sale. Settlement shall be within thirty (30) days of the sale. The property and any improvements thereon will be sold \u201cAS IS\u201d, without representations or warranties of any kind. Conveyance shall be made by Special Warranty Deed. The Substitute Trustee will not deliver possession of the Property. Other terms and conditions may be announced at the sale. Announcements made on day of sale take precedence over all other advertised terms and conditions. Sale shall be made SUBJECT TO a Deed of Trust dated September 6, 2011, and recorded in the aforesaid Clerk\u2019s Office in Deed Book 1194, Page 267 in the original principal amount of $130,700.00. Pursuant to the Federal Fair Debt Collection Practices Act, we advise you that this communication is from a debt collector attempting to collect the indebtedness referred to herein and any information we obtain will be used for that purpose. John R. Alford, Jr. Substitute Trustee P. O. Box 6320 Lynchburg, Virginia 24505 Telephone No.: (434) 846-2731 COL-4401426 CAMPBELL COUNTY, VIRGINIA 2026-04-19 LYNCHBURG",
       "source": "column_us_lynchburg",
       "source_url": "https://newsadvance.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
-      "first_seen": "2026-05-08",
-      "is_new": false
+      "first_seen": "2026-05-11",
+      "is_new": true
     },
     {
       "id": "fc-c4b6aba8",
