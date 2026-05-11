@@ -190,6 +190,26 @@ def scrape_public_notice_va() -> list:
             page.fill(search_sel, SEARCH_KEYWORDS)
             log.info("  PNV: search box filled")
 
+            # ── Set explicit 60-day date range ────────────────────────────────
+            # PNV defaults to ~60 days but we set it explicitly so the window
+            # never drifts if the site changes its default.
+            from_date = (date.today() - timedelta(days=60)).strftime("%-m/%-d/%Y")
+            to_date   = date.today().strftime("%-m/%-d/%Y")
+            try:
+                # Advanced search date inputs follow ASP.NET WebForms naming:
+                # ctl00_ContentPlaceHolder1_as1_txt{From,To}Date
+                for sel, val in [
+                    ('[id*="txtFromDate"]', from_date),
+                    ('[id*="txtToDate"]',   to_date),
+                ]:
+                    inp = page.query_selector(sel)
+                    if inp:
+                        inp.triple_click()
+                        inp.fill(val)
+                log.info(f"  PNV: date range set to {from_date} → {to_date}")
+            except Exception as _e:
+                log.debug(f"  PNV: could not set date range ({_e}) — using site default")
+
             # ── Submit ────────────────────────────────────────────────────────
             # "trustee sale" works with default "All Words" (AND) mode — both
             # words appear in every VA notice, so no radio button change needed.

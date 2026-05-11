@@ -32,7 +32,7 @@ import json
 import os
 import sys
 import logging
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from itertools import zip_longest
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)s  %(message)s")
@@ -120,6 +120,15 @@ def save(listings: list, data_file: str, source_url: str) -> None:
 def scrape(url: str, paper_header: str, source_tag: str, label: str, detect_mode: bool = False) -> list:
     """Scrape a Column.us site for Foreclosure Sale notices."""
     listings = []
+
+    # ── Append 60-day lookback date filter to URL ─────────────────────────────
+    # Column.us may support afterDate as a URL parameter. If not recognised by
+    # the app, it's silently ignored and we get the site's default window.
+    if not detect_mode and "afterDate" not in url:
+        sixty_days_ago = (date.today() - timedelta(days=60)).strftime("%Y-%m-%d")
+        sep = "&" if "?" in url else "?"
+        url = f"{url}{sep}afterDate={sixty_days_ago}"
+        log.info(f"  URL with date filter: {url}")
 
     try:
         from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
