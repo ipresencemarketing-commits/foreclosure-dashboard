@@ -1,11 +1,38 @@
 {
   "meta": {
-    "last_updated": "2026-05-11T16:35:26",
+    "last_updated": "2026-05-12T15:34:33",
     "source": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale",
-    "total_count": 6,
-    "new_today": 6
+    "total_count": 8,
+    "new_today": 0
   },
   "listings": [
+    {
+      "id": "fc-99ec944e",
+      "address": "155 BUFFALO GAP HIGHWAY, CHURCHVILLE, VA 24421",
+      "city": "Churchville",
+      "county": "",
+      "zip": "24421",
+      "stage": "auction",
+      "property_type": "single-family",
+      "assessed_value": null,
+      "asking_price": null,
+      "sale_date": "2026-07-06",
+      "sale_time": "11:15AM",
+      "sale_location": "",
+      "days_until_sale": 55,
+      "notice_date": "2026-05-12",
+      "days_in_foreclosure": 0,
+      "lender": "chase",
+      "trustee": null,
+      "original_principal": "$155,102.00",
+      "deposit": null,
+      "deed_of_trust_date": "2012-10-26",
+      "notice_text": "Foreclosure Sale TRUSTEE\u2019S SALE OF 155 BUFFALO GAP HIGHWAY, CHURCHVILLE, VA 24421 In execution of a certain Deed of Trust dated October 26, 2012, in the original principal amount of $155,102.00 recorded in the Clerk\u2019s Office, Circuit Court for Augusta County, Virginia as Instrument No. 120009169. The undersigned Substitute Trustee will offer for sale at public auction in the front of the Circuit Court building for the City of Staunton, 113 East Beverly, Staunton, Virginia, or any such temporary alternative Circuit Court location designated by the Judges of the Circuit Court, on July 6, 2026, at 11:15 AM, the property described in said Deed of Trust, located at the above address, and more particularly described as follows: ALL THAT CERTAIN LOT OR PARCEL OF LAND, WITH ALL IMPROVEMENTS THEREON AND APPURTENANCES THERETO BELONGING, SITUATE IN PASTURES DISTRICT, AUGUSTA COUNTY, VIRGINIA, AT THE WESTERN EDGE OF THE VILLAGE OF CHURCHVILLE, ON THE NORTH SIDE OF BUFFALO GAP HIGHWAY (ROUTE 42), CONTAINING 0.997 ACRE AS SHOWN ON MAP ENTITLED \"PLAT OF THE DAVID B HANGER PROPERTY, PASTURES DISTRICT, AUGUSTA CO., VA.\", DATED OCTOBER 28, 1998, MADE BY R.E. FUNK - LAND SURVEYOR, OF RECORD IN THE CLERK`S OFFICE OF THE CIRCUIT COURT OF AUGUSTA COUNTY, VIRGINIA, IN PLAT BOOK 1, PAGE 3748. TERMS OF SALE: ALL CASH. A bidder\u2019s deposit of ten percent (10%) of the sale price or ten percent (10%) of the original principal balance of the subject Deed of Trust, whichever is lower, in the form of cash or certified funds payable to the Substitute Trustee must be present at the time of the sale. The balance of the purchase price will be due within fifteen (15) days of sale, otherwise Purchaser\u2019s deposit may be forfeited to Trustee. Time is of the essence. If the sale is set aside for any reason, the Purchaser at the sale shall be entitled to a return of the deposit paid. The Purchaser may, if provided by the terms of the Trustee\u2019s Memorandum of Foreclosure Sale, be entitled to a $50 cancellation fee from the Substitute Trustee, but shall have no further recourse against the Mortgagor, the Mortgagee or the Mortgagee\u2019s attorney. A form copy of the Trustee\u2019s memorandum of foreclosure sale and contract to purchase real property is available for viewing at www.aldridgepite.com. Additional terms, if any, to be announced at the sale and the Purchaser may be given the option to execute the contract of sale electronically. This is a communication from a debt collector and any information obtained will be used for that purpose. The sale is subject to seller confirmation. Substitute Trustee: Equity Trustees, LLC, 8100 Three Chopt Road, Suite 240, Richmond, VA 23229. If you have any questions or concerns, please contact the Virginia Pre-Sale Department of counsel for Equity Trustees, LLC at 301-961-6555, website: www.aldridgepite.com. VA-380846-1. COL-5500356 AUGUSTA COUNTY, VIRGINIA 2026-05-12 WAYNESBORO",
+      "source": "column_us_waynesboro",
+      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-13",
+      "first_seen": "2026-05-11",
+      "is_new": false
+    },
     {
       "id": "fc-327256fe",
       "address": "3520 COLD SPRINGS ROAD, GREENVILLE, VA 24440",
@@ -19,8 +46,35 @@
       "sale_date": "2026-07-06",
       "sale_time": "11:15AM",
       "sale_location": "",
-      "days_until_sale": 56,
-      "notice_date": "2026-05-11",
+      "days_until_sale": 55,
+      "notice_date": "2026-05-12",
+      "days_in_foreclosure": 0,
+      "lender": "chase",
+      "trustee": null,
+      "original_principal": "$104,961.00",
+      "deposit": null,
+      "deed_of_trust_date": "2008-10-08",
+      "notice_text": "Foreclosure Sale SPECIAL COMMISSIONER\u2019S SALE OF 3520 COLD SPRINGS ROAD, GREENVILLE, VA 24440 Pursuant to a Decree of Sale recorded in the Clerk\u2019s Office of the Circuit Court for Augusta County, Virginia, and subject to approval and ratification by the Circuit Court for Augusta County, Virginia. In execution of a certain Deed of Trust dated October 8, 2008, in the original principal amount of $104,961.00 recorded in the Clerk\u2019s Office, Circuit Court for Augusta County, Virginia as Instrument No. 080009865, re-recorded as Instrument No. 090008093. The undersigned Special Commissioner will offer for sale at public auction in the front of the Circuit Court building for the City of Staunton, 113 East Beverly, Staunton, Virginia, or any such temporary alternative Circuit Court location designated by the Judges of the Circuit Court, on July 6, 2026, at 11:15 AM, the property described in said Deed of Trust, located at the above address, and more particularly described as follows: ALL THAT CERTAIN LOT OR PARCEL OF LAND, TOGETHER WITH ALL BUILDINGS AND IMPROVEMENTS THEREON AND ALL RIGHTS, PRIVILEGES AND APPURTENANCES THEREUNTO BELONGING, OR IN ANYWISE APPERTAINING, LYING AND BEING IN THE RIVERHEADS DISTRICT OF AUGUSTA COUNTY, VIRGINIA, DESCRIBED AND DESIGNATED AS LOT 1 CONTAINING 0.836 ACRE AS MORE PARTICULARLY SHOWN ON \"PLAT OF A DIVISION OF THE DAVID MICHAEL JOHNSON PROPERTY, RIVERHEADS DIST., AUGUSTA CO., VA.,\" DATED OCTOBER 24, 2007, MADE BY EGS & ASSOCIATES, INC., RECORDED IN THE CLERK`S OFFICE OF THE CIRCUIT COURT OF AUGUSTA COUNTY, VIRGINIA, AS INSTRUMENT NO.070014726. TERMS OF SALE: ALL CASH. A bidder\u2019s deposit of ten percent (10%) of the sale price or ten percent (10%) of the original principal balance of the subject Deed of Trust, whichever is lower, in the form of cash or certified funds payable to the Special Commissioner must be present at the time of the sale. The balance of the purchase price will be due within fifteen (15) days of ratification of the sale by the Circuit Court for Augusta County, Virginia, otherwise Purchaser\u2019s deposit may be forfeited to Special Commissioner. Time is of the essence. If the sale is set aside for any reason, the Purchaser at the sale shall be entitled to a return of the deposit paid. The Purchaser may, if provided by the terms of the Memorandum of Foreclosure Sale, be entitled to a $50 cancellation fee from the Special Commissioner, but shall have no further recourse against the Mortgagor, the Mortgagee or the Mortgagee\u2019s attorney. A form copy of the Equity Trustees, LLC memorandum of foreclosure sale and contract to purchase real property is available for viewing at www.aldridgepite.com. Additional terms, if any, to be announced at the sale and the Purchaser may be given the option to execute the contract of sale electronically. This is a communication from a debt collector and any information obtained will be used for that purpose. The sale is subject to seller confirmation. Special Commissioner: Equity Trustees, LLC, 8100 Three Chopt Road, Suite 240, Richmond, VA 23229. If you have any questions or concerns, please contact the Virginia Pre-Sale Department of counsel for Equity Trustees, LLC at 301-961-6555, website: www.aldridgepite.com. VA-355653-2.. COL-5500357 AUGUSTA COUNTY, VIRGINIA 2026-05-12 WAYNESBORO",
+      "source": "column_us_waynesboro",
+      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-13",
+      "first_seen": "2026-05-11",
+      "is_new": false
+    },
+    {
+      "id": "fc-327256fe",
+      "address": "3520 COLD SPRINGS ROAD, GREENVILLE, VA 24440",
+      "city": "Greenville",
+      "county": "",
+      "zip": "24440",
+      "stage": "auction",
+      "property_type": "single-family",
+      "assessed_value": null,
+      "asking_price": null,
+      "sale_date": "2026-07-06",
+      "sale_time": "11:15AM",
+      "sale_location": "",
+      "days_until_sale": 55,
+      "notice_date": "2026-05-12",
       "days_in_foreclosure": 0,
       "lender": "chase",
       "trustee": null,
@@ -29,9 +83,9 @@
       "deed_of_trust_date": "2008-10-08",
       "notice_text": "Foreclosure Sale SPECIAL COMMISSIONER\u2019S SALE OF 3520 COLD SPRINGS ROAD, GREENVILLE, VA 24440 Pursuant to a Decree of Sale recorded in the Clerk\u2019s Office of the Circuit Court for Augusta County, Virginia, and subject to approval and ratification by the Circuit Court for Augusta County, Virginia. In execution of a certain Deed of Trust dated October 8, 2008, in the original principal amount of $104,961.00 recorded in the Clerk\u2019s Office, Circuit Court for Augusta County, Virginia as Instrument No. 080009865, re-recorded as Instrument No. 090008093. The undersigned Special Commissioner will offer for sale at public auction in the front of the Circuit Court building for the City of Staunton, 113 East Beverly, Staunton, Virginia, or any such temporary alternative Circuit Court location designated by the Judges of the Circuit Court, on July 6, 2026, at 11:15 AM, the property described in said Deed of Trust, located at the above address, and more particularly described as follows: ALL THAT CERTAIN LOT OR PARCEL OF LAND, TOGETHER WITH ALL BUILDINGS AND IMPROVEMENTS THEREON AND ALL RIGHTS, PRIVILEGES AND APPURTENANCES THEREUNTO BELONGING, OR IN ANYWISE APPERTAINING, LYING AND BEING IN THE RIVERHEADS DISTRICT OF AUGUSTA COUNTY, VIRGINIA, DESCRIBED AND DESIGNATED AS LOT 1 CONTAINING 0.836 ACRE AS MORE PARTICULARLY SHOWN ON \"PLAT OF A DIVISION OF THE DAVID MICHAEL JOHNSON PROPERTY, RIVERHEADS DIST., AUGUSTA CO., VA.,\" DATED OCTOBER 24, 2007, MADE BY EGS & ASSOCIATES, INC., RECORDED IN THE CLERK`S OFFICE OF THE CIRCUIT COURT OF AUGUSTA COUNTY, VIRGINIA, AS INSTRUMENT NO.070014726. TERMS OF SALE: ALL CASH. A bidder\u2019s deposit of ten percent (10%) of the sale price or ten percent (10%) of the original principal balance of the subject Deed of Trust, whichever is lower, in the form of cash or certified funds payable to the Special Commissioner must be present at the time of the sale. The balance of the purchase price will be due within fifteen (15) days of ratification of the sale by the Circuit Court for Augusta County, Virginia, otherwise Purchaser\u2019s deposit may be forfeited to Special Commissioner. Time is of the essence. If the sale is set aside for any reason, the Purchaser at the sale shall be entitled to a return of the deposit paid. The Purchaser may, if provided by the terms of the Memorandum of Foreclosure Sale, be entitled to a $50 cancellation fee from the Special Commissioner, but shall have no further recourse against the Mortgagor, the Mortgagee or the Mortgagee\u2019s attorney. A form copy of the Equity Trustees, LLC memorandum of foreclosure sale and contract to purchase real property is available for viewing at www.aldridgepite.com. Additional terms, if any, to be announced at the sale and the Purchaser may be given the option to execute the contract of sale electronically. This is a communication from a debt collector and any information obtained will be used for that purpose. The sale is subject to seller confirmation. Special Commissioner: Equity Trustees, LLC, 8100 Three Chopt Road, Suite 240, Richmond, VA 23229. If you have any questions or concerns, please contact the Virginia Pre-Sale Department of counsel for Equity Trustees, LLC at 301-961-6555, website: www.aldridgepite.com. VA-355653-2.. COL-5500357 AUGUSTA COUNTY, VIRGINIA 2026-05-05 WAYNESBORO",
       "source": "column_us_waynesboro",
-      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
+      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-13",
       "first_seen": "2026-05-11",
-      "is_new": true
+      "is_new": false
     },
     {
       "id": "fc-99ec944e",
@@ -46,8 +100,8 @@
       "sale_date": "2026-07-06",
       "sale_time": "11:15AM",
       "sale_location": "",
-      "days_until_sale": 56,
-      "notice_date": "2026-05-11",
+      "days_until_sale": 55,
+      "notice_date": "2026-05-12",
       "days_in_foreclosure": 0,
       "lender": "chase",
       "trustee": null,
@@ -56,9 +110,9 @@
       "deed_of_trust_date": "2012-10-26",
       "notice_text": "Foreclosure Sale TRUSTEE\u2019S SALE OF 155 BUFFALO GAP HIGHWAY, CHURCHVILLE, VA 24421 In execution of a certain Deed of Trust dated October 26, 2012, in the original principal amount of $155,102.00 recorded in the Clerk\u2019s Office, Circuit Court for Augusta County, Virginia as Instrument No. 120009169. The undersigned Substitute Trustee will offer for sale at public auction in the front of the Circuit Court building for the City of Staunton, 113 East Beverly, Staunton, Virginia, or any such temporary alternative Circuit Court location designated by the Judges of the Circuit Court, on July 6, 2026, at 11:15 AM, the property described in said Deed of Trust, located at the above address, and more particularly described as follows: ALL THAT CERTAIN LOT OR PARCEL OF LAND, WITH ALL IMPROVEMENTS THEREON AND APPURTENANCES THERETO BELONGING, SITUATE IN PASTURES DISTRICT, AUGUSTA COUNTY, VIRGINIA, AT THE WESTERN EDGE OF THE VILLAGE OF CHURCHVILLE, ON THE NORTH SIDE OF BUFFALO GAP HIGHWAY (ROUTE 42), CONTAINING 0.997 ACRE AS SHOWN ON MAP ENTITLED \"PLAT OF THE DAVID B HANGER PROPERTY, PASTURES DISTRICT, AUGUSTA CO., VA.\", DATED OCTOBER 28, 1998, MADE BY R.E. FUNK - LAND SURVEYOR, OF RECORD IN THE CLERK`S OFFICE OF THE CIRCUIT COURT OF AUGUSTA COUNTY, VIRGINIA, IN PLAT BOOK 1, PAGE 3748. TERMS OF SALE: ALL CASH. A bidder\u2019s deposit of ten percent (10%) of the sale price or ten percent (10%) of the original principal balance of the subject Deed of Trust, whichever is lower, in the form of cash or certified funds payable to the Substitute Trustee must be present at the time of the sale. The balance of the purchase price will be due within fifteen (15) days of sale, otherwise Purchaser\u2019s deposit may be forfeited to Trustee. Time is of the essence. If the sale is set aside for any reason, the Purchaser at the sale shall be entitled to a return of the deposit paid. The Purchaser may, if provided by the terms of the Trustee\u2019s Memorandum of Foreclosure Sale, be entitled to a $50 cancellation fee from the Substitute Trustee, but shall have no further recourse against the Mortgagor, the Mortgagee or the Mortgagee\u2019s attorney. A form copy of the Trustee\u2019s memorandum of foreclosure sale and contract to purchase real property is available for viewing at www.aldridgepite.com. Additional terms, if any, to be announced at the sale and the Purchaser may be given the option to execute the contract of sale electronically. This is a communication from a debt collector and any information obtained will be used for that purpose. The sale is subject to seller confirmation. Substitute Trustee: Equity Trustees, LLC, 8100 Three Chopt Road, Suite 240, Richmond, VA 23229. If you have any questions or concerns, please contact the Virginia Pre-Sale Department of counsel for Equity Trustees, LLC at 301-961-6555, website: www.aldridgepite.com. VA-380846-1. COL-5500356 AUGUSTA COUNTY, VIRGINIA 2026-05-05 WAYNESBORO",
       "source": "column_us_waynesboro",
-      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
+      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-13",
       "first_seen": "2026-05-11",
-      "is_new": true
+      "is_new": false
     },
     {
       "id": "fc-95cc8320",
@@ -73,8 +127,8 @@
       "sale_date": "2026-05-20",
       "sale_time": "2:30PM",
       "sale_location": "",
-      "days_until_sale": 9,
-      "notice_date": "2026-05-11",
+      "days_until_sale": 8,
+      "notice_date": "2026-05-12",
       "days_in_foreclosure": 0,
       "lender": "chase",
       "trustee": null,
@@ -83,9 +137,9 @@
       "deed_of_trust_date": null,
       "notice_text": "Foreclosure Sale FORECLOSURE SALE OF VALUABLE REAL ESTATE AT PUBLIC AUCTION A 3 Bedroom, 1 Bath Home 212 Court Road, Waynesboro, VA 22980 City of Waynesboro Parcel ID No. 57-7-7-9 (334516) SALE: WEDNESDAY, MAY 20, 2026, AT 2:30 P.M. AT THE CITY OF WAYNESBORO COURTHOUSE LOCATED AT 250 S. WAYNE AVENUE, WAYNESBORO, VA 22980 In execution of a Deed of Trust, being dated December 5, 2022, and recorded on December 9, 2022, in the Clerk\u2019s Office of the City of Waynesboro Circuit Court, Virginia (the \u201cClerk\u2019s Office\u201d), as Instrument No. 220003358 (the \u201cDeed of Trust\u201d) , which Deed of Trust was assigned to First Bank by the Assignment of Note and Deed of Trust effective as of December 5, 2022, and is recorded in the Clerk\u2019s Office as Instrument No. 20240001067. The undersigned as Trustee under said Deed of Trust will offer for sale at public auction the parcel listed below: ALL that certain lot or parcel of land, together with all buildings and improvements thereon, and all rights, privileges and appurtenances thereunto belonging or anywise appertaining, lying and being in the City of Waynesboro, Virginia, described and designated on the plat of Club Court, Unit Number One (1), made by William A. Crawford, S.A.C., dated August 25, 1952, of record in the Clerk\u2019s Office of the Circuit Court for the City of Waynesboro, Virginia, in Plat Book 1, page 80, as Lot Number Nine (9) in Block Number Seven (7). Property Address: 212 Court Road, Waynesboro, VA 22980 Parcel ID No. 57-7-7-9 (334516) (the \u201cProperty\u201d). TERMS OF SALE: A bidder\u2019s deposit of the greater of $10,000 or 10% of the winning bid, shall be paid at the sale by cashier\u2019s check made payable to Bidder (to be assigned to Trustee if Bidder is successful), with the balance of the winning bid upon delivery of a trustee\u2019s deed within 30 days of sale. If the initial deposit is less than 10% of the winning bid, then the successful bidder\u2019s deposit MUST be increased to 10% of the winning bid by cashier\u2019s check or wired funds within three (3) business days. Settlement shall be held within 30 days after the date of sale unless otherwise postponed at the sole discretion of the Trustee. Sale is subject to the covenants, conditions, restrictions, rights of way, and easements, if any, contained in the deeds and other documents forming the chain of title to the property. Property is sold \u201cAS IS, WHERE IS,\u201d \u201cWITH ALL FAULTS\u201d and \u201cWITH ABSOLUTELY NO WARRANTIES.\u201d Neither the Substitute Trustee nor the Lender shall have any obligation to obtain possession of the Property. It shall be the purchaser's obligation, at the purchaser's sole cost, to obtain possession of the Property. The purchaser waives and releases the Substitute Trustee and Lender and each of their respective agents, successors and assigns from any and all claims the purchaser and/or its successors and assigns may now have or may have in the future relating to: (1) any condition, problem or violation affecting the Property; (2) any existing or future building or zoning code problems or violations, and (3) the accuracy or validity of any information described herein. Purchaser has not relied on anything in the foreclosure advertisement but rather has relied solely on such investigations, examinations or inspections of the Property as the purchaser has made. TIME SHALL BE OF THE ESSENCE WITH RESPECT TO SETTLEMENT. The deposit shall be applied to the credit of successful bidder at settlement; or, in the event of failure to complete settlement within the time set forth after the date of sale, in accordance with the terms of sale, the deposit shall be forfeited and applied to the costs of sale, including Trustee\u2019s fee, and the Property shall be resold at the cost and expense of the defaulting Purchaser. Risk of loss or damage to the Property shall be borne by successful bidder from the time of auctioneer\u2019s strike down at the sale. Purchaser shall pay all settlement fees, title examination charges, title insurance premiums, and recording costs. Current real estate property taxes will be prorated at closing as of date of sale. Rollback taxes, if any, will be the responsibility of the Purchaser. THE TRUSTEE RESERVES THE RIGHT: (i) to waive the deposit requirements; (ii) to extend the period of time within which the Purchaser is to make full settlement; (iii) to withdraw the Property from sale at any time prior to the termination of the bidding; (iv) to keep the bidding open for any length of time; (v) to reject all bids; and (vi) to postpone or continue this sale from time to time, such notices of postponement or setting over shall be in a manner deemed reasonable by the Trustee. Announcements made on day of sale take precedence over all other advertised terms and conditions. FOR INFORMATION SEE: www.fplegal.com/foreclosures Flora Pettit PC, Trustee Nancy R. Schlichting 530 E. Main Street P. O. Box 2057 Charlottesville, VA 22902 (434) 220-6113 beq@fplegal.com COL-5500340 AUGUSTA COUNTY, VIRGINIA 2026-04-30 WAYNESBORO",
       "source": "column_us_waynesboro",
-      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
+      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-13",
       "first_seen": "2026-05-11",
-      "is_new": true
+      "is_new": false
     },
     {
       "id": "fc-2a400ad2",
@@ -100,8 +154,8 @@
       "sale_date": "2026-05-27",
       "sale_time": "10:30AM",
       "sale_location": "",
-      "days_until_sale": 16,
-      "notice_date": "2026-05-11",
+      "days_until_sale": 15,
+      "notice_date": "2026-05-12",
       "days_in_foreclosure": 0,
       "lender": null,
       "trustee": "Atlantic Trustee Services",
@@ -110,9 +164,9 @@
       "deed_of_trust_date": "2010-07-23",
       "notice_text": "Foreclosure Sale Trustee's Sale 207 N. Winchester Avenue, Waynesboro, Virginia 22980 (Parcel ID: 5771; Tax Map No.: 46-7-3-2) Default having been made in the terms of a certain Deed of Trust dated July 23, 2010, in the original principal amount of $30,000.00 and recorded in the Clerk's Office of the Circuit Court of the City of Waynesboro, Virginia in Instrument No. 100001825, the undersigned Substitute Trustees will sell at public auction on May 27, 2026, at 10:30 AM in front of the building housing the City of Waynesboro Circuit Court, 250 S. Wayne Avenue, Waynesboro, VA 22980, the property described in a deed recorded in: Book: 148 page: 524. Property description: Lot: 2 Block: 3. Sale is subject to all prior liens, easements, restrictions, covenants, and conditions, if any, of record, or other matters which would be disclosed by an accurate survey or inspection of the premises. TERMS: CASH. A deposit of $6,000.00 or 10% of the sale price, whichever is lower, will be required of the successful bidder at time of sale. Prior to the sale, interested bidders will be required to register with and must present a bid deposit which may be held during the sale by the trustee. The bid deposit must be certified funds and/or cash, but no more than $9,900.00 of cash will be accepted. The successful bidder\u2019s deposit will be retained at the sale and applied to the sale price. If held by the trustee, all other bid deposits will be returned to the unsuccessful bidders. Settlement is to be made within 15 calendar days. The successful bidder will be responsible for obtaining possession of the property, and for all costs and fees related to recording the Trustee\u2019s Deed, including the grantors tax. The successful bidder will be required to execute a Memorandum of Trustee's Sale, available for review on the Foreclosure Sales page of www.glasserlaw.com, outlining additional terms of sale and settlement. A Trustee\u2019s Deed will be prepared by Trustee\u2019s attorney at high bidder\u2019s expense. This is a communication from a debt collector, Glasser and Glasser, P.L.C. on behalf of Atlantic Trustee Services, L.L.C., and/or NFPDS-VA LLC, Substitute Trustees, Crown Center Building, Suite 600, 580 East Main Street, Norfolk, VA 23510, File No. 241731-01, Tel: (757) 321-6465, between 10:00 a.m. & 12:00 noon only. COL-5500346 AUGUSTA COUNTY, VIRGINIA 2026-04-30 WAYNESBORO",
       "source": "column_us_waynesboro",
-      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
+      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-13",
       "first_seen": "2026-05-11",
-      "is_new": true
+      "is_new": false
     },
     {
       "id": "fc-2a400ad2",
@@ -127,8 +181,8 @@
       "sale_date": "2026-05-27",
       "sale_time": "10:30AM",
       "sale_location": "",
-      "days_until_sale": 16,
-      "notice_date": "2026-05-11",
+      "days_until_sale": 15,
+      "notice_date": "2026-05-12",
       "days_in_foreclosure": 0,
       "lender": null,
       "trustee": "Atlantic Trustee Services",
@@ -137,9 +191,9 @@
       "deed_of_trust_date": "2010-07-23",
       "notice_text": "Foreclosure Sale Trustee's Sale 207 N. Winchester Avenue, Waynesboro, Virginia 22980 (Parcel ID: 5771; Tax Map No.: 46-7-3-2) Default having been made in the terms of a certain Deed of Trust dated July 23, 2010, in the original principal amount of $30,000.00 and recorded in the Clerk's Office of the Circuit Court of the City of Waynesboro, Virginia in Instrument No. 100001825, the undersigned Substitute Trustees will sell at public auction on May 27, 2026, at 10:30 AM in front of the building housing the City of Waynesboro Circuit Court, 250 S. Wayne Avenue, Waynesboro, VA 22980, the property described in a deed recorded in: Book: 148 page: 524. Property description: Lot: 2 Block: 3. Sale is subject to all prior liens, easements, restrictions, covenants, and conditions, if any, of record, or other matters which would be disclosed by an accurate survey or inspection of the premises. TERMS: CASH. A deposit of $6,000.00 or 10% of the sale price, whichever is lower, will be required of the successful bidder at time of sale. Prior to the sale, interested bidders will be required to register with and must present a bid deposit which may be held during the sale by the trustee. The bid deposit must be certified funds and/or cash, but no more than $9,900.00 of cash will be accepted. The successful bidder\u2019s deposit will be retained at the sale and applied to the sale price. If held by the trustee, all other bid deposits will be returned to the unsuccessful bidders. Settlement is to be made within 15 calendar days. The successful bidder will be responsible for obtaining possession of the property, and for all costs and fees related to recording the Trustee\u2019s Deed, including the grantors tax. The successful bidder will be required to execute a Memorandum of Trustee's Sale, available for review on the Foreclosure Sales page of www.glasserlaw.com, outlining additional terms of sale and settlement. A Trustee\u2019s Deed will be prepared by Trustee\u2019s attorney at high bidder\u2019s expense. This is a communication from a debt collector, Glasser and Glasser, P.L.C. on behalf of Atlantic Trustee Services, L.L.C., and/or NFPDS-VA LLC, Substitute Trustees, Crown Center Building, Suite 600, 580 East Main Street, Norfolk, VA 23510, File No. 241731-01, Tel: (757) 321-6465, between 10:00 a.m. & 12:00 noon only. COL-5500346 AUGUSTA COUNTY, VIRGINIA 2026-04-23 WAYNESBORO",
       "source": "column_us_waynesboro",
-      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
+      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-13",
       "first_seen": "2026-05-11",
-      "is_new": true
+      "is_new": false
     },
     {
       "id": "fc-02000ffa",
@@ -154,8 +208,8 @@
       "sale_date": "2026-05-11",
       "sale_time": "9:30AM",
       "sale_location": "",
-      "days_until_sale": 0,
-      "notice_date": "2026-05-11",
+      "days_until_sale": -1,
+      "notice_date": "2026-05-12",
       "days_in_foreclosure": 0,
       "lender": "chase",
       "trustee": null,
@@ -164,9 +218,9 @@
       "deed_of_trust_date": "2023-04-10",
       "notice_text": "Foreclosure Sale TRUSTEE\u2019S SALE OF 1852 STUARTS DRAFT HIGHWAY, STUARTS DRAFT, VA 24477 In execution of a certain Deed of Trust dated April 10, 2023, in the original principal amount of $139,601.00 recorded in the Clerk\u2019s Office, Circuit Court for Augusta County, Virginia as Instrument No. 230002154. The undersigned Substitute Trustee will offer for sale at public auction in the front of the Circuit Court building for the City of Staunton, 113 East Beverly, Staunton, Virginia, or any such temporary alternative Circuit Court location designated by the Judges of the Circuit Court, on May 11, 2026, at 9:30 AM, the property described in said Deed of Trust, located at the above address, and more particularly described as follows: ALL OF THAT CERTAIN TRACT OR PARCEL OF LAND, WITH ALL IMPROVEMENTS THEREON AND APPURTENANCES THERETO BELONGING, SITUATE IN RIVERHEADS DISTRICT, AUGUSTA COUNTY, VIRGINIA, ON THE NORTHSIDE OF U. S. ROUTE 340, CONTAINING 1.905 ACRES, AS SHOWN ON A PLAT ENTITLED \"PHYSICAL SURVEY HARRY EUGENE MIZER, ETAL PROPERTY, RIVERHEADS DISTRICT, AUGUSTA COUNTY, VIRGINIA\", DATED JANUARY 20, 1989, PREPARED BY L. W. KNIGHTING, P.C., A COPY OF WHICH PLAT IS ATTACHED TO A DEED RECORDED IN DEED BOOK 959, PAGE 384. TERMS OF SALE: ALL CASH. A bidder\u2019s deposit of ten percent (10%) of the sale price or ten percent (10%) of the original principal balance of the subject Deed of Trust, whichever is lower, in the form of cash or certified funds payable to the Substitute Trustee must be present at the time of the sale. The balance of the purchase price will be due within fifteen (15) days of sale, otherwise Purchaser\u2019s deposit may be forfeited to Trustee. Time is of the essence. If the sale is set aside for any reason, the Purchaser at the sale shall be entitled to a return of the deposit paid. The Purchaser may, if provided by the terms of the Trustee\u2019s Memorandum of Foreclosure Sale, be entitled to a $50 cancellation fee from the Substitute Trustee, but shall have no further recourse against the Mortgagor, the Mortgagee or the Mortgagee\u2019s attorney. A form copy of the Trustee\u2019s memorandum of foreclosure sale and contract to purchase real property is available for viewing at www.aldridgepite.com. Additional terms, if any, to be announced at the sale and the Purchaser may be given the option to execute the contract of sale electronically. This is a communication from a debt collector and any information obtained will be used for that purpose. The sale is subject to seller confirmation. Substitute Trustee: Equity Trustees, LLC, 8100 Three Chopt Road, Suite 240, Richmond, VA 23229. If you have any questions or concerns, please contact the Virginia Pre-Sale Department of counsel for Equity Trustees, LLC at 301-961-6555, website: www.aldridgepite.com. VA-370728-2. COL-5500338 AUGUSTA COUNTY, VIRGINIA 2026-04-21",
       "source": "column_us_waynesboro",
-      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-12",
+      "source_url": "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-13",
       "first_seen": "2026-05-11",
-      "is_new": true
+      "is_new": false
     }
   ]
 }
