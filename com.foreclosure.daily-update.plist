@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.foreclosure.daily-update</string>
+
+    <!-- Appends a timestamped header then the full script output to the log -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>printf '\n=== %s ===\n' "$(date)" >> /Users/jarvis/Documents/Claude/Foreclosures/data/daily_run.log; bash /Users/jarvis/Documents/Claude/Foreclosures/scripts/update_statewide.sh >> /Users/jarvis/Documents/Claude/Foreclosures/data/daily_run.log 2>&1</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/jarvis/Documents/Claude/Foreclosures</string>
+
+    <!-- 7:00 AM every day — scraper deduplicates, so weekend runs are harmless -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>7</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <!-- Ensures python3, homebrew, and git are on PATH -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>HOME</key>
+        <string>/Users/jarvis</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>

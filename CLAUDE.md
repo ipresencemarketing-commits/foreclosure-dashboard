@@ -47,11 +47,20 @@ python3 scripts/sheets_sync.py   # push to Google Sheets
 python3 scripts/backfill.py      # fill blank cells
 ```
 
-## IMPORTANT: Bash sandbox is broken
-The Cowork bash sandbox consistently fails to mount the Foreclosures folder. **Do not use the bash tool to run Python scripts.** Instead:
-- Edit files directly with Read/Edit/Write tools
-- Give Joe the exact Terminal command to run
-- Joe is comfortable running commands in Terminal himself
+## Bash sandbox — partial access
+As of 2026-05-14, the Cowork bash sandbox **can** read/write files in this folder (fixed via macOS Full Disk Access for Claude). The sandbox is a fresh Linux VM, so:
+
+**Use the bash tool for:**
+- Inspecting `data/foreclosures.json`, logs, and other project files
+- File-level shell utilities (grep, ls, diff, head/tail, jq, etc.)
+- Quick Python one-liners that don't need the project's installed packages
+
+**Still run from Joe's Terminal:**
+- The actual pipeline (`bash scripts/update.sh`, `python3 scripts/scraper.py`, etc.)
+- Anything that needs the project's Python deps (`gspread`, `playwright`, `requests`, `bs4`, etc.) — these are installed on the Mac, not in the sandbox
+- Anything that touches Google credentials — they live on the Mac
+
+Joe is comfortable running commands in Terminal himself, so when pipeline execution is needed, give him the exact command to run.
 
 ## Target counties (12)
 Fredericksburg City, Stafford, Spotsylvania, Caroline, Fauquier, Culpeper, King George, Hanover, Richmond City, Chesterfield, Henrico, Louisa

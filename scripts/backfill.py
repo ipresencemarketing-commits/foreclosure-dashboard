@@ -1142,8 +1142,11 @@ def run() -> None:
     # (Rough_Equity_Est, Est_Profit_Potential, Years_Since_Last_Sale) are handled
     # in the fast, API-free Pass 7 below.
     # ─────────────────────────────────────────────────────────────────────────
+    # Only include fields that actually exist in the sheet (i.e. in COLUMNS).
+    # "Year_Built", "Beds_Baths_Sqft", and "Lot_Size" were removed from COLUMNS,
+    # so val() always returns "" for them — every row would look like it needs a
+    # GIS lookup, triggering hundreds of unnecessary API calls per run.
     RAW_GIS_FIELDS = [
-        "Year_Built", "Beds_Baths_Sqft", "Lot_Size",
         "Last_Sold_Date", "Last_Sold_Price", "Current_Est_Value",
     ]
     p6 = [

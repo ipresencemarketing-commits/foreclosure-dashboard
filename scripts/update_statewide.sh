@@ -89,11 +89,20 @@ echo "=========================================================="
 # ── Clear sheet before pipelines run ──────────────────────────────────────
 # This guarantees a fresh start on every run — no stale rows from old column
 # orderings, no leftover data from a previous partial run.
+# IMPORTANT: If the clear fails we MUST abort — silently continuing would
+# leave the old (possibly mis-ordered) sheet intact, then write new rows
+# aligned to the *current* COLUMNS definition, producing a header/data
+# mismatch (e.g. ZIP appearing in the County column for new records).
 if [[ "$SYNC" == "true" ]]; then
     echo ""
     echo "--- Clearing Google Sheet (fresh start) ---"
-    python3 scripts/sheets_sync.py --clear-only \
-        || echo "  [warn] Sheet clear failed — check credentials"
+    if ! python3 scripts/sheets_sync.py --clear-only; then
+        echo ""
+        echo "  ✗ ERROR: Sheet clear failed — aborting pipeline."
+        echo "  Continuing with a stale sheet would corrupt column order."
+        echo "  Check credentials/service-account.json and re-run."
+        exit 1
+    fi
 fi
 
 run_pipeline "fredericksburg" \

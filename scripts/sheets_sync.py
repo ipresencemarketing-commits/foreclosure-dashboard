@@ -228,10 +228,6 @@ def run() -> None:
     listings = data.get("listings", [])
     log.info(f"Loaded {len(listings)} listings from {DATA_FILE}")
 
-    if not listings:
-        log.info("No listings to sync.")
-        return
-
     # ── 2. Authenticate ───────────────────────────────────────────────────────
     creds_path = find_creds_file()
     if not creds_path:
@@ -256,7 +252,7 @@ def run() -> None:
         log.error("Make sure the sheet is shared with the service account email.")
         return
 
-    # ── 4. Get existing addresses (to avoid duplicates) ───────────────────────
+    # ── 4. Get existing data ──────────────────────────────────────────────────
     try:
         all_values = sheet.get_all_values()
     except gspread.exceptions.APIError as e:
@@ -268,8 +264,13 @@ def run() -> None:
     # is misaligned with the code.  The only safe fix is a full clear-and-rewrite.
     # This happens whenever the COLUMNS list is reordered in the code.
     existing_header = all_values[0] if all_values else []
-    # Trim trailing empty cells before comparing
-    existing_header_trimmed = [c.strip() for c in existing_header if c.strip()]
+    # Trim only TRAILING empty cells — filtering out middle empties would
+    # produce a false match when a column has been deleted/blanked, hiding
+    # a real mismatch (e.g. ZIP labelled as County after a failed clear).
+    trim_end = len(existing_header)
+    while trim_end > 0 and not existing_header[trim_end - 1].strip():
+        trim_end -= 1
+    existing_header_trimmed = [c.strip() for c in existing_header[:trim_end]]
     if existing_header_trimmed and existing_header_trimmed != COLUMNS:
         log.warning(
             f"  Header mismatch detected — clearing sheet and rewriting.\n"
@@ -286,6 +287,11 @@ def run() -> None:
         log.info(f"  Header row confirmed ({len(COLUMNS)} columns)")
     except gspread.exceptions.APIError as e:
         log.error(f"  Could not write header row: {e}")
+        return
+
+    # ── Early exit if no new listings to append ───────────────────────────────
+    if not listings:
+        log.info("No listings to sync — header confirmed, nothing to append.")
         return
 
     # Address is always column A (index 0)
@@ -313,8 +319,9 @@ def run() -> None:
     col_idx = {h: i + 1 for i, h in enumerate(COLUMNS)}
 
     # Columns we will backfill if currently blank (never overwrite existing data)
+    # Note: "Beds_Baths_Sqft", "Year_Built", "Lot_Size" were removed from COLUMNS
+    # and are no longer in the sheet — keep this list in sync with COLUMNS above.
     BACKFILL_COLS = [
-        ("Beds_Baths_Sqft",                    "beds_baths_sqft"),
         ("Owner_Name",                          "owner_name"),
         ("Owner_Mailing_Address",               "owner_mailing_address"),
         ("Owner_Mailing_Differs_From_Property", "owner_mailing_differs"),
