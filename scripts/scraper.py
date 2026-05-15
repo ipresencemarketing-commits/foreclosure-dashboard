@@ -5,18 +5,22 @@ Fredericksburg Metro Foreclosure Scraper
 -----------------------------------------
 Pulls trustee sale notices from free public sources and saves to data/foreclosures.json.
 
-Sources:
-  1. PublicNoticeVirginia.com            — trustee sale notices (VA legal requirement)
-  2. Fredericksburg Free-Lance Star      — Column.us public notice portal (Playwright)
+Active source groups (controlled by scripts/config.py):
+  Group 3  — PublicNoticeVirginia.com       (PNV, statewide — §55.1-321 required)
+  Existing — fredericksburg.column.us       (Fredericksburg Free-Lance Star)
+  Group 1  — richmond.column.us             (Richmond Times-Dispatch)
+  Group 2  — logs.com/va-sales-report.html  (LOGS Legal Group / PFCVA)
+  Group 4  — dailyprogress.column.us        (Charlottesville Daily Progress)
 
-Target counties: Fredericksburg City, Stafford, Spotsylvania, Caroline, Fauquier,
-                  Culpeper, King George, Hanover, Richmond City, Chesterfield, Henrico, Louisa
+Search window: controlled by LOOKBACK_DAYS in scripts/config.py (default 30 days).
 
 Run: python3 scripts/scraper.py
-Requires: pip install requests beautifulsoup4 lxml
+Requires: pip install requests beautifulsoup4 lxml playwright
+          python3 -m playwright install chromium
 """
 
 import re
+import sys
 import requests
 import json
 import hashlib
@@ -26,16 +30,20 @@ from datetime import date, datetime, timedelta
 from bs4 import BeautifulSoup
 from time import sleep
 
+# Load pipeline config (scripts/config.py) — must come before any constant that
+# references cfg.  sys.path is extended so the import works whether the script
+# is invoked as "python3 scripts/scraper.py" (from repo root) or directly.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import config as cfg
+from schema import normalize_listing
+
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)s  %(message)s")
 log = logging.getLogger(__name__)
 
 DATA_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "foreclosures.json")
 
-TARGET_COUNTIES = [
-    "fredericksburg", "stafford", "spotsylvania", "caroline",
-    "fauquier", "culpeper", "king george", "hanover",
-    "richmond", "chesterfield", "henrico", "louisa",
-]
+# Use county list from config so there's a single source of truth.
+TARGET_COUNTIES = cfg.TARGET_COUNTIES
 
 HEADERS = {
     "User-Agent": (
@@ -82,33 +90,35 @@ def save(listings: list) -> None:
     existing = load_existing()
     existing_ids = {l["id"]: l for l in existing.get("listings", [])}
 
-    # Preserve first_seen; flag listings added today as new
+    # Preserve first_seen; flag listings added today as new; stamp date_scraped
     for listing in listings:
         lid = listing["id"]
         if lid in existing_ids:
             listing["first_seen"] = existing_ids[lid].get("first_seen", today)
         else:
             listing["first_seen"] = today
-        listing["is_new"] = listing["first_seen"] == today
-        listing["days_until_sale"] = days_until(listing.get("sale_date"))
+        listing["is_new"]       = listing["first_seen"] == today
+        listing["date_scraped"] = today
+
+    # Normalize every listing to the canonical phone-app-ready schema
+    normalized = [normalize_listing(l) for l in listings]
 
     data = {
         "meta": {
-            "last_updated": datetime.now().isoformat(timespec="seconds"),
-            "target_counties": [
-                "Fredericksburg City", "Stafford", "Spotsylvania", "Caroline",
-                "Fauquier", "Culpeper", "King George", "Hanover",
-                "Richmond City", "Chesterfield", "Henrico", "Louisa",
-            ],
-            "total_count": len(listings),
-            "new_today": sum(1 for l in listings if l.get("is_new")),
+            "schema_version":  "2.0",
+            "last_updated":    datetime.now().isoformat(timespec="seconds"),
+            "lookback_days":   cfg.LOOKBACK_DAYS,
+            "since_date":      cfg.SINCE_DATE.isoformat(),
+            "target_counties": cfg.TARGET_COUNTIES_DISPLAY,
+            "total_count":     len(normalized),
+            "new_today":       sum(1 for l in normalized if l.get("is_new")),
         },
-        "listings": listings,
+        "listings": normalized,
     }
     os.makedirs(os.path.dirname(DATA_FILE), exist_ok=True)
     with open(DATA_FILE, "w") as f:
         json.dump(data, f, indent=2)
-    log.info(f"Saved {len(listings)} listings to {DATA_FILE}")
+    log.info(f"Saved {len(normalized)} listings to {DATA_FILE}")
 
 
 # ---------------------------------------------------------------------------
@@ -190,11 +200,12 @@ def scrape_public_notice_va() -> list:
             page.fill(search_sel, SEARCH_KEYWORDS)
             log.info("  PNV: search box filled")
 
-            # ── Set explicit 60-day date range ────────────────────────────────
-            # PNV defaults to ~60 days but we set it explicitly so the window
-            # never drifts if the site changes its default.
-            from_date = (date.today() - timedelta(days=60)).strftime("%-m/%-d/%Y")
-            to_date   = date.today().strftime("%-m/%-d/%Y")
+            # ── Set date range from config (LOOKBACK_DAYS) ───────────────────
+            # PNV's ASP.NET search form accepts M/D/YYYY dates.
+            # SINCE_DATE comes from config.py — change LOOKBACK_DAYS there
+            # to adjust the search window for all sources at once.
+            from_date = cfg.SINCE_DATE.strftime("%-m/%-d/%Y")
+            to_date   = cfg.TODAY.strftime("%-m/%-d/%Y")
             try:
                 # Advanced search date inputs follow ASP.NET WebForms naming:
                 # ctl00_ContentPlaceHolder1_as1_txt{From,To}Date
@@ -206,7 +217,10 @@ def scrape_public_notice_va() -> list:
                     if inp:
                         inp.triple_click()
                         inp.fill(val)
-                log.info(f"  PNV: date range set to {from_date} → {to_date}")
+                log.info(
+                    f"  PNV: date range set to {from_date} → {to_date} "
+                    f"({cfg.LOOKBACK_DAYS}-day window from config.py)"
+                )
             except Exception as _e:
                 log.debug(f"  PNV: could not set date range ({_e}) — using site default")
 
@@ -245,9 +259,16 @@ def scrape_public_notice_va() -> list:
                         fields.forEach(field => {
                             const nid = field.value;
                             if (!nid) return;
-                            const row = field.closest('tr');
-                            const text = row
-                                ? row.textContent.replace(/\\s+/g, ' ').trim()
+                            // PNV uses a nested table structure inside each grid cell:
+                            //   outer TR → TD (card cell) → TABLE.nested → TR → TD.view → hdnPKValue
+                            // field.closest('tr') stops at the INNER TR which only has the
+                            // newspaper header ("Roanoke Times, The …").
+                            // Instead: go up to the nested TABLE, then to its parent TD (the full card).
+                            let container = field.closest('table');
+                            if (container) container = container.closest('td');
+                            if (!container) container = field.closest('tr'); // safe fallback
+                            const text = container
+                                ? container.textContent.replace(/\\s+/g, ' ').trim()
                                 : '';
                             out.push({ id: nid, card_text: text });
                         });
@@ -387,15 +408,250 @@ def scrape_public_notice_va() -> list:
     return listings
 
 # ---------------------------------------------------------------------------
-# REMOVED SOURCES (kept for reference — not called by run())
+# REMOVED SOURCES — see scripts/_archived_sources.py
 # Auction.com, HUD Homes, Fannie Mae HomePath, Freddie Mac HomeSteps
-# were removed 2026-05 — pipeline now uses PNV + Column.us only.
+# were removed 2026-05. Full implementations preserved in _archived_sources.py.
 # ---------------------------------------------------------------------------
 
 def scrape_auction_com() -> list:
-    """REMOVED — not called. Scrapes Auction.com for foreclosure listings."""
-    return []
-    # Original implementation preserved below for reference.
+    """
+    Group 5: Auction.com — REO and trustee pre-sale listings.
+
+    Uses Auction.com's XML sitemap hierarchy to discover active listing URLs
+    without JavaScript, then fetches each detail page to extract address,
+    auction date, and starting bid from embedded JSON.
+
+    Sitemap index: https://www.auction.com/sitemaps/sitemapindex.xml
+      → sitemap-pdp-active-tps-{N}.xml  (trustee/pre-foreclosure sales)
+      → sitemap-pdp-active-reo-{N}.xml  (bank-owned REO)
+
+    Covers REO properties that appear AFTER the trustee sale completes —
+    a category not tracked by PNV or Column.us.  Complements trustee-sale
+    sources rather than duplicating them.
+
+    To tune: adjust SLUG_COUNTY keywords, sleep() delays, or the
+    auction JSON field priority list.  Set ENABLE_AUCTION_COM=False in
+    config.py to pause without touching this code.
+    """
+    listings = []
+
+    # URL slug keyword → county display name.
+    # Auction.com listing slugs contain city-state strings like "stafford-va".
+    SLUG_COUNTY: dict[str, str] = {
+        "stafford-va":          "Stafford",
+        "fredericksburg-va":    "Fredericksburg City",
+        "spotsylvania-va":      "Spotsylvania",
+        "bowling-green-va":     "Caroline",
+        "ruther-glen-va":       "Caroline",
+        "milford-va":           "Caroline",
+        "port-royal-va":        "Caroline",
+        "woodford-va":          "Caroline",
+        "penola-va":            "Caroline",
+        "warrenton-va":         "Fauquier",
+        "new-baltimore-va":     "Fauquier",
+        "bealeton-va":          "Fauquier",
+        "catlett-va":           "Fauquier",
+        "remington-va":         "Fauquier",
+        "midland-va":           "Fauquier",
+        "culpeper-va":          "Culpeper",
+        "jeffersonton-va":      "Culpeper",
+        "woodville-va":         "Culpeper",
+        "brandy-station-va":    "Culpeper",
+        "king-george-va":       "King George",
+        "dahlgren-va":          "King George",
+        "ashland-va":           "Hanover",
+        "mechanicsville-va":    "Hanover",
+        "hanover-va":           "Hanover",
+        "atlee-va":             "Hanover",
+        "richmond-va":          "Richmond City",
+        "chesterfield-va":      "Chesterfield",
+        "midlothian-va":        "Chesterfield",
+        "chester-va":           "Chesterfield",
+        "bon-air-va":           "Chesterfield",
+        "henrico-va":           "Henrico",
+        "glen-allen-va":        "Henrico",
+        "short-pump-va":        "Henrico",
+        "sandston-va":          "Henrico",
+        "highland-springs-va":  "Henrico",
+        "louisa-va":            "Louisa",
+        "mineral-va":           "Louisa",
+    }
+
+    try:
+        # Step 1: Fetch the sitemap index
+        idx_resp = requests.get(
+            "https://www.auction.com/sitemaps/sitemapindex.xml",
+            headers=HEADERS, timeout=15
+        )
+        idx_resp.raise_for_status()
+        all_sm_urls = re.findall(r"<loc>(https://[^<]+)</loc>", idx_resp.text)
+
+        # Keep only active PDP sitemaps for TPS (trustee pre-sale) and REO
+        pdp_urls = [
+            u for u in all_sm_urls
+            if ("sitemap-pdp-active-tps" in u or "sitemap-pdp-active-reo" in u)
+            and "image" not in u
+        ]
+        log.info(f"  Auction.com: scanning {len(pdp_urls)} sitemap file(s)")
+
+        # Step 2: Scan each sitemap for target-county listing URLs
+        target_detail_urls: list[str] = []
+        for sm_url in pdp_urls:
+            try:
+                sm_resp = requests.get(sm_url, headers=HEADERS, timeout=20)
+                sm_resp.raise_for_status()
+                locs = re.findall(
+                    r"<loc>(https://www\.auction\.com/details/[^<]+)</loc>",
+                    sm_resp.text
+                )
+                for u in locs:
+                    slug = u.split("/details/")[-1]
+                    if any(kw in slug for kw in SLUG_COUNTY):
+                        target_detail_urls.append(u)
+                sleep(0.3)
+            except Exception as e:
+                log.warning(f"  Auction.com: sitemap error {sm_url}: {e}")
+
+        # Deduplicate (a listing can appear in both TPS and REO sitemaps)
+        target_detail_urls = list(dict.fromkeys(target_detail_urls))
+        log.info(f"  Auction.com: {len(target_detail_urls)} target-county detail page(s)")
+
+        # Step 3: Fetch each detail page and parse embedded auction JSON
+        for detail_url in target_detail_urls:
+            try:
+                slug = detail_url.split("/details/")[-1]
+
+                # Determine county from slug keyword
+                county_name = next(
+                    (cn for kw, cn in SLUG_COUNTY.items() if kw in slug), None
+                )
+
+                det_resp = requests.get(detail_url, headers=HEADERS, timeout=20)
+                det_resp.raise_for_status()
+                html = det_resp.text
+
+                # Parse address from <title>
+                # Format: "9 Plowshare Court, Stafford, VA 22554, Stafford County | SmartSale"
+                title_m   = re.search(r"<title[^>]*>(.*?)</title>", html, re.I | re.S)
+                title_raw = title_m.group(1).strip() if title_m else ""
+                addr_part = title_raw.split(" | ")[0].strip() if " | " in title_raw else title_raw
+                am = re.match(
+                    r"^(.*?),\s*([^,]+),\s*([A-Z]{2})\s+(\d{5}(?:-\d{4})?),\s*(.+)$",
+                    addr_part
+                )
+                if am:
+                    street    = am.group(1).strip()
+                    city_name = am.group(2).strip()
+                    zip_code  = am.group(4).strip()
+                    if not county_name:
+                        county_name = (am.group(5)
+                                       .replace(" County", "")
+                                       .replace(" City", "")
+                                       .strip())
+                else:
+                    # Fallback: derive from slug
+                    slug_no_id = re.sub(r"-\d+$", "", slug)
+                    parts = slug_no_id.split("-")
+                    if len(parts) >= 3 and len(parts[-1]) == 2:
+                        city_name = parts[-2].title()
+                        street    = " ".join(parts[:-2]).title()
+                    else:
+                        street    = slug_no_id.replace("-", " ").title()
+                        city_name = ""
+                    zip_code = None
+
+                # Parse auction data from embedded JSON
+                sale_date    = None
+                asking_price = None
+                auction_m = re.search(
+                    r'"auction"\s*:\s*(\{[^{}]*(?:\{[^{}]*\}[^{}]*)?\})', html
+                )
+                if auction_m:
+                    try:
+                        auc = json.loads(auction_m.group(1))
+                        raw_date = (
+                            auc.get("auction_date") or
+                            auc.get("visible_auction_start_date_time") or
+                            auc.get("end_date") or
+                            auc.get("start_date")
+                        )
+                        if raw_date:
+                            sale_date = str(raw_date)[:10]
+                        bid = auc.get("starting_bid")
+                        if bid and int(bid) > 1:   # $1 = placeholder — skip
+                            asking_price = int(bid)
+                    except (json.JSONDecodeError, TypeError, ValueError):
+                        pass
+
+                # Property detail fields embedded in page JSON
+                def _auc_int(keys):
+                    for key in keys:
+                        m = re.search(rf'"{key}"\s*:\s*(\d+)', html)
+                        if m and int(m.group(1)) > 0:
+                            return int(m.group(1))
+                    return None
+
+                def _auc_float(keys):
+                    for key in keys:
+                        m = re.search(rf'"{key}"\s*:\s*([\d.]+)', html)
+                        if m and float(m.group(1)) > 0:
+                            return float(m.group(1))
+                    return None
+
+                beds  = _auc_int(["bedrooms", "beds", "num_bedrooms", "bedroom_count"])
+                baths = _auc_float(["bathrooms", "baths", "num_bathrooms", "bathroom_count"])
+                sqft  = _auc_int(["square_feet", "sqft", "total_sqft", "living_sqft",
+                                   "gross_area", "above_grade_sqft"])
+                yr    = _auc_int(["year_built", "yearBuilt", "year_of_construction"])
+                if yr and not (1800 < yr <= 2030):
+                    yr = None
+
+                lot_ac = _auc_float(["lot_size_acres", "lot_acres"])
+                lot_sf = _auc_int(["lot_size_sqft", "lot_sqft", "lot_square_feet"])
+                lot_size = (f"{lot_ac:.2f} ac" if lot_ac else
+                            f"{lot_sf / 43560:.2f} ac" if lot_sf and lot_sf > 500 else None)
+
+                full_addr = f"{street}, {city_name}, VA {zip_code}" if zip_code else street
+                listings.append({
+                    "id":            make_id(full_addr, sale_date),
+                    "address":       street,
+                    "city":          city_name,
+                    "county":        county_name or "Unknown",
+                    "zip":           zip_code,
+                    "stage":         "auction" if sale_date else "reo",
+                    "property_type": "single-family",
+                    "asking_price":  asking_price,
+                    "sale_date":     sale_date,
+                    "sale_time":     None,
+                    "sale_location": courthouse_for_address(county_name or ""),
+                    "beds":          beds,
+                    "baths":         baths,
+                    "sqft":          sqft,
+                    "year_built":    yr,
+                    "lot_size":      lot_size,
+                    "lender":        None,
+                    "trustee":       None,
+                    "notice_text":   None,
+                    "source":        "auction_com",
+                    "source_url":    detail_url,
+                })
+                sleep(0.4)
+
+            except Exception as e:
+                log.warning(f"  Auction.com: detail error {detail_url}: {e}")
+
+    except Exception as e:
+        log.error(f"  Auction.com error: {e}", exc_info=True)
+
+    # Apply LOOKBACK_DAYS filter — drop listings whose auction is in the past
+    # beyond the search window (keep unknowns and future dates)
+    since_iso = cfg.SINCE_DATE.isoformat()
+    listings = [
+        l for l in listings
+        if not l.get("sale_date") or l["sale_date"] >= since_iso
+    ]
+    log.info(f"  Auction.com: found {len(listings)} target-county listing(s)")
+    return listings
     """
     Scrapes Auction.com for foreclosure listings near Fredericksburg, VA.
 
@@ -662,7 +918,7 @@ def scrape_auction_com() -> list:
 # ---------------------------------------------------------------------------
 
 def scrape_hud_homes() -> list:
-    """REMOVED — not called."""
+    """REMOVED 2026-05 — full implementation in _archived_sources.py."""
     return []
     """
     Scrapes HUD REO listings for Virginia from HUD Homestore.
@@ -817,7 +1073,7 @@ def scrape_hud_homes() -> list:
 # ---------------------------------------------------------------------------
 
 def scrape_homepath() -> list:
-    """REMOVED — not called."""
+    """REMOVED 2026-05 — full implementation in _archived_sources.py."""
     return []
     """
     Fetches Fannie Mae REO listings from HomePath's JSON API.
@@ -947,34 +1203,41 @@ def scrape_homepath() -> list:
 
 
 # ---------------------------------------------------------------------------
-# Source 5: Fredericksburg Free-Lance Star (Column.us)
+# Source 5: Column.us portal scrapers (Next.js + Firebase)
+#
+# Three newspapers publish VA trustee sale notices through Column.us:
+#   5a. Fredericksburg Free-Lance Star  — fredericksburg.column.us  (ACTIVE)
+#   5b. Richmond Times-Dispatch         — richmond.column.us         (ACTIVE — Group 1)
+#   5c. Charlottesville Daily Progress  — dailyprogress.column.us   (ACTIVE — Group 4)
+#
+# All three share identical page architecture, so a single generic engine
+# (_scrape_column_us_portal) handles all of them.  Each public function is a
+# thin wrapper — tune one portal's parameters without touching the others.
 # ---------------------------------------------------------------------------
 
-def scrape_column_us() -> list:
-    """REMOVED 2026-05 — not called. PNV covers all notices statewide.
-    Original implementation preserved below for reference.
+def _scrape_column_us_portal(
+    portal_url: str,
+    newspaper_header: str,
+    source_tag: str,
+) -> list:
+    """
+    Generic Column.us (Next.js + Firebase) public notice scraper engine.
 
-    Scrapes foreclosure sale notices from the Fredericksburg Free-Lance Star's
-    Column.us public notice portal.
+    Column.us renders all notice cards client-side via the Firebase SDK.
+    Plain HTTP returns an empty shell; Playwright is required to execute
+    JavaScript and wait for cards to appear.
 
-    URL: https://fredericksburg.column.us/search?noticeType=Foreclosure+Sale
-
-    Column.us is a Next.js + Firebase app — the page shell is server-rendered
-    but all notice cards are injected client-side via the Firebase SDK.
-    Python requests alone returns an empty shell; Playwright is required to
-    execute JavaScript and wait for notices to render.
-
-    Each notice card contains:
-      - Notice type label ("Foreclosure Sale")
-      - Full notice body text (CSS visually clips it, but full text is in the DOM)
-      - Publication date (YYYY-MM-DD)
-
-    From the body text we extract:
-      - Property address  (from "TRUSTEE'S SALE OF {address}" opening line)
-      - Sale date / time  (from "on June 22, 2026, at 9:00 AM" standard VA phrase)
-      - Lender / trustee  (via existing parse helpers)
-
-    Requires: pip3 install playwright && playwright install chromium
+    Args:
+        portal_url:       Full search URL, e.g.
+                          "https://richmond.column.us/search?noticeType=Foreclosure+Sale"
+        newspaper_header: Text fragment that Column.us repeats before each
+                          notice card body — used to split the page body into
+                          individual notice blocks.  Case-insensitive.
+                          e.g. "FREE LANCE-STAR", "RICHMOND TIMES-DISPATCH",
+                               "DAILY PROGRESS"
+        source_tag:       Identifier stored in the listing dict's "source" field,
+                          e.g. "column_us", "column_us_richmond",
+                               "column_us_dailyprogress"
     """
     listings = []
 
@@ -982,21 +1245,17 @@ def scrape_column_us() -> list:
         from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
     except ImportError:
         log.warning(
-            "  Column.us: playwright not installed — skipping.\n"
-            "    Install with:  pip3 install playwright --break-system-packages\n"
-            "                   playwright install chromium"
+            f"  Column.us [{source_tag}]: playwright not installed — skipping.\n"
+            "    Install with:  pip3 install playwright\n"
+            "                   python3 -m playwright install chromium"
         )
         return listings
 
     try:
         with sync_playwright() as pw:
-            # Launch with args that suppress headless detection
             browser = pw.chromium.launch(
                 headless=True,
-                args=[
-                    "--disable-blink-features=AutomationControlled",
-                    "--no-sandbox",
-                ]
+                args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
             )
             context = browser.new_context(
                 user_agent=(
@@ -1004,98 +1263,110 @@ def scrape_column_us() -> list:
                     "AppleWebKit/537.36 (KHTML, like Gecko) "
                     "Chrome/124.0.0.0 Safari/537.36"
                 ),
-                # Spoof navigator.webdriver = false
                 java_script_enabled=True,
             )
-            # Hide the webdriver flag that sites use to detect headless browsers
+            # Suppress the webdriver flag used by bot-detection scripts.
             context.add_init_script(
                 "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
             )
             page = context.new_page()
 
-            url = "https://fredericksburg.column.us/search?noticeType=Foreclosure+Sale"
-            log.info(f"  Column.us: {url}")
+            # Append date range so Column.us can filter server/client-side.
+            # The startDate param is a best-effort hint — Column.us may or may
+            # not honour it depending on their Firebase query implementation.
+            # A post-fetch filter (below) always enforces the window regardless.
+            dated_url = (
+                f"{portal_url}&startDate={cfg.SINCE_DATE.isoformat()}"
+                f"&endDate={cfg.TODAY.isoformat()}"
+            )
+            log.info(
+                f"  Column.us [{source_tag}]: {dated_url}  "
+                f"({cfg.LOOKBACK_DAYS}-day window: {cfg.SINCE_DATE} → {cfg.TODAY})"
+            )
+            # "load" (not "networkidle") — Firebase's persistent WebSocket
+            # prevents networkidle from ever firing cleanly.
+            page.goto(dated_url, wait_until="load", timeout=40_000)
+            page.wait_for_timeout(cfg.COLUMN_US_LOAD_WAIT_MS)  # Firebase hydration
 
-            # Use "load" (not "networkidle") — Firebase's persistent WebSocket
-            # connection prevents networkidle from ever firing cleanly.
-            page.goto(url, wait_until="load", timeout=40_000)
-
-            # Give the Firebase/React app time to fetch and render cards
-            page.wait_for_timeout(8_000)
-
-            # Confirm notices loaded — look for the repeating newspaper header
+            # ── Confirm notices rendered ───────────────────────────────────
+            # Wait for the per-card newspaper header to appear, which confirms
+            # Firebase has hydrated the notice cards.  If it never appears we
+            # log a soft warning and continue anyway — the portal may legitimately
+            # have zero notices for our date window, or the header text may have
+            # changed.  We do NOT bail here: the block-splitting below will simply
+            # produce 0 blocks if the header is absent, giving a clean 0-result run
+            # instead of an opaque early return that hides the real reason.
+            header_upper = newspaper_header.upper()
             try:
                 page.wait_for_function(
-                    "document.body.innerText.includes('FREDERICKSBURG FREE-LANCE STAR')",
-                    timeout=20_000
+                    f"document.body.innerText.toUpperCase().includes({header_upper!r})",
+                    timeout=20_000,
                 )
             except PWTimeout:
-                log.warning("  Column.us: page body never contained notice text after 20s")
-                browser.close()
-                return listings
+                log.info(
+                    f"  Column.us [{source_tag}]: header '{newspaper_header}' not found "
+                    "after 20 s — portal may have 0 notices for this date window, "
+                    "or the newspaper header text has changed; continuing anyway"
+                )
 
-            # Click "Load more notices" until exhausted to get all pages.
-            # Uses JavaScript to find the button by text content — more reliable
-            # than Playwright CSS pseudo-selectors (:has-text / :text-matches)
-            # which vary by Playwright version.
+            # ── Paginate: click "Load more" until exhausted ────────────────
             load_more_clicks = 0
             while True:
                 try:
                     clicked = page.evaluate("""
                         () => {
-                            const buttons = Array.from(document.querySelectorAll('button'));
-                            const btn = buttons.find(b =>
-                                b.innerText && b.innerText.trim().toLowerCase().includes('load more')
-                            );
-                            if (btn) {
-                                btn.scrollIntoView({block: 'center'});
-                                btn.click();
-                                return true;
-                            }
+                            const btn = Array.from(document.querySelectorAll('button'))
+                                .find(b => b.innerText &&
+                                           b.innerText.trim().toLowerCase().includes('load more'));
+                            if (btn) { btn.scrollIntoView({block:'center'}); btn.click(); return true; }
                             return false;
                         }
                     """)
                     if clicked:
                         load_more_clicks += 1
-                        log.info(f"  Column.us: clicked 'Load more' ({load_more_clicks}x)")
-                        page.wait_for_timeout(2500)
+                        log.info(f"  Column.us [{source_tag}]: 'Load more' click #{load_more_clicks}")
+                        page.wait_for_timeout(cfg.COLUMN_US_LOAD_MORE_WAIT_MS)
                     else:
-                        log.info(f"  Column.us: 'Load more' exhausted after {load_more_clicks} click(s)")
+                        log.info(f"  Column.us [{source_tag}]: 'Load more' exhausted ({load_more_clicks} clicks)")
                         break
                 except Exception as ex:
-                    log.debug(f"  Column.us: 'Load more' loop ended: {ex}")
+                    log.debug(f"  Column.us [{source_tag}]: load-more loop ended: {ex}")
                     break
 
-            # ── Capture individual notice detail URLs from the DOM ────────────
-            # ── Extract individual notice URLs from DOM ────────────────────────
+            # ── Extract individual notice permalink URLs ────────────────────
             try:
                 notice_urls: list = page.evaluate("""
                     () => {
-                        const seen  = new Set();
-                        const links = document.querySelectorAll('a[href]');
-                        const out   = [];
-                        for (const a of links) {
+                        const seen = new Set(), out = [];
+                        for (const a of document.querySelectorAll('a[href]')) {
                             const h = a.href || '';
                             if (/\\/notice[s]?\\/[\\w-]+/i.test(h) && !seen.has(h)) {
-                                seen.add(h);
-                                out.push(h);
+                                seen.add(h); out.push(h);
                             }
                         }
                         return out;
                     }
                 """)
             except Exception as e:
-                log.debug(f"  Column.us: could not extract notice URLs from DOM: {e}")
+                log.debug(f"  Column.us [{source_tag}]: notice URL extraction failed: {e}")
                 notice_urls = []
 
-            log.info(f"  Column.us: {len(notice_urls)} individual notice URL(s) found")
+            log.info(f"  Column.us [{source_tag}]: {len(notice_urls)} notice URL(s) found")
 
-            # ── Split body text into per-notice blocks by newspaper header ─────
-            body_text = page.inner_text("body")
-            raw_blocks = re.split(r"FREE LANCE-STAR", body_text, flags=re.I)
+            # ── Split page body into per-notice blocks ─────────────────────
+            body_text   = page.inner_text("body")
+            raw_blocks  = re.split(re.escape(newspaper_header), body_text, flags=re.I)
             notice_blocks = raw_blocks[1:]
+
+            # Fallback: if exact header produced no splits, try a looser pattern
+            # (handles minor formatting variations like en-dashes or extra spaces).
+            if not notice_blocks:
+                loose_pat = re.sub(r'[-–]', r'[-–]', re.escape(newspaper_header))
+                raw_blocks  = re.split(loose_pat, body_text, flags=re.I)
+                notice_blocks = raw_blocks[1:]
+
             total_blocks = len(notice_blocks)
-            log.info(f"  Column.us: {total_blocks} total listings found")
+            log.info(f"  Column.us [{source_tag}]: {total_blocks} notice block(s) found")
 
             kept = skipped_addr = 0
 
@@ -1107,8 +1378,7 @@ def scrape_column_us() -> list:
                     continue
                 text = block_text.strip()
 
-                # Truncate block at the start of a second notice to prevent
-                # cross-notice bleed when the paper name appears within a notice body.
+                # Truncate at start of a second notice to prevent cross-notice bleed.
                 second_m = re.search(
                     r'\n\s*(?:NOTICE\s+OF\s+)?(?:TRUSTEE.{0,5}S\s+SALE|SUBSTITUTE\s+TRUSTEE)',
                     text[50:], re.I
@@ -1118,91 +1388,139 @@ def scrape_column_us() -> list:
 
                 # ── Address ────────────────────────────────────────────────
                 addr_raw, street, city, zip_code = extract_address(text)
-
                 if not addr_raw:
                     snippet = re.sub(r'\s+', ' ', text[:100]).strip()
-                    log.info(f"  [{listing_num}/{total_blocks}] SKIPPED — reason: no address found | snippet: {snippet!r}")
+                    log.info(f"  [{listing_num}/{total_blocks}] SKIPPED (no address) | {snippet!r}")
                     skipped_addr += 1
                     continue
 
-                # Derive county — best effort, not used as a filter
+                # ── County (best-effort; not used as filter) ───────────────
                 county = city_to_county(city)
                 if county == "Unknown":
-                    # Try extracting county name from Circuit Court reference.
-                    # Use [A-Za-z ]+ (no newlines, no commas) to avoid over-capturing
-                    # across line breaks. Also handle "County of X" and "City of X" prefixes.
                     county_m = re.search(
                         r"Circuit Court(?:\s+for)?\s+(?:the\s+)?"
                         r"(?:(?:City|County)\s+of\s+)?([A-Za-z][A-Za-z ]{1,25}?)"
                         r"(?:\s+County(?:\s+City)?)?,\s+(?:Main|Courthouse|\d)",
-                        text, re.I
+                        text, re.I,
                     )
                     if county_m:
-                        raw_county = county_m.group(1).strip()
-                        # Strip any residual "of / the / county / city" prefix artifacts
-                        raw_county = re.sub(r'^(?:of|the|county|city)\s+', '', raw_county, flags=re.I).strip()
-                        raw_county = " ".join(raw_county.split()[:2])
-                        county = valid_va_county(raw_county)
+                        raw_county = re.sub(
+                            r'^(?:of|the|county|city)\s+', '',
+                            county_m.group(1).strip(), flags=re.I
+                        ).strip()
+                        county = valid_va_county(" ".join(raw_county.split()[:2]))
                     else:
-                        county = ""   # unknown county — include anyway
+                        county = ""
 
                 kept += 1
+                sale_date, sale_time      = parse_sale_datetime(text)
+                lender                    = parse_lender(text)
+                trustee                   = parse_trustee(text)
+                original_principal        = parse_original_principal(text)
+                deposit                   = parse_deposit(text)
+                deed_of_trust_date        = parse_deed_of_trust_date(text)
+                county_key = county.lower().replace(" city", "").replace(" county", "").strip()
 
-                # ── Sale date / time (standard VA notice phrase) ───────────
-                sale_date, sale_time = parse_sale_datetime(text)
-
-                # ── Lender / trustee ───────────────────────────────────────
-                lender  = parse_lender(text)
-                trustee = parse_trustee(text)
-
-                # ── New enrichment fields from notice text ─────────────────
-                original_principal  = parse_original_principal(text)
-                deposit             = parse_deposit(text)
-                deed_of_trust_date  = parse_deed_of_trust_date(text)
-
-                county_key = county.lower().replace(" city","").replace(" county","").strip()
                 log.info(
                     f"  [{listing_num}/{total_blocks}] ADDED — {street}, {city} | "
                     f"county: {county or 'unknown'} | sale: {sale_date or 'TBD'}"
                 )
                 listings.append({
-                    "id":               make_id(street, sale_date),
-                    "address":          addr_raw,
-                    "city":             city.title(),
-                    "county":           county,
-                    "zip":              zip_code,
-                    "stage":            "auction" if sale_date else "pre-fc",
-                    "property_type":    "single-family",
-                    "assessed_value":   None,
-                    "asking_price":     None,
-                    "sale_date":        sale_date,
-                    "sale_time":        sale_time,
-                    "sale_location":    courthouse_location(county_key) if county_key else "",
-                    "days_until_sale":  None,
-                    "notice_date":      date.today().isoformat(),
+                    "id":                  make_id(street, sale_date),
+                    "address":             addr_raw,
+                    "city":                city.title(),
+                    "county":              county,
+                    "zip":                 zip_code,
+                    "stage":               "auction" if sale_date else "pre-fc",
+                    "property_type":       "single-family",
+                    "assessed_value":      None,
+                    "asking_price":        None,
+                    "sale_date":           sale_date,
+                    "sale_time":           sale_time,
+                    "sale_location":       courthouse_location(county_key) if county_key else "",
+                    "days_until_sale":     None,
+                    "notice_date":         date.today().isoformat(),
                     "days_in_foreclosure": 0,
-                    "lender":               lender,
-                    "trustee":              trustee,
-                    "original_principal":   original_principal,
-                    "deposit":              deposit,
-                    "deed_of_trust_date":   deed_of_trust_date,
-                    "notice_text":          re.sub(r'\s+', ' ', text).strip()[:5000],
-                    "source":               "column_us",
-                    "source_url":           notice_url or url,
+                    "lender":              lender,
+                    "trustee":             trustee,
+                    "original_principal":  original_principal,
+                    "deposit":             deposit,
+                    "deed_of_trust_date":  deed_of_trust_date,
+                    "notice_text":         re.sub(r'\s+', ' ', text).strip()[:5000],
+                    "source":              source_tag,
+                    "source_url":          notice_url or portal_url,
                 })
 
             log.info(
-                f"  Column.us summary: {kept} added | "
-                f"{skipped_addr} skipped (no address parsed) | "
+                f"  Column.us [{source_tag}] summary: "
+                f"{kept} added | {skipped_addr} skipped (no address) | "
                 f"{total_blocks} total blocks"
             )
+
+            # ── Post-fetch date filter (enforces LOOKBACK_DAYS regardless of
+            #    whether Column.us honoured the startDate URL param) ──────────
+            # Keep: listings with no sale_date (unknown date — include them so
+            #       we don't silently drop valid notices that lack a parsed date)
+            # Drop: listings where sale_date is confirmed earlier than SINCE_DATE
+            since_iso = cfg.SINCE_DATE.isoformat()
+            before_filter = len(listings)
+            listings = [
+                l for l in listings
+                if not l.get("sale_date") or l["sale_date"] >= since_iso
+            ]
+            dropped = before_filter - len(listings)
+            if dropped:
+                log.info(
+                    f"  Column.us [{source_tag}]: dropped {dropped} listing(s) "
+                    f"with sale_date before {since_iso} ({cfg.LOOKBACK_DAYS}-day window)"
+                )
+
             browser.close()
 
     except Exception as e:
-        log.error(f"  Column.us error: {e}", exc_info=True)
+        log.error(f"  Column.us [{source_tag}] error: {e}", exc_info=True)
 
-    log.info(f"  Column.us: found {len(listings)} listings")
+    log.info(f"  Column.us [{source_tag}]: returning {len(listings)} listing(s)")
     return listings
+
+
+# -- 5a: Fredericksburg Free-Lance Star --------------------------------------
+
+def scrape_column_us() -> list:
+    """
+    Group (existing): Fredericksburg Free-Lance Star public notices.
+    URL: https://fredericksburg.column.us/search?noticeType=Foreclosure+Sale
+
+    The newspaper header Column.us repeats before each card is "FREE LANCE-STAR"
+    (without the city prefix, which only appears once at the page top).
+    Covers: Fredericksburg City, Stafford, Spotsylvania, Caroline, King George.
+    """
+    return _scrape_column_us_portal(
+        portal_url       = "https://fredericksburg.column.us/search?noticeType=Foreclosure+Sale",
+        newspaper_header = "FREE LANCE-STAR",
+        source_tag       = "column_us",
+    )
+
+
+# -- 5b: Richmond Times-Dispatch (Group 1) -----------------------------------
+
+def scrape_column_us_richmond() -> list:
+    """
+    Group 1: Richmond Times-Dispatch public notices via Column.us.
+    URL: https://richmond.column.us/search?noticeType=Foreclosure+Sale
+
+    Covers: Richmond City, Chesterfield, Henrico — three target counties
+    whose notices are less reliably captured by the Fredericksburg portal.
+
+    The per-card newspaper header Column.us uses is "RICHMOND TIMES-DISPATCH".
+    To tune this source independently (header text, wait time, URL), edit
+    only this function.
+    """
+    return _scrape_column_us_portal(
+        portal_url       = "https://richmond.column.us/search?noticeType=Foreclosure+Sale",
+        newspaper_header = "RICHMOND TIMES-DISPATCH",
+        source_tag       = "column_us_richmond",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -1210,7 +1528,7 @@ def scrape_column_us() -> list:
 # ---------------------------------------------------------------------------
 
 def scrape_homesteps() -> list:
-    """REMOVED — not called."""
+    """REMOVED 2026-05 — full implementation in _archived_sources.py."""
     return []
     """
     Scrapes Freddie Mac HomeSteps REO listings for Virginia.
@@ -1342,6 +1660,872 @@ def scrape_homesteps() -> list:
     return listings
 
 
+# -- 5d: Virginia Gazette / Williamsburg (Group 6) ---------------------------
+
+def scrape_column_us_williamsburg() -> list:
+    """
+    Group 6: Virginia Gazette public notices via Column.us.
+    URL: https://vagazette.column.us/search?noticeType=Foreclosure+Sale
+
+    Correct subdomain is vagazette.column.us (not williamsburg.column.us — that
+    returns 404).  The Virginia Gazette serves the Williamsburg / James City /
+    York / New Kent area.  It is not a primary coverage area for our 12 target
+    counties, but attorneys sometimes publish Hanover, King George, and Caroline
+    notices here in addition to PNV.  The county filter in the parent scraper
+    drops any listing outside the 12 target counties.
+
+    The per-card newspaper header Column.us uses is "VIRGINIA GAZETTE".
+    To tune this source independently, edit only this function.
+    """
+    return _scrape_column_us_portal(
+        portal_url       = "https://vagazette.column.us/search?noticeType=Foreclosure+Sale",
+        newspaper_header = "VIRGINIA GAZETTE",
+        source_tag       = "column_us_williamsburg",
+    )
+
+
+# -- 5e: Northern Virginia Daily (Group 7) ------------------------------------
+
+def scrape_column_us_nvdaily() -> list:
+    """
+    Group 7: Northern Virginia Daily public notices.
+
+    DISABLED (ENABLE_COLUMN_NVDAILY=False in config.py) — two reasons:
+      1. nvdaily.column.us returns 404.  NV Daily does not use a Column.us
+         subdomain; their public notices live at nvdaily.com/classifieds/community/
+         (a different CMS, not Playwright-compatible without more work).
+      2. NV Daily's primary coverage counties (Warren, Shenandoah, Frederick,
+         Clarke) are outside our 12 target counties.  Fauquier and Culpeper are
+         adjacent but rarely appear in NV Daily; PNV already covers them
+         statewide via the §55.1-321 mandate.
+
+    To re-enable: implement a BeautifulSoup scraper for
+    https://www.nvdaily.com/classifieds/community/?category=Public+Notices
+    and update ENABLE_COLUMN_NVDAILY in config.py.
+    """
+    # NV Daily does not have a Column.us subdomain — return empty rather than
+    # hitting a 404 URL.  The ENABLE flag in config.py keeps this from being
+    # called at all, but guard here in case it's called directly.
+    return []
+
+
+# ---------------------------------------------------------------------------
+# Source 7: LOGS Legal Group / PFCVA — Virginia Sales Report  (Group 2)
+# ---------------------------------------------------------------------------
+
+def _parse_date_flexible(text: str) -> str | None:
+    """
+    Try multiple date formats found on the LOGS sales report page and return
+    an ISO date string (YYYY-MM-DD), or None if no date is found.
+
+    Handles: "June 3, 2026", "Jun 3, 2026", "6/3/2026", "06/03/2026",
+             "2026-06-03", "June 3 2026" (no comma).
+    """
+    if not text:
+        return None
+    text = text.strip()
+    for fmt in (
+        "%B %d, %Y", "%B %d %Y",
+        "%b %d, %Y",  "%b %d %Y",
+        "%m/%d/%Y",   "%m-%d-%Y",
+        "%Y-%m-%d",
+    ):
+        try:
+            return datetime.strptime(text, fmt).date().isoformat()
+        except ValueError:
+            continue
+    # Try extracting a date fragment from a longer string and retry
+    m = re.search(
+        r'(\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|'
+        r'Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|'
+        r'Dec(?:ember)?)\s+\d{1,2},?\s+\d{4}|\d{1,2}/\d{1,2}/\d{4}|\d{4}-\d{2}-\d{2})',
+        text, re.I,
+    )
+    if m:
+        return _parse_date_flexible(m.group(1))
+    return None
+
+
+def scrape_logs_legal() -> list:
+    """
+    Group 2: LOGS Legal Group / Professional Foreclosure Corporation of Virginia (PFCVA).
+
+    URL: https://www.logs.com/va-sales-report.html
+
+    DISABLED 2026-05: LOGS Legal migrated their sales report to a PowerBI embedded
+    iframe.  BeautifulSoup cannot execute the PowerBI JavaScript or fetch data from
+    the iframe's API endpoints, so no structured listing data is available without
+    Playwright + PowerBI reverse-engineering.  The scraper is disabled until a
+    replacement approach is implemented.
+
+    To re-enable: set ENABLE_LOGS_LEGAL = True in config.py AND replace this
+    function body with a Playwright-based approach that loads the PowerBI iframe.
+    """
+    log.error(
+        "  LOGS Legal: DISABLED — site now uses a PowerBI embedded iframe "
+        "(detected 2026-05-15). BS4 HTML table scraping returns 0 results. "
+        "Set ENABLE_LOGS_LEGAL=False in config.py to suppress this message."
+    )
+    return []
+    listings = []
+    url      = "https://www.logs.com/va-sales-report.html"
+    log.info(f"  LOGS Legal: {url}")
+
+    TARGET_COUNTY_KEYS = {
+        "fredericksburg", "stafford", "spotsylvania", "caroline",
+        "fauquier", "culpeper", "king george", "hanover",
+        "richmond", "chesterfield", "henrico", "louisa",
+    }
+
+    COUNTY_DISPLAY_MAP = {
+        "fredericksburg": "Fredericksburg City",
+        "stafford":       "Stafford",
+        "spotsylvania":   "Spotsylvania",
+        "caroline":       "Caroline",
+        "fauquier":       "Fauquier",
+        "culpeper":       "Culpeper",
+        "king george":    "King George",
+        "hanover":        "Hanover",
+        "richmond":       "Richmond City",
+        "chesterfield":   "Chesterfield",
+        "henrico":        "Henrico",
+        "louisa":         "Louisa",
+    }
+
+    def _row_county(cells_lower: list[str]) -> str | None:
+        """Return the first target county key found anywhere in a row's cell text."""
+        joined = " ".join(cells_lower)
+        for key in TARGET_COUNTY_KEYS:
+            if key in joined:
+                return key
+        return None
+
+    def _col_map(headers: list[str]) -> dict:
+        """Map logical field names to column indices from a header row."""
+        idx: dict = {}
+        for i, h in enumerate(headers):
+            h = h.lower()
+            if any(k in h for k in ("address", "property", "location", "sale site")):
+                idx.setdefault("address", i)
+            if any(k in h for k in ("county", "jurisdiction", "city", "locality")):
+                idx.setdefault("county", i)
+            if "date" in h and "time" not in h:
+                idx.setdefault("date", i)
+            if "time" in h:
+                idx.setdefault("time", i)
+            if any(k in h for k in ("bid", "price", "amount", "opening")):
+                idx.setdefault("price", i)
+        return idx
+
+    try:
+        resp = requests.get(url, headers=HEADERS, timeout=25)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "lxml")
+
+        processed_rows = 0
+
+        for table in soup.find_all("table"):
+            rows = table.find_all("tr")
+            if len(rows) < 2:
+                continue
+
+            # Detect header row
+            first_cells = [
+                c.get_text(separator=" ", strip=True)
+                for c in rows[0].find_all(["th", "td"])
+            ]
+            col_idx = _col_map(first_cells)
+
+            # Skip tables with no recognisable address or date column
+            if not col_idx.get("address") and not col_idx.get("date"):
+                continue
+
+            for row in rows[1:]:
+                cells      = row.find_all(["td", "th"])
+                cell_texts = [c.get_text(separator=" ", strip=True) for c in cells]
+                if len(cell_texts) < 2:
+                    continue
+
+                cells_lower = [t.lower() for t in cell_texts]
+                county_key  = _row_county(cells_lower)
+                if not county_key:
+                    continue
+
+                processed_rows += 1
+
+                # ── Address ───────────────────────────────────────────────
+                if "address" in col_idx and col_idx["address"] < len(cell_texts):
+                    addr_raw = cell_texts[col_idx["address"]]
+                else:
+                    # Heuristic: pick the cell most likely to hold a street address
+                    addr_raw = next(
+                        (t for t in cell_texts if re.search(r'\d+\s+[A-Za-z]', t)),
+                        " ".join(cell_texts),
+                    )
+
+                # ── Sale date ─────────────────────────────────────────────
+                if "date" in col_idx and col_idx["date"] < len(cell_texts):
+                    sale_date = _parse_date_flexible(cell_texts[col_idx["date"]])
+                else:
+                    sale_date = next(
+                        filter(None, (_parse_date_flexible(t) for t in cell_texts)),
+                        None,
+                    )
+
+                # ── Sale time ─────────────────────────────────────────────
+                if "time" in col_idx and col_idx["time"] < len(cell_texts):
+                    sale_time = cell_texts[col_idx["time"]]
+                else:
+                    tm = next(
+                        (re.search(r'\d{1,2}:\d{2}\s*(?:AM|PM)', t, re.I) for t in cell_texts if re.search(r'\d{1,2}:\d{2}\s*(?:AM|PM)', t, re.I)),
+                        None,
+                    )
+                    sale_time = tm.group(0).upper() if tm else None
+
+                county_display_name = COUNTY_DISPLAY_MAP.get(county_key, county_key.title())
+                addr_parsed, street, city, zip_code = extract_address(addr_raw)
+                if not addr_parsed:
+                    addr_parsed = addr_raw
+                    street      = addr_raw
+
+                full_row_text = " | ".join(cell_texts)
+
+                listings.append({
+                    "id":                  make_id(addr_parsed, sale_date),
+                    "address":             addr_parsed,
+                    "city":                city.title() if city else "",
+                    "county":              county_display_name,
+                    "zip":                 zip_code,
+                    "stage":               "auction" if sale_date else "pre-fc",
+                    "property_type":       "single-family",
+                    "assessed_value":      None,
+                    "asking_price":        None,
+                    "sale_date":           sale_date,
+                    "sale_time":           sale_time,
+                    "sale_location":       courthouse_location(county_key),
+                    "days_until_sale":     None,
+                    "notice_date":         date.today().isoformat(),
+                    "days_in_foreclosure": 0,
+                    "lender":              None,
+                    "trustee":             "LOGS Legal Group / PFCVA",
+                    "notice_text":         full_row_text[:5000],
+                    "source":              "logs_legal",
+                    "source_url":          url,
+                })
+                log.info(
+                    f"  LOGS Legal: ADDED — {addr_parsed} | "
+                    f"county: {county_display_name} | sale: {sale_date or 'TBD'}"
+                )
+
+        # ── Fallback: no structured table found — text-based scan ─────────
+        if not processed_rows:
+            log.info("  LOGS Legal: no structured table rows found — trying text scan fallback")
+            page_text = soup.get_text(separator="\n")
+            for line in page_text.splitlines():
+                line_lower = line.lower()
+                county_key = next(
+                    (k for k in TARGET_COUNTY_KEYS if k in line_lower), None
+                )
+                if not county_key:
+                    continue
+                addr_parsed, street, city, zip_code = extract_address(line)
+                if not addr_parsed:
+                    continue
+                sale_date = _parse_date_flexible(line)
+                county_display_name = COUNTY_DISPLAY_MAP.get(county_key, county_key.title())
+                listings.append({
+                    "id":                  make_id(addr_parsed, sale_date),
+                    "address":             addr_parsed,
+                    "city":                city.title() if city else "",
+                    "county":              county_display_name,
+                    "zip":                 zip_code,
+                    "stage":               "auction" if sale_date else "pre-fc",
+                    "property_type":       "single-family",
+                    "assessed_value":      None,
+                    "asking_price":        None,
+                    "sale_date":           sale_date,
+                    "sale_time":           None,
+                    "sale_location":       courthouse_location(county_key),
+                    "days_until_sale":     None,
+                    "notice_date":         date.today().isoformat(),
+                    "days_in_foreclosure": 0,
+                    "lender":              None,
+                    "trustee":             "LOGS Legal Group / PFCVA",
+                    "notice_text":         line[:5000],
+                    "source":              "logs_legal",
+                    "source_url":          url,
+                })
+                log.info(
+                    f"  LOGS Legal (text-scan): ADDED — {addr_parsed} | "
+                    f"county: {county_display_name} | sale: {sale_date or 'TBD'}"
+                )
+
+    except Exception as e:
+        log.error(f"  LOGS Legal error: {e}", exc_info=True)
+
+    # Post-fetch date filter — drop listings whose sale has already passed
+    # the LOOKBACK_DAYS window.  Listings with no parsed sale_date are kept
+    # (unknown date is safer to include than silently drop).
+    since_iso = cfg.SINCE_DATE.isoformat()
+    before_filter = len(listings)
+    listings = [
+        l for l in listings
+        if not l.get("sale_date") or l["sale_date"] >= since_iso
+    ]
+    dropped = before_filter - len(listings)
+    if dropped:
+        log.info(
+            f"  LOGS Legal: dropped {dropped} listing(s) with sale_date "
+            f"before {since_iso} ({cfg.LOOKBACK_DAYS}-day window)"
+        )
+
+    log.info(f"  LOGS Legal: found {len(listings)} target-county listing(s)")
+    return listings
+
+
+# ---------------------------------------------------------------------------
+# Source 8: Samuel I. White, P.C. — Virginia Sales Report  (Group 8)
+# ---------------------------------------------------------------------------
+
+def scrape_siwpc() -> list:
+    """
+    Group 8: Samuel I. White, P.C. (SIWPC) — upcoming trustee sales.
+
+    URL: https://www.siwpc.com/sales-report
+
+    SIWPC is one of Virginia's highest-volume foreclosure law firms, handling
+    trustee sales across the entire state.  Their sales report is server-rendered
+    HTML (no JavaScript required) with a structured table of upcoming auctions.
+
+    Strategy:
+      1. Fetch the page with requests + BeautifulSoup.
+      2. Parse the main sales table — columns typically include Property Address,
+         County/City, Sale Date, Sale Time, and Opening Bid.
+      3. Filter rows to target counties.
+      4. Fallback: if no structured table matches, text-scan paragraphs for
+         address + county + date patterns.
+
+    Note: SIWPC often lists sales 2–4 weeks before they appear on PNV, giving
+    early warning for high-volume counties like Henrico and Chesterfield.
+    """
+    listings = []
+    url      = "https://www.siwpc.com/sales-report"
+    log.info(f"  SIWPC: {url}")
+
+    TARGET_COUNTY_KEYS = {
+        "fredericksburg", "stafford", "spotsylvania", "caroline",
+        "fauquier", "culpeper", "king george", "hanover",
+        "richmond", "chesterfield", "henrico", "louisa",
+    }
+
+    COUNTY_DISPLAY_MAP = {
+        "fredericksburg": "Fredericksburg City",
+        "stafford":       "Stafford",
+        "spotsylvania":   "Spotsylvania",
+        "caroline":       "Caroline",
+        "fauquier":       "Fauquier",
+        "culpeper":       "Culpeper",
+        "king george":    "King George",
+        "hanover":        "Hanover",
+        "richmond":       "Richmond City",
+        "chesterfield":   "Chesterfield",
+        "henrico":        "Henrico",
+        "louisa":         "Louisa",
+    }
+
+    def _row_county(cells_lower: list[str]) -> str | None:
+        joined = " ".join(cells_lower)
+        for key in TARGET_COUNTY_KEYS:
+            if key in joined:
+                return key
+        return None
+
+    def _col_map(headers: list[str]) -> dict:
+        idx: dict = {}
+        for i, h in enumerate(headers):
+            h_l = h.lower()
+            if any(k in h_l for k in ("address", "property", "location", "sale site", "street")):
+                idx.setdefault("address", i)
+            if any(k in h_l for k in ("county", "jurisdiction", "city", "locality")):
+                idx.setdefault("county", i)
+            if "date" in h_l and "time" not in h_l:
+                idx.setdefault("date", i)
+            if "time" in h_l:
+                idx.setdefault("time", i)
+            if any(k in h_l for k in ("bid", "price", "amount", "opening")):
+                idx.setdefault("price", i)
+        return idx
+
+    def _parse_date_siwpc(text: str) -> str | None:
+        """Try multiple date formats used on the SIWPC sales report."""
+        if not text:
+            return None
+        text = text.strip()
+        for fmt in ("%B %d, %Y", "%B %d %Y", "%b %d, %Y", "%b %d %Y",
+                    "%m/%d/%Y", "%m-%d-%Y", "%Y-%m-%d"):
+            try:
+                return datetime.strptime(text, fmt).date().isoformat()
+            except ValueError:
+                continue
+        # Extract date fragment from longer string
+        m = re.search(
+            r'(\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|'
+            r'Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|'
+            r'Dec(?:ember)?)\s+\d{1,2},?\s+\d{4}|\d{1,2}/\d{1,2}/\d{4}|\d{4}-\d{2}-\d{2})',
+            text, re.I,
+        )
+        if m:
+            return _parse_date_siwpc(m.group(1))
+        return None
+
+    try:
+        import urllib3
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        # verify=False: siwpc.com is served with a *.bizland.com wildcard cert that
+        # doesn't cover the siwpc.com hostname — SSL handshake fails without this.
+        resp = requests.get(url, headers=HEADERS, timeout=25, verify=False)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "lxml")
+
+        processed_rows = 0
+
+        for table in soup.find_all("table"):
+            rows = table.find_all("tr")
+            if len(rows) < 2:
+                continue
+
+            first_cells = [
+                c.get_text(separator=" ", strip=True)
+                for c in rows[0].find_all(["th", "td"])
+            ]
+            col_idx = _col_map(first_cells)
+
+            if not col_idx.get("address") and not col_idx.get("date"):
+                continue
+
+            for row in rows[1:]:
+                cells      = row.find_all(["td", "th"])
+                cell_texts = [c.get_text(separator=" ", strip=True) for c in cells]
+                if len(cell_texts) < 2:
+                    continue
+
+                cells_lower = [t.lower() for t in cell_texts]
+                county_key  = _row_county(cells_lower)
+                if not county_key:
+                    continue
+
+                processed_rows += 1
+
+                addr_raw = (
+                    cell_texts[col_idx["address"]]
+                    if "address" in col_idx and col_idx["address"] < len(cell_texts)
+                    else next(
+                        (t for t in cell_texts if re.search(r'\d+\s+[A-Za-z]', t)),
+                        " ".join(cell_texts)
+                    )
+                )
+
+                sale_date = (
+                    _parse_date_siwpc(cell_texts[col_idx["date"]])
+                    if "date" in col_idx and col_idx["date"] < len(cell_texts)
+                    else next(
+                        filter(None, (_parse_date_siwpc(t) for t in cell_texts)), None
+                    )
+                )
+
+                sale_time = None
+                if "time" in col_idx and col_idx["time"] < len(cell_texts):
+                    sale_time = cell_texts[col_idx["time"]]
+                else:
+                    tm = next(
+                        (re.search(r'\d{1,2}:\d{2}\s*(?:AM|PM)', t, re.I)
+                         for t in cell_texts if re.search(r'\d{1,2}:\d{2}\s*(?:AM|PM)', t, re.I)),
+                        None,
+                    )
+                    sale_time = tm.group(0).upper() if tm else None
+
+                asking_price = None
+                if "price" in col_idx and col_idx["price"] < len(cell_texts):
+                    pm = re.search(r'\$([\d,]+)', cell_texts[col_idx["price"]])
+                    if pm:
+                        asking_price = int(pm.group(1).replace(",", ""))
+
+                county_display_name = COUNTY_DISPLAY_MAP.get(county_key, county_key.title())
+                addr_parsed, street, city, zip_code = extract_address(addr_raw)
+                if not addr_parsed:
+                    addr_parsed = addr_raw
+                    street      = addr_raw
+
+                full_row_text = " | ".join(cell_texts)
+                listings.append({
+                    "id":           make_id(addr_parsed, sale_date),
+                    "address":      addr_parsed,
+                    "city":         city.title() if city else "",
+                    "county":       county_display_name,
+                    "zip":          zip_code,
+                    "stage":        "auction" if sale_date else "pre-fc",
+                    "asking_price": asking_price,
+                    "sale_date":    sale_date,
+                    "sale_time":    sale_time,
+                    "sale_location":courthouse_location(county_key),
+                    "lender":       None,
+                    "trustee":      "Samuel I. White, P.C.",
+                    "notice_text":  full_row_text[:5000],
+                    "source":       "siwpc",
+                    "source_url":   url,
+                })
+                log.info(
+                    f"  SIWPC: ADDED — {addr_parsed} | "
+                    f"county: {county_display_name} | sale: {sale_date or 'TBD'}"
+                )
+
+        # Text-scan fallback if no structured table parsed
+        if not processed_rows:
+            log.info("  SIWPC: no table rows found — trying text-scan fallback")
+            page_text = soup.get_text(separator="\n")
+            for line in page_text.splitlines():
+                line_lower = line.lower()
+                county_key = next(
+                    (k for k in TARGET_COUNTY_KEYS if k in line_lower), None
+                )
+                if not county_key:
+                    continue
+                addr_parsed, street, city, zip_code = extract_address(line)
+                if not addr_parsed:
+                    continue
+                sale_date = _parse_date_siwpc(line)
+                county_display_name = COUNTY_DISPLAY_MAP.get(county_key, county_key.title())
+                listings.append({
+                    "id":           make_id(addr_parsed, sale_date),
+                    "address":      addr_parsed,
+                    "city":         city.title() if city else "",
+                    "county":       county_display_name,
+                    "zip":          zip_code,
+                    "stage":        "auction" if sale_date else "pre-fc",
+                    "sale_date":    sale_date,
+                    "sale_time":    None,
+                    "sale_location":courthouse_location(county_key),
+                    "trustee":      "Samuel I. White, P.C.",
+                    "notice_text":  line[:5000],
+                    "source":       "siwpc",
+                    "source_url":   url,
+                })
+
+    except Exception as e:
+        log.error(f"  SIWPC error: {e}", exc_info=True)
+
+    # Post-fetch date filter (LOOKBACK_DAYS window)
+    since_iso = cfg.SINCE_DATE.isoformat()
+    before = len(listings)
+    listings = [
+        l for l in listings
+        if not l.get("sale_date") or l["sale_date"] >= since_iso
+    ]
+    if before - len(listings):
+        log.info(f"  SIWPC: dropped {before - len(listings)} listing(s) outside {cfg.LOOKBACK_DAYS}-day window")
+
+    log.info(f"  SIWPC: found {len(listings)} target-county listing(s)")
+    return listings
+
+
+# -- 5c: Charlottesville Daily Progress (Group 4) ----------------------------
+
+def scrape_column_us_daily_progress() -> list:
+    """
+    Group 4: Charlottesville Daily Progress public notices via Column.us.
+    URL: https://dailyprogress.column.us/search?noticeType=Foreclosure+Sale
+
+    Supplements coverage for Louisa and Culpeper counties, which are in the
+    Daily Progress circulation area but may appear less often in the
+    Fredericksburg or Richmond portals.
+
+    The per-card newspaper header Column.us uses is "DAILY PROGRESS".
+    To tune this source independently (header text, wait time, URL), edit
+    only this function.
+    """
+    return _scrape_column_us_portal(
+        portal_url       = "https://dailyprogress.column.us/search?noticeType=Foreclosure+Sale",
+        newspaper_header = "DAILY PROGRESS",
+        source_tag       = "column_us_dailyprogress",
+    )
+
+
+# ---------------------------------------------------------------------------
+# Source 9: Virginia eCourts — Circuit Court Lis Pendens / Trustee Filings
+# (Group 9 — earliest possible signal, pre-PNV)
+# ---------------------------------------------------------------------------
+
+def scrape_va_courts() -> list:
+    """
+    Group 9: Virginia eCourts Circuit Court Case Information System.
+
+    URL base: https://eapps.courts.state.va.us/circuitSearch/
+
+    Searches each target county's circuit court for recently filed civil cases
+    with "Trustee" or "Foreclosure" in the party or case description.  These
+    filings typically precede PNV publication by 2–6 weeks, giving the earliest
+    possible signal that a property is entering foreclosure.
+
+    Case type searched: Civil — Deed of Trust / Lis Pendens filings.
+
+    Data returned:
+      - Case number and filing date
+      - Plaintiff (usually the lender / trustee firm)
+      - Defendant (the property owner — matches owner_name later)
+      - Address (extracted from case description when available)
+
+    Limitations:
+      - The eCourts portal is rate-limited; each county is fetched with a
+        CENSUS_DELAY_SECONDS pause to stay polite.
+      - Not all counties have migrated to eCourts — Spotsylvania, Caroline,
+        King George, and Louisa still use older Clerk systems.  Those counties
+        fall back to scraping the individual clerk portal search pages.
+      - Address extraction from case descriptions is best-effort; many filings
+        only contain party names.  The GIS backfill pass (Pass 6) will attempt
+        to find the property address from owner name + county.
+      - Stage is always set to "pre-fc" since no auction date is known yet;
+        backfill Pass 1 will attempt to find a date from the linked PNV notice.
+
+    To tune: adjust COURT_FIPS or search parameters per county.
+    Set ENABLE_VA_COURTS=False in config.py to pause without touching this code.
+    """
+    listings = []
+
+    # Virginia FIPS codes and court identifiers for each target county.
+    # eCourts uses a "courtId" parameter in the search URL.
+    # Format: (court_id, display_name, county_key)
+    COURT_MAP: list[tuple[str, str, str]] = [
+        ("0630",  "Fredericksburg City",  "fredericksburg"),
+        ("1790",  "Stafford",             "stafford"),
+        ("1770",  "Spotsylvania",         "spotsylvania"),
+        ("0190",  "Caroline",             "caroline"),
+        ("0610",  "Fauquier",             "fauquier"),
+        ("0220",  "Culpeper",             "culpeper"),
+        ("0990",  "King George",          "king george"),
+        ("0840",  "Hanover",              "hanover"),
+        ("1600",  "Richmond City",        "richmond"),
+        ("0200",  "Chesterfield",         "chesterfield"),
+        ("0870",  "Henrico",              "henrico"),
+        ("1040",  "Louisa",               "louisa"),
+    ]
+
+    BASE_URL = "https://eapps.courts.state.va.us/circuitSearch/courts/{court_id}/cases/search"
+
+    # Search terms that identify trustee sale / lis pendens filings
+    SEARCH_TERMS = ["trustee", "deed of trust", "lis pendens", "foreclosure"]
+
+    for court_id, display_name, county_key in COURT_MAP:
+        log.info(f"  VA Courts: querying {display_name} Circuit Court (id={court_id})")
+
+        for term in SEARCH_TERMS[:1]:  # start with "trustee" — broadest match
+            try:
+                url = BASE_URL.format(court_id=court_id)
+                params = {
+                    "searchTerm":     term,
+                    "caseType":       "civil",
+                    "startDate":      cfg.SINCE_DATE.strftime("%m/%d/%Y"),
+                    "endDate":        cfg.TODAY.strftime("%m/%d/%Y"),
+                    "resultCount":    50,
+                    "sortBy":         "filedDate",
+                    "sortOrder":      "desc",
+                }
+                resp = requests.get(
+                    url, params=params, headers={
+                        **HEADERS,
+                        "Accept":  "application/json, text/html, */*",
+                        "Referer": "https://eapps.courts.state.va.us/circuitSearch/",
+                    },
+                    timeout=20,
+                )
+
+                # eCourts returns either JSON (if Accept header works) or HTML
+                if "application/json" in resp.headers.get("Content-Type", ""):
+                    cases = _parse_ecourts_json(resp.json(), display_name, county_key, court_id)
+                else:
+                    cases = _parse_ecourts_html(resp.text, display_name, county_key, court_id)
+
+                listings.extend(cases)
+                if cases:
+                    log.info(f"  VA Courts: {len(cases)} filing(s) from {display_name}")
+                break   # found results with first term — skip remaining terms
+
+            except requests.exceptions.ConnectionError:
+                log.debug(f"  VA Courts: {display_name} — connection error (portal may be down)")
+            except Exception as e:
+                log.debug(f"  VA Courts: {display_name} error — {e}")
+
+        sleep(cfg.CENSUS_DELAY_SECONDS)   # polite rate limit
+
+    since_iso = cfg.SINCE_DATE.isoformat()
+    before = len(listings)
+    listings = [
+        l for l in listings
+        if not l.get("sale_date") or l["sale_date"] >= since_iso
+    ]
+    log.info(f"  VA Courts: found {len(listings)} lis pendens / trustee filing(s) across all counties")
+    return listings
+
+
+def _parse_ecourts_json(data: dict, display_name: str, county_key: str, court_id: str) -> list:
+    """Parse eCourts JSON response into listing dicts."""
+    listings = []
+    cases = (
+        data.get("cases") or
+        data.get("results") or
+        data.get("data") or
+        []
+    )
+    if isinstance(cases, dict):
+        cases = cases.get("cases") or []
+
+    for case in cases:
+        case_num     = case.get("caseNumber") or case.get("case_number") or ""
+        filed_date   = case.get("filedDate") or case.get("filed_date") or ""
+        plaintiff    = case.get("plaintiff") or case.get("plaintiffs") or ""
+        defendant    = case.get("defendant") or case.get("defendants") or ""
+        description  = case.get("description") or case.get("caseDescription") or ""
+
+        # Try to extract a property address from the case description
+        addr_parsed, street, city, zip_code = extract_address(
+            f"{description} {plaintiff} {defendant}"
+        )
+
+        # Derive filing date as ISO string
+        filing_iso = None
+        if filed_date:
+            for fmt in ("%m/%d/%Y", "%Y-%m-%d", "%m-%d-%Y"):
+                try:
+                    filing_iso = datetime.strptime(str(filed_date)[:10], fmt).date().isoformat()
+                    break
+                except ValueError:
+                    continue
+
+        trustee_name = None
+        if isinstance(plaintiff, str):
+            trustee_name = plaintiff[:80]
+
+        owner_name = None
+        if isinstance(defendant, str):
+            owner_name = defendant[:80]
+
+        case_url = (
+            f"https://eapps.courts.state.va.us/circuitSearch/courts/{court_id}/cases/{case_num}"
+            if case_num else None
+        )
+
+        notice_text = f"Case {case_num} | Filed: {filed_date} | {description}"
+
+        listings.append({
+            "id":            make_id(addr_parsed or f"{county_key}-{case_num}", filing_iso),
+            "address":       addr_parsed or f"See case {case_num}",
+            "city":          city.title() if city else county_city(county_key),
+            "county":        display_name,
+            "zip":           zip_code,
+            "stage":         "pre-fc",
+            "sale_date":     None,   # not yet scheduled — backfill will try to find it
+            "sale_time":     None,
+            "sale_location": None,
+            "owner_name":    owner_name,
+            "trustee":       trustee_name,
+            "notice_text":   notice_text[:5000],
+            "source":        "va_courts",
+            "source_url":    case_url or f"https://eapps.courts.state.va.us/circuitSearch/",
+        })
+
+    return listings
+
+
+def _parse_ecourts_html(html: str, display_name: str, county_key: str, court_id: str) -> list:
+    """
+    Fallback HTML parser for eCourts responses.
+    The portal sometimes returns HTML tables instead of JSON.
+    """
+    listings = []
+    soup = BeautifulSoup(html, "lxml")
+
+    # Look for a results table — eCourts uses class "case-results" or similar
+    table = (
+        soup.find("table", class_=re.compile(r"case.?result|search.?result", re.I)) or
+        soup.find("table", id=re.compile(r"case.?result|search.?result", re.I)) or
+        soup.find("table")
+    )
+    if not table:
+        return listings
+
+    rows = table.find_all("tr")
+    if len(rows) < 2:
+        return listings
+
+    # Parse header row to find column positions
+    header_cells = [c.get_text(separator=" ", strip=True).lower()
+                    for c in rows[0].find_all(["th", "td"])]
+    col: dict[str, int] = {}
+    for i, h in enumerate(header_cells):
+        if "case" in h and "number" in h:
+            col.setdefault("case_num", i)
+        if "filed" in h or "date" in h:
+            col.setdefault("date", i)
+        if "plaintiff" in h or "lender" in h or "trustee" in h:
+            col.setdefault("plaintiff", i)
+        if "defendant" in h or "owner" in h or "borrower" in h:
+            col.setdefault("defendant", i)
+        if "description" in h or "type" in h:
+            col.setdefault("description", i)
+
+    for row in rows[1:]:
+        cells = [c.get_text(separator=" ", strip=True) for c in row.find_all(["td", "th"])]
+        if len(cells) < 2:
+            continue
+
+        case_num    = cells[col["case_num"]]  if "case_num"   in col and col["case_num"]  < len(cells) else ""
+        filed_date  = cells[col["date"]]      if "date"       in col and col["date"]       < len(cells) else ""
+        plaintiff   = cells[col["plaintiff"]] if "plaintiff"  in col and col["plaintiff"]  < len(cells) else ""
+        defendant   = cells[col["defendant"]] if "defendant"  in col and col["defendant"]  < len(cells) else ""
+        description = cells[col["description"]] if "description" in col and col["description"] < len(cells) else ""
+
+        # Only keep rows that look like trustee / foreclosure filings
+        combined = f"{plaintiff} {defendant} {description}".lower()
+        if not any(kw in combined for kw in ("trustee", "deed of trust", "foreclos", "lis pendens")):
+            continue
+
+        addr_parsed, street, city, zip_code = extract_address(
+            f"{description} {plaintiff} {defendant}"
+        )
+
+        filing_iso = None
+        if filed_date:
+            for fmt in ("%m/%d/%Y", "%Y-%m-%d"):
+                try:
+                    filing_iso = datetime.strptime(filed_date[:10], fmt).date().isoformat()
+                    break
+                except ValueError:
+                    continue
+
+        case_url = (
+            f"https://eapps.courts.state.va.us/circuitSearch/courts/{court_id}/cases/{case_num}"
+            if case_num else None
+        )
+
+        listings.append({
+            "id":            make_id(addr_parsed or f"{county_key}-{case_num}", filing_iso),
+            "address":       addr_parsed or f"See case {case_num}",
+            "city":          city.title() if city else county_city(county_key),
+            "county":        display_name,
+            "zip":           zip_code,
+            "stage":         "pre-fc",
+            "sale_date":     None,
+            "sale_time":     None,
+            "sale_location": None,
+            "owner_name":    defendant[:80] if defendant else None,
+            "trustee":       plaintiff[:80] if plaintiff else None,
+            "notice_text":   f"Case {case_num} | Filed: {filed_date} | {description}"[:5000],
+            "source":        "va_courts",
+            "source_url":    case_url or "https://eapps.courts.state.va.us/circuitSearch/",
+        })
+
+    return listings
+
+
 # ---------------------------------------------------------------------------
 # Text parsing helpers
 # ---------------------------------------------------------------------------
@@ -1355,7 +2539,7 @@ def parse_address_from_notice(text: str) -> str:
         r"(\d+\s+[\w\s]+(?:Rd|St|Ave|Dr|Ln|Way|Ct|Blvd|Pl|Pike|Hwy|Ter|Cir|Loop)[^,\n]*)",
         text, re.IGNORECASE
     )
-    return match.group(1).strip() if match else text[:80]
+    return match.group(1).strip() if match else None
 
 
 def parse_sale_datetime(text: str):
@@ -1671,6 +2855,21 @@ def extract_address(text: str):
             addr_raw = re.sub(r"\s+", " ", m.group(1)).strip()
 
     if not addr_raw:
+        return None, None, None, None
+
+    # ── Attorney / trustee firm address guard ─────────────────────────────────
+    # Pattern 5 (last resort) can pick up the trustee's office address when it
+    # appears before the property address in the notice text.  The house number
+    # regex matches a VSB bar number (e.g. 77676) or suite number, followed by
+    # the firm name containing LLC / PLLC / LLP / Inc / Corp / Esq / VSB / Suite.
+    # Reject the match and return nothing — the scraper will skip this notice
+    # rather than log a garbled trustee address as the property.
+    _FIRM_INDICATORS = re.compile(
+        r'\b(?:LLC|PLLC|LLP|L\.L\.C|P\.L\.L\.C|P\.C\.|Inc\.|Corp\.|'
+        r'Esq\.?|Suite\s+\d|Ste\.?\s+\d|VSB\s*#?\s*\d{3,6})\b',
+        re.I,
+    )
+    if _FIRM_INDICATORS.search(addr_raw):
         return None, None, None, None
 
     # Parse components from full address
@@ -2470,6 +3669,13 @@ def enrich_with_owner_data(listings: list) -> list:
         if not address or not county:
             continue
 
+        # Skip addresses that don't begin with a house number — these are
+        # garbage entries (e.g. PNV newspaper headers like "Roanoke Times, The …")
+        # that would waste 12–13 s per call waiting for GIS timeout.
+        if not re.match(r'^\d+\s+\S', address):
+            log.debug(f"  Owner skip (no house number): {address!r}")
+            continue
+
         # Normalize county key for GIS registry lookup
         county_key = (
             county.lower()
@@ -2599,16 +3805,113 @@ def deduplicate(listings: list) -> list:
 
 
 def run():
+    """
+    Full pipeline: scrape all active sources → deduplicate → enrich → save.
+
+    Source groups (edit the matching function to tune a specific source):
+      Group 3 (PNV)    — scrape_public_notice_va()       publicnoticevirginia.com
+      Existing         — scrape_column_us()               fredericksburg.column.us
+      Group 1          — scrape_column_us_richmond()      richmond.column.us
+      Group 2          — scrape_logs_legal()              logs.com/va-sales-report.html
+      Group 4          — scrape_column_us_daily_progress() dailyprogress.column.us
+    """
     log.info("Starting Virginia foreclosure scraper…")
     all_listings = []
 
-    # PNV paused — reCAPTCHA blocks notice text; re-enable once solved
-    # log.info("--- PublicNoticeVirginia.com ---")
-    # all_listings.extend(scrape_public_notice_va())
+    log.info(
+        f"Search window: {cfg.LOOKBACK_DAYS} days  "
+        f"({cfg.SINCE_DATE} → {cfg.TODAY})  |  set LOOKBACK_DAYS in scripts/config.py"
+    )
 
-    log.info("--- Column.us (Fredericksburg Free-Lance Star) ---")
-    all_listings.extend(scrape_column_us())
+    # ── Group 3: PublicNoticeVirginia.com (PNV) ───────────────────────────────
+    # Virginia Code §55.1-321 requires all trustee sale notices here — it is
+    # the most complete statewide source.  SINCE_DATE is passed directly to
+    # PNV's "From Date" search field.
+    if cfg.ENABLE_PNV:
+        log.info("--- Group 3: PublicNoticeVirginia.com ---")
+        all_listings.extend(scrape_public_notice_va())
+    else:
+        log.info("--- Group 3: PublicNoticeVirginia.com SKIPPED (ENABLE_PNV=False) ---")
 
+    # ── Existing: Fredericksburg Free-Lance Star (Column.us) ─────────────────
+    if cfg.ENABLE_COLUMN_FXBG:
+        log.info("--- Existing: Column.us — Fredericksburg Free-Lance Star ---")
+        all_listings.extend(scrape_column_us())
+    else:
+        log.info("--- Existing: Fredericksburg Column.us SKIPPED (ENABLE_COLUMN_FXBG=False) ---")
+
+    # ── Group 1: Richmond Times-Dispatch (Column.us) ──────────────────────────
+    # Covers Richmond City, Chesterfield, Henrico.
+    if cfg.ENABLE_COLUMN_RICHMOND:
+        log.info("--- Group 1: Column.us — Richmond Times-Dispatch ---")
+        all_listings.extend(scrape_column_us_richmond())
+    else:
+        log.info("--- Group 1: Richmond Column.us SKIPPED (ENABLE_COLUMN_RICHMOND=False) ---")
+
+    # ── Group 2: LOGS Legal Group / PFCVA ────────────────────────────────────
+    # LOGS handles a large share of VA trustee sales; their sale report can
+    # surface listings before they appear on PNV or Column.us.
+    if cfg.ENABLE_LOGS_LEGAL:
+        log.info("--- Group 2: LOGS Legal Group / PFCVA ---")
+        all_listings.extend(scrape_logs_legal())
+    else:
+        log.info("--- Group 2: LOGS Legal SKIPPED (ENABLE_LOGS_LEGAL=False) ---")
+
+    # ── Group 4: Charlottesville Daily Progress (Column.us) ───────────────────
+    # Supplemental coverage for Louisa and Culpeper counties.
+    if cfg.ENABLE_COLUMN_DAILYPROG:
+        log.info("--- Group 4: Column.us — Charlottesville Daily Progress ---")
+        all_listings.extend(scrape_column_us_daily_progress())
+    else:
+        log.info("--- Group 4: Daily Progress Column.us SKIPPED (ENABLE_COLUMN_DAILYPROG=False) ---")
+
+    # ── Group 5: Auction.com (REO + active trustee pre-sales) ─────────────────
+    # Covers REO bank-owned properties that appear AFTER a trustee sale
+    # completes — not tracked by PNV/Column.us.  Also captures pre-sale
+    # listings published through the Auction.com platform.
+    if cfg.ENABLE_AUCTION_COM:
+        log.info("--- Group 5: Auction.com (REO + trustee pre-sales) ---")
+        all_listings.extend(scrape_auction_com())
+    else:
+        log.info("--- Group 5: Auction.com SKIPPED (ENABLE_AUCTION_COM=False) ---")
+
+    # ── Group 6: Virginia Gazette / Williamsburg (Column.us) ──────────────────
+    # Picks up notices from Hanover, Caroline, and King George that attorneys
+    # also publish in the Williamsburg area paper.
+    if cfg.ENABLE_COLUMN_WILLIAMSBURG:
+        log.info("--- Group 6: Column.us — Virginia Gazette (Williamsburg) ---")
+        all_listings.extend(scrape_column_us_williamsburg())
+    else:
+        log.info("--- Group 6: Williamsburg Column.us SKIPPED (ENABLE_COLUMN_WILLIAMSBURG=False) ---")
+
+    # ── Group 7: Northern Virginia Daily (Column.us) ──────────────────────────
+    # Captures Fauquier and Culpeper notices from the NV Daily circulation area.
+    if cfg.ENABLE_COLUMN_NVDAILY:
+        log.info("--- Group 7: Column.us — Northern Virginia Daily ---")
+        all_listings.extend(scrape_column_us_nvdaily())
+    else:
+        log.info("--- Group 7: NV Daily Column.us SKIPPED (ENABLE_COLUMN_NVDAILY=False) ---")
+
+    # ── Group 8: Samuel I. White, P.C. (SIWPC) ───────────────────────────────
+    # High-volume VA foreclosure law firm.  Often lists sales 2–4 weeks before
+    # they appear on PNV, giving early warning for Henrico and Chesterfield.
+    if cfg.ENABLE_SIWPC:
+        log.info("--- Group 8: Samuel I. White, P.C. (siwpc.com) ---")
+        all_listings.extend(scrape_siwpc())
+    else:
+        log.info("--- Group 8: SIWPC SKIPPED (ENABLE_SIWPC=False) ---")
+
+    # ── Group 9: Virginia eCourts — Circuit Court lis pendens ─────────────────
+    # Earliest possible signal: trustee/lis pendens filings in circuit courts
+    # precede PNV publication by 2–6 weeks.  Stage set to "pre-fc"; sale date
+    # backfilled via Pass 1 when a PNV notice is found later.
+    if cfg.ENABLE_VA_COURTS:
+        log.info("--- Group 9: Virginia eCourts — Circuit Court lis pendens ---")
+        all_listings.extend(scrape_va_courts())
+    else:
+        log.info("--- Group 9: VA Courts SKIPPED (ENABLE_VA_COURTS=False) ---")
+
+    # ── Deduplication, enrichment, save ───────────────────────────────────────
     all_listings = deduplicate(all_listings)
     log.info(f"Total after dedup: {len(all_listings)} listings")
 

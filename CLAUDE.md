@@ -1,5 +1,20 @@
 # Foreclosure Finder — Project Context for Claude
 
+## Startup Vision
+This project is a SaaS startup building a mobile app that delivers foreclosure leads to house flippers. Subscribers pay $100+/month to access foreclosure listings filtered by their chosen counties.
+
+**Build order: Data → App → Subscribers**
+
+**Stage 1 (current):** Build a reliable daily data pipeline covering the Fredericksburg and Richmond, Virginia metro areas. Scrape all available foreclosure data online. Future phases add marketing-captured leads to the same pipeline.
+**Stage 2:** Expand pipeline to all of Virginia.
+**Stage 3+:** Repeat the playbook for additional U.S. states — architecture must be state-agnostic and repeatable for any state.
+
+Target customer: active house flippers who want maximum deal flow. More leads = more value. Monetization is subscription-based, potentially tiered by county count or lead volume.
+
+The Google Sheet is the current staging ground. The end product is a mobile app built on top of the pipeline being built now.
+
+---
+
 ## Who I am
 I'm Joe, a house flipper based in the Fredericksburg, Virginia area. My goal is to find foreclosure properties before they hit the open market, evaluate their investment potential, and contact the owners early. I run everything manually from Terminal on my Mac.
 
@@ -107,14 +122,26 @@ Fredericksburg City, Stafford, Spotsylvania, Caroline, Fauquier, Culpeper, King 
 
 ## Data sources
 
-### Foreclosure notices (active — 2 sources only)
-| Source | URL | Notes |
-|--------|-----|-------|
-| Public Notice Virginia (PNV) | publicnoticevirginia.com | Primary source — free, statewide, structured. All 12 counties. Virginia Code §55.1-321 requires trustee sale notices here. |
-| fredericksburg.column.us | fredericksburg.column.us | Fredericksburg/Spotsylvania supplement. Next.js + Firebase — requires Playwright. Individual notice URLs at `/notice/<slug>`. |
+### Foreclosure notices (active — 8 source groups)
+| Group | Source | URL | Notes |
+|-------|--------|-----|-------|
+| 3 (primary) | Public Notice Virginia (PNV) | publicnoticevirginia.com | Free, statewide, structured. All 12 counties. §55.1-321 required. |
+| Existing | fredericksburg.column.us | fredericksburg.column.us | Fredericksburg/Spotsylvania. Next.js + Firebase — requires Playwright. |
+| 1 | richmond.column.us | richmond.column.us | Richmond metro area. Same Playwright scraper. |
+| 2 | LOGS Legal / PFCVA | logs.com/va-sales-report.html | High-volume VA foreclosure law firm. BS4 HTML table scraper. |
+| 4 | dailyprogress.column.us | dailyprogress.column.us | Charlottesville / Albemarle area. |
+| 5 | Auction.com | auction.com | REO + trustee pre-sale listings. Embedded JSON scraper. |
+| 6 | vagazette.column.us | vagazette.column.us | Virginia Gazette (Williamsburg area). County filter drops non-target notices. |
+| 8 | Samuel I. White, P.C. | siwpc.com/sales-report | High-volume VA foreclosure attorney. BS4 table scraper. |
 
-### Removed sources (2026-05)
-Auction.com, HUD Homes, Fannie Mae HomePath, Freddie Mac HomeSteps are no longer active. Their functions remain in `scraper.py` with an early `return []` for reference but are not called by `run()`.
+### Disabled source groups (2026-05)
+| Group | Source | Reason |
+|-------|--------|--------|
+| 7 | NV Daily | `nvdaily.column.us` returns 404. NV Daily uses its own CMS (`nvdaily.com/classifieds/`). Coverage area (Shenandoah Valley) is outside our 12 target counties. |
+| 9 | Virginia eCourts | Both `circuitSearch` and `CJISWeb` require an authenticated session — no public API endpoint. |
+
+### Previously removed sources (archived in `_archived_sources.py`)
+HUD Homes, Fannie Mae HomePath, Freddie Mac HomeSteps are no longer active. Auction.com was re-enabled as Group 5.
 
 ### Property data + owner info
 | Source | URL | Notes |

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+  <!-- ── Identity ─────────────────────────────────────────────────── -->
+  <key>Label</key>
+  <string>com.joeforeclose.pipeline</string>
+
+  <!-- ── What to run ───────────────────────────────────────────────── -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/jarvis/Documents/Claude/Foreclosures/scripts/update.sh</string>
+  </array>
+
+  <!-- ── Schedule: every day at 6:00 AM ───────────────────────────── -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>6</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+
+  <!-- ── Logging ───────────────────────────────────────────────────── -->
+  <key>StandardOutPath</key>
+  <string>/Users/jarvis/Documents/Claude/Foreclosures/logs/pipeline.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/jarvis/Documents/Claude/Foreclosures/logs/pipeline_error.log</string>
+
+  <!-- ── Environment ───────────────────────────────────────────────── -->
+  <!-- Gives the job a clean PATH that includes Homebrew and pyenv -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>HOME</key>
+    <string>/Users/jarvis</string>
+  </dict>
+
+  <!-- ── Behaviour ─────────────────────────────────────────────────── -->
+  <!-- Run the task even if a previous run is still going -->
+  <key>RunAtLoad</key>
+  <false/>
+  <!-- Restart immediately if the job crashes (not relevant for one-shot scripts) -->
+  <key>KeepAlive</key>
+  <false/>
+
+</dict>
+</plist>

@@ -50,10 +50,12 @@ from bs4 import BeautifulSoup
 import gspread
 from google.oauth2.service_account import Credentials
 
-# ── Import shared helpers from scraper ───────────────────────────────────────
-# sys.path insert lets us import scraper.py as a module without installing it.
-# scraper.run() is guarded by __name__ == "__main__" so it won't execute.
+# ── Import pipeline config and shared helpers from scraper ───────────────────
+# sys.path insert lets us import config.py and scraper.py as modules without
+# installing them.  scraper.run() is guarded by __name__ == "__main__" so it
+# won't execute on import.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import config as cfg             # noqa: E402  — pipeline settings (rate limits, etc.)
 from scraper import (           # noqa: E402
     parse_sale_datetime,
     city_to_county,
@@ -70,14 +72,13 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 # ── Config ───────────────────────────────────────────────────────────────────
-SHEET_ID     = "1_Nztmx-poW29M1moBPkfMyfj6nMeRqewML7GGjJwQ-c"
-SCOPES       = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive",
-]
+# SHEET_ID, SCOPES, and CREDS_FILE are all defined in config.py.
+# Import them from there so there is one source of truth across all scripts.
+SHEET_ID     = cfg.SHEET_ID
+SCOPES       = cfg.SCOPES
 SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.join(SCRIPT_DIR, "..")
-CREDS_FILE   = os.path.join(PROJECT_ROOT, "credentials", "service-account.json")
+CREDS_FILE   = cfg.CREDS_FILE
 
 # Reverse map: "Stafford" → "stafford", "Fredericksburg City" → "fredericksburg"
 DISPLAY_TO_KEY: dict[str, str] = {
@@ -268,7 +269,7 @@ def search_pnv_by_address(address: str) -> tuple[str, str]:
             if sale_date:
                 log.debug(f"  PNV search: found {sale_date} for {address!r}")
                 return sale_date, sale_time
-            sleep(0.5)
+            sleep(cfg.NOTICE_FETCH_DELAY_SECONDS)
 
     except Exception as exc:
         log.debug(f"  search_pnv_by_address({address!r}): {exc}")
@@ -955,7 +956,7 @@ def run() -> None:
             queue(i, "F_Sale_Time", sale_time)
         if sale_date:
             log.info(f"  row {i+2}: F_Sale_Date={sale_date}  F_Sale_Time={sale_time or '—'}")
-        sleep(0.6)   # polite rate limit
+        sleep(cfg.NOTICE_FETCH_DELAY_SECONDS)   # polite rate limit between notice re-fetches
     log.info(f"  → filled {filled_p1}/{len(p1)}")
 
     # ─────────────────────────────────────────────────────────────────────────
@@ -997,7 +998,7 @@ def run() -> None:
             if sale_date:
                 filled_p1b_auction += 1
                 log.info(f"  row {i+2}: F_Sale_Date={sale_date}  F_Sale_Time={sale_time or '—'}  (Auction.com)")
-            sleep(0.5)
+            sleep(cfg.NOTICE_FETCH_DELAY_SECONDS)
 
         # ── PNV address search ────────────────────────────────────────────────
         if not sale_date and address:
@@ -1005,7 +1006,7 @@ def run() -> None:
             if sale_date:
                 filled_p1b_pnv += 1
                 log.info(f"  row {i+2}: F_Sale_Date={sale_date}  F_Sale_Time={sale_time or '—'}  (PNV search)")
-            sleep(0.5)
+            sleep(cfg.NOTICE_FETCH_DELAY_SECONDS)
 
         if sale_date:
             queue(i, "F_Sale_Date", sale_date)
@@ -1071,7 +1072,7 @@ def run() -> None:
                     if k in raw_l or raw_l in k:
                         county = county_display(k)
                         break
-            sleep(1.0)   # Census geocoder rate-limited to ~1 req/sec
+            sleep(cfg.CENSUS_DELAY_SECONDS)   # Census geocoder rate-limited to ~1 req/sec
 
         if county:
             queue(i, "County", county)
@@ -1182,7 +1183,7 @@ def run() -> None:
             continue
 
         gis = gis_full_lookup(address, county_key)
-        sleep(0.25)   # VGIN handles higher throughput than county endpoints
+        sleep(cfg.HTTP_DELAY_SECONDS)   # VGIN handles higher throughput than county endpoints
 
         # ── Owner fields ──────────────────────────────────────────────────────
         if gis.get("owner_name") and not val(row, "Owner_Name"):
@@ -1201,7 +1202,7 @@ def run() -> None:
             if rf:
                 filled_p6_redfin += 1
                 log.info(f"  row {i+2}: Redfin supplement → {list(rf.keys())}")
-            sleep(1.0)
+            sleep(cfg.REDFIN_DELAY_SECONDS)
 
         # ── Merge: GIS primary, Redfin fills remaining gaps ───────────────────
         year_built      = gis.get("year_built")     or rf.get("year_built")

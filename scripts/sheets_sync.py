@@ -18,10 +18,16 @@ Run: python3 scripts/sheets_sync.py
 
 from __future__ import annotations
 
+import sys
+import os
+
+# Load pipeline config (scripts/config.py) — SHEET_ID, SCOPES, CREDS_FILE
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import config as cfg
+
 import gspread
 from google.oauth2.service_account import Credentials
 import json
-import os
 import glob
 import logging
 from datetime import date, datetime
@@ -30,19 +36,16 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)s  %(me
 log = logging.getLogger(__name__)
 
 # ── Config ──────────────────────────────────────────────────────────────────
-SHEET_ID   = "1_Nztmx-poW29M1moBPkfMyfj6nMeRqewML7GGjJwQ-c"
+SHEET_ID   = cfg.SHEET_ID   # "1_Nztmx-poW29M1moBPkfMyfj6nMeRqewML7GGjJwQ-c"
+SCOPES     = cfg.SCOPES
+CREDS_FILE = cfg.CREDS_FILE
+
 SHEET_TAB  = 0          # index of the main data tab (first sheet)
 HEADER_ROW = 1          # row number that contains column headers
-
-SCOPES = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive",
-]
 
 SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.join(SCRIPT_DIR, "..")
 DATA_FILE    = os.path.join(PROJECT_ROOT, "data", "foreclosures.json")
-CREDS_FILE   = os.path.join(PROJECT_ROOT, "credentials", "service-account.json")
 
 # Sheet column order (must match the actual header row in the spreadsheet)
 # The header is rewritten on every sync run, so changing this list
@@ -117,9 +120,16 @@ def _years_since(date_str: str) -> str:
 
 
 def listing_to_row(listing: dict) -> list:
-    """Convert a foreclosure listing dict to a sheet row (aligned to COLUMNS)."""
+    """Convert a foreclosure listing dict to a sheet row (aligned to COLUMNS).
+
+    Reads pre-computed fields from normalized listings (status, investment_priority,
+    rough_equity, profit_potential). Falls back to inline calculation for legacy
+    rows that were scraped before normalize_listing() was added.
+    """
     stage = listing.get("stage", "")
-    status = {
+
+    # Use pre-computed status from normalize_listing(), fall back to inline calc.
+    status = listing.get("status") or {
         "auction":  "Active Auction",
         "pre-fc":   "Pre-Foreclosure Notice",
         "reo":      "REO / Bank Owned",
@@ -130,44 +140,51 @@ def listing_to_row(listing: dict) -> list:
     price_str = _fmt_price(price)
 
     # ── Investment priority ───────────────────────────────────────────────────
-    # High   → any active auction (time-critical)
-    # Medium → pre-FC with known sale date
-    # Low    → REO (bank-owned, no urgency) or pre-FC with no date
-    days = listing.get("days_until_sale")
-    if stage == "auction":
-        priority = "High"
-    elif stage == "pre-fc" and days is not None and days >= 0:
-        priority = "High" if days <= 30 else "Medium"
-    elif stage == "pre-fc":
-        priority = "Medium"
-    else:
-        priority = "Low"   # REO
+    # Use pre-computed value from normalize_listing(); fall back to inline calc.
+    priority = listing.get("investment_priority")
+    if not priority:
+        days = listing.get("days_until_sale")
+        if stage == "auction":
+            priority = "High"
+        elif stage == "pre-fc" and days is not None and days >= 0:
+            priority = "High" if days <= 30 else "Medium"
+        elif stage == "pre-fc":
+            priority = "Medium"
+        else:
+            priority = "Low"
 
     last_sold_date  = listing.get("last_sold_date") or ""
     last_sold_price = _fmt_price(listing.get("last_sold_price"))
 
-    est_value = listing.get("redfin_estimate")
+    # estimated_value: normalize() pre-selects best available (GIS → Redfin).
+    # Fall back to legacy redfin_estimate field for rows not yet re-normalized.
+    est_value = listing.get("estimated_value") or listing.get("redfin_estimate")
     est_value_str = f"{_fmt_price(est_value)} (Est.)" if est_value else ""
 
-    # Rough equity: estimated value minus asking price
-    rough_equity = ""
-    if est_value and price:
-        eq = int(est_value) - int(price)
-        rough_equity = _fmt_price(eq)
+    # Rough equity: estimated value minus asking price (pre-computed by normalize_listing,
+    # but recalculate here for rows that haven't been re-normalized yet)
+    rough_equity_raw = listing.get("rough_equity")
+    if rough_equity_raw is not None:
+        rough_equity = _fmt_price(rough_equity_raw)
+    elif est_value and price:
+        rough_equity = _fmt_price(int(est_value) - int(price))
+    else:
+        rough_equity = ""
 
-    # Profit potential as a percentage
-    est_profit_pct = ""
-    if est_value and price and int(price) > 0:
-        pct = (int(est_value) - int(price)) / int(price) * 100
-        est_profit_pct = f"{pct:.0f}%"
+    # Profit potential — 70% rule: (ARV × 0.70) − asking_price → dollar amount
+    # Pre-computed by normalize_listing(); recalculate for legacy rows.
+    profit_raw = listing.get("profit_potential")
+    if profit_raw is not None:
+        est_profit_pct = _fmt_price(profit_raw)
+    elif est_value and price:
+        est_profit_pct = _fmt_price(int(int(est_value) * 0.70) - int(price))
+    else:
+        est_profit_pct = ""
 
     years_since_sale = _years_since(last_sold_date)
 
     # ── Listing URL ───────────────────────────────────────────────────────────
-    listing_url = (
-        listing.get("redfin_url") or
-        listing.get("source_url") or ""
-    )
+    listing_url = listing.get("source_url") or listing.get("redfin_url") or ""
 
     # ── Notes (location, lender, trustee, source — NOT sale date/time) ───────
     note_parts = []
