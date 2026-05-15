@@ -67,9 +67,9 @@ TARGET_COUNTIES_DISPLAY: list[str] = [
 # Useful for debugging one source at a time or temporarily pausing a source
 # that's rate-limiting or returning bad data.
 
-ENABLE_PNV:                bool = True   # Group 3  — publicnoticevirginia.com
-ENABLE_COLUMN_FXBG:        bool = True   # Existing — fredericksburg.column.us
-ENABLE_COLUMN_RICHMOND:    bool = True   # Group 1  — richmond.column.us
+ENABLE_PNV:                bool = False  # Group 3  — PAUSED: evaluating Fxbg data first
+ENABLE_COLUMN_FXBG:        bool = True   # Existing — fredericksburg.column.us (ACTIVE)
+ENABLE_COLUMN_RICHMOND:    bool = False  # Group 1  — PAUSED: evaluating Fxbg data first
 ENABLE_LOGS_LEGAL:         bool = False  # Group 2  — DISABLED: logs.com migrated to PowerBI
                                          #            embed (2026-05); BS4 cannot parse iframe data
 ENABLE_COLUMN_DAILYPROG:   bool = False  # Group 4  — DISABLED: Daily Progress covers
