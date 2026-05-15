@@ -1285,24 +1285,18 @@ def _scrape_column_us_portal(
             page.wait_for_timeout(cfg.COLUMN_US_LOAD_WAIT_MS)  # Firebase hydration
 
             # ── Confirm notices rendered ───────────────────────────────────
-            # Wait for the per-card newspaper header to appear, which confirms
-            # Firebase has hydrated the notice cards.  If it never appears we
-            # log a soft warning and continue anyway — the portal may legitimately
-            # have zero notices for our date window, or the header text may have
-            # changed.  We do NOT bail here: the block-splitting below will simply
-            # produce 0 blocks if the header is absent, giving a clean 0-result run
-            # instead of an opaque early return that hides the real reason.
             header_upper = newspaper_header.upper()
             try:
                 page.wait_for_function(
                     f"document.body.innerText.toUpperCase().includes({header_upper!r})",
                     timeout=20_000,
                 )
+                log.info(f"  Column.us [{source_tag}]: header '{newspaper_header}' confirmed in page ✓")
             except PWTimeout:
-                log.info(
-                    f"  Column.us [{source_tag}]: header '{newspaper_header}' not found "
-                    "after 20 s — portal may have 0 notices for this date window, "
-                    "or the newspaper header text has changed; continuing anyway"
+                log.warning(
+                    f"  Column.us [{source_tag}]: header '{newspaper_header}' NOT FOUND after 20 s "
+                    "— header string may have changed; blocks will be 0. "
+                    "Run diagnostic to confirm actual page header text."
                 )
 
             # ── Paginate: click "Load more" until exhausted ────────────────
@@ -1354,15 +1348,51 @@ def _scrape_column_us_portal(
             raw_blocks  = re.split(re.escape(newspaper_header), body_text, flags=re.I)
             notice_blocks = raw_blocks[1:]
 
+            # ── Heal false splits ─────────────────────────────────────────
+            # The newspaper name also appears inside individual notice bodies
+            # in the standard legal boilerplate:
+            #   "...published in the FREDERICKSBURG FREE-LANCE STAR, a newspaper
+            #    of general circulation..."
+            # Splitting on it truncates the previous block and creates an orphan
+            # block starting with ", a newspaper of general circulation...".
+            # Fix: merge the orphan back into the preceding block, restoring the
+            # newspaper name in between so the full notice text is preserved.
+            healed: list[str] = []
+            false_splits = 0
+            for block in notice_blocks:
+                if block.lstrip().startswith(",") and healed:
+                    healed[-1] = healed[-1] + newspaper_header + block
+                    false_splits += 1
+                else:
+                    healed.append(block)
+            if false_splits:
+                log.info(
+                    f"  Column.us [{source_tag}]: healed {false_splits} false split(s) "
+                    f"(mid-notice boilerplate mention of '{newspaper_header}' merged back)"
+                )
+            notice_blocks = healed
+
             # Fallback: if exact header produced no splits, try a looser pattern
             # (handles minor formatting variations like en-dashes or extra spaces).
             if not notice_blocks:
+                log.warning(
+                    f"  Column.us [{source_tag}]: exact header split produced 0 blocks — "
+                    "trying loose pattern (en-dash / space variants)"
+                )
                 loose_pat = re.sub(r'[-–]', r'[-–]', re.escape(newspaper_header))
-                raw_blocks  = re.split(loose_pat, body_text, flags=re.I)
+                raw_blocks    = re.split(loose_pat, body_text, flags=re.I)
                 notice_blocks = raw_blocks[1:]
+                if notice_blocks:
+                    log.info(f"  Column.us [{source_tag}]: loose pattern matched {len(notice_blocks)} block(s)")
+                else:
+                    log.error(
+                        f"  Column.us [{source_tag}]: 0 blocks after loose fallback — "
+                        f"header '{newspaper_header}' does not match page content. "
+                        "Run diagnostic to confirm actual header text."
+                    )
 
             total_blocks = len(notice_blocks)
-            log.info(f"  Column.us [{source_tag}]: {total_blocks} notice block(s) found")
+            log.info(f"  Column.us [{source_tag}]: {total_blocks} notice block(s) found after splitting")
 
             kept = skipped_addr = 0
 
@@ -1448,35 +1478,50 @@ def _scrape_column_us_portal(
                 })
 
             log.info(
-                f"  Column.us [{source_tag}] summary: "
-                f"{kept} added | {skipped_addr} skipped (no address) | "
-                f"{total_blocks} total blocks"
+                f"  Column.us [{source_tag}] parse summary: "
+                f"{total_blocks} blocks found | "
+                f"{kept} added | "
+                f"{skipped_addr} skipped (no address)"
             )
 
-            # ── Post-fetch date filter (enforces LOOKBACK_DAYS regardless of
-            #    whether Column.us honoured the startDate URL param) ──────────
-            # Keep: listings with no sale_date (unknown date — include them so
-            #       we don't silently drop valid notices that lack a parsed date)
-            # Drop: listings where sale_date is confirmed earlier than SINCE_DATE
-            since_iso = cfg.SINCE_DATE.isoformat()
+            # ── Post-fetch date filter ─────────────────────────────────────
+            since_iso     = cfg.SINCE_DATE.isoformat()
             before_filter = len(listings)
             listings = [
                 l for l in listings
                 if not l.get("sale_date") or l["sale_date"] >= since_iso
             ]
-            dropped = before_filter - len(listings)
-            if dropped:
+            date_dropped = before_filter - len(listings)
+            if date_dropped:
                 log.info(
-                    f"  Column.us [{source_tag}]: dropped {dropped} listing(s) "
+                    f"  Column.us [{source_tag}]: date filter dropped {date_dropped} listing(s) "
                     f"with sale_date before {since_iso} ({cfg.LOOKBACK_DAYS}-day window)"
                 )
+
+            # ── Deduplication ──────────────────────────────────────────────
+            seen_ids: set = set()
+            unique: list  = []
+            for l in listings:
+                lid = l.get("id")
+                if lid not in seen_ids:
+                    seen_ids.add(lid)
+                    unique.append(l)
+            dupes = len(listings) - len(unique)
+            if dupes:
+                log.info(f"  Column.us [{source_tag}]: dedup removed {dupes} duplicate(s)")
+            listings = unique
 
             browser.close()
 
     except Exception as e:
         log.error(f"  Column.us [{source_tag}] error: {e}", exc_info=True)
 
-    log.info(f"  Column.us [{source_tag}]: returning {len(listings)} listing(s)")
+    log.info(
+        f"  Column.us [{source_tag}] FINAL: {len(listings)} listing(s) returning "
+        f"(from {total_blocks} blocks → {kept} parsed → "
+        f"{date_dropped if 'date_dropped' in dir() else 0} date-filtered → "
+        f"{dupes if 'dupes' in dir() else 0} deduped)"
+    )
     return listings
 
 
@@ -1493,7 +1538,7 @@ def scrape_column_us() -> list:
     """
     return _scrape_column_us_portal(
         portal_url       = "https://fredericksburg.column.us/search?noticeType=Foreclosure+Sale",
-        newspaper_header = "FREE LANCE-STAR",
+        newspaper_header = "FREDERICKSBURG FREE-LANCE STAR",  # confirmed from live page 2026-05-15
         source_tag       = "column_us",
     )
 

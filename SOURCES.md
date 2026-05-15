@@ -103,6 +103,7 @@ Legend: ✅ Expected and populated | ⚠️ Expected but unreliable | ❌ Not av
 **Source tag:** `column_us`
 **Technology:** Playwright (Next.js + Firebase client-side rendering)
 **Counties:** Fredericksburg City, Stafford, Spotsylvania, Caroline, King George
+**Typical volume:** ~68 listings per 30-day window (confirmed 2026-05-15)
 
 ### What this source provides
 - Full notice text (notice cards rendered by Firebase)
@@ -118,17 +119,32 @@ Legend: ✅ Expected and populated | ⚠️ Expected but unreliable | ❌ Not av
 
 ### Data extraction approach
 1. Playwright loads portal URL, waits for Firebase hydration (8s)
-2. Clicks "Load more" until exhausted
-3. Splits page body by newspaper header ("FREE LANCE-STAR") into individual notice blocks
+2. Clicks "Load more" until exhausted (~4 clicks for 68 listings)
+3. Splits page body by newspaper header into individual notice blocks
 4. For each block: extracts address, county, sale_date, sale_time, lender, trustee
-5. Drops notices whose sale_date is before SINCE_DATE
+5. Date filter drops notices with sale_date before SINCE_DATE
+6. Dedup removes duplicate IDs (same address + date)
 
-### Known issues
-- None currently — this is the best-performing source (2/2 records clean in last run)
-- Pass 8 backfill (permalink upgrade) requires a second Playwright run after initial sync
+### Newspaper header
+`"FREDERICKSBURG FREE-LANCE STAR"` — confirmed from live page 2026-05-15.
+Note: the scraper previously used `"FREE LANCE-STAR"` which only partially matched,
+producing 3 records instead of 68. Fixed 2026-05-15.
+
+### Known data patterns
+- Notices occasionally span multiple addresses (e.g. "A/R/T/A" alternates)
+- Records with unrecognized cities will have county = "" — kept and passed to GIS backfill
+
+### Fix history
+- 2026-05-15: Header corrected from `"FREE LANCE-STAR"` → `"FREDERICKSBURG FREE-LANCE STAR"`
+- 2026-05-15: Added funnel logging — blocks found, parsed, date-filtered, deduped, final count
+- 2026-05-15: Healed false splits — notice bodies contain "FREDERICKSBURG FREE-LANCE STAR" in
+  standard publication boilerplate ("published in the FREDERICKSBURG FREE-LANCE STAR, a newspaper
+  of general circulation..."). Splitting on that string truncated those notices and produced orphan
+  blocks starting with ", a newspaper of general circulation". Fix merges orphan blocks back into
+  the preceding block, restoring full notice text. True duplicates handled downstream by dedup.
 
 ### Fix status
-- ✅ Working correctly
+- ✅ Working — data quality confirmed good 2026-05-15
 
 ---
 
