@@ -1514,7 +1514,7 @@ def scrape_column_us_richmond() -> list:
     """
     return _scrape_column_us_portal(
         portal_url       = "https://richmond.column.us/search?noticeType=Foreclosure+Sale",
-        newspaper_header = "RICHMOND TIMES-DISPATCH",
+        newspaper_header = "RICHMOND TIMES DISPATCH",  # no hyphen — confirmed from live page
         source_tag       = "column_us_richmond",
     )
 
@@ -3151,6 +3151,9 @@ def city_to_county(city: str) -> str:
         "ashland":           "Hanover",
         "mechanicsville":    "Hanover",
         "hanover":           "Hanover",
+        "beaverdam":         "Hanover",
+        "doswell":           "Hanover",
+        "montpelier":        "Hanover",
         # Richmond City
         "richmond":          "Richmond City",
         # Chesterfield
@@ -3158,11 +3161,23 @@ def city_to_county(city: str) -> str:
         "midlothian":        "Chesterfield",
         "chester":           "Chesterfield",
         "bon air":           "Chesterfield",
-        # Henrico
+        "ettrick":           "Chesterfield",
+        "matoaca":           "Chesterfield",
+        "swift creek":       "Chesterfield",
+        # Henrico — NOTE: Henrico County addresses commonly use "Richmond" as
+        # their mailing city (unincorporated county, no city hall).  Those will
+        # map to "Richmond City" above, which is wrong.  The secondary regex
+        # in _scrape_column_us_portal catches "Henrico County Courthouse" etc.
+        # to override.  Specific Henrico communities are listed here for cases
+        # where the address city is unambiguous.
         "glen allen":        "Henrico",
         "short pump":        "Henrico",
         "sandston":          "Henrico",
         "highland springs":  "Henrico",
+        "varina":            "Henrico",
+        "lakeside":          "Henrico",
+        "tuckahoe":          "Henrico",
+        "innsbrook":         "Henrico",
         # Louisa
         "louisa":            "Louisa",
         "mineral":           "Louisa",

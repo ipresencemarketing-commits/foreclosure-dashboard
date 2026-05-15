@@ -81,7 +81,7 @@ ENABLE_AUCTION_COM:        bool = False  # Group 5  — DISABLED: REO listings h
 ENABLE_COLUMN_WILLIAMSBURG:bool = True   # Group 6  — vagazette.column.us (Virginia Gazette)
 ENABLE_COLUMN_NVDAILY:     bool = False  # Group 7  — DISABLED: nvdaily.column.us is 404; NV Daily
                                          #            uses its own CMS and covers wrong counties
-ENABLE_SIWPC:              bool = True   # Group 8  — siwpc.com/sales-report (Samuel I. White)
+ENABLE_SIWPC:              bool = False  # Group 8  — DISABLED: removed from active sources
 ENABLE_VA_COURTS:          bool = False  # Group 9  — DISABLED: eCourts circuitSearch and CJISWeb
                                          #            both require an authenticated session; no
                                          #            public API endpoint available
