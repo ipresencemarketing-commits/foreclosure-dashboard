@@ -1199,16 +1199,19 @@ def scrape_homepath() -> list:
 
 
 # ---------------------------------------------------------------------------
-# Source 5: Column.us portal scrapers (Next.js + Firebase)
+# !! DEAD CODE — Column.us scrapers below are NOT used by the daily pipeline !!
 #
-# Three newspapers publish VA trustee sale notices through Column.us:
-#   5a. Fredericksburg Free-Lance Star  — fredericksburg.column.us  (ACTIVE)
-#   5b. Richmond Times-Dispatch         — richmond.column.us         (ACTIVE — Group 1)
-#   5c. Charlottesville Daily Progress  — dailyprogress.column.us   (ACTIVE — Group 4)
+# The live Column.us engine is scripts/scraper_column_us.py, called by
+# update_statewide.sh with per-paper --url and --header arguments.
+# Shared parsing helpers defined in THIS file (parse_sale_datetime,
+# city_to_county, extract_address, etc.) ARE still imported by
+# scraper_column_us.py — do not remove those.
 #
-# All three share identical page architecture, so a single generic engine
-# (_scrape_column_us_portal) handles all of them.  Each public function is a
-# thin wrapper — tune one portal's parameters without touching the others.
+# Rule: Column.us scraping logic → scraper_column_us.py
+#       Header strings            → update_statewide.sh
+#       Shared parsing helpers    → scraper.py (this file)
+#
+# Changes to the functions below have NO effect on the daily run.
 # ---------------------------------------------------------------------------
 
 def _scrape_column_us_portal(

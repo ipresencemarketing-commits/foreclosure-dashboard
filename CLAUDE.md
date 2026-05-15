@@ -32,19 +32,39 @@ A Python pipeline that:
 ```
 Foreclosures/
 ├── scripts/
-│   ├── scraper.py        — main scraper (all sources + GIS owner enrichment)
-│   ├── sheets_sync.py    — Google Sheets sync (push listings, update summary tab)
-│   ├── backfill.py       — fill blank cells across 8 passes (GIS, Redfin, derived calcs)
-│   ├── update.sh         — full pipeline runner (correct order of operations)
-│   ├── setup.py          — one-time credential/sheet setup
-│   └── verify.py         — gap report (optional)
+│   ├── scraper_column_us.py  — !! LIVE Column.us engine !! called by update_statewide.sh
+│   │                            takes --url --header --source --output --label args
+│   │                            imports shared helpers from scraper.py
+│   ├── update_statewide.sh   — daily orchestrator: runs all Column.us papers in sequence,
+│   │                            clears sheet, syncs each source, pushes to GitHub Pages
+│   │                            Header strings for each paper live HERE
+│   ├── scraper.py            — shared parsing helpers (parse_sale_datetime, city_to_county,
+│   │                            extract_address, etc.) + PNV scraper
+│   │                            Column.us functions in this file are DEAD CODE — not called
+│   │                            by the daily pipeline
+│   ├── sheets_sync.py        — Google Sheets sync (push listings, update summary tab)
+│   ├── backfill.py           — fill blank cells across 8 passes (GIS, Redfin, derived calcs)
+│   ├── update.sh             — legacy manual runner (not used by launchd)
+│   ├── setup.py              — one-time credential/sheet setup
+│   └── verify.py             — gap report (optional)
 ├── data/
-│   └── foreclosures.json — scraped listing output (source of truth for sheets_sync)
+│   └── foreclosures.json     — Fredericksburg listings (source of truth for sheets_sync)
+│   └── foreclosures_richmond.json, foreclosures_culpeper.json, etc. — per-paper outputs
 ├── credentials/
 │   └── service-account.json  — Google service account key (gitignored, never commit)
-├── Pipeline_Optimization_Guide.docx  — recommended data sources & optimization notes
-└── CLAUDE.md             — this file
+├── SOURCES.md                — source profiles: what each site provides, fix history, status
+└── CLAUDE.md                 — this file
 ```
+
+## Critical architecture rule
+**Column.us scraping has two files. Only one is live.**
+- `scraper_column_us.py` = live engine used by the daily launchd job
+- `scraper.py` = contains dead Column.us code that is NOT called by the pipeline
+
+When fixing Column.us bugs or adding features:
+→ Edit `scraper_column_us.py` (scraping logic)
+→ Edit `update_statewide.sh` (header strings, paper URLs)
+→ Edit `scraper.py` only for shared parsing helpers
 
 ## How to run the pipeline
 ```bash
