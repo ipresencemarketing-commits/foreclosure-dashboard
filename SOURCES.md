@@ -127,26 +127,58 @@ Legend: ✅ Expected and populated | ⚠️ Expected but unreliable | ❌ Not av
 **URL:** https://richmond.column.us/search?noticeType=Foreclosure+Sale
 **Source tag:** `column_us_richmond`
 **Technology:** Playwright (same engine as Fredericksburg)
-**Counties:** Richmond City, Chesterfield, Henrico
+**Counties:** Richmond City, Chesterfield, Henrico — plus Hanover and Louisa notices
+frequently appear here too (attorneys publish in Richmond paper)
+**Typical volume:** ~254 raw listings per 30-day window; ~120–140 after dedup and
+out-of-scope county filter
 
 ### What this source provides
-- Same fields as Fredericksburg Column.us (same scraper engine)
+- Full address with street, city, ZIP (structured in notice text)
+- County (via `city_to_county()` lookup on parsed city)
+- Sale date — consistently populated, future-dated ✅
+- Sale time — consistently populated (e.g. "2:30PM", "9:30AM") ✅
+- Lender (parsed from notice text)
+- Trustee (parsed from notice text)
+- Full notice text up to 5000 chars
+- Individual notice permalink URL (Pass 8 backfill upgrades to permalink)
 
 ### What this source does NOT provide
-- Same limitations as Fredericksburg Column.us
+- Asking/starting bid price
+- Owner information (GIS backfill required)
 
 ### Data extraction approach
-- Identical to Fredericksburg — `_scrape_column_us_portal()` with different URL and newspaper header ("RICHMOND TIMES-DISPATCH")
+- Identical to Fredericksburg — `_scrape_column_us_portal()` with Richmond URL
+  and newspaper header "RICHMOND TIMES DISPATCH" (no hyphen — confirmed 2026-05-15)
+- Firebase hydration: 8s wait + up to 14 "Load more" clicks to exhaust all listings
+- County derived from `city_to_county(city)` using expanded mapping including:
+  Henrico communities (Glen Allen, Short Pump, Sandston, Highland Springs, Varina,
+  Lakeside, Tuckahoe, Innsbrook), Chesterfield communities (Chester, Midlothian,
+  Bon Air, Ettrick, Matoaca, Swift Creek), Hanover communities (Ashland,
+  Mechanicsville, Beaverdam, Doswell, Montpelier)
+- Post-fetch date filter drops listings with sale_date before SINCE_DATE
 
-### Known issues
-- **0 records in last run** — Richmond/Chesterfield/Henrico are high-volume markets;
-  0 results almost certainly means the scraper is failing, not that there are no notices.
-  Likely cause: newspaper header text mismatch ("RICHMOND TIMES-DISPATCH" may not match
-  what the portal actually renders) OR Firebase hydration timeout.
+### Known data patterns
+- **Henrico/Richmond mailing address ambiguity:** Henrico County properties often
+  use "Richmond" as mailing city → mapped to Richmond City (both are target counties,
+  so they pass the filter but county may be misclassified). Look for "A/R/T/A HENRICO"
+  in address as a signal.
+- **"HENRICO" as city:** addresses like "4007 West End Drive, Henrico" now correctly
+  map to Henrico county via explicit mapping added 2026-05-15.
+- **Duplicate records:** same notice appears across multiple "Load more" pages.
+  `deduplicate()` in main() handles this via address+date hash.
+- **Out-of-scope cities:** Petersburg, Hopewell, Colonial Heights, Prince George,
+  Waverly, Goochland, Powhatan, Charles City, Dinwiddie appear in raw results —
+  county resolves to unknown (no city mapping) and records are kept for GIS backfill
+  to resolve. Truly out-of-scope properties (e.g. positively identified as Dinwiddie
+  County) are dropped by the county filter gate.
+
+### Fix history
+- 2026-05-15: Newspaper header corrected "RICHMOND TIMES-DISPATCH" → "RICHMOND TIMES DISPATCH"
+  (no hyphen). This was the sole cause of 0 records. Portal confirmed via live Playwright test.
+- 2026-05-15: `city_to_county()` expanded with Henrico, Chesterfield, and Hanover communities.
 
 ### Fix status
-- ❌ Needs investigation — run with debug logging, inspect actual page text to confirm
-  the newspaper header string
+- ✅ Working — 254 listings / 30-day window confirmed 2026-05-15
 
 ---
 
