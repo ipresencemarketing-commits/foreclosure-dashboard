@@ -10,3 +10,1078 @@ bash: /Users/jarvis/Documents/Claude/Foreclosures/scripts/update_statewide.sh: O
 === Fri May 15 07:00:04 EDT 2026 ===
 shell-init: error retrieving current directory: getcwd: cannot access parent directories: Operation not permitted
 bash: /Users/jarvis/Documents/Claude/Foreclosures/scripts/update_statewide.sh: Operation not permitted
+
+=== Fri May 15 17:30:09 EDT 2026 ===
+
+==========================================================
+  Virginia Statewide Foreclosure Pipeline
+  2026-05-15 17:30:09
+  Sync to Google Sheets: true
+==========================================================
+
+--- Clearing Google Sheet (fresh start) ---
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:30:10,765  INFO  --clear-only: clearing sheet and writing canonical header…
+2026-05-15 17:30:11,775  INFO    ✓ Sheet cleared. Header written (30 columns). Exiting.
+
+────────────────────────────────────────────────────────────
+  Pipeline: Free Lance-Star (Fredericksburg)
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:30:11,960  INFO  Starting Column.us scraper for: Free Lance-Star (Fredericksburg)
+2026-05-15 17:30:11,960  INFO    URL with date filter: https://fredericksburg.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:30:18,950  INFO    Free Lance-Star (Fredericksburg): loading https://fredericksburg.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:30:28,808  INFO    Free Lance-Star (Fredericksburg): clicked 'Load more' (1x)
+2026-05-15 17:30:31,329  INFO    Free Lance-Star (Fredericksburg): clicked 'Load more' (2x)
+2026-05-15 17:30:33,852  INFO    Free Lance-Star (Fredericksburg): clicked 'Load more' (3x)
+2026-05-15 17:30:36,373  INFO    Free Lance-Star (Fredericksburg): clicked 'Load more' (4x)
+2026-05-15 17:30:38,879  INFO    Free Lance-Star (Fredericksburg): 'Load more' exhausted after 4 click(s)
+2026-05-15 17:30:38,887  INFO    Free Lance-Star (Fredericksburg): 0 individual notice URL(s) found
+2026-05-15 17:30:38,917  INFO    Free Lance-Star (Fredericksburg): 6 total listings found
+2026-05-15 17:30:38,923  INFO    [1/6] ADDED — 107 Germanna Way, Stafford | county: Stafford | sale: 2026-05-21
+2026-05-15 17:30:38,926  INFO    [2/6] ADDED — 12610 Patrick Henry Dr., Ste. D Newport News | county: unknown | sale: TBD
+2026-05-15 17:30:38,927  INFO    [3/6] ADDED — 116 Landing Drive, Fredericksburg | county: Fredericksburg City | sale: 2026-05-21
+2026-05-15 17:30:38,927  INFO    [4/6] SKIPPED — no address | snippet: "and that Any/All Legal Heirs of Craig M. Roane appear on or before May 8, 2026 at 9:00 in the Clerk'"
+2026-05-15 17:30:38,927  INFO    [5/6] SKIPPED — no address | snippet: "and that Any/All Legal Heirs of Craig M. Roane appear on or before May 8, 2026 at 9:00 in the Clerk'"
+2026-05-15 17:30:38,927  INFO    [6/6] SKIPPED — no address | snippet: "and that Any/All Legal Heirs of Craig M. Roane appear on or before May 8, 2026 at 9:00 in the Clerk'"
+2026-05-15 17:30:38,927  INFO    Free Lance-Star (Fredericksburg) summary: 3 added | 3 skipped (no address) | 6 total blocks
+2026-05-15 17:30:38,960  INFO    Free Lance-Star (Fredericksburg): found 3 listings total
+2026-05-15 17:30:38,962  INFO  Saved 3 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures.json
+2026-05-15 17:30:38,962  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:30:39,148  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures.json
+2026-05-15 17:30:39,148  INFO  Loaded 3 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures.json
+2026-05-15 17:30:39,192  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:30:40,102  INFO    Header row confirmed (30 columns)
+2026-05-15 17:30:40,102  INFO    0 addresses already in sheet
+2026-05-15 17:30:40,103  INFO    No enrichment gaps to fill on existing rows.
+2026-05-15 17:30:40,103  INFO    Appending 3 new row(s)…
+2026-05-15 17:30:40,259  INFO    ✓ Added 3 new listing(s) to Google Sheet
+2026-05-15 17:30:40,703  INFO    ✓ Summary tab updated — 3 total properties
+
+────────────────────────────────────────────────────────────
+  Pipeline: Richmond Times-Dispatch
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:30:40,869  INFO  Starting Column.us scraper for: Richmond Times-Dispatch
+2026-05-15 17:30:40,869  INFO    URL with date filter: https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:30:41,334  INFO    Richmond Times-Dispatch: loading https://richmond.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:30:51,375  INFO    Richmond Times-Dispatch: clicked 'Load more' (1x)
+2026-05-15 17:30:53,895  INFO    Richmond Times-Dispatch: clicked 'Load more' (2x)
+2026-05-15 17:30:56,417  INFO    Richmond Times-Dispatch: clicked 'Load more' (3x)
+2026-05-15 17:30:58,935  INFO    Richmond Times-Dispatch: clicked 'Load more' (4x)
+2026-05-15 17:31:01,461  INFO    Richmond Times-Dispatch: clicked 'Load more' (5x)
+2026-05-15 17:31:03,981  INFO    Richmond Times-Dispatch: clicked 'Load more' (6x)
+2026-05-15 17:31:06,507  INFO    Richmond Times-Dispatch: clicked 'Load more' (7x)
+2026-05-15 17:31:09,034  INFO    Richmond Times-Dispatch: clicked 'Load more' (8x)
+2026-05-15 17:31:11,564  INFO    Richmond Times-Dispatch: clicked 'Load more' (9x)
+2026-05-15 17:31:14,094  INFO    Richmond Times-Dispatch: clicked 'Load more' (10x)
+2026-05-15 17:31:16,628  INFO    Richmond Times-Dispatch: clicked 'Load more' (11x)
+2026-05-15 17:31:19,158  INFO    Richmond Times-Dispatch: clicked 'Load more' (12x)
+2026-05-15 17:31:21,688  INFO    Richmond Times-Dispatch: clicked 'Load more' (13x)
+2026-05-15 17:31:24,222  INFO    Richmond Times-Dispatch: clicked 'Load more' (14x)
+2026-05-15 17:31:26,735  INFO    Richmond Times-Dispatch: 'Load more' exhausted after 14 click(s)
+2026-05-15 17:31:26,740  INFO    Richmond Times-Dispatch: 0 individual notice URL(s) found
+2026-05-15 17:31:26,791  INFO    Richmond Times-Dispatch: 271 total listings found
+2026-05-15 17:31:26,795  INFO    [1/271] ADDED — 31.8 Acres+/- Parsons Road Beaverdam District Hanover County, Virginia Tax Map Parcel Nos. 7815-63-2552, 7815-64-9318 & 7815-64-6825 Default having been made in the terms of a certain Deed of Trust dated May 3, 2022, and of record in the Clerk's Office, Circuit Court, Hanover County, Virginia, on May 4, 2022, in Deed Book 3352, Page 2027, W. Richard Hairfield, the undersigned Trustee having been requested to do so by the holder of the Note secured, will proceed to sell at public auction, for cash, on Thursday, May 21, 2026 at 11:00 a.m. in front of the Hanover County Courthouse, Hanover County, Virginia, the above-described property. At the sale, a $5,000.00 bidder's deposit may be required at the sole discretion of the Trustee and a purchaser's deposit of ten percent (10%) of the gross sales price of the property shall be required in cash, cashier's check or certified check, at the time of sale, with settlement to be made within ten (10) days thereafter. The property is being sold AS IS. The parcels may be sold separately or in bulk, at the discretion of the Trustee. Additional terms will be announced at the sale. Sale subject to post sale seller confirmation. For information contact: FORREST A. SANFORD, TRUSTEE Relationship Manager Colonial Farm Credit, ACA 7104 Mechanicsville Turnpike Mechanicsville | county: Hanover | sale: 2026-05-21
+2026-05-15 17:31:26,796  INFO    [2/271] ADDED — 4011 Barth Road, Richmond | county: Richmond City | sale: 2026-06-26
+2026-05-15 17:31:26,798  INFO    [3/271] ADDED — 1501 WEST CARY STREET) AND 1503 WEST CARY STREET, RICHMOND | county: Richmond City | sale: 2026-06-10
+2026-05-15 17:31:26,798  INFO    [4/271] ADDED — 2905 AND 2907 Second Avenue, Richmond | county: Richmond City | sale: 2026-06-10
+2026-05-15 17:31:26,799  INFO    [5/271] ADDED — 2711 Cheatham Street, Richmond | county: Richmond City | sale: 2026-07-09
+2026-05-15 17:31:26,800  INFO    [6/271] ADDED — 438 Byrne Street, Petersburg | county: unknown | sale: 2026-06-09
+2026-05-15 17:31:26,800  INFO    [7/271] ADDED — 3600 CEDAR MANOR ROAD, RICHMOND | county: Richmond City | sale: 2026-07-06
+2026-05-15 17:31:26,801  INFO    [8/271] ADDED — 4707 Five Springs Ct, Midlothian | county: Chesterfield | sale: 2026-06-09
+2026-05-15 17:31:26,802  INFO    [9/271] ADDED — 11781 Bakers Lance, King George | county: King George | sale: 2026-06-03
+2026-05-15 17:31:26,802  INFO    [10/271] ADDED — 14003 Fortunes Ridge, Midlothian | county: Chesterfield | sale: 2026-06-11
+2026-05-15 17:31:26,803  INFO    [11/271] ADDED — 8100 Langley Drive, Glen Allen | county: Henrico | sale: 2026-05-27
+2026-05-15 17:31:26,804  INFO    [12/271] ADDED — 11925 Dunvegan Court, Chesterfield | county: Chesterfield | sale: 2026-05-27
+2026-05-15 17:31:26,806  INFO    [13/271] ADDED — 3901 Decatur Street, Richmond | county: Richmond City | sale: 2026-06-18
+2026-05-15 17:31:26,807  INFO    [14/271] ADDED — 1065 MORATTICO ROAD, LANCASTER | county: unknown | sale: 2026-05-26
+2026-05-15 17:31:26,808  INFO    [15/271] ADDED — 2506 Blackburn Road, Glen Allen | county: Henrico | sale: 2026-06-08
+2026-05-15 17:31:26,809  INFO    [16/271] ADDED — 13404 QUEEN STREET, DISPUTANTA | county: unknown | sale: 2026-07-13
+2026-05-15 17:31:26,809  INFO    [17/271] ADDED — 7702 Bluespruce Drive, North Chesterfield | county: Chesterfield | sale: 2026-05-27
+2026-05-15 17:31:26,810  INFO    [18/271] ADDED — 6256 Hickory Road, Quinton | county: unknown | sale: 2026-06-03
+2026-05-15 17:31:26,810  INFO    [19/271] ADDED — 10384 SLIDINGROCK DRIVE, MECHANICSVILLE | county: Hanover | sale: 2026-06-08
+2026-05-15 17:31:26,811  INFO    [20/271] ADDED — 1205 NORTH 31ST STREET, RICHMOND | county: Richmond City | sale: 2026-06-08
+2026-05-15 17:31:26,811  INFO    [21/271] ADDED — 807 N 30TH STREET, RICHMOND | county: Richmond City | sale: 2026-07-13
+2026-05-15 17:31:26,812  INFO    [22/271] ADDED — 11213 RIVER RD, CHESTERFIELD | county: Chesterfield | sale: 2026-07-13
+2026-05-15 17:31:26,812  INFO    [23/271] ADDED — 6012 REGAL CREST DRIVE, CHESTERFIELD | county: Chesterfield | sale: 2026-07-13
+2026-05-15 17:31:26,813  INFO    [24/271] ADDED — 2203 Seminary Ave, Richmond | county: Richmond City | sale: 2026-06-09
+2026-05-15 17:31:26,813  INFO    [25/271] ADDED — 8205 DIANE LANE, RICHMOND | county: Richmond City | sale: 2026-07-06
+2026-05-15 17:31:26,814  INFO    [26/271] ADDED — 234 TROLL LANE, WAVERLY | county: unknown | sale: 2026-07-08
+2026-05-15 17:31:26,814  INFO    [27/271] ADDED — 4707 Five Springs Ct, Midlothian | county: Chesterfield | sale: 2026-06-09
+2026-05-15 17:31:26,815  INFO    [28/271] ADDED — 215 Etna Mills Road fka Route 1, Box 298-D, Manquin | county: unknown | sale: 2026-06-02
+2026-05-15 17:31:26,816  INFO    [29/271] ADDED — 7432 TRAILING ROCK ROAD, PRINCE GEORGE | county: unknown | sale: 2026-06-08
+2026-05-15 17:31:26,816  INFO    [30/271] SKIPPED — no address | snippet: "Foreclosure Sale Trustees' Sale of 111 S. MAIN STREET, HOPEWELL, VA In execution of that certain dee"
+2026-05-15 17:31:26,816  INFO    [31/271] SKIPPED — no address | snippet: "Foreclosure Sale Trustees' Sale of 409 S. Jefferson Street, Petersburg, VA In execution of that cert"
+2026-05-15 17:31:26,817  INFO    [32/271] SKIPPED — no address | snippet: "Foreclosure Sale Trustees' Sale of 3928 East Broad Rock Road, Richmond, VA In execution of that cert"
+2026-05-15 17:31:26,818  INFO    [33/271] ADDED — 33 BRANDYWINE CT, COLONIAL HEIGHTS | county: unknown | sale: 2026-07-29
+2026-05-15 17:31:26,818  INFO    [34/271] ADDED — 4607 CHISWELL DRIVE, NORTH CHESTERFIELD | county: Chesterfield | sale: 2026-07-13
+2026-05-15 17:31:26,819  INFO    [35/271] ADDED — 10501 MACANDREW LANE, CHESTERFIELD | county: Chesterfield | sale: 2026-07-13
+2026-05-15 17:31:26,820  INFO    [36/271] ADDED — 4639 HAWORTH ROAD, RICHMOND | county: Richmond City | sale: 2026-07-06
+2026-05-15 17:31:26,820  INFO    [37/271] ADDED — 232 VIRGINIA AVENUE, COLONIAL HEIGHTS | county: unknown | sale: 2026-06-08
+2026-05-15 17:31:26,821  INFO    [38/271] ADDED — 1803 DINWIDDIE AVENUE, RICHMOND | county: Richmond City | sale: 2026-06-08
+2026-05-15 17:31:26,821  INFO    [39/271] ADDED — 2909 WATTS LANE, RICHMOND | county: Richmond City | sale: 2026-07-13
+2026-05-15 17:31:26,821  INFO    [40/271] ADDED — 11925 MIDDLECOFF DRIVE, CHESTER | county: Chesterfield | sale: 2026-07-13
+2026-05-15 17:31:26,822  INFO    [41/271] ADDED — 403 ROXANA ROAD, HENRICO A/R/T/A HIGHLAND SPRINGS | county: Henrico | sale: 2026-07-13
+2026-05-15 17:31:26,822  INFO    [42/271] ADDED — 3209 Stockton Street, Richmond | county: Richmond City | sale: 2026-05-22
+2026-05-15 17:31:26,823  INFO    [43/271] ADDED — 5805 MEADOWVIEW DR, SOUTH CHESTERFIELD | county: Chesterfield | sale: 2026-05-28
+2026-05-15 17:31:26,824  INFO    [44/271] ADDED — 5926 E STONEPATH GARDEN DRIVE, CHESTER | county: Chesterfield | sale: 2026-06-08
+2026-05-15 17:31:26,824  INFO    [45/271] ADDED — 1513 LINCOLN PLACE, HOPEWELL | county: unknown | sale: 2026-06-08
+2026-05-15 17:31:26,824  INFO    [46/271] ADDED — 3300 Irvington Street, Richmond | county: Richmond City | sale: 2026-06-18
+2026-05-15 17:31:26,825  INFO    [47/271] ADDED — 1108 MARYLAND AVENUE, GLEN ALLEN | county: Henrico | sale: 2026-07-13
+2026-05-15 17:31:26,825  INFO    [48/271] ADDED — 7303 Willowbranch Ct, North Chesterfield | county: Chesterfield | sale: 2026-06-16
+2026-05-15 17:31:26,826  INFO    [49/271] ADDED — 3900 Decatur Street, Richmond | county: Richmond City | sale: 2026-06-05
+2026-05-15 17:31:26,826  INFO    [50/271] ADDED — 20605 Ravenbourne Drive, South Chesterfield | county: Chesterfield | sale: 2026-06-05
+2026-05-15 17:31:26,827  INFO    [51/271] ADDED — 64 Poplar Drive, Hartfield | county: unknown | sale: 2026-06-05
+2026-05-15 17:31:26,828  INFO    [52/271] ADDED — 4707 Five Springs Ct, Midlothian | county: Chesterfield | sale: 2026-06-09
+2026-05-15 17:31:26,828  INFO    [53/271] ADDED — 1220 W HIGH STREET, PETERSBURG | county: unknown | sale: 2026-06-08
+2026-05-15 17:31:26,829  INFO    [54/271] ADDED — 10400 CROOKED BRANCH TERRACE, NORTH CHESTERFIELD | county: Chesterfield | sale: 2026-06-08
+2026-05-15 17:31:26,829  INFO    [55/271] ADDED — 3805 REDSTONE DRIVE, RICHMOND | county: Richmond City | sale: 2026-06-08
+2026-05-15 17:31:26,830  INFO    [56/271] ADDED — 4512 Greenbriar Drive, Chester | county: Chesterfield | sale: 2026-06-09
+2026-05-15 17:31:26,830  INFO    [57/271] ADDED — 24501 JOHNSON ROAD, JETERSVILLE | county: unknown | sale: 2026-07-15
+2026-05-15 17:31:26,831  INFO    [58/271] ADDED — 303 E MAIN STREET, WAKEFIELD | county: unknown | sale: 2026-07-13
+2026-05-15 17:31:26,831  INFO    [59/271] ADDED — 3805 FERNDALE CIRCLE, NORTH DINWIDDIE | county: unknown | sale: 2026-07-13
+2026-05-15 17:31:26,832  INFO    [60/271] ADDED — 1004 Fredericks Hall Road, Bumpass | county: Louisa | sale: 2026-06-24
+2026-05-15 17:31:26,832  INFO    [61/271] ADDED — 4707 Five Springs Ct, Midlothian | county: Chesterfield | sale: 2026-06-09
+2026-05-15 17:31:26,833  INFO    [62/271] ADDED — 16 East 31st Street, Richmond | county: Richmond City | sale: 2026-06-01
+2026-05-15 17:31:26,834  INFO    [63/271] ADDED — 3203 EDGEWOOD AVENUE, RICHMOND | county: Richmond City | sale: 2026-06-08
+2026-05-15 17:31:26,834  INFO    [64/271] ADDED — 13321 KINGSMILL RD, MIDLOTHIAN | county: Chesterfield | sale: 2026-06-08
+2026-05-15 17:31:26,835  INFO    [65/271] ADDED — 2305 BROCKWAY LANE, RICHMOND | county: Richmond City | sale: 2026-06-08
+2026-05-15 17:31:26,836  INFO    [66/271] ADDED — 2551 WARNER ROAD, PETERSBURG | county: unknown | sale: 2026-07-13
+2026-05-15 17:31:26,836  INFO    [67/271] ADDED — 5550 BAYBRANCH XING, DISPUTANTA | county: unknown | sale: 2026-07-13
+2026-05-15 17:31:26,837  INFO    [68/271] ADDED — 338 HENDRICKS ROAD, PAMPLIN | county: unknown | sale: 2026-07-13
+2026-05-15 17:31:26,837  INFO    [69/271] ADDED — 1959 VESONDER ROAD, PETERSBURG | county: unknown | sale: 2026-07-13
+2026-05-15 17:31:26,839  INFO    [70/271] ADDED — 250 St. Mark Street and 2847 Shady Hill Rd, Petersburg, VA TRUSTEE'S SALE OF PROPERTY 250 Saint Mark Street Petersburg | county: unknown | sale: TBD
+2026-05-15 17:31:26,839  INFO    [71/271] ADDED — 18024 JONES RUN TRAIL, MOSELEY | county: unknown | sale: 2026-07-06
+2026-05-15 17:31:26,840  INFO    [72/271] ADDED — 6601 Courts Drive, Prince George | county: unknown | sale: TBD
+2026-05-15 17:31:26,840  INFO    [73/271] SKIPPED — no address | snippet: '. Please send bill to Day Law Group PO Box 1168 Forest, Va. 24551 COL-7006690 CITY OF RICHMOND COUNT'
+2026-05-15 17:31:26,841  INFO    [74/271] ADDED — 8300 RAVEN RUN DRIVE, MECHANICSVILLE | county: Hanover | sale: 2026-07-07
+2026-05-15 17:31:26,841  INFO    [75/271] ADDED — 1309 TREE RIDGE ROAD, RICHMOND A/R/T/A HENRICO | county: Richmond City | sale: 2026-06-29
+2026-05-15 17:31:26,842  INFO    [76/271] ADDED — 7109 Sir Lancelot Court, Henrico | county: Henrico | sale: TBD
+2026-05-15 17:31:26,843  INFO    [77/271] ADDED — 4601 HOPKINS ROAD, RICHMOND | county: Richmond City | sale: 2026-05-28
+2026-05-15 17:31:26,843  INFO    [78/271] ADDED — 31.8 Acres+/- Parsons Road Beaverdam District Hanover County, Virginia Tax Map Parcel Nos. 7815-63-2552, 7815-64-9318 & 7815-64-6825 Default having been made in the terms of a certain Deed of Trust dated May 3, 2022, and of record in the Clerk's Office, Circuit Court, Hanover County, Virginia, on May 4, 2022, in Deed Book 3352, Page 2027, W. Richard Hairfield, the undersigned Trustee having been requested to do so by the holder of the Note secured, will proceed to sell at public auction, for cash, on Thursday, May 21, 2026 at 11:00 a.m. in front of the Hanover County Courthouse, Hanover County, Virginia, the above-described property. At the sale, a $5,000.00 bidder's deposit may be required at the sole discretion of the Trustee and a purchaser's deposit of ten percent (10%) of the gross sales price of the property shall be required in cash, cashier's check or certified check, at the time of sale, with settlement to be made within ten (10) days thereafter. The property is being sold AS IS. The parcels may be sold separately or in bulk, at the discretion of the Trustee. Additional terms will be announced at the sale. Sale subject to post sale seller confirmation. For information contact: FORREST A. SANFORD, TRUSTEE Relationship Manager Colonial Farm Credit, ACA 7104 Mechanicsville Turnpike Mechanicsville | county: Hanover | sale: 2026-05-21
+2026-05-15 17:31:26,844  INFO    [79/271] ADDED — 2506 Blackburn Road, Glen Allen | county: Henrico | sale: 2026-06-08
+2026-05-15 17:31:26,844  INFO    [80/271] ADDED — 4011 Barth Road, Richmond | county: Richmond City | sale: 2026-06-26
+2026-05-15 17:31:26,845  INFO    [81/271] ADDED — 2806 Virginia Street, Hopewell | county: unknown | sale: 2026-05-13
+2026-05-15 17:31:26,846  INFO    [82/271] ADDED — 4007 West End Drive, Henrico | county: Henrico | sale: 2026-05-13
+2026-05-15 17:31:26,846  INFO    [83/271] ADDED — 2711 Cheatham Street, Richmond | county: Richmond City | sale: 2026-07-09
+2026-05-15 17:31:26,847  INFO    [84/271] ADDED — 3600 CEDAR MANOR ROAD, RICHMOND | county: Richmond City | sale: 2026-07-06
+2026-05-15 17:31:26,847  INFO    [85/271] ADDED — 13404 QUEEN STREET, DISPUTANTA | county: unknown | sale: 2026-07-13
+2026-05-15 17:31:26,848  INFO    [86/271] ADDED — 9737 Graves Road, South Chesterfield | county: Chesterfield | sale: 2026-05-13
+2026-05-15 17:31:26,848  INFO    [87/271] ADDED — 2910 TRIPLE NOTCH COURT, HENRICO | county: Henrico | sale: 2026-06-01
+2026-05-15 17:31:26,849  INFO    [88/271] SKIPPED — no address | snippet: "Foreclosure Sale Trustees' Sale of 3928 East Broad Rock Road, Richmond, VA In execution of that cert"
+2026-05-15 17:31:26,849  INFO    [89/271] SKIPPED — no address | snippet: "Foreclosure Sale Trustees' Sale of 111 S. MAIN STREET, HOPEWELL, VA In execution of that certain dee"
+2026-05-15 17:31:26,849  INFO    [90/271] ADDED — 7704 Hungary Woods Place, Glen Allen | county: Henrico | sale: 2025-06-11
+2026-05-15 17:31:26,850  INFO    [91/271] SKIPPED — no address | snippet: "Foreclosure Sale Trustees' Sale of 9301 Hull Street Road, N. Chesterfield, VA In execution of that c"
+2026-05-15 17:31:26,850  INFO    [92/271] ADDED — 4639 HAWORTH ROAD, RICHMOND | county: Richmond City | sale: 2026-07-06
+2026-05-15 17:31:26,850  INFO    [93/271] ADDED — 8205 DIANE LANE, RICHMOND | county: Richmond City | sale: 2026-07-06
+2026-05-15 17:31:26,851  INFO    [94/271] ADDED — 2226 HILDREDTH STREET RICHMOND, VA 23223,  | county: unknown | sale: 2026-05-11
+2026-05-15 17:31:26,852  INFO    [95/271] ADDED — 8300 CHURCH LANE, CHARLES CITY | county: unknown | sale: 2026-06-01
+2026-05-15 17:31:26,852  INFO    [96/271] ADDED — 227 Ellisville Dr, Louisa | county: Louisa | sale: 2026-06-05
+2026-05-15 17:31:26,853  INFO    [97/271] SKIPPED — no address | snippet: "Foreclosure Sale Trustees' Sale of 409 S. Jefferson Street, Petersburg, VA In execution of that cert"
+2026-05-15 17:31:26,853  INFO    [98/271] ADDED — 6530 HAGUEMAN DR, RICHMOND | county: Richmond City | sale: 2026-06-29
+2026-05-15 17:31:26,853  INFO    [99/271] ADDED — 234 TROLL LANE, WAVERLY | county: unknown | sale: 2026-07-08
+2026-05-15 17:31:26,854  INFO    [100/271] ADDED — 2008 HIGHLAND DRIVE, POWHATAN | county: unknown | sale: 2026-07-02
+2026-05-15 17:31:26,855  INFO    [101/271] ADDED — 3209 Stockton Street, Richmond | county: Richmond City | sale: 2026-05-22
+2026-05-15 17:31:26,855  INFO    [102/271] ADDED — 7411 DUNCAN ROAD, PETERSBURG A/R/T/A NORTH DINWIDDIE | county: unknown | sale: 2026-06-01
+2026-05-15 17:31:26,856  INFO    [103/271] ADDED — 4080 BASSWOOD RD, DISPUTANTA | county: unknown | sale: 2026-06-29
+2026-05-15 17:31:26,856  INFO    [104/271] ADDED — 5805 MEADOWVIEW DR, SOUTH CHESTERFIELD | county: Chesterfield | sale: 2026-05-28
+2026-05-15 17:31:26,857  INFO    [105/271] ADDED — 1309 TREE RIDGE ROAD, RICHMOND A/R/T/A HENRICO | county: Richmond City | sale: 2026-06-29
+2026-05-15 17:31:26,857  INFO    [106/271] ADDED — 2849 OAK POINT LANE, RICHMOND | county: Richmond City | sale: 2026-06-29
+2026-05-15 17:31:26,858  INFO    [107/271] ADDED — 11454 RIVER RUN DRIVE, GLEN ALLEN | county: Henrico | sale: 2026-06-01
+2026-05-15 17:31:26,858  INFO    [108/271] ADDED — 4601 EANES LANE, HENRICO | county: Henrico | sale: 2026-06-01
+2026-05-15 17:31:26,859  INFO    [109/271] ADDED — 10972 ELMONT WOODS DRIVE, GLEN ALLEN | county: Henrico | sale: 2026-05-29
+2026-05-15 17:31:26,859  INFO    [110/271] ADDED — 11804 BRITAIN WAY, HENRICO | county: Henrico | sale: 2026-06-01
+2026-05-15 17:31:26,860  INFO    [111/271] ADDED — 2481 FALKLAND ROAD, MEHERRIN | county: unknown | sale: 2026-05-27
+2026-05-15 17:31:26,860  INFO    [112/271] ADDED — 701 QUARTERPATH LANE, SOUTH CHESTERFIELD I/R/T/A COLONIAL HEIGHT | county: Chesterfield | sale: 2026-06-01
+2026-05-15 17:31:26,861  INFO    [113/271] ADDED — 8700 HERMITAGE TRACE CIRCLE, RICHMOND A/R/T/A HENRICO | county: Richmond City | sale: 2026-06-01
+2026-05-15 17:31:26,861  INFO    [114/271] ADDED — 27 Seaboard Street, Petersburg | county: unknown | sale: 2026-06-01
+2026-05-15 17:31:26,862  INFO    [115/271] ADDED — 2965 MOUNTAIN ROAD, GLEN ALLEN | county: Henrico | sale: 2026-06-01
+2026-05-15 17:31:26,862  INFO    [116/271] ADDED — 3413 MAURY STREET, RICHMOND | county: Richmond City | sale: 2026-06-29
+2026-05-15 17:31:26,863  INFO    [117/271] ADDED — 2321 BURNLEY AVENUE, HENRICO | county: Henrico | sale: 2026-06-29
+2026-05-15 17:31:26,863  INFO    [118/271] ADDED — 10006 MOULTRIE ROAD, GLEN ALLEN | county: Henrico | sale: 2026-06-29
+2026-05-15 17:31:26,864  INFO    [119/271] ADDED — 8279 CARNEAL LANE, MECHANICSVILLE | county: Hanover | sale: 2026-07-07
+2026-05-15 17:31:26,864  INFO    [120/271] ADDED — 1220 W HIGH STREET, PETERSBURG | county: unknown | sale: 2026-06-08
+2026-05-15 17:31:26,865  INFO    [121/271] ADDED — 4604 COURTHOUSE ROAD, PRINCE GEORGE | county: unknown | sale: 2026-06-29
+2026-05-15 17:31:26,865  INFO    [122/271] ADDED — 18024 JONES RUN TRAIL, MOSELEY | county: unknown | sale: 2026-07-06
+2026-05-15 17:31:26,866  INFO    [123/271] ADDED — 404 BANCROFT AVENUE, RICHMOND, VA, 23222 In execution of a Deed of Trust in the original principal amount of $15,716.48, with an annual interest rate of 14.98 dated May 11, 2007, recorded among the land records of the Circuit Court for RICHMOND City as Deed Instrument Number 070016518, the undersigned appointed Substitute Trustee will offer for sale at public auction all that property located in the RICHMOND City, at the front of the Circuit Court building for the City of RICHMOND located at 400 NORTH NINTH STREET, RICHMOND, VIRGINIA on May 12, 2026 at 11:00AM, the property with improvements to wit: 404 Bancroft Avenue, Richmond | county: Richmond City | sale: 2026-05-12
+2026-05-15 17:31:26,866  INFO    [124/271] ADDED — 348 ARGYLL CIRCLE, HIGHLAND SPRINGS | county: Henrico | sale: 2026-06-01
+2026-05-15 17:31:26,867  INFO    [125/271] ADDED — 10320 COURTHOUSE ROAD, CHARLES CITY | county: unknown | sale: 2026-06-01
+2026-05-15 17:31:26,867  INFO    [126/271] ADDED — 22 RODES AVENUE, SANDSTON | county: Henrico | sale: 2026-06-01
+2026-05-15 17:31:26,868  INFO    [127/271] ADDED — 6003 BELRUN PLACE, NORTH CHESTERFIELD A/R/T/A RICHMOND | county: Richmond City | sale: 2026-06-01
+2026-05-15 17:31:26,868  INFO    [128/271] ADDED — 504 MANGO CT, RICHMOND | county: Richmond City | sale: 2026-06-01
+2026-05-15 17:31:26,869  INFO    [129/271] ADDED — 8201 HUNGARY ROAD, GLEN ALLEN | county: Henrico | sale: 2026-06-01
+2026-05-15 17:31:26,869  INFO    [130/271] ADDED — 200 SEATON DRIVE, RICHMOND A/R/T/A HENRICO | county: Richmond City | sale: 2026-06-01
+2026-05-15 17:31:26,869  INFO    [131/271] ADDED — 4513 BROOKRIDGE ROAD, CHESTERFIELD | county: Chesterfield | sale: 2026-06-29
+2026-05-15 17:31:26,870  INFO    [132/271] ADDED — 6 W CLAY STREET, RICHMOND | county: Richmond City | sale: 2026-06-29
+2026-05-15 17:31:26,870  INFO    [133/271] ADDED — 1005 HASKELL STREET, HOPEWELL | county: unknown | sale: 2026-06-29
+2026-05-15 17:31:26,871  INFO    [134/271] ADDED — 8317 FULHAM COURT, RICHMOND | county: Richmond City | sale: 2026-06-29
+2026-05-15 17:31:26,872  INFO    [135/271] ADDED — 9397 E PATRICK HENRY ROAD, ASHLAND | county: Hanover | sale: 2026-06-22
+2026-05-15 17:31:26,872  INFO    [136/271] ADDED — 1512 MANGROVE BAY TERRACE, CHESTER | county: Chesterfield | sale: 2026-06-29
+2026-05-15 17:31:26,873  INFO    [137/271] ADDED — 4601 HOPKINS ROAD, RICHMOND | county: Richmond City | sale: 2026-05-28
+2026-05-15 17:31:26,873  INFO    [138/271] ADDED — 12575 Webb Road, Disputanta | county: unknown | sale: 2009-05-21
+2026-05-15 17:31:26,874  INFO    [139/271] ADDED — 31.8 Acres+/- Parsons Road Beaverdam District Hanover County, Virginia Tax Map Parcel Nos. 7815-63-2552, 7815-64-9318 & 7815-64-6825 Default having been made in the terms of a certain Deed of Trust dated May 3, 2022, and of record in the Clerk's Office, Circuit Court, Hanover County, Virginia, on May 4, 2022, in Deed Book 3352, Page 2027, W. Richard Hairfield, the undersigned Trustee having been requested to do so by the holder of the Note secured, will proceed to sell at public auction, for cash, on Thursday, May 21, 2026 at 11:00 a.m. in front of the Hanover County Courthouse, Hanover County, Virginia, the above-described property. At the sale, a $5,000.00 bidder's deposit may be required at the sole discretion of the Trustee and a purchaser's deposit of ten percent (10%) of the gross sales price of the property shall be required in cash, cashier's check or certified check, at the time of sale, with settlement to be made within ten (10) days thereafter. The property is being sold AS IS. The parcels may be sold separately or in bulk, at the discretion of the Trustee. Additional terms will be announced at the sale. Sale subject to post sale seller confirmation. For information contact: FORREST A. SANFORD, TRUSTEE Relationship Manager Colonial Farm Credit, ACA 7104 Mechanicsville Turnpike Mechanicsville | county: Hanover | sale: 2026-05-21
+2026-05-15 17:31:26,874  INFO    [140/271] ADDED — 2806 Virginia Street, Hopewell | county: unknown | sale: 2026-05-13
+2026-05-15 17:31:26,875  INFO    [141/271] ADDED — 4007 West End Drive, Henrico | county: Henrico | sale: 2026-05-13
+2026-05-15 17:31:26,875  INFO    [142/271] ADDED — 3013 Moss Side Avenue Richmond, Virginia 23222,  | county: unknown | sale: 2026-05-06
+2026-05-15 17:31:26,876  INFO    [143/271] ADDED — 10368 HOMEBOUND RD, ASHLAND | county: Hanover | sale: 2026-05-29
+2026-05-15 17:31:26,876  INFO    [144/271] ADDED — 9737 Graves Road, South Chesterfield | county: Chesterfield | sale: 2026-05-13
+2026-05-15 17:31:26,877  INFO    [145/271] ADDED — 13781 SANDY POINT ROAD, CHARLES CITY | county: unknown | sale: 2026-06-29
+2026-05-15 17:31:26,877  INFO    [146/271] ADDED — 2711 Cheatham Street, Richmond | county: Richmond City | sale: 2026-07-09
+2026-05-15 17:31:26,878  INFO    [147/271] ADDED — 7704 Hungary Woods Place, Glen Allen | county: Henrico | sale: 2025-06-11
+2026-05-15 17:31:26,878  INFO    [148/271] SKIPPED — no address | snippet: "Foreclosure Sale Trustees' Sale of 9301 Hull Street Road, N. Chesterfield, VA In execution of that c"
+2026-05-15 17:31:26,878  INFO    [149/271] ADDED — 6530 HAGUEMAN DR, RICHMOND | county: Richmond City | sale: 2026-06-29
+2026-05-15 17:31:26,879  INFO    [150/271] ADDED — 2226 HILDREDTH STREET RICHMOND, VA 23223,  | county: unknown | sale: 2026-05-11
+2026-05-15 17:31:26,880  INFO    [151/271] ADDED — 8060 PEBBLEPATH PARKWAY, MECHANICSVILLE | county: Hanover | sale: 2026-05-29
+2026-05-15 17:31:26,880  INFO    [152/271] ADDED — 3417 COURTHOUSE RD, HOPEWELL | county: unknown | sale: 2026-05-28
+2026-05-15 17:31:26,881  INFO    [153/271] ADDED — 2384A RED LANE ROAD, POWHATAN | county: unknown | sale: 2026-05-29
+2026-05-15 17:31:26,881  INFO    [154/271] ADDED — 100 West Main Street, Louisa | county: Louisa | sale: 2026-05-14
+2026-05-15 17:31:26,882  INFO    [155/271] ADDED — 510 OLD TOWN DRIVE, NO. 510, COLONIAL HEIGHTS | county: unknown | sale: 2026-05-28
+2026-05-15 17:31:26,882  INFO    [156/271] ADDED — 2008 HIGHLAND DRIVE, POWHATAN | county: unknown | sale: 2026-07-02
+2026-05-15 17:31:26,883  INFO    [157/271] ADDED — 2117 BISHOP STREET, PETERSBURG | county: unknown | sale: 2026-06-22
+2026-05-15 17:31:26,883  INFO    [158/271] ADDED — 9813 COLEMANS LAKE ROAD, FORD | county: unknown | sale: 2026-06-22
+2026-05-15 17:31:26,884  INFO    [159/271] ADDED — 227 Ellisville Dr, Louisa | county: Louisa | sale: 2026-06-05
+2026-05-15 17:31:26,884  INFO    [160/271] ADDED — 8406 MACANDREW TERRACE, CHESTERFIELD | county: Chesterfield | sale: 2026-06-22
+2026-05-15 17:31:26,885  INFO    [161/271] ADDED — 3809 JAMESTOWN DRIVE, HOPEWELL | county: unknown | sale: 2026-05-28
+2026-05-15 17:31:26,886  INFO    [162/271] ADDED — 830 WEAVER ROAD, GREEN BAY | county: unknown | sale: 2026-05-27
+2026-05-15 17:31:26,886  INFO    [163/271] ADDED — 607 POLLOCK ST, RICHMOND | county: Richmond City | sale: 2026-06-22
+2026-05-15 17:31:26,887  INFO    [164/271] ADDED — 4446 Kings Bishop Road, Henrico | county: Henrico | sale: 2026-05-19
+2026-05-15 17:31:26,887  INFO    [165/271] ADDED — 10340 Charleston Road, Mechanicsville | county: Hanover | sale: 2026-05-19
+2026-05-15 17:31:26,888  INFO    [166/271] ADDED — 24210 Millen Dr, Amelia Court House | county: unknown | sale: 2026-07-07
+2026-05-15 17:31:26,888  INFO    [167/271] ADDED — 8601 ERIKA HILL DRIVE, MIDLOTHIAN | county: Chesterfield | sale: 2026-06-22
+2026-05-15 17:31:26,889  INFO    [168/271] ADDED — 9085 WILLIAMSVILLE ROAD, MECHANICSVILLE | county: Hanover | sale: 2026-06-22
+2026-05-15 17:31:26,889  INFO    [169/271] ADDED — 2204 N 21ST STREET, RICHMOND | county: Richmond City | sale: 2026-06-22
+2026-05-15 17:31:26,890  INFO    [170/271] ADDED — 5805 MEADOWVIEW DR, SOUTH CHESTERFIELD | county: Chesterfield | sale: 2026-05-28
+2026-05-15 17:31:26,890  INFO    [171/271] ADDED — 3016 Heather Ridge Drive, Henrico | county: Henrico | sale: 2026-05-19
+2026-05-15 17:31:26,891  INFO    [172/271] ADDED — 3209 Stockton Street, Richmond | county: Richmond City | sale: 2026-05-22
+2026-05-15 17:31:26,891  INFO    [173/271] ADDED — 4080 BASSWOOD RD, DISPUTANTA | county: unknown | sale: 2026-06-29
+2026-05-15 17:31:26,892  INFO    [174/271] ADDED — 2506 Blackburn Road, Glen Allen | county: Henrico | sale: 2026-06-08
+2026-05-15 17:31:26,893  INFO    [175/271] ADDED — 8279 CARNEAL LANE, MECHANICSVILLE | county: Hanover | sale: 2026-07-07
+2026-05-15 17:31:26,893  INFO    [176/271] ADDED — 27 Seaboard Street, Petersburg | county: unknown | sale: 2026-06-01
+2026-05-15 17:31:26,894  INFO    [177/271] ADDED — 2611 NORTHWIND DRIVE, HENRICO | county: Henrico | sale: 2026-06-22
+2026-05-15 17:31:26,894  INFO    [178/271] ADDED — 6 W CLAY STREET, RICHMOND | county: Richmond City | sale: 2026-06-29
+2026-05-15 17:31:26,895  INFO    [179/271] ADDED — 1005 HASKELL STREET, HOPEWELL | county: unknown | sale: 2026-06-29
+2026-05-15 17:31:26,895  INFO    [180/271] ADDED — 2321 BURNLEY AVENUE, HENRICO | county: Henrico | sale: 2026-06-29
+2026-05-15 17:31:26,895  INFO    [181/271] ADDED — 1512 MANGROVE BAY TERRACE, CHESTER | county: Chesterfield | sale: 2026-06-29
+2026-05-15 17:31:26,896  INFO    [182/271] ADDED — 10006 MOULTRIE ROAD, GLEN ALLEN | county: Henrico | sale: 2026-06-29
+2026-05-15 17:31:26,896  INFO    [183/271] ADDED — 10206 NATURAL BRIDGE ROAD, RICHMOND | county: Richmond City | sale: 2026-06-22
+2026-05-15 17:31:26,897  INFO    [184/271] ADDED — 517 BYSWICK LANE, RICHMOND | county: Richmond City | sale: 2026-06-22
+2026-05-15 17:31:26,897  INFO    [185/271] ADDED — 14003 Fortunes Ridge, Midlothian | county: Chesterfield | sale: 2026-06-11
+2026-05-15 17:31:26,898  INFO    [186/271] ADDED — 5540 Kingsland Road, North Chesterfield | county: Chesterfield | sale: 2026-05-26
+2026-05-15 17:31:26,898  INFO    [187/271] ADDED — 8404 PAMELA DRIVE, RICHMOND A/R/T/A HENRICO | county: Richmond City | sale: 2026-05-18
+2026-05-15 17:31:26,899  INFO    [188/271] ADDED — 404 BANCROFT AVENUE, RICHMOND, VA, 23222 In execution of a Deed of Trust in the original principal amount of $15,716.48, with an annual interest rate of 14.98 dated May 11, 2007, recorded among the land records of the Circuit Court for RICHMOND City as Deed Instrument Number 070016518, the undersigned appointed Substitute Trustee will offer for sale at public auction all that property located in the RICHMOND City, at the front of the Circuit Court building for the City of RICHMOND located at 400 NORTH NINTH STREET, RICHMOND, VIRGINIA on May 12, 2026 at 11:00AM, the property with improvements to wit: 404 Bancroft Avenue, Richmond | county: Richmond City | sale: 2026-05-12
+2026-05-15 17:31:26,899  INFO    [189/271] ADDED — 8391 SUMMER WALK PKWY, MECHANICSVILLE | county: Hanover | sale: 2026-06-22
+2026-05-15 17:31:26,900  INFO    [190/271] ADDED — 4513 BROOKRIDGE ROAD, CHESTERFIELD | county: Chesterfield | sale: 2026-06-29
+2026-05-15 17:31:26,900  INFO    [191/271] ADDED — 3413 MAURY STREET, RICHMOND | county: Richmond City | sale: 2026-06-29
+2026-05-15 17:31:26,901  INFO    [192/271] ADDED — 2849 OAK POINT LANE, RICHMOND | county: Richmond City | sale: 2026-06-29
+2026-05-15 17:31:26,901  INFO    [193/271] ADDED — 8317 FULHAM COURT, RICHMOND | county: Richmond City | sale: 2026-06-29
+2026-05-15 17:31:26,902  INFO    [194/271] ADDED — 9397 E PATRICK HENRY ROAD, ASHLAND | county: Hanover | sale: 2026-06-22
+2026-05-15 17:31:26,902  INFO    [195/271] ADDED — 4300 HOLLY FORK ROAD, BARHAMSVILLE | county: unknown | sale: 2026-06-22
+2026-05-15 17:31:26,903  INFO    [196/271] ADDED — 4601 HOPKINS ROAD, RICHMOND | county: Richmond City | sale: 2026-05-28
+2026-05-15 17:31:26,903  INFO    [197/271] ADDED — 4141 SUSSEX DRIVE, CHESTERFIELD | county: Chesterfield | sale: 2026-06-22
+2026-05-15 17:31:26,904  INFO    [198/271] ADDED — 222 Henry Clay Road, Ashland | county: Hanover | sale: 2026-05-18
+2026-05-15 17:31:26,904  INFO    [199/271] ADDED — 12575 Webb Road, Disputanta | county: unknown | sale: 2009-05-21
+2026-05-15 17:31:26,905  INFO    [200/271] ADDED — 10302 GENTION PL, CHESTERFIELD | county: Chesterfield | sale: 2026-05-18
+2026-05-15 17:31:26,905  INFO    [201/271] ADDED — 3013 Moss Side Avenue Richmond, Virginia 23222,  | county: unknown | sale: 2026-05-06
+2026-05-15 17:31:26,906  INFO    [202/271] ADDED — 3241 RANSOM HILLS ROAD, NORTH CHESTERFIELD | county: Chesterfield | sale: 2026-05-18
+2026-05-15 17:31:26,906  INFO    [203/271] SKIPPED — no address | snippet: "Foreclosure Sale Trustees' Sale of 9301 Hull Street Road, N. Chesterfield, VA In execution of that c"
+2026-05-15 17:31:26,906  INFO    [204/271] ADDED — 7337 CHATEAUGAY LANE, MIDLOTHIAN | county: Chesterfield | sale: 2026-05-18
+2026-05-15 17:31:26,907  INFO    [205/271] ADDED — 31 Cosner Road, Louisa | county: Louisa | sale: 2026-05-15
+2026-05-15 17:31:26,907  INFO    [206/271] ADDED — 2808 SINGLETARY COURT, RICHMOND | county: Richmond City | sale: 2026-05-18
+2026-05-15 17:31:26,908  INFO    [207/271] ADDED — 2117 BISHOP STREET, PETERSBURG | county: unknown | sale: 2026-06-22
+2026-05-15 17:31:26,908  INFO    [208/271] ADDED — 9813 COLEMANS LAKE ROAD, FORD | county: unknown | sale: 2026-06-22
+2026-05-15 17:31:26,909  INFO    [209/271] ADDED — 607 POLLOCK ST, RICHMOND | county: Richmond City | sale: 2026-06-22
+2026-05-15 17:31:26,909  INFO    [210/271] ADDED — 8406 MACANDREW TERRACE, CHESTERFIELD | county: Chesterfield | sale: 2026-06-22
+2026-05-15 17:31:26,910  INFO    [211/271] ADDED — 7704 Hungary Woods Place, Glen Allen | county: Henrico | sale: 2025-06-11
+2026-05-15 17:31:26,910  INFO    [212/271] ADDED — 100 West Main Street, Louisa | county: Louisa | sale: 2026-05-14
+2026-05-15 17:31:26,911  INFO    [213/271] ADDED — 10035 WYCLIFF ROAD, NORTH CHESTERFIELD | county: Chesterfield | sale: 2026-05-18
+2026-05-15 17:31:26,911  INFO    [214/271] ADDED — 14204 FIDDLERS RIDGE PL, MIDLOTHIAN | county: Chesterfield | sale: 2026-06-15
+2026-05-15 17:31:26,912  INFO    [215/271] ADDED — 10340 Charleston Road, Mechanicsville | county: Hanover | sale: 2026-05-19
+2026-05-15 17:31:26,913  INFO    [216/271] ADDED — 10868 White Dogwood Drive, Providence Forge | county: unknown | sale: 2026-05-20
+2026-05-15 17:31:26,913  INFO    [217/271] ADDED — 10321 Cheathams Rd, Amelia Court House | county: unknown | sale: 2026-06-10
+2026-05-15 17:31:26,914  INFO    [218/271] ADDED — 127 N FERN AVE, HENRICO | county: Henrico | sale: 2026-06-15
+2026-05-15 17:31:26,914  INFO    [219/271] ADDED — 12325 PETREL XING, MIDLOTHIAN | county: Chesterfield | sale: 2026-06-15
+2026-05-15 17:31:26,914  INFO    [220/271] ADDED — 2204 N 21ST STREET, RICHMOND | county: Richmond City | sale: 2026-06-22
+2026-05-15 17:31:26,915  INFO    [221/271] ADDED — 4225 FORDHAM ROAD, NORTH CHESTERFIELD | county: Chesterfield | sale: 2026-06-15
+2026-05-15 17:31:26,916  INFO    [222/271] ADDED — 5805 MEADOWVIEW DR, SOUTH CHESTERFIELD | county: Chesterfield | sale: 2026-05-28
+2026-05-15 17:31:26,916  INFO    [223/271] ADDED — 4446 Kings Bishop Road, Henrico | county: Henrico | sale: 2026-05-19
+2026-05-15 17:31:26,917  INFO    [224/271] ADDED — 3016 Heather Ridge Drive, Henrico | county: Henrico | sale: 2026-05-19
+2026-05-15 17:31:26,917  INFO    [225/271] ADDED — 8601 ERIKA HILL DRIVE, MIDLOTHIAN | county: Chesterfield | sale: 2026-06-22
+2026-05-15 17:31:26,918  INFO    [226/271] ADDED — 4036 Bolling Road, Richmond | county: Richmond City | sale: 2026-05-18
+2026-05-15 17:31:26,918  INFO    [227/271] ADDED — 9085 WILLIAMSVILLE ROAD, MECHANICSVILLE | county: Hanover | sale: 2026-06-22
+2026-05-15 17:31:26,919  INFO    [228/271] ADDED — 4030 OLD WARWICK ROAD, A/R/T/A 4030 WARWICK ROAD, RICHMOND | county: Richmond City | sale: 2026-06-15
+2026-05-15 17:31:26,919  INFO    [229/271] ADDED — 2505 CORRYVILLE CT, NORTH CHESTERFIELD | county: Chesterfield | sale: 2026-06-15
+2026-05-15 17:31:26,920  INFO    [230/271] ADDED — 4086 Darbytown Road, Richmond | county: Richmond City | sale: 2026-05-04
+2026-05-15 17:31:26,920  INFO    [231/271] ADDED — 5540 Kingsland Road, North Chesterfield | county: Chesterfield | sale: 2026-05-26
+2026-05-15 17:31:26,921  INFO    [232/271] ADDED — 8391 SUMMER WALK PKWY, MECHANICSVILLE | county: Hanover | sale: 2026-06-22
+2026-05-15 17:31:26,921  INFO    [233/271] ADDED — 7300 KEY DEER COURT, MIDLOTHIAN | county: Chesterfield | sale: 2026-05-18
+2026-05-15 17:31:26,922  INFO    [234/271] ADDED — 1623 STONES ROAD, WALKERTON | county: unknown | sale: 2026-05-15
+2026-05-15 17:31:26,922  INFO    [235/271] ADDED — 8653 MILLSTREAM DRIVE, RICHMOND | county: Richmond City | sale: 2026-06-15
+2026-05-15 17:31:26,923  INFO    [236/271] ADDED — 4601 HOPKINS ROAD, RICHMOND | county: Richmond City | sale: 2026-05-28
+2026-05-15 17:31:26,923  INFO    [237/271] ADDED — 2611 NORTHWIND DRIVE, HENRICO | county: Henrico | sale: 2026-06-22
+2026-05-15 17:31:26,923  INFO    [238/271] ADDED — 10300 SPRING RUN ROAD, CHESTERFIELD | county: Chesterfield | sale: 2026-05-18
+2026-05-15 17:31:26,924  INFO    [239/271] ADDED — 6404 GOLDENROD COURT, RICHMOND | county: Richmond City | sale: 2026-06-15
+2026-05-15 17:31:26,925  INFO    [240/271] ADDED — 1810 MAPLEWOOD AVENUE, RICHMOND | county: Richmond City | sale: 2026-06-15
+2026-05-15 17:31:26,925  INFO    [241/271] ADDED — 3918 ROSEDALE AVENUE, RICHMOND | county: Richmond City | sale: 2026-05-18
+2026-05-15 17:31:26,926  INFO    [242/271] ADDED — 4300 HOLLY FORK ROAD, BARHAMSVILLE | county: unknown | sale: 2026-06-22
+2026-05-15 17:31:26,926  INFO    [243/271] ADDED — 3412 CHAPEL DR, RICHMOND | county: Richmond City | sale: 2026-06-15
+2026-05-15 17:31:26,927  INFO    [244/271] ADDED — 4141 SUSSEX DRIVE, CHESTERFIELD | county: Chesterfield | sale: 2026-06-22
+2026-05-15 17:31:26,927  INFO    [245/271] ADDED — 10206 NATURAL BRIDGE ROAD, RICHMOND | county: Richmond City | sale: 2026-06-22
+2026-05-15 17:31:26,927  INFO    [246/271] ADDED — 517 BYSWICK LANE, RICHMOND | county: Richmond City | sale: 2026-06-22
+2026-05-15 17:31:26,928  INFO    [247/271] ADDED — 12575 Webb Road, Disputanta | county: unknown | sale: 2009-05-21
+2026-05-15 17:31:26,928  INFO    [248/271] ADDED — 222 Henry Clay Road, Ashland | county: Hanover | sale: 2026-05-18
+2026-05-15 17:31:26,929  INFO    [249/271] ADDED — 3812 RIDDLES BRIDGE ROAD, GOOCHLAND | county: unknown | sale: 2026-06-08
+2026-05-15 17:31:26,930  INFO    [250/271] ADDED — 3016 Royal Virginia Parkway Louisa, VA 23093,  | county: unknown | sale: TBD
+2026-05-15 17:31:26,930  INFO    [251/271] ADDED — 10384 SLIDINGROCK DRIVE, MECHANICSVILLE | county: Hanover | sale: 2026-06-08
+2026-05-15 17:31:26,931  INFO    [252/271] ADDED — 1205 NORTH 31ST STREET, RICHMOND | county: Richmond City | sale: 2026-06-08
+2026-05-15 17:31:26,931  INFO    [253/271] ADDED — 31 Cosner Road, Louisa | county: Louisa | sale: 2026-05-15
+2026-05-15 17:31:26,932  INFO    [254/271] ADDED — 7432 TRAILING ROCK ROAD, PRINCE GEORGE | county: unknown | sale: 2026-06-08
+2026-05-15 17:31:26,932  INFO    [255/271] ADDED — 7704 Hungary Woods Place, Glen Allen | county: Henrico | sale: 2025-06-11
+2026-05-15 17:31:26,933  INFO    [256/271] ADDED — 100 West Main Street, Louisa | county: Louisa | sale: 2026-05-14
+2026-05-15 17:31:26,933  INFO    [257/271] ADDED — 3016 Royal Virginia Parkway Louisa, VA 23093,  | county: unknown | sale: TBD
+2026-05-15 17:31:26,934  INFO    [258/271] ADDED — 14204 FIDDLERS RIDGE PL, MIDLOTHIAN | county: Chesterfield | sale: 2026-06-15
+2026-05-15 17:31:26,934  INFO    [259/271] ADDED — 1803 DINWIDDIE AVENUE, RICHMOND | county: Richmond City | sale: 2026-06-08
+2026-05-15 17:31:26,935  INFO    [260/271] ADDED — 5926 E STONEPATH GARDEN DRIVE, CHESTER | county: Chesterfield | sale: 2026-06-08
+2026-05-15 17:31:26,935  INFO    [261/271] ADDED — 3515 CHESDIN BOULEVARD, SUTHERLAND | county: unknown | sale: 2026-06-08
+2026-05-15 17:31:26,936  INFO    [262/271] ADDED — 127 N FERN AVE, HENRICO | county: Henrico | sale: 2026-06-15
+2026-05-15 17:31:26,936  INFO    [263/271] ADDED — 3829 Pinewood Glen Lane, Richmond | county: Richmond City | sale: 2026-05-12
+2026-05-15 17:31:26,937  INFO    [264/271] ADDED — 9212 STEPHENS MANOR DRIVE, MECHANICSVILLE | county: Hanover | sale: 2026-06-08
+2026-05-15 17:31:26,937  INFO    [265/271] ADDED — 4225 FORDHAM ROAD, NORTH CHESTERFIELD | county: Chesterfield | sale: 2026-06-15
+2026-05-15 17:31:26,938  INFO    [266/271] ADDED — 232 VIRGINIA AVENUE, COLONIAL HEIGHTS | county: unknown | sale: 2026-06-08
+2026-05-15 17:31:26,938  INFO    [267/271] ADDED — 1513 LINCOLN PLACE, HOPEWELL | county: unknown | sale: 2026-06-08
+2026-05-15 17:31:26,939  INFO    [268/271] ADDED — 1881 SHALLOW WELL ROAD, MANAKIN SABOT | county: unknown | sale: 2026-06-08
+2026-05-15 17:31:26,939  INFO    [269/271] ADDED — 10868 White Dogwood Drive, Providence Forge | county: unknown | sale: 2026-05-20
+2026-05-15 17:31:26,940  INFO    [270/271] ADDED — 12325 PETREL XING, MIDLOTHIAN | county: Chesterfield | sale: 2026-06-15
+2026-05-15 17:31:26,940  INFO    [271/271] ADDED — 5805 MEADOWVIEW DR, SOUTH CHESTERFIELD | county: Chesterfield | sale: 2026-05-28
+2026-05-15 17:31:26,941  INFO    Richmond Times-Dispatch summary: 261 added | 10 skipped (no address) | 271 total blocks
+2026-05-15 17:31:26,982  INFO    Richmond Times-Dispatch: found 261 listings total
+2026-05-15 17:31:26,990  INFO  Saved 261 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_richmond.json
+2026-05-15 17:31:26,990  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:31:27,203  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_richmond.json
+2026-05-15 17:31:27,205  INFO  Loaded 261 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_richmond.json
+2026-05-15 17:31:27,252  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:31:28,656  INFO    Header row confirmed (30 columns)
+2026-05-15 17:31:28,656  INFO    3 addresses already in sheet
+2026-05-15 17:31:28,657  INFO    No enrichment gaps to fill on existing rows.
+2026-05-15 17:31:28,658  INFO    Appending 172 new row(s)…
+2026-05-15 17:31:29,141  INFO    ✓ Added 172 new listing(s) to Google Sheet
+2026-05-15 17:31:30,277  INFO    ✓ Summary tab updated — 175 total properties
+
+────────────────────────────────────────────────────────────
+  Pipeline: Culpeper Star-Exponent
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:31:30,457  INFO  Starting Column.us scraper for: Culpeper Star-Exponent
+2026-05-15 17:31:30,457  INFO    URL with date filter: https://starexponent.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:31:30,987  INFO    Culpeper Star-Exponent: loading https://starexponent.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:31:40,692  INFO    Culpeper Star-Exponent: clicked 'Load more' (1x)
+2026-05-15 17:31:43,199  INFO    Culpeper Star-Exponent: 'Load more' exhausted after 1 click(s)
+2026-05-15 17:31:43,203  INFO    Culpeper Star-Exponent: 0 individual notice URL(s) found
+2026-05-15 17:31:43,229  INFO    Culpeper Star-Exponent: 7 total listings found
+2026-05-15 17:31:43,237  INFO    [1/7] ADDED — 4750 Dumfries Rd, Catlett | county: Fauquier | sale: 2026-06-18
+2026-05-15 17:31:43,238  INFO    [2/7] ADDED — 15160 Douglas Street, Culpeper | county: Culpeper | sale: 2026-05-21
+2026-05-15 17:31:43,239  INFO    [3/7] ADDED — 15160 Douglas Street, Culpeper | county: Culpeper | sale: 2026-05-21
+2026-05-15 17:31:43,240  INFO    [4/7] ADDED — 2278 Blue Spruce Dr, Culpeper | county: Culpeper | sale: 2026-05-18
+2026-05-15 17:31:43,242  INFO    [5/7] ADDED — 11457 Homeland Rd, Rixeyville | county: unknown | sale: 2026-05-20
+2026-05-15 17:31:43,243  INFO    [6/7] ADDED — 2278 Blue Spruce Dr, Culpeper | county: Culpeper | sale: 2026-05-18
+2026-05-15 17:31:43,244  INFO    [7/7] ADDED — 11457 Homeland Rd, Rixeyville | county: unknown | sale: 2026-05-20
+2026-05-15 17:31:43,244  INFO    Culpeper Star-Exponent summary: 7 added | 0 skipped (no address) | 7 total blocks
+2026-05-15 17:31:43,283  INFO    Culpeper Star-Exponent: found 7 listings total
+2026-05-15 17:31:43,284  INFO  Saved 7 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_culpeper.json
+2026-05-15 17:31:43,284  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:31:43,441  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_culpeper.json
+2026-05-15 17:31:43,441  INFO  Loaded 7 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_culpeper.json
+2026-05-15 17:31:43,482  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:31:44,405  INFO    Header row confirmed (30 columns)
+2026-05-15 17:31:44,405  INFO    175 addresses already in sheet
+2026-05-15 17:31:44,405  INFO    Flagged 11 past-auction row(s) as 'Sale Passed – Verify'
+2026-05-15 17:31:44,406  INFO    Back-filling 11 empty cell(s) on existing rows…
+2026-05-15 17:31:44,582  INFO    ✓ Enrichment back-fill complete (11 cells)
+2026-05-15 17:31:44,582  INFO    Appending 4 new row(s)…
+2026-05-15 17:31:44,757  INFO    ✓ Added 4 new listing(s) to Google Sheet
+2026-05-15 17:31:45,263  INFO    ✓ Summary tab updated — 179 total properties
+
+────────────────────────────────────────────────────────────
+  Pipeline: Roanoke Times
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:31:45,443  INFO  Starting Column.us scraper for: Roanoke Times
+2026-05-15 17:31:45,443  INFO    URL with date filter: https://roanoke.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:31:45,795  INFO    Roanoke Times: loading https://roanoke.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:31:55,535  INFO    Roanoke Times: clicked 'Load more' (1x)
+2026-05-15 17:31:58,056  INFO    Roanoke Times: clicked 'Load more' (2x)
+2026-05-15 17:32:00,581  INFO    Roanoke Times: clicked 'Load more' (3x)
+2026-05-15 17:32:03,105  INFO    Roanoke Times: clicked 'Load more' (4x)
+2026-05-15 17:32:05,629  INFO    Roanoke Times: clicked 'Load more' (5x)
+2026-05-15 17:32:08,138  INFO    Roanoke Times: 'Load more' exhausted after 5 click(s)
+2026-05-15 17:32:08,143  INFO    Roanoke Times: 0 individual notice URL(s) found
+2026-05-15 17:32:08,176  INFO    Roanoke Times: 103 total listings found
+2026-05-15 17:32:08,180  INFO    [1/103] ADDED — 4022 VERMONT AVE NW, ROANOKE | county: unknown | sale: 2026-06-09
+2026-05-15 17:32:08,181  INFO    [2/103] ADDED — 2713 Spring Hollow Avenue, Roanoke | county: unknown | sale: 2026-05-26
+2026-05-15 17:32:08,182  INFO    [3/103] ADDED — 2542 Berkley Avenue, SW, Roanoke | county: unknown | sale: 2026-05-26
+2026-05-15 17:32:08,183  INFO    [4/103] ADDED — 1151 Penmar Ave SE, Roanoke | county: unknown | sale: 2026-06-04
+2026-05-15 17:32:08,184  INFO    [5/103] ADDED — 1606 Kenwood Blvd. SE, Roanoke | county: unknown | sale: 2026-05-26
+2026-05-15 17:32:08,185  INFO    [6/103] ADDED — 318 DENTS ROAD, ROANOKE | county: unknown | sale: 2026-06-09
+2026-05-15 17:32:08,187  INFO    [7/103] ADDED — 5115 Cave Spring Lane, Roanoke | county: unknown | sale: 2026-05-21
+2026-05-15 17:32:08,188  INFO    [8/103] ADDED — 1152 AUGUSTA PLACE, LYNCHBURG | county: unknown | sale: 2026-06-09
+2026-05-15 17:32:08,188  INFO    [9/103] ADDED — 1116 Fairfax Avenue Northwest, Roanoke | county: unknown | sale: 2026-06-15
+2026-05-15 17:32:08,189  INFO    [10/103] ADDED — 512 CHESTNUT AVENUE NW, ROANOKE | county: unknown | sale: 2026-07-09
+2026-05-15 17:32:08,189  INFO    [11/103] ADDED — 5290 RIVER BEND LANE, SALEM | county: unknown | sale: 2026-07-09
+2026-05-15 17:32:08,190  INFO    [12/103] ADDED — 5959 MERRIMAN ROAD, ROANOKE | county: unknown | sale: 2026-07-09
+2026-05-15 17:32:08,191  INFO    [13/103] ADDED — 3828 Woodleigh Road NW, Roanoke | county: unknown | sale: 2026-06-02
+2026-05-15 17:32:08,191  INFO    [14/103] ADDED — 6113 GAUGIN CIRCLE, ROANOKE | county: unknown | sale: 2026-07-09
+2026-05-15 17:32:08,192  INFO    [15/103] ADDED — 2629 TUCK ROAD, MONETA | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:08,193  INFO    [16/103] ADDED — 1608 NICOPOLIS DRIVE, BEDFORD | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:08,193  INFO    [17/103] ADDED — 3306 Garden City Blvd SE, Roanoke | county: unknown | sale: 2026-05-28
+2026-05-15 17:32:08,194  INFO    [18/103] ADDED — 1245 BOONSBORO MEADOWS DRIVE, LYNCHBURG | county: unknown | sale: 2026-06-04
+2026-05-15 17:32:08,195  INFO    [19/103] ADDED — 218 CHURCH STREET, RICH CREEK | county: unknown | sale: 2026-07-06
+2026-05-15 17:32:08,197  INFO    [20/103] ADDED — 1322 LAKERIDGE CIRCLE, TROUTVILLE | county: unknown | sale: TBD
+2026-05-15 17:32:08,197  INFO    [21/103] ADDED — 525 Westwood Boulevard Northwest, Roanoke | county: unknown | sale: 2026-06-08
+2026-05-15 17:32:08,199  INFO    [22/103] ADDED — 3046 LINWOOD ROAD NW, ROANOKE | county: unknown | sale: TBD
+2026-05-15 17:32:08,200  INFO    [23/103] ADDED — 3937 Kentucky Ave. NW, Roanoke | county: unknown | sale: 2026-05-14
+2026-05-15 17:32:08,200  INFO    [24/103] ADDED — 4457 Northridge St. NE, Roanoke | county: unknown | sale: 2026-06-04
+2026-05-15 17:32:08,201  INFO    [25/103] ADDED — 1151 Penmar Ave SE, Roanoke | county: unknown | sale: 2026-06-04
+2026-05-15 17:32:08,202  INFO    [26/103] ADDED — 5115 Cave Spring Lane, Roanoke | county: unknown | sale: 2026-05-21
+2026-05-15 17:32:08,202  INFO    [27/103] ADDED — 1152 AUGUSTA PLACE, LYNCHBURG | county: unknown | sale: 2026-06-09
+2026-05-15 17:32:08,203  INFO    [28/103] ADDED — 3828 Woodleigh Road NW, Roanoke | county: unknown | sale: 2026-06-02
+2026-05-15 17:32:08,204  INFO    [29/103] ADDED — 2629 TUCK ROAD, MONETA | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:08,205  INFO    [30/103] ADDED — 5346 WEST RIVER ROAD, SALEM | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,205  INFO    [31/103] ADDED — 6113 GAUGIN CIRCLE, ROANOKE | county: unknown | sale: 2026-07-09
+2026-05-15 17:32:08,206  INFO    [32/103] ADDED — 1608 NICOPOLIS DRIVE, BEDFORD | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:08,207  INFO    [33/103] ADDED — 512 CHESTNUT AVENUE NW, ROANOKE | county: unknown | sale: 2026-07-09
+2026-05-15 17:32:08,207  INFO    [34/103] ADDED — 5290 RIVER BEND LANE, SALEM | county: unknown | sale: 2026-07-09
+2026-05-15 17:32:08,208  INFO    [35/103] ADDED — 3306 Garden City Blvd SE, Roanoke | county: unknown | sale: 2026-05-28
+2026-05-15 17:32:08,208  INFO    [36/103] ADDED — 109 MIDWAY ST, NARROWS | county: unknown | sale: 2026-07-06
+2026-05-15 17:32:08,209  INFO    [37/103] ADDED — 525 Westwood Boulevard Northwest, Roanoke | county: unknown | sale: 2026-06-08
+2026-05-15 17:32:08,209  INFO    [38/103] ADDED — 3324 BANDY ROAD, ROANOKE | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,210  INFO    [39/103] ADDED — 645 HIGHLAND AVENUE SE, ROANOKE | county: unknown | sale: TBD
+2026-05-15 17:32:08,211  INFO    [40/103] ADDED — 167 BOYD STREET, BUCHANAN | county: unknown | sale: 2026-05-27
+2026-05-15 17:32:08,212  INFO    [41/103] ADDED — 4202 OLD MOUNTAIN ROAD NE, ROANOKE | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,212  INFO    [42/103] ADDED — 3234 Forest Hill Avenue NW, Roanoke | county: unknown | sale: TBD
+2026-05-15 17:32:08,212  INFO    [43/103] SKIPPED — no address | snippet: ', a newspaper of general circulation in Augusta County, Virginia. The'
+2026-05-15 17:32:08,212  INFO    [44/103] SKIPPED — no address | snippet: 'shall send the Certificate of Publication and the bill to: Aldridge Pite LLP, c/o Colten Johnson, 81'
+2026-05-15 17:32:08,213  INFO    [45/103] ADDED — 1206 Floyd Avenue SW, Roanoke | county: unknown | sale: TBD
+2026-05-15 17:32:08,213  INFO    [46/103] ADDED — 580 East Main Street, Suite 600 Norfolk | county: unknown | sale: TBD
+2026-05-15 17:32:08,213  INFO    [47/103] ADDED — 3937 Kentucky Ave. NW, Roanoke | county: unknown | sale: 2026-05-14
+2026-05-15 17:32:08,214  INFO    [48/103] ADDED — 4457 Northridge St. NE, Roanoke | county: unknown | sale: 2026-06-04
+2026-05-15 17:32:08,215  INFO    [49/103] ADDED — 1002 MURRAY AVE SE, ROANOKE | county: unknown | sale: 2026-07-16
+2026-05-15 17:32:08,216  INFO    [50/103] ADDED — 234 CHESTNUT STREET, SALEM | county: unknown | sale: 2026-05-26
+2026-05-15 17:32:08,217  INFO    [51/103] ADDED — 301 Bertha Street, Pulaski | county: unknown | sale: 2026-05-22
+2026-05-15 17:32:08,217  INFO    [52/103] ADDED — 307 CHESTNUT AVENUE, RURAL RETREAT | county: unknown | sale: 2026-06-23
+2026-05-15 17:32:08,218  INFO    [53/103] ADDED — 4525 Cumberland Drive, Christiansburg | county: unknown | sale: 2026-06-23
+2026-05-15 17:32:08,219  INFO    [54/103] ADDED — 2034 Clinton Avenue SE, Roanoke | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,220  INFO    [55/103] ADDED — 5346 WEST RIVER ROAD, SALEM | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,220  INFO    [56/103] ADDED — 66 WOOD LANE, TROUTVILLE | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,221  INFO    [57/103] ADDED — 135 KNOLLWOOD DRIVE, TROUTVILLE | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,221  INFO    [58/103] ADDED — 111 PEMBROKE STREET, PEMBROKE | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,222  INFO    [59/103] ADDED — 3306 Garden City Blvd SE, Roanoke | county: unknown | sale: 2026-05-28
+2026-05-15 17:32:08,222  INFO    [60/103] ADDED — 2629 AVENEL AVE SW, ROANOKE | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,223  INFO    [61/103] ADDED — 1872 CROCKETT ROAD, FOREST | county: unknown | sale: 2026-05-26
+2026-05-15 17:32:08,223  INFO    [62/103] ADDED — 2826 BEAVER BROOK DRIVE, SALEM | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,224  INFO    [63/103] ADDED — 3324 BANDY ROAD, ROANOKE | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,225  INFO    [64/103] ADDED — 645 HIGHLAND AVENUE SE, ROANOKE | county: unknown | sale: TBD
+2026-05-15 17:32:08,226  INFO    [65/103] ADDED — 1334 Morton Ave SE, Roanoke | county: unknown | sale: 2026-04-30
+2026-05-15 17:32:08,226  INFO    [66/103] SKIPPED — no address | snippet: '& World News COL-1002177 ROANOKE COUNTY, VIRGINIA 2026-04-28 THE'
+2026-05-15 17:32:08,226  INFO    [67/103] ADDED — 528 MCDOWELL AVENUE NW, ROANOKE | county: unknown | sale: 2026-05-26
+2026-05-15 17:32:08,227  INFO    [68/103] ADDED — 3921 HYDE PARK DRIVE, ROANOKE | county: unknown | sale: 2026-05-26
+2026-05-15 17:32:08,227  INFO    [69/103] ADDED — 4202 OLD MOUNTAIN ROAD NE, ROANOKE | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,227  INFO    [70/103] ADDED — 3234 Forest Hill Avenue NW, Roanoke | county: unknown | sale: TBD
+2026-05-15 17:32:08,227  INFO    [71/103] SKIPPED — no address | snippet: ', a newspaper of general circulation in Augusta County, Virginia. The'
+2026-05-15 17:32:08,227  INFO    [72/103] SKIPPED — no address | snippet: 'shall send the Certificate of Publication and the bill to: Aldridge Pite LLP, c/o Colten Johnson, 81'
+2026-05-15 17:32:08,228  INFO    [73/103] ADDED — 1206 Floyd Avenue SW, Roanoke | county: unknown | sale: TBD
+2026-05-15 17:32:08,228  INFO    [74/103] ADDED — 580 East Main Street, Suite 600 Norfolk | county: unknown | sale: TBD
+2026-05-15 17:32:08,229  INFO    [75/103] ADDED — 301 Bertha Street, Pulaski | county: unknown | sale: 2026-05-22
+2026-05-15 17:32:08,229  INFO    [76/103] ADDED — 307 CHESTNUT AVENUE, RURAL RETREAT | county: unknown | sale: 2026-06-23
+2026-05-15 17:32:08,230  INFO    [77/103] ADDED — 1059 SHANE MEADOW COURT, FOREST | county: unknown | sale: 2026-06-18
+2026-05-15 17:32:08,231  INFO    [78/103] ADDED — 6009 COUNTRY HOMES RD, ROANOKE | county: unknown | sale: 2026-04-30
+2026-05-15 17:32:08,231  INFO    [79/103] ADDED — 66 WOOD LANE, TROUTVILLE | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,232  INFO    [80/103] ADDED — 810 Ruddel Rd., Vinton | county: unknown | sale: 2026-05-15
+2026-05-15 17:32:08,232  INFO    [81/103] ADDED — 146 Hannah Circle, New Castle | county: unknown | sale: 2026-05-18
+2026-05-15 17:32:08,233  INFO    [82/103] ADDED — 135 KNOLLWOOD DRIVE, TROUTVILLE | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,233  INFO    [83/103] ADDED — 111 PEMBROKE STREET, PEMBROKE | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,234  INFO    [84/103] ADDED — 3306 Garden City Blvd SE, Roanoke | county: unknown | sale: 2026-05-28
+2026-05-15 17:32:08,234  INFO    [85/103] ADDED — 2629 AVENEL AVE SW, ROANOKE | county: unknown | sale: 2026-06-25
+2026-05-15 17:32:08,235  INFO    [86/103] ADDED — 6409 Parrott Mountain Road, Parrott | county: unknown | sale: 2026-05-18
+2026-05-15 17:32:08,235  INFO    [87/103] ADDED — 1334 Morton Ave SE, Roanoke | county: unknown | sale: 2026-04-30
+2026-05-15 17:32:08,236  INFO    [88/103] SKIPPED — no address | snippet: '& World News COL-1002177 ROANOKE COUNTY, VIRGINIA 2026-04-21 THE'
+2026-05-15 17:32:08,236  INFO    [89/103] ADDED — 3234 Forest Hill Avenue NW, Roanoke | county: unknown | sale: TBD
+2026-05-15 17:32:08,236  INFO    [90/103] SKIPPED — no address | snippet: ', a newspaper of general circulation in Augusta County, Virginia. The'
+2026-05-15 17:32:08,236  INFO    [91/103] SKIPPED — no address | snippet: 'shall send the Certificate of Publication and the bill to: Aldridge Pite LLP, c/o Colten Johnson, 81'
+2026-05-15 17:32:08,236  INFO    [92/103] ADDED — 1206 Floyd Avenue SW, Roanoke | county: unknown | sale: TBD
+2026-05-15 17:32:08,237  INFO    [93/103] ADDED — 580 East Main Street, Suite 600 Norfolk | county: unknown | sale: TBD
+2026-05-15 17:32:08,237  INFO    [94/103] ADDED — 251 NIXON RD, WYTHEVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 17:32:08,238  INFO    [95/103] ADDED — 4022 VERMONT AVE NW, ROANOKE | county: unknown | sale: 2026-06-09
+2026-05-15 17:32:08,238  INFO    [96/103] ADDED — 318 DENTS ROAD, ROANOKE | county: unknown | sale: 2026-06-09
+2026-05-15 17:32:08,239  INFO    [97/103] ADDED — 1938 AVON ROAD SW, ROANOKE | county: unknown | sale: 2026-06-09
+2026-05-15 17:32:08,239  INFO    [98/103] ADDED — 1152 AUGUSTA PLACE, LYNCHBURG | county: unknown | sale: 2026-06-09
+2026-05-15 17:32:08,240  INFO    [99/103] ADDED — 810 Ruddel Rd., Vinton | county: unknown | sale: 2026-05-15
+2026-05-15 17:32:08,241  INFO    [100/103] ADDED — 6009 COUNTRY HOMES RD, ROANOKE | county: unknown | sale: 2026-04-30
+2026-05-15 17:32:08,241  INFO    [101/103] ADDED — 216 Nancy Drive NW, Roanoke | county: unknown | sale: TBD
+2026-05-15 17:32:08,242  INFO    [102/103] ADDED — 146 Hannah Circle, New Castle | county: unknown | sale: 2026-05-18
+2026-05-15 17:32:08,242  INFO    [103/103] ADDED — 166 VERNDALE DRIVE, ROANOKE | county: unknown | sale: 2026-05-07
+2026-05-15 17:32:08,242  INFO    Roanoke Times summary: 95 added | 8 skipped (no address) | 103 total blocks
+2026-05-15 17:32:08,273  INFO    Roanoke Times: found 95 listings total
+2026-05-15 17:32:08,278  INFO  Saved 95 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_roanoke.json
+2026-05-15 17:32:08,278  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:32:08,500  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_roanoke.json
+2026-05-15 17:32:08,501  INFO  Loaded 95 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_roanoke.json
+2026-05-15 17:32:08,554  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:32:10,591  INFO    Header row confirmed (30 columns)
+2026-05-15 17:32:10,592  INFO    179 addresses already in sheet
+2026-05-15 17:32:10,592  INFO    No enrichment gaps to fill on existing rows.
+2026-05-15 17:32:10,593  INFO    Appending 57 new row(s)…
+2026-05-15 17:32:11,064  INFO    ✓ Added 57 new listing(s) to Google Sheet
+2026-05-15 17:32:12,056  INFO    ✓ Summary tab updated — 236 total properties
+
+────────────────────────────────────────────────────────────
+  Pipeline: Lynchburg News & Advance
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:32:12,233  INFO  Starting Column.us scraper for: Lynchburg News & Advance
+2026-05-15 17:32:12,233  INFO    URL with date filter: https://newsadvance.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:32:12,708  INFO    Lynchburg News & Advance: loading https://newsadvance.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:32:22,432  INFO    Lynchburg News & Advance: clicked 'Load more' (1x)
+2026-05-15 17:32:24,953  INFO    Lynchburg News & Advance: clicked 'Load more' (2x)
+2026-05-15 17:32:27,477  INFO    Lynchburg News & Advance: clicked 'Load more' (3x)
+2026-05-15 17:32:29,983  INFO    Lynchburg News & Advance: 'Load more' exhausted after 3 click(s)
+2026-05-15 17:32:29,988  INFO    Lynchburg News & Advance: 0 individual notice URL(s) found
+2026-05-15 17:32:30,022  INFO    Lynchburg News & Advance: 59 total listings found
+2026-05-15 17:32:30,028  INFO    [1/59] ADDED — 209 Stevens Street, Appomattox | county: unknown | sale: 2026-05-19
+2026-05-15 17:32:30,029  INFO    [2/59] ADDED — 1113 8th Street, Lynchburg | county: unknown | sale: 2026-06-11
+2026-05-15 17:32:30,030  INFO    [3/59] ADDED — 89709; 237 Ragland Rd TRUSTEE SALE 237 Ragland Rd, Madison Heights | county: Amherst | sale: 2026-07-15
+2026-05-15 17:32:30,032  INFO    [4/59] ADDED — 6301 JOPPA MILL RD, MONETA | county: unknown | sale: 2026-07-29
+2026-05-15 17:32:30,032  INFO    [5/59] ADDED — 210 CONNECTICUT AVENUE, LYNCHBURG | county: unknown | sale: 2026-07-15
+2026-05-15 17:32:30,033  INFO    [6/59] ADDED — 109 CRESTVIEW DRIVE, RUSTBURG | county: unknown | sale: 2026-07-15
+2026-05-15 17:32:30,034  INFO    [7/59] ADDED — 634 Phoebe Pond Road, Concord | county: unknown | sale: 2026-06-03
+2026-05-15 17:32:30,035  INFO    [8/59] ADDED — 563 Knoll Woods Drive, Rustburg | county: unknown | sale: 2026-06-16
+2026-05-15 17:32:30,036  INFO    [9/59] ADDED — 1144 Sheffield Drive, Lynchburg City TRUSTEE’S SALE OF PROPERTY 1144 Sheffield Drive Lynchburg | county: unknown | sale: TBD
+2026-05-15 17:32:30,037  INFO    [10/59] ADDED — 402 DEBORAH DR, LYNCHBURG | county: unknown | sale: 2026-07-15
+2026-05-15 17:32:30,038  INFO    [11/59] ADDED — 153 ANGEL HOLLOW LANE, AMHERST | county: unknown | sale: 2026-06-10
+2026-05-15 17:32:30,039  INFO    [12/59] ADDED — 215 OLIVER ROAD, ALTAVISTA | county: unknown | sale: 2026-06-09
+2026-05-15 17:32:30,040  INFO    [13/59] ADDED — 229 WINESAP ROAD AND ¾ ACRE LOT, MADISON HEIGHTS TAX MAP NOS. 147C-8B-85A, 86-90, 91A-93A and 147C-8-B-117A COUNTY OF AMHERST, VIRGINIA In execution of a Credit Line Deed of Trust dated March 16, 2007, in the original principal sum of $40,000.00 recorded in the Amherst County Circuit Court Clerk’s Office in Deed Book 1074, Page 421, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payment of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property locally known as 229 Winesap Road described as “All of lots 86, 87, 88, 89, 90, and part of Lots 85, 91, 92, 93, Block B, MIDWAY HEIGHTS, shown on a plat dated April 21, 1941, recorded in Plat Book C, at Page 1” and a ¾ acre lot described on a plat dated May 11, 1953 recorded in Deed Book 338, Page 163, which said properties are located in Madison Heights, Virginia. Reference is hereby made to the Credit Line Deed of Trust for a more particular description of the properties. This sale of real property will be held on Wednesday, May 13, 2026, at 9:00 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Amherst, Virginia, located at 113 Taylor Street, Amherst | county: unknown | sale: 2026-05-13
+2026-05-15 17:32:30,041  INFO    [14/59] ADDED — 129 LINDEN AVE, LYNCHBURG | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,042  INFO    [15/59] ADDED — 209 Stevens Street, Appomattox | county: unknown | sale: 2026-05-19
+2026-05-15 17:32:30,042  INFO    [16/59] ADDED — 1113 8th Street, Lynchburg | county: unknown | sale: 2026-06-11
+2026-05-15 17:32:30,043  INFO    [17/59] ADDED — 500 PERRYMONT AVENUE, LYNCHBURG | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,044  INFO    [18/59] ADDED — 466 PEARSON DRIVE, RUSTBURG | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,045  INFO    [19/59] ADDED — 354 LYNCHS FERRY ROAD, MADISON HEIGHTS | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,045  INFO    [20/59] ADDED — 175 PENN LANE, MADISON HEIGHTS | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,046  INFO    [21/59] ADDED — 215 ODINS BOW DRIVE, MADISON HEIGHTS | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,047  INFO    [22/59] ADDED — 634 Phoebe Pond Road, Concord | county: unknown | sale: 2026-06-03
+2026-05-15 17:32:30,047  INFO    [23/59] ADDED — 295 CYPRESS COURT, APPOMATTOX | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,048  INFO    [24/59] ADDED — 105 Courtland Dr, Vinton | county: unknown | sale: 2026-06-03
+2026-05-15 17:32:30,049  INFO    [25/59] ADDED — 701 KENMORE ROAD, AMHERST | county: unknown | sale: 2026-05-26
+2026-05-15 17:32:30,049  INFO    [26/59] ADDED — 160 COFFEE RD, LYNCHBURG | county: unknown | sale: 2026-06-04
+2026-05-15 17:32:30,050  INFO    [27/59] ADDED — 4.45 ACRES+/- ORANGE STREET TAX MAP NO. 215-A-30-T TOWN OF BEDFORD, VIRGINIA In execution of a Credit Line Deed of Trust dated June 22, 2011, in the original principal sum of $106,000.00 recorded in the Bedford County Circuit Court Clerk’s Office as Instrument Number 110005920, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payments of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property described as: All that certain lot or parcel of land, together with the buildings and improvements thereon and the privileges and appurtenances thereunto belonging, situate in the Town of Bedford, Virginia, fronting on Orange Street, containing 4.91 acres, as more particularly described in a Deed of Correction dated July 17, 2008, recorded in the Clerk’s Office of the Circuit Court of Bedford County, Virginia, as Instrument Number 080010097. LESS AND EXCEPT “Parcel A” containing 0.457 acre conveyed by Deed dated April 23, 2012, recorded in the Clerk’s Office of the Circuit Court of Bedford County, Virginia, as Instrument Number 120004300. This sale of real property will be held on Wednesday, May 13, 2026, at 10:30 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Bedford, Virginia, located at 123 East Main Street, Bedford, Virginia. TERMS: Cash or certified check made payable to Caskie & Frost; bidder’s deposit of $5,000.00 will be required at the sale. Settlement shall be within thirty (30) days of the sale. The property and any improvements thereon will be sold “AS IS”, without representations or warranties of any kind. Conveyance shall be made by Special Warranty Deed. The Substitute Trustee will not deliver possession of the Property. Other terms and conditions may be announced at the sale. Announcements made on day of sale take precedence over all other advertised terms and conditions. Pursuant to the Federal Fair Debt Collection Practices Act, we advise you that this communication is from a debt collector attempting to collect the indebtedness referred to herein and any information we obtain will be used for that purpose. John R. Alford, Jr. Substitute Trustee P. O. Box 6320 Lynchburg | county: unknown | sale: 2026-05-13
+2026-05-15 17:32:30,051  INFO    [28/59] ADDED — 229 WINESAP ROAD AND ¾ ACRE LOT, MADISON HEIGHTS TAX MAP NOS. 147C-8B-85A, 86-90, 91A-93A and 147C-8-B-117A COUNTY OF AMHERST, VIRGINIA In execution of a Credit Line Deed of Trust dated March 16, 2007, in the original principal sum of $40,000.00 recorded in the Amherst County Circuit Court Clerk’s Office in Deed Book 1074, Page 421, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payment of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property locally known as 229 Winesap Road described as “All of lots 86, 87, 88, 89, 90, and part of Lots 85, 91, 92, 93, Block B, MIDWAY HEIGHTS, shown on a plat dated April 21, 1941, recorded in Plat Book C, at Page 1” and a ¾ acre lot described on a plat dated May 11, 1953 recorded in Deed Book 338, Page 163, which said properties are located in Madison Heights, Virginia. Reference is hereby made to the Credit Line Deed of Trust for a more particular description of the properties. This sale of real property will be held on Wednesday, May 13, 2026, at 9:00 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Amherst, Virginia, located at 113 Taylor Street, Amherst | county: unknown | sale: 2026-05-13
+2026-05-15 17:32:30,052  INFO    [29/59] ADDED — 129 LINDEN AVE, LYNCHBURG | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,053  INFO    [30/59] ADDED — 215 ODINS BOW DRIVE, MADISON HEIGHTS | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,053  INFO    [31/59] ADDED — 144 Whispering Oaks Ln, Bear Creek Road, Rustburg | county: unknown | sale: 2026-05-27
+2026-05-15 17:32:30,054  INFO    [32/59] ADDED — 354 LYNCHS FERRY ROAD, MADISON HEIGHTS | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,055  INFO    [33/59] ADDED — 466 PEARSON DRIVE, RUSTBURG | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,055  INFO    [34/59] ADDED — 175 PENN LANE, MADISON HEIGHTS | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,056  INFO    [35/59] ADDED — 500 PERRYMONT AVENUE, LYNCHBURG | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,057  INFO    [36/59] ADDED — 212 Ogden Road, Altavista | county: unknown | sale: 2026-05-21
+2026-05-15 17:32:30,057  INFO    [37/59] ADDED — 105 Courtland Dr, Vinton | county: unknown | sale: 2026-06-03
+2026-05-15 17:32:30,058  INFO    [38/59] ADDED — 1121 Red Hill Road, Big Island | county: Bedford | sale: 2026-05-28
+2026-05-15 17:32:30,059  INFO    [39/59] ADDED — 295 CYPRESS COURT, APPOMATTOX | county: unknown | sale: 2026-07-02
+2026-05-15 17:32:30,059  INFO    [40/59] ADDED — 3101 LINK ROAD, APARTMENT 49, LYNCHBURG | county: unknown | sale: 2026-05-26
+2026-05-15 17:32:30,060  INFO    [41/59] ADDED — 210 FOXCROFT DRIVE, MONROE | county: unknown | sale: 2026-05-26
+2026-05-15 17:32:30,060  INFO    [42/59] ADDED — 4387 STAGE RD, CONCORD | county: unknown | sale: 2026-06-18
+2026-05-15 17:32:30,061  INFO    [43/59] ADDED — 4715 DOYLE TERRACE, LYNCHBURG | county: unknown | sale: 2026-05-26
+2026-05-15 17:32:30,061  INFO    [44/59] ADDED — 1140 MINERAL SPRINGS DR, VINTON | county: unknown | sale: 2026-07-15
+2026-05-15 17:32:30,062  INFO    [45/59] ADDED — 229 WINESAP ROAD AND ¾ ACRE LOT, MADISON HEIGHTS TAX MAP NOS. 147C-8B-85A, 86-90, 91A-93A and 147C-8-B-117A COUNTY OF AMHERST, VIRGINIA In execution of a Credit Line Deed of Trust dated March 16, 2007, in the original principal sum of $40,000.00 recorded in the Amherst County Circuit Court Clerk’s Office in Deed Book 1074, Page 421, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payment of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property locally known as 229 Winesap Road described as “All of lots 86, 87, 88, 89, 90, and part of Lots 85, 91, 92, 93, Block B, MIDWAY HEIGHTS, shown on a plat dated April 21, 1941, recorded in Plat Book C, at Page 1” and a ¾ acre lot described on a plat dated May 11, 1953 recorded in Deed Book 338, Page 163, which said properties are located in Madison Heights, Virginia. Reference is hereby made to the Credit Line Deed of Trust for a more particular description of the properties. This sale of real property will be held on Wednesday, May 13, 2026, at 9:00 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Amherst, Virginia, located at 113 Taylor Street, Amherst | county: unknown | sale: 2026-05-13
+2026-05-15 17:32:30,063  INFO    [46/59] ADDED — 4.45 ACRES+/- ORANGE STREET TAX MAP NO. 215-A-30-T TOWN OF BEDFORD, VIRGINIA In execution of a Credit Line Deed of Trust dated June 22, 2011, in the original principal sum of $106,000.00 recorded in the Bedford County Circuit Court Clerk’s Office as Instrument Number 110005920, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payments of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property described as: All that certain lot or parcel of land, together with the buildings and improvements thereon and the privileges and appurtenances thereunto belonging, situate in the Town of Bedford, Virginia, fronting on Orange Street, containing 4.91 acres, as more particularly described in a Deed of Correction dated July 17, 2008, recorded in the Clerk’s Office of the Circuit Court of Bedford County, Virginia, as Instrument Number 080010097. LESS AND EXCEPT “Parcel A” containing 0.457 acre conveyed by Deed dated April 23, 2012, recorded in the Clerk’s Office of the Circuit Court of Bedford County, Virginia, as Instrument Number 120004300. This sale of real property will be held on Wednesday, May 13, 2026, at 10:30 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Bedford, Virginia, located at 123 East Main Street, Bedford, Virginia. TERMS: Cash or certified check made payable to Caskie & Frost; bidder’s deposit of $5,000.00 will be required at the sale. Settlement shall be within thirty (30) days of the sale. The property and any improvements thereon will be sold “AS IS”, without representations or warranties of any kind. Conveyance shall be made by Special Warranty Deed. The Substitute Trustee will not deliver possession of the Property. Other terms and conditions may be announced at the sale. Announcements made on day of sale take precedence over all other advertised terms and conditions. Pursuant to the Federal Fair Debt Collection Practices Act, we advise you that this communication is from a debt collector attempting to collect the indebtedness referred to herein and any information we obtain will be used for that purpose. John R. Alford, Jr. Substitute Trustee P. O. Box 6320 Lynchburg | county: unknown | sale: 2026-05-13
+2026-05-15 17:32:30,064  INFO    [47/59] ADDED — 1547 BLACKWATER RD, EVINGTON | county: Campbell | sale: 2026-07-15
+2026-05-15 17:32:30,065  INFO    [48/59] ADDED — 144 Whispering Oaks Ln, Bear Creek Road, Rustburg | county: unknown | sale: 2026-05-27
+2026-05-15 17:32:30,065  INFO    [49/59] ADDED — 212 Ogden Road, Altavista | county: unknown | sale: 2026-05-21
+2026-05-15 17:32:30,066  INFO    [50/59] ADDED — 1121 Red Hill Road, Big Island | county: Bedford | sale: 2026-05-28
+2026-05-15 17:32:30,067  INFO    [51/59] ADDED — 153 ANGEL HOLLOW LANE, AMHERST | county: unknown | sale: 2026-06-10
+2026-05-15 17:32:30,067  INFO    [52/59] ADDED — 4387 STAGE RD, CONCORD | county: unknown | sale: 2026-06-18
+2026-05-15 17:32:30,068  INFO    [53/59] ADDED — 215 OLIVER ROAD, ALTAVISTA | county: unknown | sale: 2026-06-09
+2026-05-15 17:32:30,069  INFO    [54/59] ADDED — 229 WINESAP ROAD AND ¾ ACRE LOT, MADISON HEIGHTS TAX MAP NOS. 147C-8B-85A, 86-90, 91A-93A and 147C-8-B-117A COUNTY OF AMHERST, VIRGINIA In execution of a Credit Line Deed of Trust dated March 16, 2007, in the original principal sum of $40,000.00 recorded in the Amherst County Circuit Court Clerk’s Office in Deed Book 1074, Page 421, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payment of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property locally known as 229 Winesap Road described as “All of lots 86, 87, 88, 89, 90, and part of Lots 85, 91, 92, 93, Block B, MIDWAY HEIGHTS, shown on a plat dated April 21, 1941, recorded in Plat Book C, at Page 1” and a ¾ acre lot described on a plat dated May 11, 1953 recorded in Deed Book 338, Page 163, which said properties are located in Madison Heights, Virginia. Reference is hereby made to the Credit Line Deed of Trust for a more particular description of the properties. This sale of real property will be held on Wednesday, May 13, 2026, at 9:00 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Amherst, Virginia, located at 113 Taylor Street, Amherst | county: unknown | sale: 2026-05-13
+2026-05-15 17:32:30,070  INFO    [55/59] ADDED — 4.45 ACRES+/- ORANGE STREET TAX MAP NO. 215-A-30-T TOWN OF BEDFORD, VIRGINIA In execution of a Credit Line Deed of Trust dated June 22, 2011, in the original principal sum of $106,000.00 recorded in the Bedford County Circuit Court Clerk’s Office as Instrument Number 110005920, amended by an instrument appointing the undersigned as Substitute Trustee, default having been made in the payments of the indebtedness thereby secured and at the instruction of the noteholder, the undersigned Substitute Trustee, will offer for sale at public auction the property described as: All that certain lot or parcel of land, together with the buildings and improvements thereon and the privileges and appurtenances thereunto belonging, situate in the Town of Bedford, Virginia, fronting on Orange Street, containing 4.91 acres, as more particularly described in a Deed of Correction dated July 17, 2008, recorded in the Clerk’s Office of the Circuit Court of Bedford County, Virginia, as Instrument Number 080010097. LESS AND EXCEPT “Parcel A” containing 0.457 acre conveyed by Deed dated April 23, 2012, recorded in the Clerk’s Office of the Circuit Court of Bedford County, Virginia, as Instrument Number 120004300. This sale of real property will be held on Wednesday, May 13, 2026, at 10:30 A.M., at the main entrance to the Courthouse for the Circuit Court of the County of Bedford, Virginia, located at 123 East Main Street, Bedford, Virginia. TERMS: Cash or certified check made payable to Caskie & Frost; bidder’s deposit of $5,000.00 will be required at the sale. Settlement shall be within thirty (30) days of the sale. The property and any improvements thereon will be sold “AS IS”, without representations or warranties of any kind. Conveyance shall be made by Special Warranty Deed. The Substitute Trustee will not deliver possession of the Property. Other terms and conditions may be announced at the sale. Announcements made on day of sale take precedence over all other advertised terms and conditions. Pursuant to the Federal Fair Debt Collection Practices Act, we advise you that this communication is from a debt collector attempting to collect the indebtedness referred to herein and any information we obtain will be used for that purpose. John R. Alford, Jr. Substitute Trustee P. O. Box 6320 Lynchburg | county: unknown | sale: 2026-05-13
+2026-05-15 17:32:30,071  INFO    [56/59] ADDED — 1215 Wise Street, Lynchburg | county: unknown | sale: 2026-04-20
+2026-05-15 17:32:30,071  INFO    [57/59] ADDED — 123 E Main St, Bedford | county: unknown | sale: 2026-04-20
+2026-05-15 17:32:30,072  INFO    [58/59] ADDED — 1121 Red Hill Road, Big Island | county: Bedford | sale: 2026-05-28
+2026-05-15 17:32:30,072  INFO    [59/59] ADDED — 407 LIND HILL LANE, SPOUT SPRING | county: unknown | sale: 2026-05-14
+2026-05-15 17:32:30,072  INFO    Lynchburg News & Advance summary: 59 added | 0 skipped (no address) | 59 total blocks
+2026-05-15 17:32:30,093  INFO    Lynchburg News & Advance: found 59 listings total
+2026-05-15 17:32:30,095  INFO  Saved 59 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_lynchburg.json
+2026-05-15 17:32:30,095  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:32:30,277  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_lynchburg.json
+2026-05-15 17:32:30,277  INFO  Loaded 59 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_lynchburg.json
+2026-05-15 17:32:30,322  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:32:37,284  INFO    Header row confirmed (30 columns)
+2026-05-15 17:32:37,284  INFO    236 addresses already in sheet
+2026-05-15 17:32:37,285  INFO    Flagged 4 past-auction row(s) as 'Sale Passed – Verify'
+2026-05-15 17:32:37,285  INFO    Back-filling 4 empty cell(s) on existing rows…
+2026-05-15 17:32:37,575  INFO    ✓ Enrichment back-fill complete (4 cells)
+2026-05-15 17:32:37,576  INFO    Appending 36 new row(s)…
+2026-05-15 17:32:37,954  INFO    ✓ Added 36 new listing(s) to Google Sheet
+2026-05-15 17:32:47,618  INFO    ✓ Summary tab updated — 272 total properties
+
+────────────────────────────────────────────────────────────
+  Pipeline: Charlottesville Daily Progress
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:32:47,790  INFO  Starting Column.us scraper for: Charlottesville Daily Progress
+2026-05-15 17:32:47,790  INFO    URL with date filter: https://dailyprogress.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:32:48,307  INFO    Charlottesville Daily Progress: loading https://dailyprogress.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:32:57,872  INFO    Charlottesville Daily Progress: clicked 'Load more' (1x)
+2026-05-15 17:33:00,391  INFO    Charlottesville Daily Progress: clicked 'Load more' (2x)
+2026-05-15 17:33:02,898  INFO    Charlottesville Daily Progress: 'Load more' exhausted after 2 click(s)
+2026-05-15 17:33:02,902  INFO    Charlottesville Daily Progress: 0 individual notice URL(s) found
+2026-05-15 17:33:02,929  INFO    Charlottesville Daily Progress: 37 total listings found
+2026-05-15 17:33:02,936  INFO    [1/37] ADDED — 469 VENABLE ROAD, A/R/T/A 496 VENABLE ROAD, PALMYRA | county: unknown | sale: 2026-07-10
+2026-05-15 17:33:02,937  INFO    [2/37] ADDED — 620 PEA RIDGE ROAD, STANARDSVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 17:33:02,938  INFO    [3/37] ADDED — 2205 N. Berkshire Road, Charlottesville | county: unknown | sale: 2026-06-17
+2026-05-15 17:33:02,941  INFO    [4/37] ADDED — 39 Harris Lane, Palmyra | county: unknown | sale: 2026-06-10
+2026-05-15 17:33:02,941  INFO    [5/37] ADDED — 24 Ponderosa Lane, Palmyra | county: Fluvanna | sale: 2026-06-10
+2026-05-15 17:33:02,942  INFO    [6/37] ADDED — 117 Madison Circle, Locust Grove | county: unknown | sale: 2026-06-02
+2026-05-15 17:33:02,943  INFO    [7/37] ADDED — 405 SWIFT RUN ROAD, RUCKERSVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 17:33:02,944  INFO    [8/37] ADDED — 1528 Riding Club Road, Keene | county: Albemarle | sale: 2026-06-24
+2026-05-15 17:33:02,944  INFO    [9/37] ADDED — 294 FAIRLANE DRIVE, STANARDSVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 17:33:02,947  INFO    [10/37] ADDED — 260 HELENA LANE, SHIPMAN | county: unknown | sale: TBD
+2026-05-15 17:33:02,948  INFO    [11/37] ADDED — 620 PEA RIDGE ROAD, STANARDSVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 17:33:02,948  INFO    [12/37] ADDED — 24 Ponderosa Lane, Palmyra | county: Fluvanna | sale: 2026-06-10
+2026-05-15 17:33:02,949  INFO    [13/37] ADDED — 469 VENABLE ROAD, A/R/T/A 496 VENABLE ROAD, PALMYRA | county: unknown | sale: 2026-07-10
+2026-05-15 17:33:02,950  INFO    [14/37] ADDED — 2205 N. Berkshire Road, Charlottesville | county: unknown | sale: 2026-06-17
+2026-05-15 17:33:02,951  INFO    [15/37] ADDED — 294 FAIRLANE DRIVE, STANARDSVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 17:33:02,951  INFO    [16/37] ADDED — 1528 Riding Club Road, Keene | county: Albemarle | sale: 2026-06-24
+2026-05-15 17:33:02,952  INFO    [17/37] ADDED — 117 Madison Circle, Locust Grove | county: unknown | sale: 2026-06-02
+2026-05-15 17:33:02,952  INFO    [18/37] ADDED — 24 Ponderosa Lane, Palmyra | county: Fluvanna | sale: 2026-06-10
+2026-05-15 17:33:02,953  INFO    [19/37] ADDED — 222 EVERGREEN ROAD, LOUISA | county: Louisa | sale: 2026-06-23
+2026-05-15 17:33:02,954  INFO    [20/37] ADDED — 899 COLD SPRING TRL, PALMYRA | county: unknown | sale: 2026-06-17
+2026-05-15 17:33:02,954  INFO    [21/37] ADDED — 8139 Chestnut Grove Road, Esmont | county: unknown | sale: 2026-05-19
+2026-05-15 17:33:02,955  INFO    [22/37] ADDED — 1371 BEALS LANE, SCOTTSVILLE | county: unknown | sale: 2026-06-17
+2026-05-15 17:33:02,955  INFO    [23/37] ADDED — 3653 Gilbert Station Road, Barboursville | county: Albemarle | sale: 2026-05-26
+2026-05-15 17:33:02,956  INFO    [24/37] ADDED — 973 WILLIS PROFFITT ROAD, MINERAL | county: Louisa | sale: 2026-06-23
+2026-05-15 17:33:02,957  INFO    [25/37] ADDED — 8139 Chestnut Grove Road, Esmont | county: unknown | sale: 2026-05-19
+2026-05-15 17:33:02,958  INFO    [26/37] ADDED — 471 Tibbs Shop Road, Brightwood | county: unknown | sale: 2026-05-12
+2026-05-15 17:33:02,958  INFO    [27/37] ADDED — 222 EVERGREEN ROAD, LOUISA | county: Louisa | sale: 2026-06-23
+2026-05-15 17:33:02,959  INFO    [28/37] ADDED — 1371 BEALS LANE, SCOTTSVILLE | county: unknown | sale: 2026-06-17
+2026-05-15 17:33:02,959  INFO    [29/37] ADDED — 899 COLD SPRING TRL, PALMYRA | county: unknown | sale: 2026-06-17
+2026-05-15 17:33:02,960  INFO    [30/37] ADDED — 3653 Gilbert Station Road, Barboursville | county: Albemarle | sale: 2026-05-26
+2026-05-15 17:33:02,960  INFO    [31/37] ADDED — 973 WILLIS PROFFITT ROAD, MINERAL | county: Louisa | sale: 2026-06-23
+2026-05-15 17:33:02,961  INFO    [32/37] ADDED — 8139 Chestnut Grove Road, Esmont | county: unknown | sale: 2026-05-19
+2026-05-15 17:33:02,962  INFO    [33/37] ADDED — 2649 OLIVER CREEK ROAD, TROY | county: unknown | sale: 2026-06-10
+2026-05-15 17:33:02,962  INFO    [34/37] ADDED — 1412 Carlton Avenue #101, Charlottesville | county: unknown | sale: 2026-04-21
+2026-05-15 17:33:02,963  INFO    [35/37] ADDED — 4585 Buffalo Road, Dillwyn | county: unknown | sale: 2026-05-13
+2026-05-15 17:33:02,964  INFO    [36/37] ADDED — 471 Tibbs Shop Road, Brightwood | county: unknown | sale: 2026-05-12
+2026-05-15 17:33:02,964  INFO    [37/37] ADDED — 1285 EAST RIVER ROAD, FORK UNION | county: unknown | sale: 2026-05-11
+2026-05-15 17:33:02,964  INFO    Charlottesville Daily Progress summary: 37 added | 0 skipped (no address) | 37 total blocks
+2026-05-15 17:33:02,986  INFO    Charlottesville Daily Progress: found 37 listings total
+2026-05-15 17:33:02,988  INFO  Saved 37 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_charlottesville.json
+2026-05-15 17:33:02,988  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:33:03,149  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_charlottesville.json
+2026-05-15 17:33:03,149  INFO  Loaded 37 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_charlottesville.json
+2026-05-15 17:33:03,195  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:33:05,438  INFO    Header row confirmed (30 columns)
+2026-05-15 17:33:05,439  INFO    272 addresses already in sheet
+2026-05-15 17:33:05,440  INFO    Flagged 5 past-auction row(s) as 'Sale Passed – Verify'
+2026-05-15 17:33:05,440  INFO    Back-filling 5 empty cell(s) on existing rows…
+2026-05-15 17:33:05,815  INFO    ✓ Enrichment back-fill complete (5 cells)
+2026-05-15 17:33:05,816  INFO    Appending 21 new row(s)…
+2026-05-15 17:33:15,843  INFO    ✓ Added 21 new listing(s) to Google Sheet
+2026-05-15 17:33:19,523  INFO    ✓ Summary tab updated — 293 total properties
+
+────────────────────────────────────────────────────────────
+  Pipeline: Waynesboro News Virginian
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:33:19,677  INFO  Starting Column.us scraper for: Waynesboro News Virginian
+2026-05-15 17:33:19,678  INFO    URL with date filter: https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:33:20,026  INFO    Waynesboro News Virginian: loading https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:33:29,569  INFO    Waynesboro News Virginian: clicked 'Load more' (1x)
+2026-05-15 17:33:32,075  INFO    Waynesboro News Virginian: 'Load more' exhausted after 1 click(s)
+2026-05-15 17:33:32,078  INFO    Waynesboro News Virginian: 0 individual notice URL(s) found
+2026-05-15 17:33:32,102  INFO    Waynesboro News Virginian: 9 total listings found
+2026-05-15 17:33:32,111  INFO    [1/9] ADDED — 1 Bath Home 212 Court Road, Waynesboro | county: unknown | sale: 2026-05-20
+2026-05-15 17:33:32,112  INFO    [2/9] ADDED — 155 BUFFALO GAP HIGHWAY, CHURCHVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 17:33:32,113  INFO    [3/9] ADDED — 3520 COLD SPRINGS ROAD, GREENVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 17:33:32,114  INFO    [4/9] ADDED — 3520 COLD SPRINGS ROAD, GREENVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 17:33:32,115  INFO    [5/9] ADDED — 155 BUFFALO GAP HIGHWAY, CHURCHVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 17:33:32,117  INFO    [6/9] ADDED — 1 Bath Home 212 Court Road, Waynesboro | county: unknown | sale: 2026-05-20
+2026-05-15 17:33:32,117  INFO    [7/9] ADDED — 207 N. Winchester Avenue, Waynesboro | county: unknown | sale: 2026-05-27
+2026-05-15 17:33:32,118  INFO    [8/9] ADDED — 207 N. Winchester Avenue, Waynesboro | county: unknown | sale: 2026-05-27
+2026-05-15 17:33:32,119  INFO    [9/9] ADDED — 1852 STUARTS DRAFT HIGHWAY, STUARTS DRAFT | county: unknown | sale: 2026-05-11
+2026-05-15 17:33:32,119  INFO    Waynesboro News Virginian summary: 9 added | 0 skipped (no address) | 9 total blocks
+2026-05-15 17:33:32,140  INFO    Waynesboro News Virginian: found 9 listings total
+2026-05-15 17:33:32,141  INFO  Saved 9 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_waynesboro.json
+2026-05-15 17:33:32,141  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:33:32,257  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_waynesboro.json
+2026-05-15 17:33:32,257  INFO  Loaded 9 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_waynesboro.json
+2026-05-15 17:33:32,297  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:33:36,777  INFO    Header row confirmed (30 columns)
+2026-05-15 17:33:36,777  INFO    293 addresses already in sheet
+2026-05-15 17:33:36,779  INFO    Flagged 4 past-auction row(s) as 'Sale Passed – Verify'
+2026-05-15 17:33:36,779  INFO    Back-filling 4 empty cell(s) on existing rows…
+2026-05-15 17:33:37,308  INFO    ✓ Enrichment back-fill complete (4 cells)
+2026-05-15 17:33:37,309  INFO    Appending 5 new row(s)…
+2026-05-15 17:33:37,659  INFO    ✓ Added 5 new listing(s) to Google Sheet
+2026-05-15 17:33:39,500  INFO    ✓ Summary tab updated — 298 total properties
+
+────────────────────────────────────────────────────────────
+  Pipeline: Martinsville Bulletin
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:33:39,662  INFO  Starting Column.us scraper for: Martinsville Bulletin
+2026-05-15 17:33:39,662  INFO    URL with date filter: https://martinsvillebulletin.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:33:39,976  INFO    Martinsville Bulletin: loading https://martinsvillebulletin.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:33:49,525  INFO    Martinsville Bulletin: clicked 'Load more' (1x)
+2026-05-15 17:33:52,031  INFO    Martinsville Bulletin: 'Load more' exhausted after 1 click(s)
+2026-05-15 17:33:52,034  INFO    Martinsville Bulletin: 0 individual notice URL(s) found
+2026-05-15 17:33:52,060  INFO    Martinsville Bulletin: 20 total listings found
+2026-05-15 17:33:52,068  INFO    [1/20] ADDED — 1310 Carver Road, Martinsville | county: unknown | sale: 2026-06-02
+2026-05-15 17:33:52,069  INFO    [2/20] ADDED — 1345 Rivermont Heights, Martinsville | county: unknown | sale: 2026-06-02
+2026-05-15 17:33:52,071  INFO    [3/20] ADDED — 119 SALMON STREET, MARTINSVILLE | county: unknown | sale: 2026-05-20
+2026-05-15 17:33:52,072  INFO    [4/20] ADDED — 50 HARMON HILL ROAD, MARTINSVILLE | county: unknown | sale: 2026-07-02
+2026-05-15 17:33:52,073  INFO    [5/20] ADDED — 94 Pasadena Knoll, Martinsville | county: unknown | sale: 2026-06-02
+2026-05-15 17:33:52,074  INFO    [6/20] ADDED — 328 Joseph Martin Highway, Martinsville | county: unknown | sale: 2026-06-01
+2026-05-15 17:33:52,075  INFO    [7/20] ADDED — 1310 Carver Road, Martinsville | county: unknown | sale: 2026-06-02
+2026-05-15 17:33:52,076  INFO    [8/20] ADDED — 94 Pasadena Knoll, Martinsville | county: unknown | sale: 2026-06-02
+2026-05-15 17:33:52,078  INFO    [9/20] ADDED — 1345 Rivermont Heights, Martinsville | county: unknown | sale: 2026-06-02
+2026-05-15 17:33:52,079  INFO    [10/20] ADDED — 119 SALMON STREET, MARTINSVILLE | county: unknown | sale: 2026-05-20
+2026-05-15 17:33:52,080  INFO    [11/20] ADDED — 245 LAUREL DRIVE, MARTINSVILLE | county: unknown | sale: 2026-07-02
+2026-05-15 17:33:52,081  INFO    [12/20] ADDED — 50 HARMON HILL ROAD, MARTINSVILLE | county: unknown | sale: 2026-07-02
+2026-05-15 17:33:52,082  INFO    [13/20] ADDED — 328 Joseph Martin Highway, Martinsville | county: unknown | sale: 2026-06-01
+2026-05-15 17:33:52,083  INFO    [14/20] ADDED — 245 LAUREL DRIVE, MARTINSVILLE | county: unknown | sale: 2026-07-02
+2026-05-15 17:33:52,084  INFO    [15/20] ADDED — 119 SALMON STREET, MARTINSVILLE | county: unknown | sale: 2026-05-20
+2026-05-15 17:33:52,085  INFO    [16/20] ADDED — 128 FRANK REDD ROAD, I/R/T/A 618 FRANK REDD ROAD, FIELDALE | county: unknown | sale: 2026-05-27
+2026-05-15 17:33:52,086  INFO    [17/20] ADDED — 119 SALMON STREET, MARTINSVILLE | county: unknown | sale: 2026-05-20
+2026-05-15 17:33:52,087  INFO    [18/20] ADDED — 1022 Jefferson Circle, Martinsville | county: unknown | sale: 2026-05-07
+2026-05-15 17:33:52,087  INFO    [19/20] ADDED — 128 FRANK REDD ROAD, I/R/T/A 618 FRANK REDD ROAD, FIELDALE | county: unknown | sale: 2026-05-27
+2026-05-15 17:33:52,088  INFO    [20/20] ADDED — 119 SALMON STREET, MARTINSVILLE | county: unknown | sale: 2026-05-20
+2026-05-15 17:33:52,088  INFO    Martinsville Bulletin summary: 20 added | 0 skipped (no address) | 20 total blocks
+2026-05-15 17:33:52,114  INFO    Martinsville Bulletin: found 20 listings total
+2026-05-15 17:33:52,116  INFO  Saved 20 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_martinsville.json
+2026-05-15 17:33:52,116  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:33:52,231  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_martinsville.json
+2026-05-15 17:33:52,231  INFO  Loaded 20 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_martinsville.json
+2026-05-15 17:33:52,272  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:34:27,169  ERROR  Could not open spreadsheet: APIError: [500]: Internal error encountered.
+2026-05-15 17:34:27,169  ERROR  Make sure the sheet is shared with the service account email.
+
+────────────────────────────────────────────────────────────
+  Pipeline: Danville Register & Bee
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:34:27,327  INFO  Starting Column.us scraper for: Danville Register & Bee
+2026-05-15 17:34:27,327  INFO    URL with date filter: https://godanriver.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:34:27,847  INFO    Danville Register & Bee: loading https://godanriver.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:34:37,662  INFO    Danville Register & Bee: clicked 'Load more' (1x)
+2026-05-15 17:34:40,182  INFO    Danville Register & Bee: clicked 'Load more' (2x)
+2026-05-15 17:34:42,687  INFO    Danville Register & Bee: 'Load more' exhausted after 2 click(s)
+2026-05-15 17:34:42,692  INFO    Danville Register & Bee: 0 individual notice URL(s) found
+2026-05-15 17:34:42,721  INFO    Danville Register & Bee: 26 total listings found
+2026-05-15 17:34:42,728  INFO    [1/26] ADDED — 97 Bishop Avenue, Danville | county: Danville City | sale: 2026-06-05
+2026-05-15 17:34:42,731  INFO    [2/26] ADDED — 216 CEDAR RIDGE RD, DRY FORK | county: unknown | sale: 2026-05-26
+2026-05-15 17:34:42,731  INFO    [3/26] ADDED — 97 Bishop Avenue, Danville | county: Danville City | sale: 2026-06-05
+2026-05-15 17:34:42,732  INFO    [4/26] ADDED — 216 ROCKY KNOLL LANE, DANVILLE | county: unknown | sale: 2026-07-02
+2026-05-15 17:34:42,733  INFO    [5/26] ADDED — 160 PRITCHETT FARM ROAD, DRY FORK | county: unknown | sale: 2026-06-03
+2026-05-15 17:34:42,734  INFO    [6/26] ADDED — 216 CEDAR RIDGE RD, DRY FORK | county: unknown | sale: 2026-05-26
+2026-05-15 17:34:42,735  INFO    [7/26] ADDED — 1380 Pumpkin Creek Ln, Danville | county: unknown | sale: 2026-07-02
+2026-05-15 17:34:42,735  INFO    [8/26] SKIPPED — no address | snippet: 'April 30, May 28, June 4, 2026 COL-4200906 CITY OF DANVILLE COUNTY, VIRGINIA 2026-04-30 DANVILLE'
+2026-05-15 17:34:42,736  INFO    [9/26] ADDED — 216 ROCKY KNOLL LANE, DANVILLE | county: unknown | sale: 2026-07-02
+2026-05-15 17:34:42,737  INFO    [10/26] ADDED — 206 Northmont Boulevard, Danville | county: unknown | sale: 2026-06-26
+2026-05-15 17:34:42,737  INFO    [11/26] ADDED — 468 Slayton Rd, Sutherlin | county: Pittsylvania | sale: 2026-05-07
+2026-05-15 17:34:42,738  INFO    [12/26] ADDED — 5560 FRANKLIN TPKE, DANVILLE | county: unknown | sale: 2026-06-18
+2026-05-15 17:34:42,739  INFO    [13/26] ADDED — 316 SOUTHLAND DRIVE, DANVILLE | county: unknown | sale: 2026-06-18
+2026-05-15 17:34:42,740  INFO    [14/26] ADDED — 2140 STRAWBERRY ROAD, CHATHAM | county: unknown | sale: 2026-06-18
+2026-05-15 17:34:42,741  INFO    [15/26] ADDED — 216 CEDAR RIDGE RD, DRY FORK | county: unknown | sale: 2026-05-26
+2026-05-15 17:34:42,741  INFO    [16/26] ADDED — 165 RIVIERA DRIVE, DANVILLE | county: unknown | sale: 2026-06-18
+2026-05-15 17:34:42,742  INFO    [17/26] ADDED — 3006 Westover Dr., Danville | county: unknown | sale: 2026-05-20
+2026-05-15 17:34:42,743  INFO    [18/26] ADDED — 187 HOLCOMB STREET, DANVILLE | county: unknown | sale: 2026-06-18
+2026-05-15 17:34:42,744  INFO    [19/26] ADDED — 316 SOUTHLAND DRIVE, DANVILLE | county: unknown | sale: 2026-06-18
+2026-05-15 17:34:42,744  INFO    [20/26] ADDED — 5560 FRANKLIN TPKE, DANVILLE | county: unknown | sale: 2026-06-18
+2026-05-15 17:34:42,745  INFO    [21/26] ADDED — 468 Slayton Rd, Sutherlin | county: Pittsylvania | sale: 2026-05-07
+2026-05-15 17:34:42,746  INFO    [22/26] ADDED — 2140 STRAWBERRY ROAD, CHATHAM | county: unknown | sale: 2026-06-18
+2026-05-15 17:34:42,747  INFO    [23/26] ADDED — 216 CEDAR RIDGE RD, DRY FORK | county: unknown | sale: 2026-05-26
+2026-05-15 17:34:42,748  INFO    [24/26] ADDED — 3006 Westover Dr., Danville | county: unknown | sale: 2026-05-20
+2026-05-15 17:34:42,748  INFO    [25/26] ADDED — 165 RIVIERA DRIVE, DANVILLE | county: unknown | sale: 2026-06-18
+2026-05-15 17:34:42,749  INFO    [26/26] ADDED — 187 HOLCOMB STREET, DANVILLE | county: unknown | sale: 2026-06-18
+2026-05-15 17:34:42,749  INFO    Danville Register & Bee summary: 25 added | 1 skipped (no address) | 26 total blocks
+2026-05-15 17:34:42,776  INFO    Danville Register & Bee: found 25 listings total
+2026-05-15 17:34:42,778  INFO  Saved 25 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_danville.json
+2026-05-15 17:34:42,778  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:34:42,957  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_danville.json
+2026-05-15 17:34:42,958  INFO  Loaded 25 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_danville.json
+2026-05-15 17:34:42,999  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:37:48,225  ERROR  Could not open spreadsheet: APIError: [503]: The service is currently unavailable.
+2026-05-15 17:37:48,226  ERROR  Make sure the sheet is shared with the service account email.
+
+────────────────────────────────────────────────────────────
+  Pipeline: Westmoreland News
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:37:48,420  INFO  Starting Column.us scraper for: Westmoreland News
+2026-05-15 17:37:48,420  INFO    URL with date filter: https://westmorelandnews.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:37:49,377  INFO    Westmoreland News: loading https://westmorelandnews.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:37:59,400  INFO    Westmoreland News: clicked 'Load more' (1x)
+2026-05-15 17:38:01,907  INFO    Westmoreland News: 'Load more' exhausted after 1 click(s)
+2026-05-15 17:38:01,911  INFO    Westmoreland News: 0 individual notice URL(s) found
+2026-05-15 17:38:01,936  INFO    Westmoreland News: 7 total listings found
+2026-05-15 17:38:01,944  INFO    [1/7] ADDED — 197 FT KING DR, COLONIAL BEACH | county: unknown | sale: 2026-06-05
+2026-05-15 17:38:01,945  INFO    [2/7] ADDED — 1414 FLAT IRON RD, MONTROSS | county: unknown | sale: 2026-06-05
+2026-05-15 17:38:01,946  INFO    [3/7] ADDED — 197 FT KING DR, COLONIAL BEACH | county: unknown | sale: 2026-06-05
+2026-05-15 17:38:01,947  INFO    [4/7] ADDED — 197 FT KING DR, COLONIAL BEACH | county: unknown | sale: 2026-06-05
+2026-05-15 17:38:01,948  INFO    [5/7] ADDED — 197 FT KING DR, COLONIAL BEACH | county: unknown | sale: 2026-06-05
+2026-05-15 17:38:01,949  INFO    [6/7] ADDED — 197 FT KING DR, COLONIAL BEACH | county: unknown | sale: 2026-06-05
+2026-05-15 17:38:01,949  INFO    [7/7] SKIPPED — no address | snippet: 'Foreclosure Sale SUBSTITUTE TRUSTEE’S SALE OF 1.8341 ACRES, TOWN OF MONTROSS, WESTMORELAND COUNTY, V'
+2026-05-15 17:38:01,949  INFO    Westmoreland News summary: 6 added | 1 skipped (no address) | 7 total blocks
+2026-05-15 17:38:01,977  INFO    Westmoreland News: found 6 listings total
+2026-05-15 17:38:01,978  INFO  Saved 6 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_westmoreland.json
+2026-05-15 17:38:01,978  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:38:02,176  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_westmoreland.json
+2026-05-15 17:38:02,176  INFO  Loaded 6 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_westmoreland.json
+2026-05-15 17:38:02,220  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:38:03,293  INFO    Header row confirmed (30 columns)
+2026-05-15 17:38:03,293  INFO    298 addresses already in sheet
+2026-05-15 17:38:03,294  INFO    Flagged 1 past-auction row(s) as 'Sale Passed – Verify'
+2026-05-15 17:38:03,294  INFO    Back-filling 1 empty cell(s) on existing rows…
+2026-05-15 17:38:03,454  INFO    ✓ Enrichment back-fill complete (1 cells)
+2026-05-15 17:38:03,454  INFO    Appending 2 new row(s)…
+2026-05-15 17:38:03,636  INFO    ✓ Added 2 new listing(s) to Google Sheet
+2026-05-15 17:38:04,140  INFO    ✓ Summary tab updated — 300 total properties
+
+────────────────────────────────────────────────────────────
+  Pipeline: Daily News-Record (Harrisonburg)
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:38:04,314  INFO  Starting Column.us scraper for: Daily News-Record (Harrisonburg)
+2026-05-15 17:38:04,314  INFO    URL with date filter: https://dnronline.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:38:04,716  INFO    Daily News-Record (Harrisonburg): loading https://dnronline.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:38:14,243  INFO    Daily News-Record (Harrisonburg): clicked 'Load more' (1x)
+2026-05-15 17:38:16,749  INFO    Daily News-Record (Harrisonburg): 'Load more' exhausted after 1 click(s)
+2026-05-15 17:38:16,751  INFO    Daily News-Record (Harrisonburg): 0 individual notice URL(s) found
+2026-05-15 17:38:16,769  INFO    Daily News-Record (Harrisonburg): 9 total listings found
+2026-05-15 17:38:16,774  INFO    [1/9] ADDED — 1: Time: WEDNESDAY, MAY 27, 2026, BEGINNING AT 12:30 P.M. and continuing until all Time-Share Estates are sold. Properties: (a) Time- Share Estates as specified and defined in the Time-Share Instrument for Woodstone at Massanutten, a Time-Share Project, dated April 29, 1999, and recorded in the aforesaid Clerk's Office in Deed Book 1725, at Page 502, as amended, and subject to the covenants, restrictions, and easements as set forth in said "Instrument”; and (b) Time-Share Estates as specified and defined in the Time-Share Instrument for Regal Vistas at Massanutten, a Time-Share Project, dated June 22, 2009, as Amended, and recorded June 23, 2009 in the aforesaid Clerk's Office in Deed Book 3543, at Page 425, and subject to the covenants, restrictions, and easements as set forth in said "Instrument”. SALE 2: Time: WEDNESDAY, MAY 27, 2026, BEGINNING AT 12:45 P.M. and continuing until all Time-Share Estates are sold. Properties: (a) (a) Time-Share Estates as specified and defined in the Time-Share Instrument for Woodstone at Massanutten, a Time-Share Project, dated April 29, 1999, and recorded in the aforesaid Clerk's Office in Deed Book 1725, at Page 502, as amended, and subject to the covenants, restrictions, and easements as set forth in said "Instrument". NAME OF ASSOCIATION(S): Regal Vista Owners Association, Woodstone Timeshare Owners Association GENERAL LOCATION OF THE TIME-SHARE PROJECT: Massanutten Resort located directly off Resort Drive (State Route 644) near McGaheysville, Virginia. TERMS OF SALE: 10% deposit on day of sale and balance in cash within thirty (30) days upon delivery of deed to purchaser. TRUSTEE: Clark & Bradshaw, P.C., 92 North Liberty Street, Harrisonburg | county: unknown | sale: 2026-05-27
+2026-05-15 17:38:16,775  INFO    [2/9] ADDED — 165 Southampton Dr, Harrisonburg | county: Rockingham | sale: 2026-06-09
+2026-05-15 17:38:16,775  INFO    [3/9] ADDED — 165 Southampton Dr, Harrisonburg | county: Rockingham | sale: 2026-06-09
+2026-05-15 17:38:16,776  INFO    [4/9] ADDED — 3.939 Acres of Unimproved Real Estate Located on Limestone Lane, Dayton | county: unknown | sale: TBD
+2026-05-15 17:38:16,777  INFO    [5/9] ADDED — 194 THOMPSON DRIVE, STANLEY | county: unknown | sale: 2026-05-22
+2026-05-15 17:38:16,778  INFO    [6/9] ADDED — 3.939 Acres of Unimproved Real Estate Located on Limestone Lane, Dayton | county: unknown | sale: TBD
+2026-05-15 17:38:16,778  INFO    [7/9] ADDED — 804 5TH STREET, SHENANDOAH | county: unknown | sale: 2026-06-17
+2026-05-15 17:38:16,779  INFO    [8/9] ADDED — 92 North Liberty Street, Harrisonburg | county: unknown | sale: 1989-12-15
+2026-05-15 17:38:16,780  INFO    [9/9] ADDED — 92 North Liberty Street, Harrisonburg | county: unknown | sale: 1989-12-15
+2026-05-15 17:38:16,780  INFO    Daily News-Record (Harrisonburg) summary: 9 added | 0 skipped (no address) | 9 total blocks
+2026-05-15 17:38:16,807  INFO    Daily News-Record (Harrisonburg): found 9 listings total
+2026-05-15 17:38:16,808  INFO  Saved 9 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_harrisonburg.json
+2026-05-15 17:38:16,808  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:38:17,020  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_harrisonburg.json
+2026-05-15 17:38:17,020  INFO  Loaded 9 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_harrisonburg.json
+2026-05-15 17:38:17,065  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:38:19,077  INFO    Header row confirmed (30 columns)
+2026-05-15 17:38:19,078  INFO    300 addresses already in sheet
+2026-05-15 17:38:19,079  INFO    No enrichment gaps to fill on existing rows.
+2026-05-15 17:38:19,079  INFO    Appending 6 new row(s)…
+2026-05-15 17:38:19,247  INFO    ✓ Added 6 new listing(s) to Google Sheet
+2026-05-15 17:38:19,792  INFO    ✓ Summary tab updated — 306 total properties
+
+────────────────────────────────────────────────────────────
+  Pipeline: FFXnow (Fairfax)
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:38:19,957  INFO  Starting Column.us scraper for: FFXnow (Fairfax)
+2026-05-15 17:38:19,957  INFO    URL with date filter: https://ffxnow.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:38:20,379  INFO    FFXnow (Fairfax): loading https://ffxnow.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:38:50,154  WARNING    FFXnow (Fairfax): page never showed 'FFXNOW' after 20s — may be 0 notices or wrong header.
+    Body snippet: 'Place Notice  Powered by Column Search Date Notice Type Foreclosure Sale Reset Get Alerts Search  Get your public notice published quickly and easily. Click "Get Started" to draft and submit your legal notice. For help with commonly asked questions about this site or placing notices, check out our Help Center  Get Started →  Whoops! We couldn\'t find any results matching your search. Try updating your filters and searching again'
+    Tip: re-run with --detect to inspect the full body text.
+2026-05-15 17:38:50,186  INFO  Saved 0 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_ffxnow.json
+2026-05-15 17:38:50,186  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:38:50,318  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_ffxnow.json
+2026-05-15 17:38:50,318  INFO  Loaded 0 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_ffxnow.json
+2026-05-15 17:38:50,359  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:38:51,609  INFO    Header row confirmed (30 columns)
+2026-05-15 17:38:51,609  INFO  No listings to sync — header confirmed, nothing to append.
+
+────────────────────────────────────────────────────────────
+  Pipeline: ARLnow (Arlington)
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:38:51,761  INFO  Starting Column.us scraper for: ARLnow (Arlington)
+2026-05-15 17:38:51,761  INFO    URL with date filter: https://arlnow.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:38:52,198  INFO    ARLnow (Arlington): loading https://arlnow.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:39:01,773  INFO    ARLnow (Arlington): clicked 'Load more' (1x)
+2026-05-15 17:39:04,279  INFO    ARLnow (Arlington): 'Load more' exhausted after 1 click(s)
+2026-05-15 17:39:04,282  INFO    ARLnow (Arlington): 0 individual notice URL(s) found
+2026-05-15 17:39:04,303  INFO    ARLnow (Arlington): 3 total listings found
+2026-05-15 17:39:04,305  INFO    [1/3] SKIPPED — no address | snippet: 'Legal Notice NOTICE Full name(s) of owner(s): Puzzles LLC Trading as: Westover Taco 5849B Washington'
+2026-05-15 17:39:04,305  INFO    [2/3] SKIPPED — no address | snippet: 'Legal Notice NOTICE Full name(s) of owner(s): SJR , LLC Trading as: L A BAR & GRILL 2530 Columbia Pi'
+2026-05-15 17:39:04,305  INFO    [3/3] SKIPPED — no address | snippet: 'Legal Notice NOTICE Full name(s) of owner(s): SJR , LLC Trading as: L A BAR & GRILL 2530 Columbia Pi'
+2026-05-15 17:39:04,305  INFO    ARLnow (Arlington) summary: 0 added | 3 skipped (no address) | 0 dupes removed | 0 final | 3 total blocks
+2026-05-15 17:39:04,332  INFO    ARLnow (Arlington): found 0 listings total
+2026-05-15 17:39:04,333  INFO  Saved 0 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_arlnow.json
+2026-05-15 17:39:04,333  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:39:04,450  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_arlnow.json
+2026-05-15 17:39:04,451  INFO  Loaded 0 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_arlnow.json
+2026-05-15 17:39:04,491  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:39:05,579  INFO    Header row confirmed (30 columns)
+2026-05-15 17:39:05,580  INFO  No listings to sync — header confirmed, nothing to append.
+
+────────────────────────────────────────────────────────────
+  Pipeline: ALXnow (Alexandria)
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:39:05,736  INFO  Starting Column.us scraper for: ALXnow (Alexandria)
+2026-05-15 17:39:05,736  INFO    URL with date filter: https://alxnow.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:39:06,048  INFO    ALXnow (Alexandria): loading https://alxnow.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:39:35,688  WARNING    ALXnow (Alexandria): page never showed 'ALXNOW' after 20s — may be 0 notices or wrong header.
+    Body snippet: 'Place Notice  Powered by Column Search Date Notice Type Foreclosure Sale Reset Get Alerts Search  Get your public notice published quickly and easily. Click "Get Started" to draft and submit your legal notice. For help with commonly asked questions about this site or placing notices, check out our Help Center  Get Started →  Whoops! We couldn\'t find any results matching your search. Try updating your filters and searching again'
+    Tip: re-run with --detect to inspect the full body text.
+2026-05-15 17:39:35,718  INFO  Saved 0 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_alxnow.json
+2026-05-15 17:39:35,718  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:39:35,853  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_alxnow.json
+2026-05-15 17:39:35,853  INFO  Loaded 0 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_alxnow.json
+2026-05-15 17:39:35,894  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:39:37,022  INFO    Header row confirmed (30 columns)
+2026-05-15 17:39:37,022  INFO  No listings to sync — header confirmed, nothing to append.
+
+────────────────────────────────────────────────────────────
+  Pipeline: Bristol Herald Courier
+────────────────────────────────────────────────────────────
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:39:37,180  INFO  Starting Column.us scraper for: Bristol Herald Courier
+2026-05-15 17:39:37,180  INFO    URL with date filter: https://heraldcourier.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:39:37,593  INFO    Bristol Herald Courier: loading https://heraldcourier.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-03-16
+2026-05-15 17:39:47,471  INFO    Bristol Herald Courier: clicked 'Load more' (1x)
+2026-05-15 17:39:49,977  INFO    Bristol Herald Courier: 'Load more' exhausted after 1 click(s)
+2026-05-15 17:39:49,980  INFO    Bristol Herald Courier: 0 individual notice URL(s) found
+2026-05-15 17:39:50,003  INFO    Bristol Herald Courier: 6 total listings found
+2026-05-15 17:39:50,009  INFO    [1/6] ADDED — 14245 Sinking Creek Rd, Bristol | county: unknown | sale: 2026-06-08
+2026-05-15 17:39:50,010  INFO    [2/6] ADDED — 618 MOORE ST, A/R/T/A 650 MOORE ST, BRISTOL | county: unknown | sale: 2026-07-16
+2026-05-15 17:39:50,011  INFO    [3/6] ADDED — 19023 WOODLAND HILLS ROAD, ABINGDON | county: unknown | sale: 2026-07-16
+2026-05-15 17:39:50,012  INFO    [4/6] ADDED — 14489 CHIP RIDGE RD, ABINGDON | county: unknown | sale: 2026-06-04
+2026-05-15 17:39:50,014  INFO    [5/6] ADDED — 29065 WINDING WAY, MEADOWVIEW | county: unknown | sale: 2026-07-27
+2026-05-15 17:39:50,015  INFO    [6/6] ADDED — 2005 NEWTON STREET, BRISTOL | county: unknown | sale: 2026-05-20
+2026-05-15 17:39:50,015  INFO    Bristol Herald Courier summary: 6 added | 0 skipped (no address) | 0 dupes removed | 6 final | 6 total blocks
+2026-05-15 17:39:50,043  INFO    Bristol Herald Courier: found 6 listings total
+2026-05-15 17:39:50,044  INFO  Saved 6 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_bristol.json
+2026-05-15 17:39:50,044  INFO  Done.
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 17:39:50,161  INFO  --file: using data file /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_bristol.json
+2026-05-15 17:39:50,161  INFO  Loaded 6 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures_bristol.json
+2026-05-15 17:39:50,201  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 17:39:51,139  INFO    Header row confirmed (30 columns)
+2026-05-15 17:39:51,140  INFO    306 addresses already in sheet
+2026-05-15 17:39:51,141  INFO    Flagged 1 past-auction row(s) as 'Sale Passed – Verify'
+2026-05-15 17:39:51,141  INFO    Back-filling 1 empty cell(s) on existing rows…
+2026-05-15 17:39:51,301  INFO    ✓ Enrichment back-fill complete (1 cells)
+2026-05-15 17:39:51,302  INFO    Appending 6 new row(s)…
+2026-05-15 17:39:51,457  INFO    ✓ Added 6 new listing(s) to Google Sheet
+2026-05-15 17:39:51,998  INFO    ✓ Summary tab updated — 312 total properties
+
+────────────────────────────────────────────────────────────
+  Publishing to GitHub Pages...
+────────────────────────────────────────────────────────────
