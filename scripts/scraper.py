@@ -3164,6 +3164,7 @@ def city_to_county(city: str) -> str:
         "ettrick":           "Chesterfield",
         "matoaca":           "Chesterfield",
         "swift creek":       "Chesterfield",
+        "henrico":           "Henrico",
         # Henrico — NOTE: Henrico County addresses commonly use "Richmond" as
         # their mailing city (unincorporated county, no city hall).  Those will
         # map to "Richmond City" above, which is wrong.  The secondary regex
@@ -3926,25 +3927,28 @@ def run():
     all_listings = deduplicate(all_listings)
     log.info(f"Total after dedup: {len(all_listings)} listings")
 
-    # ── County filter — keep only the 12 target counties ─────────────────────
-    # Records with no county or an out-of-scope county are dropped here before
-    # anything touches the sheet.  This is the single enforcement point so each
-    # scraper doesn't need its own filtering logic.
+    # ── County filter — drop only confirmed out-of-scope counties ────────────
+    # Records with no county (None / "") are KEPT — the county may simply be
+    # undetectable from the notice text, but the property could still be in a
+    # target area.  The GIS backfill (Pass 2 / Pass 6) will attempt to resolve
+    # the county from the address after sync.
+    # Only drop records where a county is positively identified as outside the
+    # 12 target counties.
     target_display_set = set(cfg.TARGET_COUNTIES_DISPLAY)
-    pre_filter_count   = len(all_listings)
     kept, dropped      = [], []
     for listing in all_listings:
-        if listing.get("county") in target_display_set:
+        county = listing.get("county")
+        if not county or county in target_display_set:
             kept.append(listing)
         else:
             dropped.append(listing)
 
     if dropped:
         from collections import Counter
-        drop_counts = Counter(r.get("county") or "(no county)" for r in dropped)
+        drop_counts = Counter(r.get("county") for r in dropped)
         log.info(
             f"County filter: kept {len(kept)}, dropped {len(dropped)} "
-            f"out-of-scope records — {dict(drop_counts)}"
+            f"confirmed out-of-scope — {dict(drop_counts)}"
         )
     all_listings = kept
     log.info(f"Total after county filter: {len(all_listings)} listings")
