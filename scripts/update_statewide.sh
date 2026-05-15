@@ -107,7 +107,7 @@ fi
 
 run_pipeline "fredericksburg" \
     "https://fredericksburg.column.us/search?noticeType=Foreclosure+Sale" \
-    "FREE LANCE-STAR" \
+    "FREDERICKSBURG FREE-LANCE STAR" \
     "column_us_fredericksburg" \
     "data/foreclosures.json" \
     "Free Lance-Star (Fredericksburg)"

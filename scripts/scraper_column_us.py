@@ -247,6 +247,31 @@ def scrape(url: str, paper_header: str, source_tag: str, label: str, detect_mode
             body_text     = page.inner_text("body")
             raw_blocks    = re.split(paper_header, body_text, flags=re.I)
             notice_blocks = raw_blocks[1:]   # first element is page chrome — drop it
+
+            # ── Heal false splits ─────────────────────────────────────────
+            # The newspaper name appears inside notice bodies in the standard
+            # Virginia legal publication boilerplate:
+            #   "...published in the FREDERICKSBURG FREE-LANCE STAR, a newspaper
+            #    of general circulation..."
+            # Splitting on it truncates that notice and creates an orphan block
+            # starting with ", a newspaper of general circulation...".
+            # Merge orphan blocks back into the preceding block so the full
+            # notice_text is preserved. True duplicates are caught by dedup.
+            healed: list = []
+            false_splits = 0
+            for block in notice_blocks:
+                if block.lstrip().startswith(",") and healed:
+                    healed[-1] = healed[-1] + paper_header + block
+                    false_splits += 1
+                else:
+                    healed.append(block)
+            if false_splits:
+                log.info(
+                    f"  {tag}: healed {false_splits} false split(s) "
+                    f"(mid-notice boilerplate mention of '{paper_header}' merged back)"
+                )
+            notice_blocks = healed
+
             total_blocks  = len(notice_blocks)
             log.info(f"  {tag}: {total_blocks} total listings found")
 
