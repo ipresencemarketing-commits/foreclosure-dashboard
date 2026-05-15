@@ -248,6 +248,28 @@ def scrape(url: str, paper_header: str, source_tag: str, label: str, detect_mode
             raw_blocks    = re.split(paper_header, body_text, flags=re.I)
             notice_blocks = raw_blocks[1:]   # first element is page chrome — drop it
 
+            # ── Loose-pattern fallback ────────────────────────────────────
+            # If exact header produced 0 blocks, try a fuzzy match that
+            # treats hyphens and en-dashes as interchangeable and allows
+            # a single extra space. Guards against minor typography drift
+            # (e.g. "FREE-LANCE STAR" vs "FREE LANCE-STAR").
+            if not notice_blocks:
+                loose_pat = re.sub(r'[-–\s]+', r'[-–\\s]+', re.escape(paper_header))
+                raw_blocks    = re.split(loose_pat, body_text, flags=re.I)
+                notice_blocks = raw_blocks[1:]
+                if notice_blocks:
+                    log.warning(
+                        f"  {tag}: exact header '{paper_header}' matched 0 blocks — "
+                        f"loose pattern matched {len(notice_blocks)}. "
+                        f"Update header in update_statewide.sh to fix permanently."
+                    )
+                else:
+                    log.error(
+                        f"  {tag}: 0 blocks after loose fallback — "
+                        f"'{paper_header}' does not match page content. "
+                        f"Run with --detect to find the correct header string."
+                    )
+
             # ── Heal false splits ─────────────────────────────────────────
             # The newspaper name appears inside notice bodies in the standard
             # Virginia legal publication boilerplate:
@@ -361,9 +383,21 @@ def scrape(url: str, paper_header: str, source_tag: str, label: str, detect_mode
                     "source_url":          notice_url or url,
                 })
 
+            # ── Dedup within this run (same notice across Load More pages) ──
+            seen_ids: set = set()
+            unique: list  = []
+            for l in listings:
+                if l["id"] not in seen_ids:
+                    seen_ids.add(l["id"])
+                    unique.append(l)
+            dupes = len(listings) - len(unique)
+            listings = unique
+
             log.info(
                 f"  {tag} summary: {kept} added | "
                 f"{skipped_addr} skipped (no address) | "
+                f"{dupes} dupes removed | "
+                f"{len(listings)} final | "
                 f"{total_blocks} total blocks"
             )
             browser.close()
