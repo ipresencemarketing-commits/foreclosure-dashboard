@@ -78,7 +78,7 @@ ENABLE_COLUMN_DAILYPROG:   bool = False  # Group 4  — DISABLED: Daily Progress
 ENABLE_AUCTION_COM:        bool = False  # Group 5  — DISABLED: REO listings have no
                                          #            courthouse sale date; different lead
                                          #            type from trustee notices — removed
-ENABLE_COLUMN_WILLIAMSBURG:bool = True   # Group 6  — vagazette.column.us (Virginia Gazette)
+ENABLE_COLUMN_WILLIAMSBURG:bool = False  # Group 6  — PAUSED: supplemental only, revisit later
 ENABLE_COLUMN_NVDAILY:     bool = False  # Group 7  — DISABLED: nvdaily.column.us is 404; NV Daily
                                          #            uses its own CMS and covers wrong counties
 ENABLE_SIWPC:              bool = False  # Group 8  — DISABLED: removed from active sources

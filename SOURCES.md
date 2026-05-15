@@ -4,20 +4,30 @@ Each active scraping source has different data characteristics. This document de
 what fields each source provides, what is N/A, known issues, and the fix status.
 Use this as the spec before writing or modifying any scraper code.
 
-All five active sources are **trustee sale notices** — courthouse auctions with a
-scheduled date and time. This is the same lead type across all sources.
+All active sources are **trustee sale notices** — courthouse auctions with a scheduled
+date and time. This is the same lead type across all three sources.
 
 ---
 
-## Source Status Summary
+## Active Sources (3)
 
-| Source | Tag | Counties Covered | Status | Records (last run) |
-|--------|-----|-----------------|--------|--------------------|
-| PublicNoticeVirginia.com | `publicnoticevirginia` | All 12 (statewide search + county filter) | ⚠️ Partial — detail fetches still returning card text | 6 |
-| Column.us — Free Lance-Star (Fxbg) | `column_us` | Fredericksburg City, Stafford, Spotsylvania, Caroline, King George | ✅ Working | 2 |
-| Column.us — Richmond Times-Dispatch | `column_us_richmond` | Richmond City, Chesterfield, Henrico | ✅ Fixed — header corrected | 270 results on portal |
-| Column.us — Virginia Gazette (Wmsbg) | `column_us_williamsburg` | Hanover, King George, Caroline (supplemental) | ❌ 0 records — needs investigation | 0 |
-| ~~Samuel I. White, P.C. (SIWPC)~~ | `siwpc` | All 12 | 🚫 Removed from active sources | — |
+| Source | Tag | Counties Covered | Status | Volume |
+|--------|-----|-----------------|--------|--------|
+| PublicNoticeVirginia.com | `publicnoticevirginia` | All 12 (statewide + county filter) | ⚠️ Partial — detail pages still returning card text | TBD after fix |
+| Column.us — Free Lance-Star (Fxbg) | `column_us` | Fxbg City, Stafford, Spotsylvania, Caroline, King George | ✅ Working | ~5–20/month |
+| Column.us — Richmond Times-Dispatch | `column_us_richmond` | Richmond City, Chesterfield, Henrico (+Hanover, Louisa) | ✅ Working | ~254 raw / 30 days |
+
+## Paused / Disabled Sources
+
+| Source | Tag | Reason |
+|--------|-----|--------|
+| Column.us — Virginia Gazette (Wmsbg) | `column_us_williamsburg` | Paused — supplemental only, revisit when core 3 are stable |
+| Auction.com | `auction_com` | Removed — REO listings, no courthouse sale date |
+| Daily Progress (Column.us) | `column_us_dailyprogress` | Removed — Charlottesville/Albemarle, outside target counties |
+| Samuel I. White, P.C. | `siwpc` | Removed from active sources |
+| LOGS Legal | `logs_legal` | Broken — migrated to PowerBI embed |
+| NV Daily (Column.us) | `column_us_nvdaily` | Broken — 404, wrong county coverage |
+| Virginia eCourts | `va_courts` | Requires authenticated session |
 
 ---
 
