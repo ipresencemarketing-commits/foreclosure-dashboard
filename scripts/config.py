@@ -75,7 +75,9 @@ ENABLE_LOGS_LEGAL:         bool = False  # Group 2  — DISABLED: logs.com migra
 ENABLE_COLUMN_DAILYPROG:   bool = False  # Group 4  — DISABLED: Daily Progress covers
                                          #            Charlottesville/Albemarle — outside our
                                          #            12 target counties; produces only noise
-ENABLE_AUCTION_COM:        bool = True   # Group 5  — auction.com (REO + trustee sales)
+ENABLE_AUCTION_COM:        bool = False  # Group 5  — DISABLED: REO listings have no
+                                         #            courthouse sale date; different lead
+                                         #            type from trustee notices — removed
 ENABLE_COLUMN_WILLIAMSBURG:bool = True   # Group 6  — vagazette.column.us (Virginia Gazette)
 ENABLE_COLUMN_NVDAILY:     bool = False  # Group 7  — DISABLED: nvdaily.column.us is 404; NV Daily
                                          #            uses its own CMS and covers wrong counties
