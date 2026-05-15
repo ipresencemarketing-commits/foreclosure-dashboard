@@ -2368,16 +2368,62 @@ def parse_lender(text: str) -> str:
     return match.group(1).strip() if match else None
 
 
-def parse_trustee(text: str) -> str:
-    """Look for common Virginia trustee firm names."""
-    match = re.search(
+def parse_trustee(text: str) -> str | None:
+    """
+    Extract trustee name from foreclosure notice text.
+
+    Tries three patterns in order:
+      1. Explicit label  — "Substitute Trustee: FIRM NAME"
+      2. Known firm list — hardcoded VA trustee firms
+      3. Signature block — "FULL NAME, [Substitute] Trustee" near end of notice
+    """
+    # Pattern 1 — explicit "Substitute Trustee: Name" or "Trustee: Name"
+    m = re.search(
+        r'(?:Substitute\s+)?Trustee\s*:\s*([^\n,]{3,80})',
+        text, re.IGNORECASE
+    )
+    if m:
+        val = m.group(1).strip().rstrip('.,')
+        # Strip trailing street address (anything starting with a house number)
+        val = re.sub(r'\s+\d{2,5}\s+\w.*$', '', val).strip()
+        if len(val) > 3:
+            return val
+
+    # Pattern 2 — known Virginia trustee firms
+    m = re.search(
         r"(Samuel\s*I\.?\s*White|BWW\s*Law|Friedman\s*&\s*MacFadyen|"
         r"Hutchens\s*Law|Substitute\s*Trustee\s*Services|Brock\s*&\s*Scott|"
         r"McCabe\s*,?\s*Weisberg|Shapiro\s*&\s*Brown|Cohn\s*Goldberg|"
-        r"Atlantic\s*Trustee\s*Services)[^,.\n]*",
+        r"Atlantic\s*Trustee\s*Services|ALG\s*Trustee|Orlans\s*Law|"
+        r"Commonwealth\s*Trustees|DolanReid|Dolan\s*Reid|"
+        r"Motley\s*Rice|Rubin\s*&\s*Levin|Caldwell\s*&\s*Riffee|"
+        r"Anchor\s*Title|TitleMax|Cardinal\s*Trustee|Equity\s*Trustees|"
+        r"First\s*American\s*Title)[^,.\n]{0,40}",
         text, re.IGNORECASE
     )
-    return match.group(1).strip() if match else None
+    if m:
+        return m.group(1).strip()
+
+    # Pattern 3 — "FULL NAME, [Substitute] Trustee" signature block
+    # Looks for a capitalized name followed by ", Trustee" or ", Substitute Trustee"
+    # Case-insensitive to catch all-caps signatures like "FORREST A. SANFORD, TRUSTEE"
+    m = re.search(
+        r'([A-Z][a-zA-Z\.\s]{5,50}),?\s+(?:Substitute\s+)?Trustee\b',
+        text, re.IGNORECASE
+    )
+    if m:
+        val = m.group(1).strip()
+        # Exclude generic phrases and boilerplate that match the pattern
+        skip_words = {
+            'the undersigned', 'the acting', 'the substitute', 'appointed',
+            'substitute', 'notice of substitute', 'acting substitute',
+            'foreclosure sale', 'time is of the essence', 'original',
+            'sale', 'any', 'if', 'this', 'said', 'such', 'all',
+        }
+        if not any(val.lower().startswith(s) for s in skip_words) and len(val) > 4:
+            return val
+
+    return None
 
 
 def parse_price(text: str):

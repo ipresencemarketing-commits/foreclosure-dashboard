@@ -152,59 +152,84 @@ producing 3 records instead of 68. Fixed 2026-05-15.
 
 **URL:** https://richmond.column.us/search?noticeType=Foreclosure+Sale
 **Source tag:** `column_us_richmond`
-**Technology:** Playwright (same engine as Fredericksburg)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `RICHMOND TIMES DISPATCH` (no hyphen — confirmed 2026-05-15)
 **Counties:** Richmond City, Chesterfield, Henrico — plus Hanover and Louisa notices
-frequently appear here too (attorneys publish in Richmond paper)
-**Typical volume:** ~254 raw listings per 30-day window; ~120–140 after dedup and
-out-of-scope county filter
+frequently appear here (attorneys publish in Richmond paper)
+**Typical volume:** ~172 listings / 30-day window (confirmed 2026-05-15)
 
 ### What this source provides
 - Full address with street, city, ZIP (structured in notice text)
 - County (via `city_to_county()` lookup on parsed city)
-- Sale date — consistently populated, future-dated ✅
-- Sale time — consistently populated (e.g. "2:30PM", "9:30AM") ✅
-- Lender (parsed from notice text)
-- Trustee (parsed from notice text)
+- Sale date — 98% populated ✅
+- Sale time — 99% populated ✅
+- Lender — 91% populated ✅
+- Trustee — 90% populated ✅ (see parsing notes below)
 - Full notice text up to 5000 chars
-- Individual notice permalink URL (Pass 8 backfill upgrades to permalink)
+- Individual notice permalink URL
 
 ### What this source does NOT provide
 - Asking/starting bid price
 - Owner information (GIS backfill required)
 
 ### Data extraction approach
-- Identical to Fredericksburg — `_scrape_column_us_portal()` with Richmond URL
-  and newspaper header "RICHMOND TIMES DISPATCH" (no hyphen — confirmed 2026-05-15)
-- Firebase hydration: 8s wait + up to 14 "Load more" clicks to exhaust all listings
+- `scraper_column_us.py` with Richmond URL and header "RICHMOND TIMES DISPATCH"
+- Firebase hydration: 8s wait + "Load more" clicks until exhausted
 - County derived from `city_to_county(city)` using expanded mapping including:
   Henrico communities (Glen Allen, Short Pump, Sandston, Highland Springs, Varina,
   Lakeside, Tuckahoe, Innsbrook), Chesterfield communities (Chester, Midlothian,
   Bon Air, Ettrick, Matoaca, Swift Creek), Hanover communities (Ashland,
   Mechanicsville, Beaverdam, Doswell, Montpelier)
-- Post-fetch date filter drops listings with sale_date before SINCE_DATE
+- False-split healing: mid-notice mentions of "RICHMOND TIMES DISPATCH" merged back
+  into preceding block to restore full notice_text
+
+### Trustee parsing
+`parse_trustee()` in `scraper.py` uses three patterns in priority order:
+1. Explicit label — `Substitute Trustee: [Name]` or `Trustee: [Name]`
+2. Known VA firm list — Equity Trustees, SAMUEL I. WHITE, Commonwealth Trustees,
+   DolanReid PLLC, ALG Trustee, Atlantic Trustee Services, First American Title, etc.
+3. Signature block — `[Full Name], [Substitute] Trustee` near end of notice
+
+Coverage confirmed 90% (154/172). Remaining 10% are notices where the trustee
+is referenced only by title ("the acting Substitute Trustee") with no firm name given.
+
+### County breakdown (2026-05-15 run, 172 listings)
+| County | Count |
+|--------|-------|
+| Richmond City | 47 |
+| Chesterfield | 34 |
+| Henrico | 22 |
+| Hanover | 12 |
+| Louisa | 4 |
+| King George | 1 |
+| Unknown (out-of-scope or unresolved) | 52 |
 
 ### Known data patterns
-- **Henrico/Richmond mailing address ambiguity:** Henrico County properties often
-  use "Richmond" as mailing city → mapped to Richmond City (both are target counties,
-  so they pass the filter but county may be misclassified). Look for "A/R/T/A HENRICO"
-  in address as a signal.
-- **"HENRICO" as city:** addresses like "4007 West End Drive, Henrico" now correctly
-  map to Henrico county via explicit mapping added 2026-05-15.
-- **Duplicate records:** same notice appears across multiple "Load more" pages.
-  `deduplicate()` in main() handles this via address+date hash.
-- **Out-of-scope cities:** Petersburg, Hopewell, Colonial Heights, Prince George,
-  Waverly, Goochland, Powhatan, Charles City, Dinwiddie appear in raw results —
-  county resolves to unknown (no city mapping) and records are kept for GIS backfill
-  to resolve. Truly out-of-scope properties (e.g. positively identified as Dinwiddie
-  County) are dropped by the county filter gate.
+- **~30% unknown county:** Petersburg, Lancaster, Hartfield, Disputanta, Colonial Heights,
+  Hopewell, Goochland, Powhatan, Prince George appear in raw results. These resolve to
+  unknown county and are kept for GIS backfill. Truly out-of-scope records are dropped
+  by the county filter gate after GIS confirms county.
+- **Henrico/Richmond mailing address ambiguity:** Henrico County properties often use
+  "Richmond" as mailing city → mapped to Richmond City. Both are target counties so
+  they pass the filter, but county may be misclassified. "A/R/T/A HENRICO" in address
+  is the signal to look for.
+- **Land parcel addresses:** Notices for raw land (e.g. "31.8 Acres+/- Parsons Road")
+  produce long, malformed address strings. These pass through but GIS backfill will
+  likely fail to match a parcel.
+- **False splits:** "RICHMOND TIMES DISPATCH" appears in notice boilerplate as
+  "published in the RICHMOND TIMES DISPATCH, a newspaper of general circulation."
+  Handled by false-split healing in scraper_column_us.py.
 
 ### Fix history
 - 2026-05-15: Newspaper header corrected "RICHMOND TIMES-DISPATCH" → "RICHMOND TIMES DISPATCH"
-  (no hyphen). This was the sole cause of 0 records. Portal confirmed via live Playwright test.
+  (no hyphen). This was the sole cause of 0 records.
 - 2026-05-15: `city_to_county()` expanded with Henrico, Chesterfield, and Hanover communities.
+- 2026-05-15: `parse_trustee()` overhauled — 3-pattern approach, coverage improved 8% → 90%.
+  Added: explicit label pattern, Commonwealth Trustees, DolanReid, Equity Trustees,
+  ALG Trustee, First American Title. Fixed: Pattern 3 was missing re.IGNORECASE flag.
 
 ### Fix status
-- ✅ Working — 254 listings / 30-day window confirmed 2026-05-15
+- ✅ Working — data quality confirmed good 2026-05-15
 
 ---
 
