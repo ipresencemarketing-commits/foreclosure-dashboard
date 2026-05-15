@@ -308,24 +308,16 @@ def scrape_public_notice_va() -> list:
                 f"  PNV: {len(unique_items)} unique notices across {page_num} page(s)"
             )
 
-            # ── Extract session ID + cookies before closing browser ───────────────
-            # We'll use these with plain HTTP requests to fetch detail pages.
-            # HTTP requests don't execute JavaScript, so reCAPTCHA never runs —
-            # the server just returns the raw HTML with notice text inside.
+            # ── Build detail URLs using the live session ID ──────────────────────
+            # We keep the Playwright browser open and navigate to each detail
+            # page directly — this guarantees the ASP.NET session cookie is
+            # still valid.  The previous approach (close browser → HTTP requests)
+            # caused the session to expire, so every fetch silently fell back to
+            # the truncated card text, producing wrong sale_dates and blank times.
             session_match = re.search(r'\(S\(([^)]+)\)\)', page.url)
             session_id    = session_match.group(1) if session_match else ""
-            http_cookies  = {c["name"]: c["value"] for c in context.cookies()}
             log.info(f"  PNV: session_id = {session_id or '(not found)'}")
-
-            browser.close()
-
-            # ── Fetch detail pages via HTTP (no JS = no reCAPTCHA) ───────────────
-            import requests as _req
-            http_sess = _req.Session()
-            http_sess.cookies.update(http_cookies)
-            http_sess.headers.update(HEADERS)
-
-            log.info(f"  PNV: fetching {len(unique_items)} detail pages via HTTP…")
+            log.info(f"  PNV: fetching {len(unique_items)} detail pages via Playwright…")
 
             for i, item in enumerate(unique_items, 1):
                 nid       = item["id"]
@@ -341,25 +333,26 @@ def scrape_public_notice_va() -> list:
                         f"https://www.publicnoticevirginia.com/Details.aspx?ID={nid}"
                     )
 
+                full_text = card_text  # default; overwritten on successful fetch
                 try:
-                    resp = http_sess.get(detail_url, timeout=15)
-                    # Strip scripts, styles, and HTML tags to get plain text
-                    raw = re.sub(r'<script[^>]*>.*?</script>', ' ', resp.text, flags=re.DOTALL | re.I)
-                    raw = re.sub(r'<style[^>]*>.*?</style>',  ' ', raw,       flags=re.DOTALL | re.I)
-                    raw = re.sub(r'<[^>]+>', ' ', raw)
-                    full_text = re.sub(r'\s+', ' ', raw).strip()
+                    page.goto(detail_url, wait_until="domcontentloaded", timeout=20_000)
+                    page.wait_for_timeout(800)
+                    # Extract visible text — strips scripts/styles automatically
+                    raw_text = page.evaluate("() => document.body.innerText")
+                    if raw_text:
+                        full_text = re.sub(r'\s+', ' ', raw_text).strip()
                 except Exception as e:
-                    log.warning(f"  PNV: HTTP fetch failed for {nid}: {e} — using card text")
-                    full_text = card_text
+                    log.warning(f"  PNV: Playwright fetch failed for {nid}: {e} — using card text")
 
                 # Verify we got actual notice content (not an error/redirect page)
                 if not re.search(
                     r"trustee|deed of trust|sale of real property|foreclos|judicial sale",
                     full_text, re.I
                 ):
-                    full_text = card_text   # fall back to row excerpt
+                    log.debug(f"  PNV: notice {nid} — detail page lacked notice keywords, using card text")
+                    full_text = card_text
 
-                if i % 100 == 0:
+                if i % 10 == 0:
                     log.info(f"  PNV: processed {i}/{len(unique_items)} detail pages…")
 
                 address              = parse_address_from_notice(full_text)
@@ -368,7 +361,8 @@ def scrape_public_notice_va() -> list:
                 trustee              = parse_trustee(full_text)
                 notice_text          = re.sub(r'\s+', ' ', full_text).strip()[:5000]
 
-                # Best-effort county/city parse from notice text — not used as filter
+                # Derive county from notice text — critical for the county filter
+                # that runs after all scrapers complete in main().
                 county_key = None
                 text_lower = full_text.lower()
                 for c in TARGET_COUNTIES:
@@ -400,6 +394,8 @@ def scrape_public_notice_va() -> list:
                 })
 
                 sleep(0.25)   # polite rate limit
+
+            browser.close()
 
     except Exception as e:
         log.error(f"  PNV error: {e}", exc_info=True)
@@ -3911,9 +3907,32 @@ def run():
     else:
         log.info("--- Group 9: VA Courts SKIPPED (ENABLE_VA_COURTS=False) ---")
 
-    # ── Deduplication, enrichment, save ───────────────────────────────────────
+    # ── Deduplication ─────────────────────────────────────────────────────────
     all_listings = deduplicate(all_listings)
     log.info(f"Total after dedup: {len(all_listings)} listings")
+
+    # ── County filter — keep only the 12 target counties ─────────────────────
+    # Records with no county or an out-of-scope county are dropped here before
+    # anything touches the sheet.  This is the single enforcement point so each
+    # scraper doesn't need its own filtering logic.
+    target_display_set = set(cfg.TARGET_COUNTIES_DISPLAY)
+    pre_filter_count   = len(all_listings)
+    kept, dropped      = [], []
+    for listing in all_listings:
+        if listing.get("county") in target_display_set:
+            kept.append(listing)
+        else:
+            dropped.append(listing)
+
+    if dropped:
+        from collections import Counter
+        drop_counts = Counter(r.get("county") or "(no county)" for r in dropped)
+        log.info(
+            f"County filter: kept {len(kept)}, dropped {len(dropped)} "
+            f"out-of-scope records — {dict(drop_counts)}"
+        )
+    all_listings = kept
+    log.info(f"Total after county filter: {len(all_listings)} listings")
 
     # Owner enrichment — queries each county's public ArcGIS parcel REST API
     # to populate owner_name and owner_mailing_address.

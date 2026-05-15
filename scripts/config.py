@@ -72,7 +72,9 @@ ENABLE_COLUMN_FXBG:        bool = True   # Existing — fredericksburg.column.us
 ENABLE_COLUMN_RICHMOND:    bool = True   # Group 1  — richmond.column.us
 ENABLE_LOGS_LEGAL:         bool = False  # Group 2  — DISABLED: logs.com migrated to PowerBI
                                          #            embed (2026-05); BS4 cannot parse iframe data
-ENABLE_COLUMN_DAILYPROG:   bool = True   # Group 4  — dailyprogress.column.us
+ENABLE_COLUMN_DAILYPROG:   bool = False  # Group 4  — DISABLED: Daily Progress covers
+                                         #            Charlottesville/Albemarle — outside our
+                                         #            12 target counties; produces only noise
 ENABLE_AUCTION_COM:        bool = True   # Group 5  — auction.com (REO + trustee sales)
 ENABLE_COLUMN_WILLIAMSBURG:bool = True   # Group 6  — vagazette.column.us (Virginia Gazette)
 ENABLE_COLUMN_NVDAILY:     bool = False  # Group 7  — DISABLED: nvdaily.column.us is 404; NV Daily
