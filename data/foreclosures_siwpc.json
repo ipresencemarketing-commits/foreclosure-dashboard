@@ -14,8 +14,8 @@
       "sale_date": "2026-06-09",
       "sale_time": "10:30AM",
       "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 25,
-      "notice_date": "2026-05-15",
+      "days_until_sale": 24,
+      "notice_date": "2026-05-16",
       "days_in_foreclosure": 0,
       "lender": "",
       "trustee": "Samuel I. White, P.C.",
@@ -45,8 +45,8 @@
       "sale_date": "2026-06-09",
       "sale_time": "10:30AM",
       "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 25,
-      "notice_date": "2026-05-15",
+      "days_until_sale": 24,
+      "notice_date": "2026-05-16",
       "days_in_foreclosure": 0,
       "lender": "",
       "trustee": "Samuel I. White, P.C.",
@@ -76,8 +76,8 @@
       "sale_date": "2026-06-16",
       "sale_time": "9:30AM",
       "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 32,
-      "notice_date": "2026-05-15",
+      "days_until_sale": 31,
+      "notice_date": "2026-05-16",
       "days_in_foreclosure": 0,
       "lender": "",
       "trustee": "Samuel I. White, P.C.",
@@ -107,8 +107,8 @@
       "sale_date": "2026-06-09",
       "sale_time": "9:30AM",
       "sale_location": "Front steps, Richmond City Circuit Court, 400 N 9th St",
-      "days_until_sale": 25,
-      "notice_date": "2026-05-15",
+      "days_until_sale": 24,
+      "notice_date": "2026-05-16",
       "days_in_foreclosure": 0,
       "lender": "",
       "trustee": "Samuel I. White, P.C.",
@@ -125,5 +125,5 @@
       "investment_priority": "Low"
     }
   ],
-  "scraped_at": "2026-05-16T03:05:27.581120Z"
+  "scraped_at": "2026-05-16T04:01:29.542656Z"
 }

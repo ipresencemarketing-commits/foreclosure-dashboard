@@ -244,7 +244,7 @@ COLUMN_US_SOURCES: list[dict] = [
 # ---------------------------------------------------------------------------
 # PNV toggle  (PNV is handled by scraper.py, not run.py)
 # ---------------------------------------------------------------------------
-ENABLE_PNV: bool = True   # Lead-discovery source: card text only (reCAPTCHA blocks detail pages)
+ENABLE_PNV: bool = True   # Lead-discovery source: full notice text via 2captcha (falls back to card text if key missing)
 
 # ---------------------------------------------------------------------------
 # SIWPC toggle  (handled by scraper_siwpc.py, called directly by run.py)
@@ -293,6 +293,16 @@ _SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
 _PROJECT_ROOT = os.path.join(_SCRIPT_DIR, "..")
 
 CREDS_FILE: str = os.path.join(_PROJECT_ROOT, "credentials", "service-account.json")
+
+#: 2captcha API key — used to solve reCAPTCHA on PNV detail pages.
+#: Read from credentials/twocaptcha_key.txt (gitignored).
+#: Set to None if the file is missing — PNV falls back to card-text-only mode.
+_TWOCAPTCHA_KEY_FILE = os.path.join(_PROJECT_ROOT, "credentials", "twocaptcha_key.txt")
+try:
+    with open(_TWOCAPTCHA_KEY_FILE) as _f:
+        TWOCAPTCHA_API_KEY = _f.read().strip() or None  # str or None
+except FileNotFoundError:
+    TWOCAPTCHA_API_KEY = None
 
 #: Google API OAuth scopes required for read/write spreadsheet access.
 SCOPES: list[str] = [

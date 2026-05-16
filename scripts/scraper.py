@@ -337,32 +337,28 @@ def scrape_public_notice_va(max_pages: int | None = None) -> list:
                 f"(skipped {skipped_cnt} out-of-scope)"
             )
 
-            # ── Parse card text directly — no detail page fetches ──────────────
-            # PNV detail pages require reCAPTCHA completion (confirmed 2026-05-15).
-            # Direct URL navigation always hits the CAPTCHA wall, so we cannot
-            # access the full notice text.
-            #
-            # Strategy: use PNV as a lead-DISCOVERY source.
-            # Card text (~400 chars) comes from the search results grid and is
-            # freely available.  It contains enough to extract:
-            #   ✅ Address (usually in the first 200 chars)
-            #   ✅ County (pre-filtered above)
-            #   ⚠️ Sale date/time (sometimes present, often truncated)
-            #   ❌ Full lender / trustee details
-            #
-            # Records without a sale date are staged as "pre-fc".
-            # The dedup logic merges them with SIWPC / Column.us records when
-            # the same property appears in both, filling in the sale date.
-            #
-            # Detail URL is still constructed (for the source_url field) but
-            # we do NOT navigate to it.
+            # ── Detail page fetching (with 2captcha) or card-text fallback ─────
+            # PNV detail pages are gated by reCAPTCHA v2.
+            # If TWOCAPTCHA_API_KEY is set in config.py, we solve the CAPTCHA
+            # and fetch full notice text (unlocks F_Sale_Date, F_Sale_Time,
+            # Deed_Of_Trust_Date, Original_Principal, lender, trustee).
+            # If no API key is configured, we fall back to card-text-only mode.
             session_match = re.search(r'\(S\(([^)]+)\)\)', page.url)
             session_id    = session_match.group(1) if session_match else ""
 
-            log.info(
-                f"  PNV: parsing {len(unique_items)} in-scope card texts "
-                f"(no detail-page fetches — reCAPTCHA gate)"
-            )
+            two_captcha_key = getattr(cfg, "TWOCAPTCHA_API_KEY", None)
+            use_captcha     = bool(two_captcha_key)
+
+            if use_captcha:
+                log.info(
+                    f"  PNV: fetching {len(unique_items)} detail page(s) "
+                    f"with 2captcha CAPTCHA solving"
+                )
+            else:
+                log.info(
+                    f"  PNV: parsing {len(unique_items)} in-scope card texts "
+                    f"(no API key — card-text-only mode)"
+                )
 
             for i, item in enumerate(unique_items, 1):
                 nid       = item["id"]
@@ -375,11 +371,111 @@ def scrape_public_notice_va(max_pages: int | None = None) -> list:
                     else f"https://www.publicnoticevirginia.com/Details.aspx?ID={nid}"
                 )
 
-                # Parse what we can from the card excerpt
-                address              = parse_address_from_notice(card_text) or ""
-                sale_date, sale_time = parse_sale_datetime(card_text)
-                lender               = parse_lender(card_text)
-                trustee              = parse_trustee(card_text)
+                # ── Attempt detail page fetch with CAPTCHA solving ────────────
+                notice_text_full = None
+                if use_captcha:
+                    try:
+                        log.info(f"  PNV [{i}/{len(unique_items)}]: fetching detail page {nid}")
+                        page.goto(detail_url, wait_until="load", timeout=30_000)
+                        page.wait_for_timeout(2_000)
+
+                        # Check if reCAPTCHA wall is present
+                        has_captcha = page.evaluate("""() => {
+                            return (
+                                document.querySelector('.g-recaptcha') !== null ||
+                                document.querySelector('[data-sitekey]') !== null ||
+                                document.body.innerText.includes('reCAPTCHA')
+                            );
+                        }""")
+
+                        if has_captcha:
+                            log.info(f"  PNV [{i}]: reCAPTCHA detected — solving via 2captcha")
+
+                            # Click ToU checkbox if present (ASP.NET form)
+                            tou_checkbox = page.query_selector(
+                                'input[type="checkbox"][id*="chk"], '
+                                'input[type="checkbox"][id*="Agree"], '
+                                'input[type="checkbox"][id*="Terms"]'
+                            )
+                            if tou_checkbox and not tou_checkbox.is_checked():
+                                tou_checkbox.click()
+                                page.wait_for_timeout(500)
+                                log.debug("  PNV: ToU checkbox clicked")
+
+                            token = solve_recaptcha_via_2captcha(page, detail_url, two_captcha_key)
+                            if token:
+                                # Inject token into the hidden textarea reCAPTCHA uses
+                                page.evaluate(f"""(token) => {{
+                                    const ta = document.getElementById('g-recaptcha-response');
+                                    if (ta) ta.value = token;
+                                    // Also set display so the form validation sees it
+                                    if (ta) ta.style.display = 'block';
+                                    // Fire the callback registered by the reCAPTCHA widget
+                                    if (window.___grecaptcha_cfg) {{
+                                        const entries = Object.entries(window.___grecaptcha_cfg.clients || {{}});
+                                        for (const [, client] of entries) {{
+                                            const cb = client?.['J']?.callback || client?.callback;
+                                            if (typeof cb === 'function') {{ cb(token); break; }}
+                                        }}
+                                    }}
+                                }}""", token)
+                                page.wait_for_timeout(1_000)
+
+                                # Click the submit / continue button
+                                submit_btn = (
+                                    page.query_selector('input[type="submit"][id*="btn"]') or
+                                    page.query_selector('input[type="submit"]') or
+                                    page.query_selector('button[type="submit"]')
+                                )
+                                if submit_btn:
+                                    submit_btn.click()
+                                    page.wait_for_load_state("networkidle", timeout=20_000)
+                                    page.wait_for_timeout(2_000)
+
+                                # Extract full notice text from the loaded detail page
+                                raw_body = page.evaluate("""() => {
+                                    // PNV wraps notice content in a div with id containing
+                                    // "pnlMain" or "ContentPlaceHolder1"
+                                    const selectors = [
+                                        '#ctl00_ContentPlaceHolder1_pnlMain',
+                                        '[id*="pnlMain"]',
+                                        '[id*="ContentPlaceHolder1"]',
+                                        'form',
+                                    ];
+                                    for (const sel of selectors) {
+                                        const el = document.querySelector(sel);
+                                        if (el) return el.innerText;
+                                    }
+                                    return document.body.innerText;
+                                }""")
+
+                                # Verify we got actual notice content (not another CAPTCHA page)
+                                if raw_body and "reCAPTCHA" not in raw_body and len(raw_body) > 200:
+                                    notice_text_full = re.sub(r'\s+', ' ', raw_body).strip()[:5000]
+                                    log.info(f"  PNV [{i}]: full notice text retrieved ({len(notice_text_full)} chars)")
+                                else:
+                                    log.warning(f"  PNV [{i}]: CAPTCHA still present after solve attempt — using card text")
+                            else:
+                                log.warning(f"  PNV [{i}]: 2captcha failed — using card text fallback")
+                        else:
+                            # Detail page loaded without CAPTCHA (session still valid)
+                            raw_body = page.evaluate("() => document.body.innerText")
+                            if raw_body and len(raw_body) > 200:
+                                notice_text_full = re.sub(r'\s+', ' ', raw_body).strip()[:5000]
+                                log.info(f"  PNV [{i}]: detail page loaded without CAPTCHA ({len(notice_text_full)} chars)")
+
+                        sleep(1.5)   # rate-limit between detail fetches
+
+                    except Exception as _de:
+                        log.warning(f"  PNV [{i}]: detail fetch error ({_de}) — using card text")
+
+                # ── Parse fields: prefer full notice text, fall back to card ──
+                source_text = notice_text_full or card_text
+
+                address              = parse_address_from_notice(source_text) or ""
+                sale_date, sale_time = parse_sale_datetime(source_text)
+                lender               = parse_lender(source_text)
+                trustee              = parse_trustee(source_text)
 
                 # parse_sale_datetime Pattern 4 (fallback) finds ANY date in text —
                 # including the newspaper's publication date in the card header.
@@ -388,7 +484,15 @@ def scrape_public_notice_va(max_pages: int | None = None) -> list:
                 # date, not the auction date.  Discard it to avoid false sale dates.
                 if sale_date and not sale_time:
                     sale_date = None
-                notice_text          = re.sub(r'\s+', ' ', card_text).strip()
+
+                # Additional fields only available in full notice text
+                deed_of_trust_date = None
+                original_principal = None
+                if notice_text_full:
+                    deed_of_trust_date = parse_deed_of_trust_date(notice_text_full)
+                    original_principal = parse_original_principal(notice_text_full)
+
+                notice_text_out = re.sub(r'\s+', ' ', source_text).strip()
 
                 # County from card text (already verified above in pre-filter)
                 county_key = None
@@ -418,7 +522,9 @@ def scrape_public_notice_va(max_pages: int | None = None) -> list:
                     "days_in_foreclosure": 0,
                     "lender":              lender,
                     "trustee":             trustee,
-                    "notice_text":         notice_text,
+                    "deed_of_trust_date":  deed_of_trust_date,
+                    "original_principal":  original_principal,
+                    "notice_text":         notice_text_out,
                     "source":              "publicnoticevirginia",
                     "source_url":          detail_url,
                 })
@@ -2451,6 +2557,145 @@ def parse_trustee(text: str) -> str | None:
         if not any(val.lower().startswith(s) for s in skip_words) and len(val) > 4:
             return val
 
+    return None
+
+
+def parse_deed_of_trust_date(text: str):
+    """
+    Extract the Deed of Trust date from full notice text.
+
+    Patterns seen in Virginia trustee sale notices:
+      "Deed of Trust dated January 5, 2018"
+      "deed of trust dated 01/05/2018"
+      "Deed of Trust, dated the 5th day of January, 2018"
+    Returns ISO date string "YYYY-MM-DD" or None.
+    """
+    # Pattern A: "dated Month D, YYYY" or "dated M/D/YYYY"
+    m = re.search(
+        r'[Dd]eed\s+of\s+[Tt]rust[^,]*?,?\s+dated\s+'
+        r'(?:the\s+)?(\d{1,2}(?:st|nd|rd|th)?\s+day\s+of\s+)?'
+        r'([A-Za-z]+|\d{1,2})[/\s,]+(\d{1,2}|\d{4})[/\s,]+(\d{4}|\d{2})',
+        text
+    )
+    if m:
+        raw = m.group(0)
+        # Pull just the date portion after "dated"
+        date_part = re.search(
+            r'dated\s+(?:the\s+\d{1,2}(?:st|nd|rd|th)?\s+day\s+of\s+)?(.{6,30})',
+            raw, re.IGNORECASE
+        )
+        if date_part:
+            candidate = date_part.group(1).strip().rstrip('.,;')
+            # Try numeric M/D/YYYY
+            for fmt in ('%m/%d/%Y', '%m/%d/%y'):
+                try:
+                    return datetime.strptime(candidate[:10], fmt).date().isoformat()
+                except ValueError:
+                    pass
+            # Try "Month D, YYYY"
+            for fmt in ('%B %d, %Y', '%B %d %Y', '%b %d, %Y'):
+                try:
+                    cleaned = re.sub(r'(\d+)(st|nd|rd|th)', r'\1', candidate)
+                    return datetime.strptime(cleaned, fmt).date().isoformat()
+                except ValueError:
+                    pass
+    return None
+
+
+def parse_original_principal(text: str):
+    """
+    Extract the original principal loan amount from full notice text.
+
+    Patterns:
+      "original principal amount of $285,000.00"
+      "original principal sum of $285,000"
+      "in the original principal amount of Two Hundred Eighty-Five Thousand"
+    Returns integer dollars or None.
+    """
+    m = re.search(
+        r'original\s+principal\s+(?:amount|sum)\s+of\s+\$?([\d,]+(?:\.\d{2})?)',
+        text, re.IGNORECASE
+    )
+    if m:
+        try:
+            return int(float(m.group(1).replace(',', '')))
+        except ValueError:
+            pass
+    return None
+
+
+def solve_recaptcha_via_2captcha(page, site_url: str, api_key: str):
+    """
+    Solve a reCAPTCHA v2 on the current Playwright page using 2captcha.
+
+    Flow:
+      1. Extract site key from .g-recaptcha[data-sitekey]
+      2. Submit task to 2captcha /in.php
+      3. Poll /res.php until token is ready (up to 120 s)
+      4. Inject token into #g-recaptcha-response
+      5. Fire the reCAPTCHA callback so the form accepts the solution
+      6. Return the token (caller handles form submission)
+
+    Returns the token string on success, None on any failure.
+    """
+    # ── 1. Find site key ──────────────────────────────────────────────────────
+    site_key = page.evaluate("""() => {
+        const el = document.querySelector('[data-sitekey]');
+        return el ? el.getAttribute('data-sitekey') : null;
+    }""")
+    if not site_key:
+        log.warning("  2captcha: no data-sitekey found on page — cannot solve")
+        return None
+
+    log.info(f"  2captcha: submitting task (sitekey={site_key[:10]}…)")
+
+    # ── 2. Submit task ────────────────────────────────────────────────────────
+    try:
+        resp = requests.post(
+            "https://2captcha.com/in.php",
+            data={
+                "key":       api_key,
+                "method":    "userrecaptcha",
+                "googlekey": site_key,
+                "pageurl":   site_url,
+                "json":      0,
+            },
+            timeout=20,
+        )
+        if not resp.text.startswith("OK|"):
+            log.error(f"  2captcha submit error: {resp.text.strip()}")
+            return None
+        task_id = resp.text.split("|", 1)[1].strip()
+        log.info(f"  2captcha: task submitted, id={task_id}")
+    except Exception as e:
+        log.error(f"  2captcha submit exception: {e}")
+        return None
+
+    # ── 3. Poll for result ────────────────────────────────────────────────────
+    sleep(20)   # 2captcha recommends waiting 20 s before first poll
+    for attempt in range(20):
+        try:
+            r = requests.get(
+                "https://2captcha.com/res.php",
+                params={"key": api_key, "action": "get", "id": task_id},
+                timeout=15,
+            )
+            result = r.text.strip()
+            if result == "CAPCHA_NOT_READY":
+                log.debug(f"  2captcha: not ready (attempt {attempt+1}/20)")
+                sleep(5)
+                continue
+            if result.startswith("OK|"):
+                token = result.split("|", 1)[1].strip()
+                log.info("  2captcha: token received ✓")
+                return token
+            log.error(f"  2captcha poll error: {result}")
+            return None
+        except Exception as e:
+            log.warning(f"  2captcha poll exception: {e}")
+            sleep(5)
+
+    log.error("  2captcha: timed out after 20 polls (120 s)")
     return None
 
 
