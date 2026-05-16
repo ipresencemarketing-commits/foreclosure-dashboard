@@ -127,6 +127,26 @@ def main():
         print()
         print("  SIWPC: SKIPPED (ENABLE_SIWPC=False in config.py)")
 
+    # ── PNV — PublicNoticeVirginia.com ────────────────────────────
+    if cfg.ENABLE_PNV:
+        print()
+        print("-" * 60)
+        print("  PublicNoticeVirginia.com (PNV — card text mode)")
+        print("-" * 60)
+        pnv_output = os.path.join(PROJECT_ROOT, "data", "foreclosures_pnv.json")
+        ok = run(
+            [python, "scripts/scraper.py", "--pnv-run", "--output", pnv_output],
+            "PNV scraper"
+        )
+        if ok and sync:
+            run(
+                [python, "scripts/sheets_sync.py", "--file", pnv_output],
+                "sheets sync — PNV"
+            )
+    else:
+        print()
+        print("  PNV: SKIPPED (ENABLE_PNV=False in config.py)")
+
     # ── GitHub Pages publish ──────────────────────────────────────
     if push and active:
         print()

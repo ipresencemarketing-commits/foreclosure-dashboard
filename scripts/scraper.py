@@ -3755,7 +3755,6 @@ if __name__ == "__main__":
         # Test the PNV scraper in isolation without touching config.py.
         # Uses DEBUG log level so you see every notice's fetch preview.
         # Caps pagination at 5 pages (~50 notices) so the test completes quickly.
-        # In production (run() below), max_pages=None = unlimited.
         logging.getLogger().setLevel(logging.DEBUG)
         listings = scrape_public_notice_va(max_pages=5)
         print(f"\n=== PNV test complete: {len(listings)} listing(s) ===")
@@ -3764,5 +3763,23 @@ if __name__ == "__main__":
                   f"{r.get('sale_date','?')}  {r.get('sale_time','?')}")
         if len(listings) > 5:
             print(f"  … and {len(listings)-5} more")
+    elif "--pnv-run" in sys.argv:
+        # Production PNV-only run — called by run.py.
+        # Scrapes all pages (no cap), writes JSON to --output path.
+        import argparse, json, os
+        from datetime import datetime as _dt
+        p = argparse.ArgumentParser()
+        p.add_argument("--output", required=True)
+        p.add_argument("--pnv-run", action="store_true")
+        args, _ = p.parse_known_args()
+
+        listings = scrape_public_notice_va(max_pages=None)
+        log.info(f"PNV: {len(listings)} in-scope listing(s)")
+
+        out = {"listings": listings, "scraped_at": _dt.utcnow().isoformat() + "Z"}
+        os.makedirs(os.path.dirname(args.output), exist_ok=True)
+        with open(args.output, "w") as f:
+            json.dump(out, f, indent=2)
+        log.info(f"PNV: wrote {len(listings)} listings → {args.output}")
     else:
         run()
