@@ -46,7 +46,7 @@ from scraper import (
     parse_deposit, parse_deed_of_trust_date,
     parse_lender, parse_trustee,
     city_to_county, county_display, courthouse_location, valid_va_county,
-    extract_address,
+    extract_address, parse_county_from_clerks_office,
 )
 
 SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
@@ -327,9 +327,17 @@ def scrape(url: str, paper_header: str, source_tag: str, label: str, detect_mode
                     skipped_addr += 1
                     continue
 
-                # Derive county from city; fall back to Circuit Court mention in text
+                # ── County derivation (3-pass fallback) ──────────────────
+                # Pass 1: city → county lookup
                 county = city_to_county(city)
+
                 if county == "Unknown":
+                    # Pass 2: Clerk's Office jurisdiction (most reliable signal —
+                    # deed of trust is always recorded in the property's jurisdiction)
+                    county = parse_county_from_clerks_office(text)
+
+                if not county:
+                    # Pass 3: Circuit Court mention
                     county_m = re.search(
                         r"Circuit Court(?:\s+for)?\s+(?:the\s+)?"
                         r"(?:(?:City|County)\s+of\s+)?([A-Za-z][A-Za-z ]{1,25}?)"

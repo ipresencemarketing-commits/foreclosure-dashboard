@@ -2544,6 +2544,8 @@ def county_display(county: str) -> str:
         "fauquier":        "Fauquier",
         "culpeper":        "Culpeper",
         "king george":     "King George",
+        "king william":    "King William",
+        "king and queen":  "King And Queen",
         "hanover":         "Hanover",
         "richmond":        "Richmond City",
         "chesterfield":    "Chesterfield",
@@ -2563,6 +2565,7 @@ def county_display(county: str) -> str:
         "campbell":        "Campbell",
         "appomattox":      "Appomattox",
         "amherst":         "Amherst",
+        "amelia":          "Amelia",
         # Charlottesville area
         "charlottesville": "Charlottesville City",
         "albemarle":       "Albemarle",
@@ -2648,6 +2651,7 @@ def county_display(county: str) -> str:
         "petersburg":      "Petersburg City",
         "hopewell":        "Hopewell City",
         "prince george":   "Prince George",
+        "prince edward":   "Prince Edward",
         "charles city":    "Charles City",
         "new kent":        "New Kent",
         "surry":           "Surry",
@@ -2679,7 +2683,7 @@ _VA_COUNTY_FIRST_WORDS = {
     "stafford", "spotsylvania", "caroline", "fauquier", "culpeper",
     "king", "hanover", "richmond", "chesterfield", "henrico", "louisa",
     "roanoke", "salem", "botetourt", "bedford", "franklin", "montgomery",
-    "radford", "lynchburg", "campbell", "appomattox", "amherst",
+    "radford", "lynchburg", "campbell", "appomattox", "amherst", "amelia",
     "charlottesville", "albemarle", "fluvanna", "greene", "nelson",
     "rockingham", "harrisonburg", "page", "shenandoah", "augusta",
     "staunton", "waynesboro", "warren", "frederick", "winchester",
@@ -2712,7 +2716,109 @@ def valid_va_county(raw: str) -> str:
     first_word = raw.strip().split()[0].lower()
     if first_word not in _VA_COUNTY_FIRST_WORDS:
         return ""
-    return county_display(raw.lower()) or raw.strip().title()
+    result = county_display(raw.lower())
+    if not result:
+        # Strip trailing "County"/"City" suffix and retry — handles captures like
+        # "Amelia County" or "Chesterfield County" where the suffix bled into the name
+        stripped = re.sub(r'\s+(?:county|city)\s*$', '', raw.lower().strip())
+        result = county_display(stripped)
+    return result or raw.strip().title()
+
+
+def parse_county_from_clerks_office(text: str) -> str:
+    """
+    Extract jurisdiction from a Clerk’s Office reference in notice text.
+
+    Virginia foreclosure notices record the deed of trust in the Clerk’s
+    Office of the Circuit Court for the property’s jurisdiction — making
+    this the most reliable county signal in the notice.
+
+    Handles all common Virginia legal notice formats:
+      "Clerk’s Office for the City of Petersburg Virginia"              → "Petersburg City"
+      "Clerk’s Office of the Circuit Court of the County of Lancaster"  → "Lancaster"
+      "Clerk’s Office, Circuit Court for Prince George County"          → "Prince George"
+      "Clerk’s Office, Circuit Court for the County of New Kent"        → "New Kent"
+      "Clerk’s Office, Circuit Court for Surry County, Virginia"        → "Surry"
+      "Clerk’s Office for the King William County Virginia Circuit Court"→ "King William"
+      "Clerk’s Office, Circuit Court for Colonial Heights City"          → "Colonial Heights City"
+      "Clerk’s Office, Circuit Court for Hopewell City"                 → "Hopewell City"
+
+    Returns county display name (e.g. "Petersburg City", "Chesterfield")
+    or "" if no match found or jurisdiction not recognised as a VA locality.
+    """
+    # Word-sequence helper: 1–3 capitalised words (handles multi-word names
+    # like "Prince George", "New Kent", "King William", "Isle of Wight")
+    _NAME = r"((?:[A-Za-z]+)(?:\s+[A-Za-z]+){0,2})"
+
+    # Pattern 1 — "[City|County] of [Name]" anywhere close after Clerk’s Office
+    # Covers: "for the City of Petersburg Virginia"
+    #          "of the Circuit Court of the County of Lancaster, Virginia"
+    #          "of the Circuit Court for the County of New Kent, Virginia"
+    m = re.search(
+        r"Clerk['`‘’]s\s+Office\b.{0,80}?(?:City|County)\s+of\s+"
+        + _NAME
+        + r"(?=\s+Virginia|\s+VA\b|,|\n|$)",
+        text, re.I
+    )
+    if m:
+        result = valid_va_county(m.group(1).strip())
+        if result:
+            return result
+
+    # Pattern 2 — "for [the] [Name] County/City"
+    # Covers: "Circuit Court for Prince George County"
+    #          "Circuit Court for Surry County, Virginia"
+    #          "Circuit Court for Colonial Heights City, Virginia"
+    #          "Clerk’s Office for the King William County Virginia"
+    m = re.search(
+        r"Clerk['`‘’]s\s+Office\b.{0,80}?\bfor\s+(?:the\s+)?"
+        + _NAME
+        + r"\s+(County|City)\b",
+        text, re.I
+    )
+    if m:
+        name = m.group(1).strip()
+        suffix = m.group(2).strip()  # "County" or "City"
+        # Strip leading prepositions that sometimes bleed in
+        name = re.sub(r'^(?:of|the|in)\s+', '', name, flags=re.I).strip()
+        # Try combined "Name City/County" first (catches "Charles City", "James City")
+        result = valid_va_county(name + " " + suffix) or valid_va_county(name)
+        if result:
+            return result
+
+    # Pattern 2b — bare jurisdiction name with no County/City suffix
+    # Covers: "Circuit Court for Charles City, Virginia"
+    #          "Circuit Court for Isle of Wight, Virginia"
+    m = re.search(
+        r"Clerk['`'']s\s+Office\b.{0,80}?\bfor\s+(?:the\s+)?"
+        + _NAME
+        + r"(?:\s+Virginia|\s+VA\b|,)",
+        text, re.I
+    )
+    if m:
+        name = m.group(1).strip()
+        name = re.sub(r'^(?:of|the|in)\s+', '', name, flags=re.I).strip()
+        result = valid_va_county(name)
+        if result:
+            return result
+
+    # Pattern 3 — "of [the] [Name] County/City" (no explicit "for")
+    # Covers: "Circuit Court of the Colonial Heights County"
+    #          "Circuit Court of the Amelia County"
+    m = re.search(
+        r"Clerk['`‘’]s\s+Office\b.{0,100}?\bof\s+(?:the\s+)?"
+        + _NAME
+        + r"\s+(County|City)\b",
+        text, re.I
+    )
+    if m:
+        name = m.group(1).strip()
+        name = re.sub(r'^(?:of|the|in|circuit|court|this)\s+', '', name, flags=re.I).strip()
+        result = valid_va_county(name)
+        if result:
+            return result
+
+    return ""
 
 
 def county_city(county: str) -> str:

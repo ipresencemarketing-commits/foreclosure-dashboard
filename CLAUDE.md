@@ -66,6 +66,26 @@ When fixing Column.us bugs or adding features:
 → Edit `update_statewide.sh` (header strings, paper URLs)
 → Edit `scraper.py` only for shared parsing helpers
 
+## Enabling / disabling sources
+**One place to control everything: `COLUMN_US_SOURCES` in `scripts/config.py`.**
+
+Each entry has an `enabled` flag. Set it to `True` or `False`:
+```python
+{
+    "name":    "richmond",
+    "label":   "Richmond Times-Dispatch",
+    ...
+    "enabled": True,   # ← change this
+    "notes":   "Core source — Richmond City, Chesterfield, Henrico, Hanover",
+},
+```
+
+`run.py` reads this list and only runs enabled sources. `update_statewide.sh` is a
+thin wrapper that calls `run.py` — it no longer contains any source definitions.
+
+`ENABLE_PNV` in `config.py` is the one remaining separate flag — PNV is handled by
+`scraper.py` directly, not by `run.py`.
+
 ## How to run the pipeline
 ```bash
 cd ~/Documents/Claude/Foreclosures

@@ -5,13 +5,14 @@ Foreclosure Finder — Pipeline Configuration
 Central settings file for the full pipeline.
 
 Edit values here; changes apply to the next run of any script.
-All scripts (scraper.py, backfill.py, sheets_sync.py) import from this module.
+All scripts (scraper.py, backfill.py, sheets_sync.py, run.py) import from this module.
 
 Quick reference
 ---------------
-  LOOKBACK_DAYS   — how far back to search (default 30 days)
-  ENABLE_*        — toggle individual source groups on/off without touching scraper code
-  HTTP_DELAY_*    — rate-limiting constants
+  COLUMN_US_SOURCES — master source list; set enabled=True/False to control what runs
+  ENABLE_PNV        — toggle PNV (handled separately by scraper.py, not run.py)
+  LOOKBACK_DAYS     — how far back to search (default 30 days)
+  HTTP_DELAY_*      — rate-limiting constants
 """
 
 from datetime import date, timedelta
@@ -61,30 +62,189 @@ TARGET_COUNTIES_DISPLAY: list[str] = [
 ]
 
 # ---------------------------------------------------------------------------
-# Source group toggles
+# Column.us source list  ← THE SINGLE PLACE TO ENABLE / DISABLE SOURCES
 # ---------------------------------------------------------------------------
-# Set a flag to False to skip that group entirely without removing its code.
-# Useful for debugging one source at a time or temporarily pausing a source
-# that's rate-limiting or returning bad data.
+# Each entry is one Column.us newspaper portal.
+# Set enabled=True to include it in the daily run; False to skip it.
+# run.py reads this list — update_statewide.sh is just a wrapper that calls run.py.
+#
+# Fields:
+#   name       — short identifier used in log messages
+#   label      — human-readable newspaper name
+#   url        — Column.us search URL for Foreclosure Sale notices
+#   header     — UPPERCASE newspaper name as it appears in page text (block delimiter)
+#   source_tag — written into each listing's "source" field
+#   output     — JSON output file path (relative to project root)
+#   enabled    — True = runs daily; False = skipped
+#   notes      — why it's enabled/disabled (for reference)
 
-ENABLE_PNV:                bool = False  # Group 3  — PAUSED: evaluating Fxbg data first
-ENABLE_COLUMN_FXBG:        bool = True   # Existing — fredericksburg.column.us (ACTIVE)
-ENABLE_COLUMN_RICHMOND:    bool = False  # Group 1  — PAUSED: evaluating Fxbg data first
-ENABLE_LOGS_LEGAL:         bool = False  # Group 2  — DISABLED: logs.com migrated to PowerBI
-                                         #            embed (2026-05); BS4 cannot parse iframe data
-ENABLE_COLUMN_DAILYPROG:   bool = False  # Group 4  — DISABLED: Daily Progress covers
-                                         #            Charlottesville/Albemarle — outside our
-                                         #            12 target counties; produces only noise
-ENABLE_AUCTION_COM:        bool = False  # Group 5  — DISABLED: REO listings have no
-                                         #            courthouse sale date; different lead
-                                         #            type from trustee notices — removed
-ENABLE_COLUMN_WILLIAMSBURG:bool = False  # Group 6  — PAUSED: supplemental only, revisit later
-ENABLE_COLUMN_NVDAILY:     bool = False  # Group 7  — DISABLED: nvdaily.column.us is 404; NV Daily
-                                         #            uses its own CMS and covers wrong counties
-ENABLE_SIWPC:              bool = False  # Group 8  — DISABLED: removed from active sources
-ENABLE_VA_COURTS:          bool = False  # Group 9  — DISABLED: eCourts circuitSearch and CJISWeb
-                                         #            both require an authenticated session; no
-                                         #            public API endpoint available
+COLUMN_US_SOURCES: list[dict] = [
+    {
+        "name":       "fredericksburg",
+        "label":      "Free Lance-Star (Fredericksburg)",
+        "url":        "https://fredericksburg.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "FREDERICKSBURG FREE-LANCE STAR",
+        "source_tag": "column_us_fredericksburg",
+        "output":     "data/foreclosures.json",
+        "enabled":    True,
+        "notes":      "Core source — Fxbg, Stafford, Spotsylvania, Caroline, King George",
+    },
+    {
+        "name":       "richmond",
+        "label":      "Richmond Times-Dispatch",
+        "url":        "https://richmond.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "RICHMOND TIMES DISPATCH",
+        "source_tag": "column_us_richmond",
+        "output":     "data/foreclosures_richmond.json",
+        "enabled":    True,
+        "notes":      "Core source — Richmond City, Chesterfield, Henrico, Hanover",
+    },
+    {
+        "name":       "culpeper",
+        "label":      "Culpeper Star-Exponent",
+        "url":        "https://starexponent.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "CULPEPER STAR EXPONENT",
+        "source_tag": "column_us_culpeper",
+        "output":     "data/foreclosures_culpeper.json",
+        "enabled":    True,
+        "notes":      "Core source — Culpeper, Fauquier",
+    },
+    {
+        "name":       "williamsburg",
+        "label":      "Virginia Gazette (Williamsburg)",
+        "url":        "https://vagazette.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "VIRGINIA GAZETTE",
+        "source_tag": "column_us_williamsburg",
+        "output":     "data/foreclosures_williamsburg.json",
+        "enabled":    False,
+        "notes":      "Paused — supplemental only, limited target county overlap",
+    },
+    {
+        "name":       "roanoke",
+        "label":      "Roanoke Times",
+        "url":        "https://roanoke.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "ROANOKE TIMES",
+        "source_tag": "column_us_roanoke",
+        "output":     "data/foreclosures_roanoke.json",
+        "enabled":    False,
+        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+    },
+    {
+        "name":       "lynchburg",
+        "label":      "Lynchburg News & Advance",
+        "url":        "https://newsadvance.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "NEWS & ADVANCE",
+        "source_tag": "column_us_lynchburg",
+        "output":     "data/foreclosures_lynchburg.json",
+        "enabled":    False,
+        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+    },
+    {
+        "name":       "charlottesville",
+        "label":      "Charlottesville Daily Progress",
+        "url":        "https://dailyprogress.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "DAILY PROGRESS",
+        "source_tag": "column_us_charlottesville",
+        "output":     "data/foreclosures_charlottesville.json",
+        "enabled":    False,
+        "notes":      "Outside target counties — Charlottesville/Albemarle only",
+    },
+    {
+        "name":       "waynesboro",
+        "label":      "Waynesboro News Virginian",
+        "url":        "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "NEWS VIRGINIAN",
+        "source_tag": "column_us_waynesboro",
+        "output":     "data/foreclosures_waynesboro.json",
+        "enabled":    False,
+        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+    },
+    {
+        "name":       "martinsville",
+        "label":      "Martinsville Bulletin",
+        "url":        "https://martinsvillebulletin.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "MARTINSVILLE BULLETIN",
+        "source_tag": "column_us_martinsville",
+        "output":     "data/foreclosures_martinsville.json",
+        "enabled":    False,
+        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+    },
+    {
+        "name":       "danville",
+        "label":      "Danville Register & Bee",
+        "url":        "https://godanriver.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "REGISTER & BEE",
+        "source_tag": "column_us_danville",
+        "output":     "data/foreclosures_danville.json",
+        "enabled":    False,
+        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+    },
+    {
+        "name":       "westmoreland",
+        "label":      "Westmoreland News",
+        "url":        "https://westmorelandnews.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "WESTMORELAND NEWS",
+        "source_tag": "column_us_westmoreland",
+        "output":     "data/foreclosures_westmoreland.json",
+        "enabled":    False,
+        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+    },
+    {
+        "name":       "harrisonburg",
+        "label":      "Daily News-Record (Harrisonburg)",
+        "url":        "https://dnronline.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "DAILY NEWS-RECORD",
+        "source_tag": "column_us_harrisonburg",
+        "output":     "data/foreclosures_harrisonburg.json",
+        "enabled":    False,
+        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+    },
+    {
+        "name":       "ffxnow",
+        "label":      "FFXnow (Fairfax)",
+        "url":        "https://ffxnow.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "FFXNOW",
+        "source_tag": "column_us_ffxnow",
+        "output":     "data/foreclosures_ffxnow.json",
+        "enabled":    False,
+        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+    },
+    {
+        "name":       "arlnow",
+        "label":      "ARLnow (Arlington)",
+        "url":        "https://arlnow.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "ARLNOW",
+        "source_tag": "column_us_arlnow",
+        "output":     "data/foreclosures_arlnow.json",
+        "enabled":    False,
+        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+    },
+    {
+        "name":       "alxnow",
+        "label":      "ALXnow (Alexandria)",
+        "url":        "https://alxnow.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "ALXNOW",
+        "source_tag": "column_us_alxnow",
+        "output":     "data/foreclosures_alxnow.json",
+        "enabled":    False,
+        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+    },
+    {
+        "name":       "bristol",
+        "label":      "Bristol Herald Courier",
+        "url":        "https://heraldcourier.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "BRISTOL HERALD COURIER",
+        "source_tag": "column_us_bristol",
+        "output":     "data/foreclosures_bristol.json",
+        "enabled":    False,
+        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+    },
+]
+
+# ---------------------------------------------------------------------------
+# PNV toggle  (PNV is handled by scraper.py, not run.py)
+# ---------------------------------------------------------------------------
+ENABLE_PNV: bool = False  # Paused — Column.us sources being evaluated first
 
 # ---------------------------------------------------------------------------
 # Rate limiting
