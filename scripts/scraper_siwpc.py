@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from __future__ import annotations
 """
 Scraper — Samuel I. White, P.C. (SIWPC) Foreclosure Sales PDF
 ==============================================================
@@ -187,7 +188,16 @@ def is_boilerplate(line: str) -> bool:
 def fetch_pdf_bytes(url: str) -> bytes:
     import requests
     log.info("Downloading PDF: %s", url)
-    resp = requests.get(url, timeout=30)
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/124.0.0.0 Safari/537.36"
+        ),
+        "Accept": "application/pdf,*/*",
+        "Referer": "https://www.siwpc.net/",
+    }
+    resp = requests.get(url, headers=headers, timeout=30)
     resp.raise_for_status()
     log.info("Downloaded %.1f KB", len(resp.content) / 1024)
     return resp.content
