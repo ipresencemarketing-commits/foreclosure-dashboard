@@ -194,21 +194,45 @@ Coverage confirmed 90% (154/172). Remaining 10% are notices where the trustee
 is referenced only by title ("the acting Substitute Trustee") with no firm name given.
 
 ### County breakdown (2026-05-15 run, 172 listings)
-| County | Count |
-|--------|-------|
-| Richmond City | 47 |
-| Chesterfield | 34 |
-| Henrico | 22 |
-| Hanover | 12 |
-| Louisa | 4 |
-| King George | 1 |
-| Unknown (out-of-scope or unresolved) | 52 |
+| County | Count | In scope? |
+|--------|-------|-----------|
+| Richmond City | 47 | ✅ |
+| Chesterfield | 34 | ✅ |
+| Henrico | 22 | ✅ |
+| Hanover | 12 | ✅ |
+| Petersburg City | 7 | ❌ filtered |
+| Prince George | 6 | ❌ filtered |
+| Hopewell City | 5 | ❌ filtered |
+| Dinwiddie | 4 | ❌ filtered |
+| Louisa | 4 | ✅ |
+| New Kent | 3 | ❌ filtered |
+| Colonial Heights City | 3 | ❌ filtered |
+| Amelia | 3 | ❌ filtered |
+| Prince Edward | 3 | ❌ filtered |
+| Charles City | 3 | ❌ filtered |
+| Goochland | 3 | ❌ filtered |
+| Richmond City (dup) | 2 | ✅ |
+| Powhatan | 2 | ❌ filtered |
+| King George | 1 | ✅ |
+| Lancaster | 1 | ❌ filtered |
+| Surry | 1 | ❌ filtered |
+| King William | 1 | ❌ filtered |
+| Middlesex | 1 | ❌ filtered |
+| Sussex | 1 | ❌ filtered |
+| King And Queen | 1 | ❌ filtered |
+| Unknown (unresolved — court order format) | 1 | dropped |
+
+County detection now uses a 3-pass fallback:
+1. `city_to_county()` lookup — catches in-scope counties directly
+2. `parse_county_from_clerks_office()` — extracts jurisdiction from deed recording
+   reference in notice text (51/52 unknown records resolved, 98% coverage)
+3. Circuit Court mention regex — catches remaining edge cases
 
 ### Known data patterns
-- **~30% unknown county:** Petersburg, Lancaster, Hartfield, Disputanta, Colonial Heights,
-  Hopewell, Goochland, Powhatan, Prince George appear in raw results. These resolve to
-  unknown county and are kept for GIS backfill. Truly out-of-scope records are dropped
-  by the county filter gate after GIS confirms county.
+- **~30% out-of-scope counties:** Petersburg, Lancaster, Hartfield, Disputanta, Colonial
+  Heights, Hopewell, Goochland, Powhatan, Prince George appear in raw results. County is
+  now resolved for 98% of these via Clerk's Office extraction. All are dropped by the
+  county filter gate (only target 12 counties kept).
 - **Henrico/Richmond mailing address ambiguity:** Henrico County properties often use
   "Richmond" as mailing city → mapped to Richmond City. Both are target counties so
   they pass the filter, but county may be misclassified. "A/R/T/A HENRICO" in address
@@ -227,6 +251,11 @@ is referenced only by title ("the acting Substitute Trustee") with no firm name 
 - 2026-05-15: `parse_trustee()` overhauled — 3-pattern approach, coverage improved 8% → 90%.
   Added: explicit label pattern, Commonwealth Trustees, DolanReid, Equity Trustees,
   ALG Trustee, First American Title. Fixed: Pattern 3 was missing re.IGNORECASE flag.
+- 2026-05-15: `parse_county_from_clerks_office()` added — 4-pattern regex covering all
+  Virginia circuit court Clerk's Office phrasings. Resolves 51/52 (98%) of previously
+  unknown-county records. Handles straight + curly apostrophes, bare jurisdiction names
+  (Charles City, Isle of Wight), "Circuit Court of the [Name] County" format, and all
+  common "for [Name] County/City" variants. Wired as Pass 2 in county fallback chain.
 
 ### Fix status
 - ✅ Working — data quality confirmed good 2026-05-15
