@@ -244,7 +244,7 @@ COLUMN_US_SOURCES: list[dict] = [
 # ---------------------------------------------------------------------------
 # PNV toggle  (PNV is handled by scraper.py, not run.py)
 # ---------------------------------------------------------------------------
-ENABLE_PNV: bool = False  # Paused — Column.us sources being evaluated first
+ENABLE_PNV: bool = True   # Lead-discovery source: card text only (reCAPTCHA blocks detail pages)
 
 # ---------------------------------------------------------------------------
 # SIWPC toggle  (handled by scraper_siwpc.py, called directly by run.py)

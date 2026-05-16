@@ -60,9 +60,9 @@ HEADERS = {
 # Helpers
 # ---------------------------------------------------------------------------
 
-def make_id(address: str, sale_date: str) -> str:
+def make_id(address: str | None, sale_date: str | None) -> str:
     """Stable unique ID based on address + sale date."""
-    raw = f"{address.lower().strip()}-{sale_date or 'nodate'}"
+    raw = f"{(address or '').lower().strip()}-{sale_date or 'nodate'}"
     return "fc-" + hashlib.md5(raw.encode()).hexdigest()[:8]
 
 
@@ -125,7 +125,7 @@ def save(listings: list) -> None:
 # Source 1: PublicNoticeVirginia.com
 # ---------------------------------------------------------------------------
 
-def scrape_public_notice_va() -> list:
+def scrape_public_notice_va(max_pages: int | None = None) -> list:
     """
     Scrapes trustee sale notices from publicnoticevirginia.com using Playwright.
 
@@ -244,8 +244,20 @@ def scrape_public_notice_va() -> list:
             # ── Paginate through all result pages ────────────────────────────
             # Each notice row has a hidden field id ending in "hdnPKValue" whose
             # value is the integer notice ID used in the detail URL.
+            #
+            # County pre-filter: PNV returns statewide notices.  We check each
+            # card's text for any target-county keyword BEFORE adding it to the
+            # fetch queue.  This eliminates ~95% of notices and keeps runtime
+            # manageable (otherwise 1000+ detail page fetches per run).
+            _county_keywords = [c.lower() for c in cfg.TARGET_COUNTIES] + [
+                "fredericksburg", "stafford", "spotsylvania", "caroline",
+                "fauquier", "culpeper", "king george", "hanover",
+                "richmond", "chesterfield", "henrico", "louisa",
+            ]
             all_notice_items: list[dict] = []   # [{id, card_text}, ...]
-            page_num = 1
+            page_num    = 1
+            skipped_cnt = 0
+            max_pages   = max_pages  # None = unlimited (production); int = test cap
 
             while True:
                 log.info(f"  PNV: collecting notice IDs from results page {page_num}")
@@ -277,10 +289,26 @@ def scrape_public_notice_va() -> list:
                     GRID_ID,
                 )
 
-                all_notice_items.extend(items_on_page)
-                log.info(f"  PNV: page {page_num} → {len(items_on_page)} notice(s)")
+                # Pre-filter: keep only notices whose card mentions a target county
+                kept_this_page = 0
+                for item in items_on_page:
+                    low = item["card_text"].lower()
+                    if any(kw in low for kw in _county_keywords):
+                        all_notice_items.append(item)
+                        kept_this_page += 1
+                    else:
+                        skipped_cnt += 1
+
+                log.info(
+                    f"  PNV: page {page_num} → {len(items_on_page)} notice(s), "
+                    f"kept {kept_this_page} (in-scope county)"
+                )
 
                 # ── Advance to next page ──────────────────────────────────────
+                if max_pages and page_num >= max_pages:
+                    log.info(f"  PNV: reached --max-pages cap ({max_pages}), stopping pagination")
+                    break
+
                 # PNV pager uses input[type="image"] buttons, not <a> links.
                 # The next-page button has id ending in "btnNext".
                 next_btn = (
@@ -305,66 +333,66 @@ def scrape_public_notice_va() -> list:
                     unique_items.append(item)
 
             log.info(
-                f"  PNV: {len(unique_items)} unique notices across {page_num} page(s)"
+                f"  PNV: {len(unique_items)} unique in-scope notices across {page_num} page(s) "
+                f"(skipped {skipped_cnt} out-of-scope)"
             )
 
-            # ── Build detail URLs using the live session ID ──────────────────────
-            # We keep the Playwright browser open and navigate to each detail
-            # page directly — this guarantees the ASP.NET session cookie is
-            # still valid.  The previous approach (close browser → HTTP requests)
-            # caused the session to expire, so every fetch silently fell back to
-            # the truncated card text, producing wrong sale_dates and blank times.
+            # ── Parse card text directly — no detail page fetches ──────────────
+            # PNV detail pages require reCAPTCHA completion (confirmed 2026-05-15).
+            # Direct URL navigation always hits the CAPTCHA wall, so we cannot
+            # access the full notice text.
+            #
+            # Strategy: use PNV as a lead-DISCOVERY source.
+            # Card text (~400 chars) comes from the search results grid and is
+            # freely available.  It contains enough to extract:
+            #   ✅ Address (usually in the first 200 chars)
+            #   ✅ County (pre-filtered above)
+            #   ⚠️ Sale date/time (sometimes present, often truncated)
+            #   ❌ Full lender / trustee details
+            #
+            # Records without a sale date are staged as "pre-fc".
+            # The dedup logic merges them with SIWPC / Column.us records when
+            # the same property appears in both, filling in the sale date.
+            #
+            # Detail URL is still constructed (for the source_url field) but
+            # we do NOT navigate to it.
             session_match = re.search(r'\(S\(([^)]+)\)\)', page.url)
             session_id    = session_match.group(1) if session_match else ""
-            log.info(f"  PNV: session_id = {session_id or '(not found)'}")
-            log.info(f"  PNV: fetching {len(unique_items)} detail pages via Playwright…")
+
+            log.info(
+                f"  PNV: parsing {len(unique_items)} in-scope card texts "
+                f"(no detail-page fetches — reCAPTCHA gate)"
+            )
 
             for i, item in enumerate(unique_items, 1):
                 nid       = item["id"]
                 card_text = item["card_text"]
 
-                if session_id:
-                    detail_url = (
-                        f"https://www.publicnoticevirginia.com"
-                        f"/(S({session_id}))/Details.aspx?SID={session_id}&ID={nid}"
-                    )
-                else:
-                    detail_url = (
-                        f"https://www.publicnoticevirginia.com/Details.aspx?ID={nid}"
-                    )
+                detail_url = (
+                    f"https://www.publicnoticevirginia.com"
+                    f"/(S({session_id}))/Details.aspx?SID={session_id}&ID={nid}"
+                    if session_id
+                    else f"https://www.publicnoticevirginia.com/Details.aspx?ID={nid}"
+                )
 
-                full_text = card_text  # default; overwritten on successful fetch
-                try:
-                    page.goto(detail_url, wait_until="domcontentloaded", timeout=20_000)
-                    page.wait_for_timeout(800)
-                    # Extract visible text — strips scripts/styles automatically
-                    raw_text = page.evaluate("() => document.body.innerText")
-                    if raw_text:
-                        full_text = re.sub(r'\s+', ' ', raw_text).strip()
-                except Exception as e:
-                    log.warning(f"  PNV: Playwright fetch failed for {nid}: {e} — using card text")
+                # Parse what we can from the card excerpt
+                address              = parse_address_from_notice(card_text) or ""
+                sale_date, sale_time = parse_sale_datetime(card_text)
+                lender               = parse_lender(card_text)
+                trustee              = parse_trustee(card_text)
 
-                # Verify we got actual notice content (not an error/redirect page)
-                if not re.search(
-                    r"trustee|deed of trust|sale of real property|foreclos|judicial sale",
-                    full_text, re.I
-                ):
-                    log.debug(f"  PNV: notice {nid} — detail page lacked notice keywords, using card text")
-                    full_text = card_text
+                # parse_sale_datetime Pattern 4 (fallback) finds ANY date in text —
+                # including the newspaper's publication date in the card header.
+                # Patterns 1–3 always return both date AND time when they match.
+                # If we got a date but no time, it's almost certainly the publication
+                # date, not the auction date.  Discard it to avoid false sale dates.
+                if sale_date and not sale_time:
+                    sale_date = None
+                notice_text          = re.sub(r'\s+', ' ', card_text).strip()
 
-                if i % 10 == 0:
-                    log.info(f"  PNV: processed {i}/{len(unique_items)} detail pages…")
-
-                address              = parse_address_from_notice(full_text)
-                sale_date, sale_time = parse_sale_datetime(full_text)
-                lender               = parse_lender(full_text)
-                trustee              = parse_trustee(full_text)
-                notice_text          = re.sub(r'\s+', ' ', full_text).strip()[:5000]
-
-                # Derive county from notice text — critical for the county filter
-                # that runs after all scrapers complete in main().
+                # County from card text (already verified above in pre-filter)
                 county_key = None
-                text_lower = full_text.lower()
+                text_lower = card_text.lower()
                 for c in TARGET_COUNTIES:
                     if c in text_lower:
                         county_key = c
@@ -376,6 +404,8 @@ def scrape_public_notice_va() -> list:
                     "city":                county_city(county_key) if county_key else "",
                     "county":              county_display(county_key) if county_key else "",
                     "zip":                 None,
+                    # stage="pre-fc" when no sale date — SIWPC/Column.us merge will
+                    # update this to "auction" if the same address appears there.
                     "stage":               "auction" if sale_date else "pre-fc",
                     "property_type":       "single-family",
                     "assessed_value":      None,
@@ -392,8 +422,6 @@ def scrape_public_notice_va() -> list:
                     "source":              "publicnoticevirginia",
                     "source_url":          detail_url,
                 })
-
-                sleep(0.25)   # polite rate limit
 
             browser.close()
 
@@ -3723,5 +3751,18 @@ if __name__ == "__main__":
         r2 = s.get(base + "/Search.aspx", headers=HEADERS, timeout=15)
         print("=== PNV Search.aspx (first 5000 chars) ===")
         print(r2.text[:5000])
+    elif "--pnv-only" in sys.argv:
+        # Test the PNV scraper in isolation without touching config.py.
+        # Uses DEBUG log level so you see every notice's fetch preview.
+        # Caps pagination at 5 pages (~50 notices) so the test completes quickly.
+        # In production (run() below), max_pages=None = unlimited.
+        logging.getLogger().setLevel(logging.DEBUG)
+        listings = scrape_public_notice_va(max_pages=5)
+        print(f"\n=== PNV test complete: {len(listings)} listing(s) ===")
+        for r in listings[:5]:
+            print(f"  {r.get('address', '?')!r:60s}  {r.get('county','?'):20s}  "
+                  f"{r.get('sale_date','?')}  {r.get('sale_time','?')}")
+        if len(listings) > 5:
+            print(f"  … and {len(listings)-5} more")
     else:
         run()

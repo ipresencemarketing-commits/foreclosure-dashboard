@@ -13,7 +13,7 @@ date and time. This is the same lead type across all three sources.
 
 | Source | Tag | Counties Covered | Status | Volume |
 |--------|-----|-----------------|--------|--------|
-| PublicNoticeVirginia.com | `publicnoticevirginia` | All 12 (statewide + county filter) | ⚠️ Partial — detail pages still returning card text | TBD after fix |
+| PublicNoticeVirginia.com | `publicnoticevirginia` | All 12 (statewide + county pre-filter) | ✅ Working — card text mode (reCAPTCHA blocks detail pages) | ~30–50/30 days in-scope |
 | Column.us — Free Lance-Star (Fxbg) | `column_us` | Fxbg City, Stafford, Spotsylvania, Caroline, King George | ✅ Working | ~5–20/month |
 | Column.us — Richmond Times-Dispatch | `column_us_richmond` | Richmond City, Chesterfield, Henrico (+Hanover, Louisa) | ✅ Working | ~254 raw / 30 days |
 | Column.us — Culpeper Star-Exponent | `column_us_culpeper` | Culpeper, Fauquier, Rappahannock area | ✅ Working | Low volume |
@@ -63,39 +63,40 @@ Legend: ✅ Expected and populated | ⚠️ Expected but unreliable | ❌ Not av
 **URL:** https://www.publicnoticevirginia.com/
 **Source tag:** `publicnoticevirginia`
 **Legal basis:** Virginia Code §55.1-321 — all trustee sale notices statewide must be published here.
-**Technology:** Playwright (ASP.NET WebForms, session-based)
-**Counties:** All 12 target counties (scrapes statewide, county filter applied in main())
+**Technology:** Playwright (ASP.NET WebForms, session-based search + card text extraction)
+**Counties:** All 12 target counties (scrapes statewide, county pre-filter on card text)
+**Mode:** Lead discovery only — card text (~400 chars), no detail page access
 
-### What PNV provides
-- Full notice text including address, sale date/time, lender, trustee, deed of trust details
-- Notice date (publication date — NOT the sale date)
-- Individual detail page URL per notice
+### What PNV provides (card text mode)
+- Property address (parsed from first ~200 chars of card excerpt)
+- County (keyword match in card text — used for pre-filter)
+- Partial notice text (truncated card excerpt — up to ~400 chars)
+- Link to full notice detail page (for human reference, not scraped)
 
-### What PNV does NOT provide
+### What PNV does NOT provide (blocked)
+- Full notice text — reCAPTCHA gates every detail page (confirmed 2026-05-15)
+- Sale date/time — usually appears in the second half of the notice, past the card cutoff
+- Lender / trustee details — same reason
 - Asking/starting bid price
 - Owner information (GIS backfill required)
-- Property details (GIS backfill required)
 
 ### Data extraction approach
-1. Playwright opens site, searches "trustee sale Virginia" with date range
-2. Paginates results, collects notice IDs from hidden form fields
-3. Navigates to each detail page via Playwright (browser stays open — session must be live)
-4. Extracts full notice text via `document.body.innerText`
-5. Parses address, sale_date, sale_time, lender, trustee from full text
+1. Playwright opens site, searches "trustee sale Virginia" with 30-day date range
+2. Paginates results; pre-filters each card by county keyword (drops ~60% statewide)
+3. Parses address, sale_date (if present in excerpt), county from card text directly
+4. No detail page navigation — reCAPTCHA wall makes this impossible for headless browsers
+5. Records without sale_date are staged as `pre-fc`; dedup logic merges with SIWPC/Column.us
 
-### Known issues
-- **Detail pages still returning card text** (as of 2026-05-15 run): sale_time is always blank,
-  lender/trustee blank, notice_text ends with "click 'view' to open the full text."
-  Root cause not yet confirmed after Playwright fix — needs a live debug run.
-- **County detection is text-based:** searches for county name in notice body.
-  Fails if the county name doesn't appear verbatim. County filter in main() drops
-  any PNV record with no county match.
-- **Address parsing from notice text:** notices follow a consistent VA format but
-  some edge cases (multi-parcel notices, road-only addresses) produce bad results.
+### Architecture note
+PNV is the broadest net (every VA trustee sale by statute) but the shallowest data.
+It catches properties that SIWPC and Column.us might not have yet, giving early signal.
+Sale dates fill in when the same address appears later in SIWPC or Column.us.
 
 ### Fix status
-- ✅ 2026-05-15: Replaced HTTP session fetch with Playwright navigation (browser stays open)
-- ⚠️ Still seeing blank sale_time and missing lender/trustee — investigate next
+- ✅ 2026-05-15: reCAPTCHA wall confirmed on all detail pages; switched to card-text-only mode
+- ✅ 2026-05-15: Added county pre-filter during pagination (skips ~60% of 1000 statewide notices)
+- ✅ 2026-05-15: `max_pages=None` in production (full run); `max_pages=5` in `--pnv-only` test mode
+- ✅ ENABLE_PNV = True in config.py
 
 ---
 
