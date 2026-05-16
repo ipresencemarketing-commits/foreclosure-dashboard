@@ -16,6 +16,8 @@ date and time. This is the same lead type across all three sources.
 | PublicNoticeVirginia.com | `publicnoticevirginia` | All 12 (statewide + county filter) | ⚠️ Partial — detail pages still returning card text | TBD after fix |
 | Column.us — Free Lance-Star (Fxbg) | `column_us` | Fxbg City, Stafford, Spotsylvania, Caroline, King George | ✅ Working | ~5–20/month |
 | Column.us — Richmond Times-Dispatch | `column_us_richmond` | Richmond City, Chesterfield, Henrico (+Hanover, Louisa) | ✅ Working | ~254 raw / 30 days |
+| Column.us — Culpeper Star-Exponent | `column_us_culpeper` | Culpeper, Fauquier, Rappahannock area | ✅ Working | Low volume |
+| Samuel I. White, P.C. (SIWPC) | `siwpc` | All 12 (statewide firm, county-filtered) | ✅ Working | ~4/day varies |
 
 ## Paused / Disabled Sources
 
@@ -289,46 +291,56 @@ County detection now uses a 3-pass fallback:
 
 ## Source 5 — Samuel I. White, P.C. (SIWPC)
 
-**URL:** https://www.siwpc.com/sales-report
+**URL:** https://www.siwpc.net/AutoUpload/Sales.pdf
 **Source tag:** `siwpc`
-**Technology:** requests + BeautifulSoup (server-rendered HTML table, no JS required)
-**Counties:** All 12 (own county filter in scraper, county filter gate in main())
+**Script:** `scripts/scraper_siwpc.py`
+**Toggle:** `ENABLE_SIWPC` in `scripts/config.py` (currently `True`)
+**Technology:** `requests` (HTTP GET) + `pdfplumber` (PDF text extraction). No Playwright — the PDF is a static file updated daily.
+**Counties:** All 12 target counties — SIWPC is a statewide VA foreclosure firm.
 
 ### What this source provides
-- Address (from table column)
-- County (from table column — most reliable county source of all five)
-- Sale date (from table column — dedicated date column, most reliable date source)
-- Sale time (from table column)
-- Opening bid / asking price (from table column — only trustee-notice source with this)
-- Trustee (always "Samuel I. White, P.C.")
-- Notice text = full table row joined as text
+| Field | Available? | Notes |
+|-------|-----------|-------|
+| Address | ✅ | Address + city in one field; city parsed by backfill |
+| County | ✅ | From PDF section header — most reliable source |
+| Sale Date | ✅ | M/D/YYYY in table → YYYY-MM-DD |
+| Sale Time | ✅ | HH:MM:SS → H:MMAM/PM |
+| Sale Location | ✅ | Derived from county → courthouse lookup |
+| Trustee | ✅ | Always "Samuel I. White, P.C." |
+| Lender | ❌ | Not in PDF summary |
+| Notice Text | ❌ | PDF is a summary table only — no full notice |
+| Listing Price | ❌ | Not in this PDF (was in old HTML table, removed) |
+| Owner Info | 🔄 | GIS backfill |
 
-### What this source does NOT provide
-- Lender (not in their sales report table)
-- Full notice text (table row only — no individual notice page)
-- Owner information (GIS backfill required)
+### PDF format
+The PDF is a county-grouped table updated daily (timestamped in footer):
+```
+VA
+Chesterfield
+4512 Greenbriar Drive Chester  23831  6/9/2026  10:30:00  Chesterfield  95656
+...
+City of Richmond
+2203 Seminary Ave Richmond     23220  6/9/2026  09:30:00  Richmond      95858
+```
+County/city headers are matched against `COUNTY_MAP` in the scraper. All other counties are skipped.
 
-### Data extraction approach
-1. requests.get() with verify=False (SSL cert issue — see Known Issues)
-2. BeautifulSoup parses all HTML tables
-3. _col_map() identifies column positions by header keywords
-4. _row_county() filters rows to target counties
-5. Parses date, time, address, price from identified columns
-6. Fallback: text-scan if no structured table found
+### Typical volume (2026-05-15 baseline)
+| County | Count |
+|--------|-------|
+| Chesterfield | 3 |
+| Richmond City | 1 |
+| **Total in scope** | **4** |
+| Total in PDF (statewide) | 32 |
 
-### Known issues
-- **0 records in last run** — SIWPC is a high-volume VA foreclosure firm; 0 results
-  likely means the table structure changed or the SSL bypass is not working.
-- **SSL certificate:** siwpc.com uses a *.bizland.com wildcard cert that doesn't cover
-  the hostname. verify=False applied with InsecureRequestWarning suppressed.
-- **Table structure sensitivity:** _col_map() matches column headers by keyword.
-  If SIWPC renames a column (e.g. "Sale Date" → "Auction Date") the mapping breaks
-  silently and returns 0 records.
-- **Early-warning value:** SIWPC often lists sales 2–4 weeks before PNV. High priority
-  to get working — provides lead time unavailable from other sources.
+Volume varies daily. SIWPC publishes pending sales only — once a sale occurs or is cancelled, it drops off the next PDF.
+
+### Fix history
+- 2026-05-15: Old HTML scraper (`siwpc.com/sales-report`) obsolete — site no longer exists.
+  New scraper targets `siwpc.net/AutoUpload/Sales.pdf` — structured PDF, simpler and more reliable.
+  Written as `scraper_siwpc.py`, wired into `run.py` via `ENABLE_SIWPC` flag in `config.py`.
 
 ### Fix status
-- ❌ Needs investigation — fetch live page, inspect actual table headers and structure
+- ✅ Working — new PDF scraper confirmed 2026-05-15
 
 ---
 

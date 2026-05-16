@@ -247,6 +247,11 @@ COLUMN_US_SOURCES: list[dict] = [
 ENABLE_PNV: bool = False  # Paused — Column.us sources being evaluated first
 
 # ---------------------------------------------------------------------------
+# SIWPC toggle  (handled by scraper_siwpc.py, called directly by run.py)
+# ---------------------------------------------------------------------------
+ENABLE_SIWPC: bool = True   # Samuel I. White, P.C. — daily PDF at siwpc.net
+
+# ---------------------------------------------------------------------------
 # Rate limiting
 # ---------------------------------------------------------------------------
 

@@ -107,6 +107,26 @@ def main():
         for s in skipped:
             print(f"  {s['label']:45s}  {s['notes']}")
 
+    # ── SIWPC PDF scraper ─────────────────────────────────────────
+    if cfg.ENABLE_SIWPC:
+        print()
+        print("-" * 60)
+        print("  Samuel I. White, P.C. (SIWPC PDF)")
+        print("-" * 60)
+        siwpc_output = os.path.join(PROJECT_ROOT, "data", "foreclosures_siwpc.json")
+        ok = run(
+            [python, "scripts/scraper_siwpc.py", "--output", siwpc_output],
+            "SIWPC scraper"
+        )
+        if ok and sync:
+            run(
+                [python, "scripts/sheets_sync.py", "--file", siwpc_output],
+                "sheets sync — SIWPC"
+            )
+    else:
+        print()
+        print("  SIWPC: SKIPPED (ENABLE_SIWPC=False in config.py)")
+
     # ── GitHub Pages publish ──────────────────────────────────────
     if push and active:
         print()
