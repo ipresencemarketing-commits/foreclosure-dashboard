@@ -372,15 +372,21 @@ def scrape_public_notice_va(max_pages: int | None = None) -> list:
                 )
 
                 # ── Attempt detail page fetch with CAPTCHA solving ────────────
+                # Each notice gets its own fresh Playwright page so a crash on
+                # one notice can never cascade to the next.
                 notice_text_full = None
                 if use_captcha:
+                    _detail_page = None
                     try:
                         log.info(f"  PNV [{i}/{len(unique_items)}]: fetching detail page {nid}")
-                        page.goto(detail_url, wait_until="load", timeout=30_000)
-                        page.wait_for_timeout(2_000)
+                        _detail_page = context.new_page()
+                        _detail_page.goto(
+                            detail_url, wait_until="domcontentloaded", timeout=30_000
+                        )
+                        _detail_page.wait_for_timeout(2_000)
 
                         # Check if reCAPTCHA wall is present
-                        has_captcha = page.evaluate("""() => {
+                        has_captcha = _detail_page.evaluate("""() => {
                             return (
                                 document.querySelector('.g-recaptcha') !== null ||
                                 document.querySelector('[data-sitekey]') !== null ||
@@ -391,51 +397,71 @@ def scrape_public_notice_va(max_pages: int | None = None) -> list:
                         if has_captcha:
                             log.info(f"  PNV [{i}]: reCAPTCHA detected — solving via 2captcha")
 
-                            # Click ToU checkbox if present (ASP.NET form)
-                            tou_checkbox = page.query_selector(
-                                'input[type="checkbox"][id*="chk"], '
-                                'input[type="checkbox"][id*="Agree"], '
-                                'input[type="checkbox"][id*="Terms"]'
-                            )
+                            # Click ToU checkbox if present (ASP.NET Terms of Use)
+                            tou_checkbox = _detail_page.query_selector('input[type="checkbox"]')
                             if tou_checkbox and not tou_checkbox.is_checked():
                                 tou_checkbox.click()
-                                page.wait_for_timeout(500)
+                                _detail_page.wait_for_timeout(500)
                                 log.debug("  PNV: ToU checkbox clicked")
 
-                            token = solve_recaptcha_via_2captcha(page, detail_url, two_captcha_key)
+                            token = solve_recaptcha_via_2captcha(
+                                _detail_page, detail_url, two_captcha_key
+                            )
                             if token:
-                                # Inject token into the hidden textarea reCAPTCHA uses
-                                page.evaluate(f"""(token) => {{
+                                # Inject token and fire the reCAPTCHA callback.
+                                # Three approaches tried in order:
+                                #   1. data-callback attribute on the widget div (most reliable)
+                                #   2. Walk ___grecaptcha_cfg.clients for a .callback fn
+                                #   3. Direct form submit as last resort
+                                cb_result = _detail_page.evaluate("""(token) => {
+                                    // Set the hidden textarea (innerHTML, not .value — reCAPTCHA uses textarea)
                                     const ta = document.getElementById('g-recaptcha-response');
-                                    if (ta) ta.value = token;
-                                    // Also set display so the form validation sees it
-                                    if (ta) ta.style.display = 'block';
-                                    // Fire the callback registered by the reCAPTCHA widget
-                                    if (window.___grecaptcha_cfg) {{
-                                        const entries = Object.entries(window.___grecaptcha_cfg.clients || {{}});
-                                        for (const [, client] of entries) {{
-                                            const cb = client?.['J']?.callback || client?.callback;
-                                            if (typeof cb === 'function') {{ cb(token); break; }}
-                                        }}
-                                    }}
-                                }}""", token)
-                                page.wait_for_timeout(1_000)
+                                    if (ta) { ta.innerHTML = token; ta.style.display = 'block'; }
 
-                                # Click the submit / continue button
-                                submit_btn = (
-                                    page.query_selector('input[type="submit"][id*="btn"]') or
-                                    page.query_selector('input[type="submit"]') or
-                                    page.query_selector('button[type="submit"]')
-                                )
-                                if submit_btn:
-                                    submit_btn.click()
-                                    page.wait_for_load_state("networkidle", timeout=20_000)
-                                    page.wait_for_timeout(2_000)
+                                    // Method 1: data-callback attribute
+                                    const widget = document.querySelector('.g-recaptcha[data-callback]');
+                                    if (widget) {
+                                        const cbName = widget.getAttribute('data-callback');
+                                        if (cbName && typeof window[cbName] === 'function') {
+                                            window[cbName](token);
+                                            return 'cb-attr';
+                                        }
+                                    }
+                                    // Method 2: grecaptcha internal clients object
+                                    try {
+                                        const clients = window.___grecaptcha_cfg?.clients || {};
+                                        for (const id of Object.keys(clients)) {
+                                            const c = clients[id];
+                                            for (const k of Object.keys(c || {})) {
+                                                const v = c[k];
+                                                if (v && typeof v === 'object' &&
+                                                    typeof v.callback === 'function') {
+                                                    v.callback(token);
+                                                    return 'cb-internal';
+                                                }
+                                            }
+                                        }
+                                    } catch(e) {}
+                                    // Method 3: direct form submit
+                                    const form = document.querySelector('form');
+                                    if (form) { form.submit(); return 'form-submit'; }
+                                    return 'none';
+                                }""", token)
+                                log.debug(f"  PNV [{i}]: token injection: {cb_result}")
 
-                                # Extract full notice text from the loaded detail page
-                                raw_body = page.evaluate("""() => {
-                                    // PNV wraps notice content in a div with id containing
-                                    // "pnlMain" or "ContentPlaceHolder1"
+                                # Wait for post-CAPTCHA navigation
+                                try:
+                                    _detail_page.wait_for_load_state(
+                                        "domcontentloaded", timeout=15_000
+                                    )
+                                    _detail_page.wait_for_timeout(2_000)
+                                except Exception:
+                                    _detail_page.wait_for_timeout(3_000)
+
+                                # Extract notice text — reject if CAPTCHA still present
+                                raw_body = _detail_page.evaluate("""() => {
+                                    if (document.body.innerText.includes('reCAPTCHA') &&
+                                        document.body.innerText.length < 2000) return null;
                                     const selectors = [
                                         '#ctl00_ContentPlaceHolder1_pnlMain',
                                         '[id*="pnlMain"]',
@@ -444,30 +470,51 @@ def scrape_public_notice_va(max_pages: int | None = None) -> list:
                                     ];
                                     for (const sel of selectors) {
                                         const el = document.querySelector(sel);
-                                        if (el) return el.innerText;
+                                        if (el && el.innerText.trim().length > 200)
+                                            return el.innerText;
                                     }
-                                    return document.body.innerText;
+                                    const body = document.body.innerText;
+                                    return body.length > 200 ? body : null;
                                 }""")
 
-                                # Verify we got actual notice content (not another CAPTCHA page)
-                                if raw_body and "reCAPTCHA" not in raw_body and len(raw_body) > 200:
+                                if raw_body:
                                     notice_text_full = re.sub(r'\s+', ' ', raw_body).strip()[:5000]
-                                    log.info(f"  PNV [{i}]: full notice text retrieved ({len(notice_text_full)} chars)")
+                                    log.info(
+                                        f"  PNV [{i}]: full notice retrieved "
+                                        f"({len(notice_text_full)} chars)"
+                                    )
                                 else:
-                                    log.warning(f"  PNV [{i}]: CAPTCHA still present after solve attempt — using card text")
+                                    log.warning(
+                                        f"  PNV [{i}]: CAPTCHA still present after solve "
+                                        f"(cb={cb_result}) — using card text"
+                                    )
                             else:
-                                log.warning(f"  PNV [{i}]: 2captcha failed — using card text fallback")
+                                log.warning(f"  PNV [{i}]: 2captcha failed — card text fallback")
+
                         else:
-                            # Detail page loaded without CAPTCHA (session still valid)
-                            raw_body = page.evaluate("() => document.body.innerText")
+                            # Detail page loaded without CAPTCHA
+                            raw_body = _detail_page.evaluate("() => document.body.innerText")
                             if raw_body and len(raw_body) > 200:
                                 notice_text_full = re.sub(r'\s+', ' ', raw_body).strip()[:5000]
-                                log.info(f"  PNV [{i}]: detail page loaded without CAPTCHA ({len(notice_text_full)} chars)")
+                                log.info(
+                                    f"  PNV [{i}]: no CAPTCHA — notice retrieved "
+                                    f"({len(notice_text_full)} chars)"
+                                )
 
-                        sleep(1.5)   # rate-limit between detail fetches
+                        sleep(1.0)   # rate-limit between detail fetches
 
                     except Exception as _de:
-                        log.warning(f"  PNV [{i}]: detail fetch error ({_de}) — using card text")
+                        log.warning(
+                            f"  PNV [{i}]: detail fetch error "
+                            f"({str(_de)[:120]}) — card text fallback"
+                        )
+                    finally:
+                        # Always close the per-notice page to free memory
+                        if _detail_page:
+                            try:
+                                _detail_page.close()
+                            except Exception:
+                                pass
 
                 # ── Parse fields: prefer full notice text, fall back to card ──
                 source_text = notice_text_full or card_text
