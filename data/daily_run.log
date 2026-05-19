@@ -11307,3 +11307,64 @@ Sources disabled: 13
 2026-05-18 11:06:12,957  INFO    Appending 3 new row(s)…
 2026-05-18 11:06:13,128  INFO    ✓ Added 3 new listing(s) to Google Sheet
 2026-05-18 11:06:13,979  INFO    ✓ Summary tab updated — 3 total properties
+[main 3879eed] Auto-update: 2026-05-18 11:06
+ 6 files changed, 5512 insertions(+), 1971 deletions(-)
+To https://github.com/ipresencemarketing-commits/foreclosure-dashboard.git
+   a85a7fd..3879eed  main -> main
+
+============================================================
+  Virginia Foreclosure Pipeline
+  2026-05-18 07:00:01
+  Sync to Google Sheets: True
+  Push to GitHub Pages:  True
+============================================================
+
+Sources enabled:  3
+Sources disabled: 13
+
+--- Clearing Google Sheet (fresh start) ---
+
+------------------------------------------------------------
+  Free Lance-Star (Fredericksburg)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Richmond Times-Dispatch
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Culpeper Star-Exponent
+------------------------------------------------------------
+
+--- Disabled sources (not run) ---
+  Virginia Gazette (Williamsburg)                Paused — supplemental only, limited target county overlap
+  Roanoke Times                                  Outside target counties — Stage 2 (statewide expansion)
+  Lynchburg News & Advance                       Outside target counties — Stage 2 (statewide expansion)
+  Charlottesville Daily Progress                 Outside target counties — Charlottesville/Albemarle only
+  Waynesboro News Virginian                      Outside target counties — Stage 2 (statewide expansion)
+  Martinsville Bulletin                          Outside target counties — Stage 2 (statewide expansion)
+  Danville Register & Bee                        Outside target counties — Stage 2 (statewide expansion)
+  Westmoreland News                              Outside target counties — Stage 2 (statewide expansion)
+  Daily News-Record (Harrisonburg)               Outside target counties — Stage 2 (statewide expansion)
+  FFXnow (Fairfax)                               Outside target counties — Stage 2 (statewide expansion)
+  ARLnow (Arlington)                             Outside target counties — Stage 2 (statewide expansion)
+  ALXnow (Alexandria)                            Outside target counties — Stage 2 (statewide expansion)
+  Bristol Herald Courier                         Outside target counties — Stage 2 (statewide expansion)
+
+------------------------------------------------------------
+  Samuel I. White, P.C. (SIWPC PDF)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  PublicNoticeVirginia.com (PNV — card text mode)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Publishing to GitHub Pages...
+------------------------------------------------------------
+  Pushed to GitHub Pages.
+
+============================================================
+  Pipeline complete — 2026-05-18 11:06:16
+============================================================
+

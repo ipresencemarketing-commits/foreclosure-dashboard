@@ -14,8 +14,8 @@
       "sale_date": "2026-06-09",
       "sale_time": "10:30AM",
       "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 22,
-      "notice_date": "2026-05-18",
+      "days_until_sale": 21,
+      "notice_date": "2026-05-19",
       "days_in_foreclosure": 0,
       "lender": "",
       "trustee": "Samuel I. White, P.C.",
@@ -29,7 +29,7 @@
       "file_number": "95656",
       "first_seen": "2026-05-15",
       "is_new": false,
-      "investment_priority": "Low"
+      "investment_priority": "Medium"
     },
     {
       "id": "fc-85b899e9",
@@ -45,8 +45,8 @@
       "sale_date": "2026-06-09",
       "sale_time": "10:30AM",
       "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 22,
-      "notice_date": "2026-05-18",
+      "days_until_sale": 21,
+      "notice_date": "2026-05-19",
       "days_in_foreclosure": 0,
       "lender": "",
       "trustee": "Samuel I. White, P.C.",
@@ -60,7 +60,7 @@
       "file_number": "95659",
       "first_seen": "2026-05-15",
       "is_new": false,
-      "investment_priority": "Low"
+      "investment_priority": "Medium"
     },
     {
       "id": "fc-01d9ef09",
@@ -76,8 +76,8 @@
       "sale_date": "2026-06-16",
       "sale_time": "9:30AM",
       "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 29,
-      "notice_date": "2026-05-18",
+      "days_until_sale": 28,
+      "notice_date": "2026-05-19",
       "days_in_foreclosure": 0,
       "lender": "",
       "trustee": "Samuel I. White, P.C.",
@@ -107,8 +107,8 @@
       "sale_date": "2026-06-09",
       "sale_time": "9:30AM",
       "sale_location": "Front steps, Richmond City Circuit Court, 400 N 9th St",
-      "days_until_sale": 22,
-      "notice_date": "2026-05-18",
+      "days_until_sale": 21,
+      "notice_date": "2026-05-19",
       "days_in_foreclosure": 0,
       "lender": "",
       "trustee": "Samuel I. White, P.C.",
@@ -122,8 +122,8 @@
       "file_number": "95858",
       "first_seen": "2026-05-15",
       "is_new": false,
-      "investment_priority": "Low"
+      "investment_priority": "Medium"
     }
   ],
-  "scraped_at": "2026-05-18T11:01:29.257132Z"
+  "scraped_at": "2026-05-19T11:01:40.170463Z"
 }
