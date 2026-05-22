@@ -61,18 +61,6 @@ def main():
     print(f"\nSources enabled:  {len(active)}")
     print(f"Sources disabled: {len(skipped)}")
 
-    # ── Clear sheet before first source runs ──────────────────────
-    if sync and active:
-        print("\n--- Clearing Google Sheet (fresh start) ---")
-        ok = run(
-            [python, "scripts/sheets_sync.py", "--clear-only"],
-            "sheet clear"
-        )
-        if not ok:
-            print("\n  ✗ Sheet clear failed — aborting.")
-            print("  Continuing with a stale sheet would corrupt column order.")
-            sys.exit(1)
-
     # ── Run each enabled source ───────────────────────────────────
     for source in active:
         print()
