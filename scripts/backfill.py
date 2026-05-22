@@ -1193,11 +1193,14 @@ def run() -> None:
             filled_p6_owner += 1
             log.info(f"  row {i+2}: Owner={gis['owner_name']}")
 
-        # ── Redfin fallback — only when GIS missing beds/sqft or value ────────
-        needs_bbs = not val(row, "Beds_Baths_Sqft") and ("beds" not in gis or "sqft" not in gis)
+        # ── Redfin is disabled — GIS (VGIN + county fallback) is the only value source ──
+        # needs_bbs was removed: Beds_Baths_Sqft is no longer a sheet column.
+        # Redfin is only called if GIS returned no assessed_value AND the sheet
+        # cell is still blank.  Set ENABLE_REDFIN = False in config.py to skip
+        # entirely (default).
         needs_est = not val(row, "Current_Est_Value") and "assessed_value" not in gis
         rf: dict = {}
-        if needs_bbs or needs_est:
+        if needs_est and getattr(cfg, "ENABLE_REDFIN", False):
             rf = get_redfin_estimate(address, zip_code)
             if rf:
                 filled_p6_redfin += 1

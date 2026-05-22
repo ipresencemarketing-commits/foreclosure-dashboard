@@ -252,6 +252,13 @@ ENABLE_PNV: bool = True   # Lead-discovery source: full notice text via 2captcha
 ENABLE_SIWPC: bool = True   # Samuel I. White, P.C. — daily PDF at siwpc.net
 
 # ---------------------------------------------------------------------------
+# Redfin toggle  (backfill.py Pass 6 — unofficial API for value estimates)
+# ---------------------------------------------------------------------------
+# When False (default), GIS assessed value is the only Current_Est_Value source.
+# Set True only if VGIN + county ArcGIS are consistently missing assessed values.
+ENABLE_REDFIN: bool = False
+
+# ---------------------------------------------------------------------------
 # Rate limiting
 # ---------------------------------------------------------------------------
 

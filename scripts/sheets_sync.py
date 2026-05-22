@@ -289,14 +289,18 @@ def run() -> None:
         trim_end -= 1
     existing_header_trimmed = [c.strip() for c in existing_header[:trim_end]]
     if existing_header_trimmed and existing_header_trimmed != COLUMNS:
-        log.error(
-            f"  HEADER MISMATCH — aborting sync to preserve existing data.\n"
+        log.warning(
+            f"  Header mismatch detected — clearing sheet and rewriting.\n"
             f"    Expected: {COLUMNS[:5]}…\n"
-            f"    Found:    {existing_header_trimmed[:5]}…\n"
-            f"    Fix: run 'python3 scripts/sheets_sync.py --clear-only' to reset the header,\n"
-            f"    then re-run the full pipeline."
+            f"    Found:    {existing_header_trimmed[:5]}…"
         )
-        return  # abort — do not clear, do not append
+        try:
+            sheet.clear()
+            all_values = []   # sheet is now empty — reset so dedup starts fresh
+            log.info("  Sheet cleared — will rewrite all rows.")
+        except gspread.exceptions.APIError as e:
+            log.error(f"  Could not clear sheet: {e}")
+            return
 
     # ── Always write the canonical header row ────────────────────────────────
     try:
