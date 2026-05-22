@@ -115,6 +115,26 @@ def main():
         print()
         print("  SIWPC: SKIPPED (ENABLE_SIWPC=False in config.py)")
 
+    # ── Washington Times Classifieds ─────────────────────────────
+    if cfg.ENABLE_WASHINGTONTIMES:
+        print()
+        print("-" * 60)
+        print("  The Washington Times (classified.washingtontimes.com)")
+        print("-" * 60)
+        wt_output = os.path.join(PROJECT_ROOT, "data", "foreclosures_washingtontimes.json")
+        ok = run(
+            [python, "scripts/scraper_washingtontimes.py", "--output", wt_output],
+            "Washington Times scraper"
+        )
+        if ok and sync:
+            run(
+                [python, "scripts/sheets_sync.py", "--file", wt_output],
+                "sheets sync — Washington Times"
+            )
+    else:
+        print()
+        print("  Washington Times: SKIPPED (ENABLE_WASHINGTONTIMES=False in config.py)")
+
     # ── PNV — PublicNoticeVirginia.com ────────────────────────────
     if cfg.ENABLE_PNV:
         print()

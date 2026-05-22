@@ -51,14 +51,20 @@ echo "=================================================="
 echo ""
 
 # ── Step 1: Scrape ────────────────────────────────────────────────────────────
-echo ">> Step 1/4 — Scraping foreclosure notices (7 active groups: PNV, Column.us ×4, Auction.com, SIWPC; Groups 2/7/9 disabled)..."
-python3 scripts/scraper.py
+echo ">> Step 1/4 — Scraping foreclosure notices (active sources defined in scripts/config.py COLUMN_US_SOURCES)..."
+python3 scripts/run.py
+echo "   Done."
+echo ""
+
+echo ">> Step 1b — Washington Times classifieds (classified.washingtontimes.com)..."
+python3 scripts/scraper_washingtontimes.py --output data/foreclosures_washingtontimes.json || echo "   [warn] Washington Times scraper failed — skipping"
 echo "   Done."
 echo ""
 
 # ── Step 2: Sync ──────────────────────────────────────────────────────────────
 echo ">> Step 2/4 — Syncing to Google Sheets (initial push)..."
 python3 scripts/sheets_sync.py || echo "   [warn] Sheets sync skipped — check credentials/service-account.json"
+python3 scripts/sheets_sync.py --file data/foreclosures_washingtontimes.json || echo "   [warn] Washington Times sheets sync skipped"
 echo "   Done."
 echo ""
 

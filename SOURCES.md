@@ -9,26 +9,29 @@ date and time. This is the same lead type across all three sources.
 
 ---
 
-## Active Sources (3)
+## Active Sources (6)
 
 | Source | Tag | Counties Covered | Status | Volume |
 |--------|-----|-----------------|--------|--------|
-| PublicNoticeVirginia.com | `publicnoticevirginia` | All 12 (statewide + county pre-filter) | ✅ Working — card text mode (reCAPTCHA blocks detail pages) | ~30–50/30 days in-scope |
 | Column.us — Free Lance-Star (Fxbg) | `column_us` | Fxbg City, Stafford, Spotsylvania, Caroline, King George | ✅ Working | ~5–20/month |
 | Column.us — Richmond Times-Dispatch | `column_us_richmond` | Richmond City, Chesterfield, Henrico (+Hanover, Louisa) | ✅ Working | ~254 raw / 30 days |
 | Column.us — Culpeper Star-Exponent | `column_us_culpeper` | Culpeper, Fauquier, Rappahannock area | ✅ Working | Low volume |
 | Samuel I. White, P.C. (SIWPC) | `siwpc` | All 12 (statewide firm, county-filtered) | ✅ Working | ~4/day varies |
+| Column.us — Fredericksburg Free Press | `column_us_fxbg_free_press` | Fxbg-area (overlap with Free Lance-Star) | ⚠️ Enabled — 0 results on 2026-05-22 test; monitoring | Unknown |
+| The Washington Times Classifieds | `washingtontimes` | Fauquier, Stafford, Spotsylvania (NoVA-area notices w/ target county overlap) | ✅ Working | Low — spot coverage |
+| Washington Post Public Notices | `washingtonpost` | MD, DC, VA (NoVA + target county overlap confirmed deeper in results) | ✅ Enabled | ~827 raw / 30 days |
+| Column.us — Virginia Gazette (Wmsbg) | `column_us_williamsburg` | Supplemental — Hanover, King George, Caroline overlap | ⚠️ Enabled 2026-05-22 — needs test run to confirm header + yield | Unknown |
+| Column.us — Daily Progress (Cville) | `column_us_dailyprogress` | Charlottesville/Albemarle primary; Louisa, Culpeper overlap possible | ⚠️ Enabled 2026-05-22 — needs test run to confirm yield | Unknown |
+| Column.us — Northern Virginia Daily | `column_us_nvdaily` | Shenandoah Valley (outside target 12) | ⚠️ Enabled 2026-05-22 — domain may 404; needs investigation | Unknown |
 
 ## Paused / Disabled Sources
 
 | Source | Tag | Reason |
 |--------|-----|--------|
-| Column.us — Virginia Gazette (Wmsbg) | `column_us_williamsburg` | Paused — supplemental only, revisit when core 3 are stable |
+| PublicNoticeVirginia.com | `publicnoticevirginia` | Paused 2026-05-22 — card text mode only (reCAPTCHA blocks detail pages); sale dates missing for most records; re-enable when detail page access is solved |
 | Auction.com | `auction_com` | Removed — REO listings, no courthouse sale date |
-| Daily Progress (Column.us) | `column_us_dailyprogress` | Removed — Charlottesville/Albemarle, outside target counties |
 | Samuel I. White, P.C. | `siwpc` | Removed from active sources |
 | LOGS Legal | `logs_legal` | Broken — migrated to PowerBI embed |
-| NV Daily (Column.us) | `column_us_nvdaily` | Broken — 404, wrong county coverage |
 | Virginia eCourts | `va_courts` | Requires authenticated session |
 
 ---
@@ -269,24 +272,30 @@ County detection now uses a 3-pass fallback:
 
 **URL:** https://vagazette.column.us/search?noticeType=Foreclosure+Sale
 **Source tag:** `column_us_williamsburg`
-**Technology:** Playwright (same engine as Fredericksburg)
-**Counties:** Supplemental for Hanover, King George, Caroline
+**Toggle:** `williamsburg` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: True`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `VIRGINIA GAZETTE`
+**Counties:** Williamsburg/James City/York primary; target overlap via Hanover, King George, Caroline
+**Output:** `data/foreclosures_williamsburg.json`
 
 ### What this source provides
-- Same fields as Fredericksburg Column.us
+- Same fields as Fredericksburg Column.us (address, city, ZIP, county, sale date/time, lender, trustee, full notice text, listing URL)
 
 ### What this source does NOT provide
-- Same limitations as Fredericksburg Column.us
-- This portal covers Williamsburg/James City/York primarily — target county overlap is
-  limited. Attorneys sometimes dual-publish Hanover, King George, Caroline notices here.
+- Asking/starting bid price
+- Owner information (GIS backfill required)
+- Primary coverage is Williamsburg/James City/York — outside 12 target counties. Attorneys
+  sometimes dual-publish Hanover, King George, and Caroline notices here; target yield is low.
 
 ### Known issues
-- **0 records in last run** — could be legitimately empty (low overlap with target counties)
-  OR the newspaper header "VIRGINIA GAZETTE" may not match the portal's rendered text.
-- Lower priority than Richmond — smaller potential yield from target counties.
+- **Header string unconfirmed** — `VIRGINIA GAZETTE` has not been validated against live page
+  DOM text. If 0 records come back on first run, confirm the header by running:
+  `python3 -c "from playwright.sync_api import sync_playwright; ..."` and checking
+  `document.body.innerText` for the newspaper name as rendered.
+- **Low yield expected** — supplemental source only; don't expect high volume.
 
 ### Fix status
-- ❌ Needs investigation — confirm whether 0 is legitimate or a header mismatch
+- ⚠️ Enabled 2026-05-22 — first run will confirm header + yield; may need header string correction
 
 ---
 
@@ -345,15 +354,202 @@ Volume varies daily. SIWPC publishes pending sales only — once a sale occurs o
 
 ---
 
+## Source 6 — The Washington Times Classifieds
+
+**URL:** http://classified.washingtontimes.com/index.php?a=19&b[subcategories_also]=1&b[search_text]=foreclosure
+**Source tag:** `washingtontimes`
+**Script:** `scripts/scraper_washingtontimes.py`
+**Toggle:** `ENABLE_WASHINGTONTIMES` in `scripts/config.py` (currently `True`)
+**Technology:** `requests` + BeautifulSoup (PHP-based Geodesic classifieds platform — plain HTML, no JS required)
+**Output file:** `data/foreclosures_washingtontimes.json`
+**Counties:** Primarily Northern Virginia (Fairfax, Loudoun, Prince William — outside target 12), with target county overlap via Fauquier, Stafford, Spotsylvania. King George and Fredericksburg City notices appear occasionally.
+
+### What this source provides
+| Field | Available? | Notes |
+|-------|-----------|-------|
+| Address | ✅ | Parsed from notice text via `TRUSTEE_ADDR_RE` / `COMMISSIONER_ADDR_RE` |
+| County | ✅ | Keyword + regex detection from notice text; drops non-target counties |
+| Sale Date | ✅ | Month DD, YYYY format → YYYY-MM-DD |
+| Sale Time | ✅ | "at H:MM AM/PM" format |
+| Notice Text | ✅ | Full notice body up to 5000 chars |
+| Listing URL | ✅ | Individual detail page URL |
+| Lender | ❌ | Not parsed — present in notice text but no extraction implemented |
+| Trustee | ❌ | Not parsed — present in notice text but no extraction implemented |
+| Listing Price | ❌ | Not in classifieds text |
+| Owner Info | 🔄 | GIS backfill |
+
+### Data extraction approach
+1. Paginates search results at `?a=19&b[search_text]=foreclosure&page=N`
+2. Skips DC, MD, and non-Virginia category URL fragments (`SKIP_CATEGORY_FRAGMENTS`)
+3. Fetches each detail page; extracts notice body from `div.content_box_1`
+4. Virginia filter: notice text must contain "virginia", ", va ", or ", va\n"
+5. County detection: regex for "Circuit Court for X County" → keyword scan (longer keys first)
+6. Address extraction: regex for "TRUSTEE'S SALE OF …" or "COMMISSIONER'S SALE OF …"
+7. Crawl delay: 0.75s between requests
+
+### Known data patterns
+- **Primary coverage is NoVA** — most listings are Fairfax/Loudoun/Prince William and are dropped by county filter. Target county yield is low (spot coverage).
+- **Lender/trustee not extracted** — the fields are blank and left for manual review or future parsing. The full notice text is preserved so the data is there.
+- **Special Commissioner's Sales** included — not just Trustee sales. These are court-ordered sales (often divorce/estate), a slightly different lead type.
+- **Crawl delay 0.75s** — polite to the PHP classifieds server; slower than Column.us runs.
+
+### Fix status
+- ✅ Working — added 2026-05-22; confirmed functional via code review
+
+---
+
 ## Disabled Sources
 
 | Source | Tag | Reason |
 |--------|-----|--------|
 | Auction.com | `auction_com` | REO listings — different lead type, no courthouse sale date |
-| Daily Progress (Column.us) | `column_us_dailyprogress` | Charlottesville/Albemarle — outside 12 target counties |
 | LOGS Legal | `logs_legal` | Migrated to PowerBI embed; BeautifulSoup cannot parse iframe data |
-| NV Daily (Column.us) | `column_us_nvdaily` | nvdaily.column.us returns 404; wrong county coverage |
 | Virginia eCourts | `va_courts` | Requires authenticated session; no public API endpoint |
+
+---
+
+## Source 7 — Washington Post Public Notices
+
+**URL:** https://publicnotices.washingtonpost.com/?noticeType=Trustee%20Sale
+**Source tag:** `washingtonpost`
+**Script:** Not yet built
+**Toggle:** `washingtonpost` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: False`)
+**Technology:** Column.us portal — Next.js + Firebase client-side rendering. Identical stack to our other Column.us scrapers (`scraper_column_us.py`). Requires Playwright.
+**Counties:** Primarily Maryland (Montgomery, Prince George's, Charles, Howard, Anne Arundel) and Washington DC. Virginia notices present but skewed toward NoVA: Prince William (Manassas, Woodbridge) and Loudoun (Leesburg). **No confirmed hits for any of our 12 target counties** in profiling run (2026-05-22, first page of results).
+
+### Key differences from other Column.us portals
+| Attribute | Other Column.us portals | Washington Post |
+|-----------|------------------------|-----------------|
+| Domain | `*.column.us` subdomain | `publicnotices.washingtonpost.com` (custom domain, still Column.us-powered) |
+| Notice type URL param | `noticeType=Foreclosure+Sale` | `noticeType=Trustee%20Sale` |
+| Newspaper header (page text) | e.g., `RICHMOND TIMES DISPATCH` | `THE WASHINGTON POST` |
+| Volume (30-day, unfiltered) | 68–172 | ~827 |
+| Target county hit rate | High (core sources) | Unknown — presumed very low |
+
+### What this source provides (expected — based on notice text visible in profiling)
+| Field | Available? | Notes |
+|-------|-----------|-------|
+| Address | ✅ | Structured in notice text — confirmed in sample notices |
+| County | ✅ | Labeled below each card as "X County, State"; also in notice text |
+| Sale Date | ✅ | Confirmed in notice text (e.g., "JUNE 10, 2026 at 1:15 PM") |
+| Sale Time | ✅ | Same — present in notice text |
+| Sale Location | ✅ | Courthouse named in notice text |
+| Notice Text | ✅ | Full notice body visible in DOM (same as other Column.us portals) |
+| Listing URL | ⚠️ | Click handlers, not `<a>` tags — same as other Column.us portals; Pass 8 slug backfill would apply |
+| Lender | ✅ | Named in deed of trust language in notice text |
+| Trustee | ✅ | Named in notice text |
+| Listing Price | ❌ | Not in notice text |
+| Owner Info | 🔄 | GIS backfill |
+
+### Data extraction approach (planned)
+This portal is a Column.us custom-domain instance and should work with `scraper_column_us.py` with
+these config values:
+```python
+{
+    "name":       "washingtonpost",
+    "label":      "Washington Post Public Notices",
+    "url":        "https://publicnotices.washingtonpost.com/?noticeType=Trustee%20Sale",
+    "header":     "THE WASHINGTON POST",
+    "source_tag": "washingtonpost",
+    "output":     "data/foreclosures_washingtonpost.json",
+    "enabled":    False,
+    "notes":      "Custom-domain Column.us portal. Primarily MD/DC/NoVA. Target county yield unconfirmed — enable only after testing county filter hit rate.",
+}
+```
+
+1. Playwright loads the portal URL, waits for Firebase hydration (8s)
+2. Clicks "Load more notices" until exhausted (~41+ clicks for 827 results — much higher volume than other portals; consider batching or date-range filtering)
+3. Splits page body by `"THE WASHINGTON POST"` header into individual notice blocks
+4. For each block: extracts address, county, sale_date, sale_time, lender, trustee
+5. County filter gate drops all non-target-county notices (expected to drop ~95%+ of results)
+6. False-split healing: "THE WASHINGTON POST" may appear in notice boilerplate — same fix as other portals applies
+
+### County filter expectation
+Based on profiling (first 20 of 827 results, 2026-05-22):
+- MD counties dominated: Montgomery, Prince George's, Charles, Howard, Anne Arundel
+- DC notices present
+- VA counties seen: Prince William (6 mentions), Loudoun (3 mentions)
+- Target counties (all 12): **0 hits confirmed** in first page
+- Estimated target county yield: very low — possibly <5% of raw results, possibly 0
+
+This source is most valuable as **a supplemental NoVA net** for attorneys who publish in the
+Washington Post for Fauquier, Stafford, or Spotsylvania notices targeting DC-area audiences.
+Enable only after a test run confirms measurable target county yield.
+
+### Volume note
+827 results per 30-day window means `scraper_column_us.py`'s "Load more" loop fires ~41+ times.
+Expect a longer runtime than other Column.us sources (~10+ minutes). All results (MD, DC, VA) are
+written to the output JSON and synced to the sheet — county field is populated for filtering in the
+sheet if needed.
+
+### Profiling notes (2026-05-22)
+- Confirmed Column.us-powered ("Powered by Column" link in DOM; FAQ links to `help.column.us`)
+- Header string `THE WASHINGTON POST` confirmed from `document.body.innerText`
+- 827 total results shown for `noticeType=Trustee Sale` in default 30-day window
+- Individual notice links use click/router handlers — no `<a href>` tags (same as other Column.us portals)
+- "Load more notices" button present in DOM (same scraper pattern applies)
+- Full notice text with date/time/location confirmed visible in DOM text
+
+### Fix status
+- ✅ Enabled 2026-05-22 — wired into `COLUMN_US_SOURCES` in `config.py`; uses existing `scraper_column_us.py` engine unchanged. No county filter — all notices (MD, DC, VA) are written to output JSON and synced to the sheet. County field derived the same way as other Column.us sources.
+
+---
+
+## Source 8 — Column.us Daily Progress (Charlottesville)
+
+**URL:** https://dailyprogress.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_dailyprogress`
+**Toggle:** `charlottesville` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: True`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `DAILY PROGRESS`
+**Counties:** Charlottesville City / Albemarle primary; Louisa and Culpeper overlap possible
+**Output:** `data/foreclosures_charlottesville.json`
+
+### What this source provides
+- Same fields as Fredericksburg Column.us (address, city, ZIP, county, sale date/time, lender, trustee, full notice text, listing URL)
+
+### What this source does NOT provide
+- Asking/starting bid price
+- Owner information (GIS backfill required)
+- Primary coverage is Charlottesville/Albemarle — outside 12 target counties. Attorneys
+  serving Louisa or Culpeper sometimes publish here.
+
+### Known issues
+- **Header string unconfirmed** — `DAILY PROGRESS` has not been validated against live DOM
+  text. Run a test and check `document.body.innerText` if 0 records come back.
+- **Louisa + Culpeper yield unconfirmed** — only worthwhile if those counties appear in results.
+
+### Fix status
+- ⚠️ Enabled 2026-05-22 — first run will confirm header string + target county yield
+
+---
+
+## Source 9 — Column.us NV Daily (Northern Virginia Daily)
+
+**URL:** https://nvdaily.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_nvdaily`
+**Toggle:** `nvdaily` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: True`)
+**Technology:** Playwright via `scraper_column_us.py` — **IF the portal still exists**
+**Header string:** `NORTHERN VIRGINIA DAILY` (unconfirmed)
+**Counties:** Shenandoah Valley (Shenandoah, Warren, Page) — **outside all 12 target counties**
+**Output:** `data/foreclosures_nvdaily.json`
+
+### Known issues
+- **Domain likely 404** — `nvdaily.column.us` was returning 404 as of 2025. NV Daily is
+  believed to have migrated to their own CMS at `nvdaily.com/classifieds/` (plain HTML,
+  different scraper needed — NOT compatible with `scraper_column_us.py`).
+- **Wrong county coverage** — Shenandoah Valley is outside the 12 target counties even if
+  the portal is fixed. This source is Stage 2+ material at best.
+- **First run will error or return 0** — Playwright will hit the 404 and produce no output.
+
+### Remediation path
+If you want Shenandoah Valley coverage in Stage 2:
+1. Confirm whether `nvdaily.column.us` still returns 404
+2. If yes, build a new plain-HTML scraper targeting `nvdaily.com/classifieds/`
+3. Re-evaluate county overlap with Stage 2 target list before investing time
+
+### Fix status
+- ⚠️ Enabled 2026-05-22 for investigation — expect scraper error or 0 results on first run
 
 ---
 
@@ -364,4 +560,6 @@ Volume varies daily. SIWPC publishes pending sales only — once a sale occurs o
 2. **Column.us Richmond** — Richmond/Chesterfield/Henrico are large markets.
    Confirm newspaper header string, fix if mismatched.
 3. **PNV** — Still returning card text instead of full notice. Debug Playwright detail fetch.
-4. **Column.us Williamsburg** — Supplemental only; lower yield. Confirm header or accept 0.
+4. **Column.us Williamsburg** — Confirm header string on first run; accept 0 if legitimately empty.
+5. **Column.us Daily Progress** — Confirm header string; only valuable if Louisa/Culpeper yield confirmed.
+6. **NV Daily** — Domain likely 404; wrong county coverage. Revisit in Stage 2 with new scraper.

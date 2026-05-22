@@ -90,6 +90,16 @@ COLUMN_US_SOURCES: list[dict] = [
         "notes":      "Core source — Fxbg, Stafford, Spotsylvania, Caroline, King George",
     },
     {
+        "name":       "fredericksburg_free_press",
+        "label":      "Fredericksburg Free Press",
+        "url":        "https://fredericksburgfreepress.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "FREDERICKSBURG FREE PRESS",
+        "source_tag": "column_us_fxbg_free_press",
+        "output":     "data/foreclosures_fxbg_free_press.json",
+        "enabled":    True,
+        "notes":      "Zero listings on 2026-05-22 test run — portal exists, notices may appear later",
+    },
+    {
         "name":       "richmond",
         "label":      "Richmond Times-Dispatch",
         "url":        "https://richmond.column.us/search?noticeType=Foreclosure+Sale",
@@ -116,8 +126,8 @@ COLUMN_US_SOURCES: list[dict] = [
         "header":     "VIRGINIA GAZETTE",
         "source_tag": "column_us_williamsburg",
         "output":     "data/foreclosures_williamsburg.json",
-        "enabled":    False,
-        "notes":      "Paused — supplemental only, limited target county overlap",
+        "enabled":    True,
+        "notes":      "Enabled 2026-05-22 — supplemental; Hanover, King George, Caroline overlap",
     },
     {
         "name":       "roanoke",
@@ -144,10 +154,10 @@ COLUMN_US_SOURCES: list[dict] = [
         "label":      "Charlottesville Daily Progress",
         "url":        "https://dailyprogress.column.us/search?noticeType=Foreclosure+Sale",
         "header":     "DAILY PROGRESS",
-        "source_tag": "column_us_charlottesville",
+        "source_tag": "column_us_dailyprogress",
         "output":     "data/foreclosures_charlottesville.json",
-        "enabled":    False,
-        "notes":      "Outside target counties — Charlottesville/Albemarle only",
+        "enabled":    True,
+        "notes":      "Enabled 2026-05-22 — primarily Charlottesville/Albemarle; Louisa, Culpeper overlap possible",
     },
     {
         "name":       "waynesboro",
@@ -239,17 +249,74 @@ COLUMN_US_SOURCES: list[dict] = [
         "enabled":    False,
         "notes":      "Outside target counties — Stage 2 (statewide expansion)",
     },
+    {
+        "name":       "nvdaily",
+        "label":      "Northern Virginia Daily",
+        "url":        "https://nvdaily.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "NORTHERN VIRGINIA DAILY",
+        "source_tag": "column_us_nvdaily",
+        "output":     "data/foreclosures_nvdaily.json",
+        "enabled":    True,
+        "notes":      (
+            "CAUTION: nvdaily.column.us returned 404 as of 2025. "
+            "NV Daily may have migrated to nvdaily.com/classifieds/ (different CMS). "
+            "Coverage area is Shenandoah Valley (Shenandoah, Warren, Page counties) — "
+            "outside the 12 target counties. Enabled 2026-05-22 for investigation; "
+            "expect 0 results or a scraper error on first run."
+        ),
+    },
+    # ---------------------------------------------------------------------------
+    # Custom-domain Column.us portals (not *.column.us subdomains)
+    # Same scraper_column_us.py engine; different URL structure and noticeType param.
+    # ---------------------------------------------------------------------------
+    {
+        "name":       "washingtonpost",
+        "label":      "Washington Post Public Notices",
+        "url":        "https://publicnotices.washingtonpost.com/?noticeType=Trustee%20Sale",
+        "header":     "THE WASHINGTON POST",
+        "source_tag": "washingtonpost",
+        "output":     "data/foreclosures_washingtonpost.json",
+        "enabled":    True,
+        "notes":      (
+            "Custom-domain Column.us portal (publicnotices.washingtonpost.com). "
+            "~827 results/30 days across MD, DC, VA. noticeType='Trustee Sale' "
+            "(not 'Foreclosure Sale'). ~41+ Load More clicks — expect long runtime."
+        ),
+    },
 ]
 
 # ---------------------------------------------------------------------------
 # PNV toggle  (PNV is handled by scraper.py, not run.py)
 # ---------------------------------------------------------------------------
-ENABLE_PNV: bool = True   # Lead-discovery source: full notice text via 2captcha (falls back to card text if key missing)
+ENABLE_PNV: bool = False  # ON HOLD (2026-05-22) — paused for later use; re-enable by setting True
+
+# ---------------------------------------------------------------------------
+# Legacy scraper.py source flags (all False — dead code)
+# ---------------------------------------------------------------------------
+# scraper.py's run() references these flags for old Column.us / supplemental
+# sources that are now dead — the live pipeline uses run.py + scraper_column_us.py.
+# All set to False so scraper.py doesn't crash after PNV finishes.
+ENABLE_COLUMN_FXBG:         bool = False  # Dead — handled by scraper_column_us.py
+ENABLE_COLUMN_RICHMOND:     bool = False  # Dead — handled by scraper_column_us.py
+ENABLE_LOGS_LEGAL:          bool = False  # Dead — LOGS Legal scraper not active
+ENABLE_COLUMN_DAILYPROG:    bool = False  # Dead — handled by scraper_column_us.py
+ENABLE_AUCTION_COM:         bool = False  # Dead — Auction.com scraper not active
+ENABLE_COLUMN_WILLIAMSBURG: bool = False  # Dead — handled by scraper_column_us.py
+ENABLE_COLUMN_NVDAILY:      bool = False  # Dead — NV Daily returns 404
+ENABLE_VA_COURTS:           bool = False  # Dead — VA eCourts requires auth session
 
 # ---------------------------------------------------------------------------
 # SIWPC toggle  (handled by scraper_siwpc.py, called directly by run.py)
 # ---------------------------------------------------------------------------
 ENABLE_SIWPC: bool = True   # Samuel I. White, P.C. — daily PDF at siwpc.net
+
+# ---------------------------------------------------------------------------
+# Washington Times toggle  (handled by scraper_washingtontimes.py)
+# ---------------------------------------------------------------------------
+# Covers Northern VA classifieds (Fairfax, Loudoun, Prince William).
+# Target-county overlap: primarily Fauquier, Stafford, Spotsylvania.
+# Platform: PHP classifieds (classified.washingtontimes.com) — plain HTML scraper.
+ENABLE_WASHINGTONTIMES: bool = True
 
 # ---------------------------------------------------------------------------
 # Redfin toggle  (backfill.py Pass 6 — unofficial API for value estimates)
