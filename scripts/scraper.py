@@ -1359,11 +1359,7 @@ def scrape_homepath() -> list:
                 "notice_date":      None,
                 "days_in_foreclosure": None,
                 "lender":              "Fannie Mae",
-                "owner_name":          "Fannie Mae",
-                "owner_mailing_address": "3900 Wisconsin Ave NW, Washington, DC 20016",
-                "owner_mailing_differs": "Yes",
-                "owner_phone":         "1-800-732-6643",
-                "owner_email":         "",
+
                 "trustee":             None,
                 "source":           "homepath",
                 "source_url":       (f"https://homepath.fanniemae.com/property-detail/{prop_uuid}"
@@ -1493,11 +1489,7 @@ def scrape_homesteps() -> list:
                 "notice_date":      None,
                 "days_in_foreclosure": None,
                 "lender":           "Freddie Mac",
-                "owner_name":       "Freddie Mac",
-                "owner_mailing_address": "8200 Jones Branch Dr, McLean, VA 22102",
-                "owner_mailing_differs": "Yes",
-                "owner_phone":      "1-800-FREDDIE",
-                "owner_email":      "",
+
                 "trustee":          None,
                 "source":           "homesteps",
                 "source_url":       source_url,
@@ -2047,7 +2039,7 @@ def scrape_va_courts() -> list:
     Data returned:
       - Case number and filing date
       - Plaintiff (usually the lender / trustee firm)
-      - Defendant (the property owner — matches owner_name later)
+      - Defendant (the property owner)
       - Address (extracted from case description when available)
 
     Limitations:
@@ -2180,10 +2172,6 @@ def _parse_ecourts_json(data: dict, display_name: str, county_key: str, court_id
         if isinstance(plaintiff, str):
             trustee_name = plaintiff[:80]
 
-        owner_name = None
-        if isinstance(defendant, str):
-            owner_name = defendant[:80]
-
         case_url = (
             f"https://eapps.courts.state.va.us/circuitSearch/courts/{court_id}/cases/{case_num}"
             if case_num else None
@@ -2201,7 +2189,6 @@ def _parse_ecourts_json(data: dict, display_name: str, county_key: str, court_id
             "sale_date":     None,   # not yet scheduled — backfill will try to find it
             "sale_time":     None,
             "sale_location": None,
-            "owner_name":    owner_name,
             "trustee":       trustee_name,
             "notice_text":   notice_text[:5000],
             "source":        "va_courts",
@@ -2292,7 +2279,6 @@ def _parse_ecourts_html(html: str, display_name: str, county_key: str, court_id:
             "sale_date":     None,
             "sale_time":     None,
             "sale_location": None,
-            "owner_name":    defendant[:80] if defendant else None,
             "trustee":       plaintiff[:80] if plaintiff else None,
             "notice_text":   f"Case {case_num} | Filed: {filed_date} | {description}"[:5000],
             "source":        "va_courts",
@@ -3446,356 +3432,6 @@ def enrich_with_redfin(listings: list) -> list:
 
 
 # ---------------------------------------------------------------------------
-# Owner enrichment — Virginia county GIS parcel APIs
-# ---------------------------------------------------------------------------
-# Owner Name and Mailing Address come from each county's public ArcGIS parcel
-# REST service (all public record in Virginia).
-#
-# Estimated_Phone and Estimated_Email cannot be sourced from GIS data — they
-# require a paid skip-trace service (ATTOM, White Pages Pro, etc.).  Those
-# columns are left blank here and can be filled manually.
-# ---------------------------------------------------------------------------
-
-# ArcGIS parcel feature service endpoints by county.
-# Each entry has:
-#   url            – ArcGIS FeatureServer layer /query endpoint
-#   addr_field     – the attribute name used for address matching
-#   owner_variants – candidate field names for owner (tried in order)
-#   mail_variants  – dict of candidate field names for mailing address parts
-GIS_REGISTRY: dict[str, dict] = {
-    "stafford": {
-        "url": "https://gis.staffordcountyva.gov/arcgis/rest/services/Public/Parcels/FeatureServer/0/query",
-        "addr_field": "SITE_ADDR",
-        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME", "GRANTEE"],
-        "mail_variants": {
-            "line1": ["MAIL_ADDR1", "MAILING_ADDRESS", "MAILADDR", "MAILADDR1"],
-            "city":  ["MAIL_CITY",  "MAILCITY",  "MAIL_CTY"],
-            "state": ["MAIL_STATE", "MAILSTATE", "MAIL_ST"],
-            "zip":   ["MAIL_ZIP",   "MAILZIP",   "MAIL_ZIP5"],
-        },
-    },
-    "spotsylvania": {
-        "url": "https://gis.spotsylvania.va.us/arcgis/rest/services/Parcels/FeatureServer/0/query",
-        "addr_field": "SITE_ADDRESS",
-        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME"],
-        "mail_variants": {
-            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
-            "city":  ["MAIL_CITY",  "MAILCITY"],
-            "state": ["MAIL_STATE", "MAILSTATE"],
-            "zip":   ["MAIL_ZIP",   "MAILZIP"],
-        },
-    },
-    "fredericksburg": {
-        "url": "https://gis.fredericksburgva.gov/arcgis/rest/services/Property/FeatureServer/0/query",
-        "addr_field": "ADDRESS",
-        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME", "OWN_NAME"],
-        "mail_variants": {
-            "line1": ["MAIL_ADDR1", "MAILING_ADDRESS", "MAILADDR"],
-            "city":  ["MAIL_CITY",  "MAILCITY"],
-            "state": ["MAIL_STATE", "MAILSTATE"],
-            "zip":   ["MAIL_ZIP",   "MAILZIP"],
-        },
-    },
-    "caroline": {
-        "url": "https://gis.carolinecounty.va.gov/arcgis/rest/services/Parcels/FeatureServer/0/query",
-        "addr_field": "SITE_ADDR",
-        "owner_variants": ["OWNER", "OWNER_NAME", "OWNNAME"],
-        "mail_variants": {
-            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
-            "city":  ["MAIL_CITY",  "MAILCITY"],
-            "state": ["MAIL_STATE", "MAILSTATE"],
-            "zip":   ["MAIL_ZIP",   "MAILZIP"],
-        },
-    },
-    "fauquier": {
-        "url": "https://gis.fauquiercounty.gov/arcgis/rest/services/Property/Parcels/FeatureServer/0/query",
-        "addr_field": "SITE_ADDRESS",
-        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME"],
-        "mail_variants": {
-            "line1": ["MAIL_ADDR1", "MAILING_ADDRESS", "MAILADDR"],
-            "city":  ["MAIL_CITY",  "MAILCITY"],
-            "state": ["MAIL_STATE", "MAILSTATE"],
-            "zip":   ["MAIL_ZIP",   "MAILZIP"],
-        },
-    },
-    "culpeper": {
-        "url": "https://gis.culpepercountyva.gov/arcgis/rest/services/Parcels/FeatureServer/0/query",
-        "addr_field": "SITE_ADDR",
-        "owner_variants": ["OWNER", "OWNER_NAME", "OWNNAME"],
-        "mail_variants": {
-            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
-            "city":  ["MAIL_CITY",  "MAILCITY"],
-            "state": ["MAIL_STATE", "MAILSTATE"],
-            "zip":   ["MAIL_ZIP",   "MAILZIP"],
-        },
-    },
-    "king george": {
-        "url": "https://gis.kinggeorgecountyva.gov/arcgis/rest/services/Parcels/FeatureServer/0/query",
-        "addr_field": "SITE_ADDR",
-        "owner_variants": ["OWNER", "OWNER_NAME", "OWNNAME"],
-        "mail_variants": {
-            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
-            "city":  ["MAIL_CITY",  "MAILCITY"],
-            "state": ["MAIL_STATE", "MAILSTATE"],
-            "zip":   ["MAIL_ZIP",   "MAILZIP"],
-        },
-    },
-    "hanover": {
-        "url": "https://gis.hanovercounty.gov/arcgis/rest/services/Parcels/FeatureServer/0/query",
-        "addr_field": "SITE_ADDRESS",
-        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME"],
-        "mail_variants": {
-            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
-            "city":  ["MAIL_CITY",  "MAILCITY"],
-            "state": ["MAIL_STATE", "MAILSTATE"],
-            "zip":   ["MAIL_ZIP",   "MAILZIP"],
-        },
-    },
-    "richmond": {
-        "url": "https://gis.richmondgov.com/arcgis/rest/services/Parcels/MapServer/0/query",
-        "addr_field": "STREET_ADDRESS",
-        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME", "OWNER1"],
-        "mail_variants": {
-            "line1": ["MAIL_ADDR1", "MAILING_ADDR", "MAILADDR"],
-            "city":  ["MAIL_CITY",  "MAILCITY"],
-            "state": ["MAIL_STATE", "MAILSTATE"],
-            "zip":   ["MAIL_ZIP",   "MAILZIP"],
-        },
-    },
-    "chesterfield": {
-        "url": "https://gis.chesterfield.gov/arcgis/rest/services/Parcels/FeatureServer/0/query",
-        "addr_field": "SITE_ADDRESS",
-        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME"],
-        "mail_variants": {
-            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
-            "city":  ["MAIL_CITY",  "MAILCITY"],
-            "state": ["MAIL_STATE", "MAILSTATE"],
-            "zip":   ["MAIL_ZIP",   "MAILZIP"],
-        },
-    },
-    "henrico": {
-        "url": "https://gis.henrico.us/arcgis/rest/services/Property/Parcels/FeatureServer/0/query",
-        "addr_field": "SITE_ADDR",
-        "owner_variants": ["OWNER_NAME", "OWNER", "OWNNAME"],
-        "mail_variants": {
-            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
-            "city":  ["MAIL_CITY",  "MAILCITY"],
-            "state": ["MAIL_STATE", "MAILSTATE"],
-            "zip":   ["MAIL_ZIP",   "MAILZIP"],
-        },
-    },
-    "louisa": {
-        "url": "https://gis.louisacounty.org/arcgis/rest/services/Parcels/FeatureServer/0/query",
-        "addr_field": "SITE_ADDR",
-        "owner_variants": ["OWNER", "OWNER_NAME", "OWNNAME"],
-        "mail_variants": {
-            "line1": ["MAIL_ADDR1", "MAILADDR1", "MAILING_ADDRESS"],
-            "city":  ["MAIL_CITY",  "MAILCITY"],
-            "state": ["MAIL_STATE", "MAILSTATE"],
-            "zip":   ["MAIL_ZIP",   "MAILZIP"],
-        },
-    },
-}
-
-
-def _pick_field(attrs: dict, candidates: list) -> str | None:
-    """Return the first candidate key that exists and has a non-empty value."""
-    for name in candidates:
-        val = attrs.get(name) or attrs.get(name.lower()) or attrs.get(name.upper())
-        if val and str(val).strip() not in ("", "null", "None", "N/A"):
-            return str(val).strip()
-    return None
-
-
-def gis_lookup_owner(address: str, county_key: str) -> dict:
-    """
-    Query a Virginia county ArcGIS parcel REST API to find owner name and
-    mailing address for a given street address.
-
-    Returns a dict with keys: owner_name, owner_mailing_address,
-    owner_mailing_differs.  Empty dict on failure or no match.
-
-    The WHERE clause uses the first meaningful token(s) of the street address
-    (house number + first word of street name) to form a LIKE query, which is
-    more resilient to minor formatting differences than an exact match.
-    """
-    cfg = GIS_REGISTRY.get(county_key.lower().replace(" city", "").replace(" county", "").strip())
-    if not cfg:
-        return {}
-
-    # Build a compact address fragment: house number + first word of street name
-    # e.g. "1234 Main Street" → "1234 Main"
-    tokens = address.strip().split()
-    if len(tokens) >= 2:
-        fragment = f"{tokens[0]} {tokens[1]}"
-    elif tokens:
-        fragment = tokens[0]
-    else:
-        return {}
-
-    # Escape single quotes for SQL safety
-    fragment_sql = fragment.replace("'", "''")
-    where = f"UPPER({cfg['addr_field']}) LIKE '%{fragment_sql.upper()}%'"
-
-    params = {
-        "where":          where,
-        "outFields":      "*",
-        "returnGeometry": "false",
-        "resultRecordCount": 3,   # grab top 3 to pick best match
-        "f":              "json",
-    }
-
-    try:
-        resp = requests.get(
-            cfg["url"],
-            params=params,
-            headers=HEADERS,
-            timeout=12,
-        )
-        if resp.status_code != 200:
-            log.debug(f"    GIS {county_key}: HTTP {resp.status_code}")
-            return {}
-
-        data = resp.json()
-        features = data.get("features") or []
-        if not features:
-            log.debug(f"    GIS {county_key}: no parcels found for '{fragment}'")
-            return {}
-
-        # Pick the feature whose address field best matches (case-insensitive prefix)
-        best = None
-        for feat in features:
-            attrs = feat.get("attributes") or {}
-            feat_addr = str(
-                attrs.get(cfg["addr_field"]) or
-                attrs.get(cfg["addr_field"].lower()) or ""
-            ).strip()
-            if tokens[0] in feat_addr.upper():  # house number must match
-                best = attrs
-                break
-        if best is None:
-            best = features[0].get("attributes") or {}
-
-        mv = cfg["mail_variants"]
-        owner_raw  = _pick_field(best, cfg["owner_variants"])
-        mail_line1 = _pick_field(best, mv["line1"])
-        mail_city  = _pick_field(best, mv["city"])
-        mail_state = _pick_field(best, mv["state"])
-        mail_zip   = _pick_field(best, mv["zip"])
-
-        if not owner_raw:
-            return {}
-
-        # GIS returns field values in ALL-CAPS — normalize to readable case.
-        # State abbreviation stays uppercase (e.g. "VA"); everything else title-case.
-        if mail_line1: mail_line1 = mail_line1.title()
-        if mail_city:  mail_city  = mail_city.title()
-        if mail_state: mail_state = mail_state.upper()
-        if mail_zip:   mail_zip   = mail_zip.strip()
-
-        # Build a single mailing address string
-        mail_parts = [mail_line1]
-        if mail_city and mail_state:
-            mail_parts.append(f"{mail_city}, {mail_state} {mail_zip or ''}".strip())
-        elif mail_city:
-            mail_parts.append(mail_city)
-        mailing_address = ", ".join(p for p in mail_parts if p)
-
-        # Determine if mailing address differs from property address
-        # Compare first token (house number) of each
-        prop_num = tokens[0] if tokens else ""
-        mail_num = (mail_line1 or "").strip().split()[0] if mail_line1 else ""
-        differs  = "Yes" if (mail_num and mail_num != prop_num) else "No"
-        if not mailing_address:
-            differs = ""
-
-        result = {
-            "owner_name":            owner_raw.title(),
-            "owner_mailing_address": mailing_address,
-            "owner_mailing_differs": differs,
-        }
-        log.info(f"    GIS {county_key}: owner='{owner_raw}' mail='{mailing_address}'")
-        return result
-
-    except requests.exceptions.ConnectionError:
-        log.debug(f"    GIS {county_key}: connection error (endpoint may not exist)")
-        return {}
-    except Exception as e:
-        log.debug(f"    GIS {county_key}: error — {e}")
-        return {}
-
-
-def enrich_with_owner_data(listings: list) -> list:
-    """
-    Enrich listings with owner name and mailing address from county GIS APIs.
-
-    Skips listings that already have owner_name populated (e.g., Fannie Mae /
-    Freddie Mac) or that have no address.
-
-    Phone and email are NOT available from GIS data and require a paid
-    skip-trace service — those columns are left as None.
-
-    Rate-limited to ~1 req/s to be polite to county servers.
-    """
-    log.info("--- Owner data enrichment (county GIS) ---")
-    enriched_count = 0
-    skipped_count  = 0
-
-    for listing in listings:
-        # Skip if already has owner data (HomePath/HomeSteps sets it directly)
-        if listing.get("owner_name"):
-            skipped_count += 1
-            continue
-
-        address = listing.get("address", "").strip()
-        county  = listing.get("county", "").strip()
-        if not address or not county:
-            continue
-
-        # Skip addresses that don't begin with a house number — these are
-        # garbage entries (e.g. PNV newspaper headers like "Roanoke Times, The …")
-        # that would waste 12–13 s per call waiting for GIS timeout.
-        if not re.match(r'^\d+\s+\S', address):
-            log.debug(f"  Owner skip (no house number): {address!r}")
-            continue
-
-        # Normalize county key for GIS registry lookup
-        county_key = (
-            county.lower()
-            .replace(" city", "")
-            .replace(" county", "")
-            .strip()
-        )
-
-        log.info(f"  Owner lookup: {address} ({county})")
-        owner_data = gis_lookup_owner(address, county_key)
-
-        if owner_data:
-            listing["owner_name"]            = owner_data.get("owner_name")
-            listing["owner_mailing_address"] = owner_data.get("owner_mailing_address")
-            listing["owner_mailing_differs"] = owner_data.get("owner_mailing_differs")
-            # Phone/email require skip-trace — left blank
-            listing.setdefault("owner_phone", None)
-            listing.setdefault("owner_email", None)
-            enriched_count += 1
-        else:
-            # Ensure fields exist even when lookup fails
-            listing.setdefault("owner_name",            None)
-            listing.setdefault("owner_mailing_address", None)
-            listing.setdefault("owner_mailing_differs", None)
-            listing.setdefault("owner_phone",           None)
-            listing.setdefault("owner_email",           None)
-
-        sleep(1.0)   # polite rate limit — county GIS servers are not high-capacity
-
-    log.info(
-        f"  Owner enrichment complete: {enriched_count} enriched, "
-        f"{skipped_count} skipped (already set)"
-    )
-    return listings
-
-
-# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -4023,10 +3659,6 @@ def run():
         )
     all_listings = kept
     log.info(f"Total after county filter: {len(all_listings)} listings")
-
-    # Owner enrichment — queries each county's public ArcGIS parcel REST API
-    # to populate owner_name and owner_mailing_address.
-    all_listings = enrich_with_owner_data(all_listings)
 
     save(all_listings)
     log.info("Done.")

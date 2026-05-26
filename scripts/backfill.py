@@ -19,15 +19,9 @@ Pass order
   5. ZIP                         — extract 5-digit code from address
   6. Owner + Property Details  — VGIN statewide parcel API tried first (one
                                 call returns owner name, mailing address, year
-                                built, sqft, beds/baths, lot size, assessed
-                                value, last sale); falls back to county ArcGIS;
-                                Redfin supplement only when GIS missing
-                                beds/sqft or value; calculates Rough_Equity_Est,
-                                Est_Profit_Potential, Years_Since_Last_Sale.
-  7. Derived fields only       — recalculates equity/profit/years for rows that
-                                  now have inputs but still missing outputs
-                                  (no API calls).
-  8. Column.us Listing_URL              — Playwright DOM search to replace the
+                                built, sqft, owner name, mailing address);
+                                falls back to county ArcGIS endpoint.
+  6. Column.us Listing_URL              — Playwright DOM search to replace the
                                           generic search-page URL with the individual
                                           notice detail URL ("Copy link" URL)
 
@@ -60,7 +54,6 @@ from scraper import (           # noqa: E402
     parse_sale_datetime,
     city_to_county,
     county_display,
-    GIS_REGISTRY,
     TARGET_COUNTIES,
     HEADERS,
 )
@@ -81,9 +74,6 @@ PROJECT_ROOT = os.path.join(SCRIPT_DIR, "..")
 CREDS_FILE   = cfg.CREDS_FILE
 
 # Reverse map: "Stafford" → "stafford", "Fredericksburg City" → "fredericksburg"
-DISPLAY_TO_KEY: dict[str, str] = {
-    county_display(k): k for k in TARGET_COUNTIES
-}
 
 
 # ── Auth ─────────────────────────────────────────────────────────────────────
@@ -276,381 +266,6 @@ def search_pnv_by_address(address: str) -> tuple[str, str]:
 
     return "", ""
 
-
-# ── GIS field-name candidates for property detail fields ─────────────────────
-# Virginia county ArcGIS parcel APIs use different column names for the same
-# concept — these lists cover every variant we've seen across all 12 counties.
-# The most common names are listed first to minimise failed lookups.
-_YR_BUILT_FIELDS  = [
-    "YEAR_BUILT", "YR_BLT", "YRBLT", "BUILT_YR", "BUILD_YEAR",
-    "EFFECTIVEYEARBUILT", "ACTUAL_YEAR_BUILT", "YEAR_BLT",
-    "YR_BUILT", "CONST_YR", "CONSTRUCTION_YEAR", "YEAR_CONSTRUCTED",
-]
-_SQFT_FIELDS      = [
-    "TOTAL_SQFT", "LIVING_AREA", "SQFT", "FINISHED_SQ_FT",
-    "TOTAL_AREA", "LIV_AREA", "BLDG_AREA", "BUILDING_SQFT",
-    "TOTAL_LIV_AREA", "HEATED_AREA", "TOTAL_LIVING_SQ_FT",
-    "TOT_LIVING_AREA", "BUILDING_AREA", "TOTAL_FINISHED_AREA",
-    "CALC_SQFT", "TOTAL_FIN_SQFT", "SQFT_LIVING", "TOTAL_SQ_FT",
-]
-_LOT_ACRES_FIELDS = [
-    "ACRES", "LOT_ACRES", "CALC_ACRES", "AREA_ACRES",
-    "LAND_ACRES", "PARCEL_ACRES", "TOTAL_ACRES", "LOT_AREA_ACRES",
-]
-_LOT_SQFT_FIELDS  = [
-    "LOT_SIZE", "LOT_AREA", "LOT_SQFT", "LOT_SIZE_SF", "PARCEL_SQFT",
-]  # fallback when no acres field exists — convert to acres before storing
-_ASSESSED_FIELDS  = [
-    "TOTAL_VALUE", "ASSESSED_VALUE", "ASMT_VALUE", "TOT_ASD_VAL",
-    "TOTAL_ASD", "TOTAL_ASSESSED_VALUE", "ASMT_TOT", "TOT_ASMT",
-    "ASSESS_VAL", "TOTAL_MARKET_VALUE", "TAXABLE_VALUE",
-    "TOTAL_TAXABLE_VALUE", "FMKT_VALUE", "FAIR_MKT_VALUE",
-]
-_SALE_DATE_FIELDS = [
-    "SALE_DATE", "LAST_SALE_DATE", "LAST_SALE_DT", "DEED_DATE",
-    "SALEDT", "TRANSFER_DATE", "LAST_CONVEYANCE_DATE",
-    "CONV_DATE", "RECORD_DATE", "SALES_DATE", "DEED_DT",
-]
-_SALE_PRC_FIELDS  = [
-    "SALE_PRICE", "LAST_SALE_PRICE", "DEED_PRICE", "SALES_PRICE",
-    "SALEPRICE", "TRANSFER_PRICE", "LAST_CONVEYANCE_AMT",
-    "CONV_PRICE", "LAST_SALE_AMT",
-]
-_BEDS_FIELDS      = [
-    "BEDROOMS", "BED_ROOMS", "BEDS", "NO_OF_BEDS", "NUM_BEDS",
-    "BDRMS", "BEDROOM_COUNT", "NO_BEDROOMS", "NUM_BEDROOMS",
-]
-_BATHS_FIELDS     = [
-    "BATHROOMS", "BATHS", "FULL_BATHS", "BATH_ROOMS", "NO_OF_BATHS",
-    "NUM_BATHS", "BTHRM", "BATH_COUNT", "FULL_BATH_COUNT",
-]
-
-
-def _pick_numeric(attrs: dict, candidates: list) -> float | None:
-    """
-    Return the first non-zero positive numeric value from `attrs` matching
-    any name in `candidates` (case-insensitive). Returns None if not found.
-    """
-    attrs_up = {k.upper(): v for k, v in attrs.items()}
-    for field in candidates:
-        v = attrs_up.get(field.upper())
-        if v is None:
-            continue
-        try:
-            n = float(v)
-            if n > 0:
-                return n
-        except (ValueError, TypeError):
-            continue
-    return None
-
-
-def _parse_gis_date(raw) -> str:
-    """
-    Normalise a GIS date value to ISO format (YYYY-MM-DD).
-
-    ArcGIS stores dates in several ways:
-      • epoch milliseconds (int/float)  e.g. 1623801600000
-      • ISO string                       e.g. "2021-06-15"
-      • US slash format                  e.g. "06/15/2021"
-      • Compact string                   e.g. "20210615"
-    Returns "" if the value cannot be parsed or represents an empty/null date.
-    """
-    if raw is None:
-        return ""
-    # Epoch milliseconds
-    if isinstance(raw, (int, float)) and raw > 0:
-        try:
-            from datetime import datetime as _dt
-            dt = _dt.utcfromtimestamp(raw / 1000)
-            if dt.year > 1970:
-                return dt.strftime("%Y-%m-%d")
-        except (OSError, OverflowError, ValueError):
-            pass
-    raw_s = str(raw).strip()
-    if not raw_s or raw_s in ("-1", "0", "null", "None", ""):
-        return ""
-    m = re.match(r"^(\d{4})-(\d{2})-(\d{2})", raw_s)          # ISO
-    if m:
-        return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
-    m = re.match(r"^(\d{1,2})/(\d{1,2})/(\d{4})", raw_s)      # MM/DD/YYYY
-    if m:
-        return f"{m.group(3)}-{m.group(1).zfill(2)}-{m.group(2).zfill(2)}"
-    m = re.match(r"^(\d{4})(\d{2})(\d{2})$", raw_s)            # YYYYMMDD
-    if m:
-        return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
-    return ""
-
-
-# ── VGIN statewide parcel API ────────────────────────────────────────────────
-# Single endpoint that covers all 12 target Virginia counties.
-# Eliminates per-county routing and returns the same fields as county GIS portals.
-VGIN_URL = (
-    "https://gismaps.vdem.virginia.gov/arcgis/rest/services/"
-    "VA_Base_Layers/VA_Parcels/FeatureServer/0/query"
-)
-# VGIN address field candidates — tried in order until a non-empty hit is returned
-_VGIN_ADDR_FIELDS = ["SITE_ADD", "SITEADDRESS", "SITE_ADDRESS", "ADDRESS", "ADDR"]
-
-
-def _pick_str(attrs: dict, candidates: list) -> str | None:
-    """Return the first non-empty string value from attrs matching any candidate (case-insensitive)."""
-    attrs_up = {k.upper(): v for k, v in attrs.items()}
-    for field in candidates:
-        v = attrs_up.get(field.upper())
-        if v and str(v).strip() not in ("", "null", "None", "N/A"):
-            return str(v).strip()
-    return None
-
-
-def _parse_full_attrs(attrs: dict, addr_field: str, cfg: dict | None) -> dict:
-    """
-    Extract all owner + property detail fields from a single ArcGIS attribute dict.
-
-    Works for both VGIN statewide responses (cfg=None) and county-specific
-    responses (cfg = GIS_REGISTRY entry).  Returns {} if no useful data found.
-    """
-    result: dict = {}
-
-    # ── Owner name ────────────────────────────────────────────────────────────
-    owner_cands = (cfg or {}).get("owner_variants") or [
-        "OWNER_NAME", "OWNER", "OWNNAME", "GRANTEE", "OWN_NAME",
-    ]
-    owner = _pick_str(attrs, owner_cands)
-    if owner:
-        result["owner_name"] = owner.title()
-
-    # ── Mailing address ───────────────────────────────────────────────────────
-    mv = (cfg or {}).get("mail_variants") or {
-        "line1": ["MAIL_ADDR1", "MAIL_ADD1", "MAIL_ADD", "MAILING_ADDRESS", "MAILADDR", "MAILADDR1"],
-        "city":  ["MAIL_CITY",  "MAILCITY",  "MAIL_CTY"],
-        "state": ["MAIL_STATE", "MAILSTATE", "MAIL_ST"],
-        "zip":   ["MAIL_ZIP",   "MAILZIP",   "MAIL_ZIP5"],
-    }
-    ml1   = _pick_str(attrs, mv["line1"])
-    mcity = _pick_str(attrs, mv["city"])
-    mst   = _pick_str(attrs, mv["state"])
-    mzip  = _pick_str(attrs, mv["zip"])
-    if ml1:
-        mailing = ", ".join(p for p in [ml1, mcity, mst, mzip] if p)
-        result["owner_mailing_address"] = mailing
-        site = str(attrs.get(addr_field) or "").upper()
-        result["owner_mailing_differs"] = "Yes" if ml1.upper() not in site else "No"
-
-    # ── Year built ────────────────────────────────────────────────────────────
-    yr = _pick_numeric(attrs, _YR_BUILT_FIELDS)
-    if yr and 1800 < yr <= 2030:
-        result["year_built"] = int(yr)
-
-    # ── Living area (sq ft) ───────────────────────────────────────────────────
-    sqft = _pick_numeric(attrs, _SQFT_FIELDS)
-    if sqft and sqft > 0:
-        result["sqft"] = int(sqft)
-
-    # ── Lot size — prefer acres; fall back to sq ft and convert ──────────────
-    lot_acres = _pick_numeric(attrs, _LOT_ACRES_FIELDS)
-    if lot_acres and lot_acres > 0:
-        result["lot_size"] = f"{lot_acres:.2f} ac"
-    else:
-        lot_sf = _pick_numeric(attrs, _LOT_SQFT_FIELDS)
-        if lot_sf and lot_sf > 500:
-            result["lot_size"] = f"{lot_sf / 43560:.2f} ac"
-        elif lot_sf and lot_sf > 0:
-            result["lot_size"] = f"{lot_sf:.2f} ac"
-
-    # ── Assessed / market value ───────────────────────────────────────────────
-    av = _pick_numeric(attrs, _ASSESSED_FIELDS)
-    if av and av > 0:
-        result["assessed_value"] = int(av)
-    else:
-        land = _pick_numeric(attrs, ["LAND_VALUE", "LAND_ASMT", "LAND_ASD"])
-        impr = _pick_numeric(attrs, ["IMPR_VALUE", "IMPROVEMENT_VALUE",
-                                     "IMP_VALUE", "BLDG_VALUE", "BUILDING_VALUE"])
-        total = (land or 0) + (impr or 0)
-        if total > 0:
-            result["assessed_value"] = int(total)
-
-    # ── Last sale date ────────────────────────────────────────────────────────
-    attrs_up = {k.upper(): v for k, v in attrs.items()}
-    for f in _SALE_DATE_FIELDS:
-        raw_date = attrs_up.get(f.upper())
-        if raw_date is not None:
-            parsed = _parse_gis_date(raw_date)
-            if parsed:
-                result["last_sale_date"] = parsed
-                break
-
-    # ── Last sale price ───────────────────────────────────────────────────────
-    sp = _pick_numeric(attrs, _SALE_PRC_FIELDS)
-    if sp and sp > 0:
-        result["last_sale_price"] = int(sp)
-
-    # ── Beds / baths ──────────────────────────────────────────────────────────
-    beds = _pick_numeric(attrs, _BEDS_FIELDS)
-    if beds and beds > 0:
-        result["beds"] = int(beds)
-
-    baths = _pick_numeric(attrs, _BATHS_FIELDS)
-    if baths and baths > 0:
-        result["baths"] = round(float(baths), 1)
-
-    return result
-
-
-def _gis_query(url: str, addr_field: str, fragment_sql: str,
-               house_num: str, cfg: dict | None) -> dict | None:
-    """
-    Fire one ArcGIS REST query and return parsed attrs dict, or None on miss.
-    Internal helper for gis_full_lookup().
-    """
-    where = f"UPPER({addr_field}) LIKE '%{fragment_sql.upper()}%'"
-    try:
-        resp = requests.get(
-            url,
-            params={
-                "where":             where,
-                "outFields":         "*",
-                "returnGeometry":    "false",
-                "resultRecordCount": 3,
-                "f":                 "json",
-            },
-            headers=HEADERS,
-            timeout=12,
-        )
-        if resp.status_code != 200:
-            return None
-        features = resp.json().get("features") or []
-        if not features:
-            return None
-        # Pick the feature whose address field contains the house number
-        best = None
-        for feat in features:
-            fa = str((feat.get("attributes") or {}).get(addr_field) or "").upper()
-            if house_num in fa:
-                best = feat.get("attributes") or {}
-                break
-        if best is None:
-            best = features[0].get("attributes") or {}
-        return _parse_full_attrs(best, addr_field, cfg)
-    except requests.exceptions.ConnectionError:
-        return None
-    except Exception as exc:
-        log.debug(f"  _gis_query({addr_field}@{url[:60]}): {exc}")
-        return None
-
-
-def gis_full_lookup(address: str, county_key: str) -> dict:
-    """
-    Single ArcGIS call that returns BOTH owner info AND property detail fields.
-
-    Strategy:
-      1. Try VGIN statewide parcel API (covers all 12 counties in one endpoint).
-         Attempts several common address field names until a non-empty result is
-         returned.
-      2. Fall back to the county-specific endpoint in GIS_REGISTRY if VGIN
-         returns no match.
-
-    Returns a merged dict with all available keys:
-      Owner:    owner_name, owner_mailing_address, owner_mailing_differs
-      Property: year_built, sqft, lot_size, assessed_value, last_sale_date,
-                last_sale_price, beds, baths
-    Returns {} on total failure.
-    """
-    tokens = address.strip().split()
-    if not tokens:
-        return {}
-    fragment = f"{tokens[0]} {tokens[1]}" if len(tokens) >= 2 else tokens[0]
-    fragment_sql = fragment.replace("'", "''")
-    house_num = tokens[0].upper()
-
-    # 1. Try VGIN statewide
-    for addr_field in _VGIN_ADDR_FIELDS:
-        result = _gis_query(VGIN_URL, addr_field, fragment_sql, house_num, None)
-        if result:
-            log.debug(f"  gis_full_lookup: VGIN hit (field={addr_field}) for {address!r}")
-            return result
-
-    # 2. Fall back to county-specific endpoint
-    key = county_key.lower().replace(" city", "").replace(" county", "").strip()
-    cfg = GIS_REGISTRY.get(key)
-    if not cfg:
-        log.debug(f"  gis_full_lookup: no registry entry for county '{county_key}'")
-        return {}
-    result = _gis_query(cfg["url"], cfg["addr_field"], fragment_sql, house_num, cfg)
-    if result:
-        log.debug(f"  gis_full_lookup: county GIS hit ({county_key}) for {address!r}")
-        return result or {}
-    return {}
-
-
-def get_redfin_estimate(address: str, zip_code: str) -> dict:
-    """
-    Best-effort Redfin property lookup via their unofficial search API.
-
-    Returns a subset of these keys (only those found):
-        beds, baths, sqft, year_built, redfin_estimate (current value)
-
-    Returns {} if Redfin blocks the request or can't find the address.
-    This is a supplemental source — never required for pipeline success.
-    """
-    search_q = f"{address}, VA {zip_code}".strip() if zip_code else f"{address}, VA"
-    try:
-        resp = requests.get(
-            "https://www.redfin.com/stingray/api/gis",
-            params={
-                "al":       "1",
-                "num_homes": "1",
-                "q":        search_q,
-                "sf":       "1,2,3,5,6,10,12",
-                "start":    "0",
-                "status":   "9",
-                "uipt":     "1,2,3,4,5,6,7,8",
-                "v":        "8",
-            },
-            headers={
-                **HEADERS,
-                "Referer": "https://www.redfin.com/",
-                "Accept":  "application/json",
-            },
-            timeout=15,
-        )
-        text = resp.text
-        # Redfin prepends "{}&&" to prevent XSS response-hijacking
-        if text.startswith("{}&&"):
-            text = text[4:]
-        data   = json.loads(text)
-        homes  = data.get("payload", {}).get("homes", [])
-        if not homes:
-            return {}
-
-        h      = homes[0]
-        result: dict = {}
-
-        # Nested value objects: {"value": 3, "displayLevel": 1}
-        def _rv(key):
-            v = h.get(key)
-            if isinstance(v, dict):
-                return v.get("value")
-            return v
-
-        beds  = _rv("beds")
-        baths = _rv("baths")
-        sqft  = _rv("sqFt") or _rv("totalSqFt")
-        yr    = _rv("yearBuilt")
-        est   = _rv("price") or _rv("listingPrice") or _rv("lastSalePrice")
-
-        if isinstance(beds,  (int, float)) and beds  > 0: result["beds"]             = int(beds)
-        if isinstance(baths, (int, float)) and baths > 0: result["baths"]            = round(float(baths), 1)
-        if isinstance(sqft,  (int, float)) and sqft  > 0: result["sqft"]             = int(sqft)
-        if isinstance(yr,    (int, float)) and yr   > 1800: result["year_built"]     = int(yr)
-        if isinstance(est,   (int, float)) and est   > 0: result["redfin_estimate"]  = int(est)
-
-        log.debug(f"  Redfin {address!r}: {result}")
-        return result
-
-    except Exception as exc:
-        log.debug(f"  get_redfin_estimate({address!r}): {exc}")
-        return {}
 
 
 def zip_to_county(zip_code: str) -> str:
@@ -1055,7 +670,7 @@ def run() -> None:
         if not county:
             zip_val = val(row, "ZIP")
             if not zip_val:
-                zm = re.search(r"\b(2[0-9]{4})\b", address)  # VA ZIPs start with 2
+                zm = re.search(r"(?:VA|Virginia)\s+(2[0-9]{4})\b", address, re.I)  # ZIP must follow "VA"/"Virginia"
                 if zm:
                     zip_val = zm.group(1)
             if zip_val:
@@ -1118,239 +733,17 @@ def run() -> None:
     filled_p5 = 0
     for i, row in p5:
         address = val(row, "Address")
-        m = re.search(r"\b(2[0-9]{4})\b", address)   # VA ZIPs start with 2
+        m = re.search(r"(?:VA|Virginia)\s+(2[0-9]{4})\b", address, re.I)   # ZIP must follow "VA"/"Virginia"
         if m:
             queue(i, "ZIP", m.group(1))
             filled_p5 += 1
     log.info(f"  → filled {filled_p5}/{len(p5)}")
 
     # ─────────────────────────────────────────────────────────────────────────
-    # Pass 6 — Owner + Property Details (combined GIS call)
-    #
-    # One call per property returns BOTH owner info AND all property detail
-    # fields.  Previously these were two separate passes (6 + 7), each making
-    # a separate ArcGIS request.  Merging them halves API traffic.
-    #
-    # Source priority:
-    #   1. VGIN statewide parcel API — single endpoint for all 12 counties.
-    #      Tried first; eliminates per-county URL routing when it matches.
-    #   2. County-specific ArcGIS endpoint (GIS_REGISTRY fallback).
-    #   3. Redfin unofficial API — only called when GIS is missing beds/sqft
-    #      OR assessed value (i.e. rural/unmapped parcels), which is <20% of rows.
-    #
-    # Candidate rows: any row that is missing Owner_Name OR any raw GIS field.
-    # Rows that already have all GIS fields but are missing only DERIVED fields
-    # (Rough_Equity_Est, Est_Profit_Potential, Years_Since_Last_Sale) are handled
-    # in the fast, API-free Pass 7 below.
-    # ─────────────────────────────────────────────────────────────────────────
-    # Only include fields that actually exist in the sheet (i.e. in COLUMNS).
-    # "Year_Built", "Beds_Baths_Sqft", and "Lot_Size" were removed from COLUMNS,
-    # so val() always returns "" for them — every row would look like it needs a
-    # GIS lookup, triggering hundreds of unnecessary API calls per run.
-    RAW_GIS_FIELDS = [
-        "Last_Sold_Date", "Last_Sold_Price", "Current_Est_Value",
-    ]
-    p6 = [
-        (i, row) for i, row in enumerate(data)
-        if val(row, "Address") and val(row, "County")
-        and (
-            not val(row, "Owner_Name")
-            or any(not val(row, f) for f in RAW_GIS_FIELDS)
-        )
-    ]
-    log.info(f"Pass 6 — GIS Full Lookup (owner + property): {len(p6)} candidate row(s)")
-    filled_p6_owner = filled_p6_gis = filled_p6_redfin = filled_p6_calc = 0
-
-    for i, row in p6:
-        address    = val(row, "Address")
-        county_dn  = val(row, "County")
-        zip_code   = val(row, "ZIP")
-        county_key = DISPLAY_TO_KEY.get(county_dn)
-        if not county_key:
-            # Fallback: derive county from City field (handles "Unknown" rows
-            # from Auction.com/Column.us where county couldn't be parsed at
-            # scrape time but the city is known).
-            city = val(row, "City")
-            if city:
-                derived = city_to_county(city)
-                county_key = DISPLAY_TO_KEY.get(derived)
-                if county_key:
-                    log.debug(f"  row {i+2}: county '{county_dn}' → resolved via city '{city}' → '{derived}'")
-                    # Write the resolved county back so future passes don't repeat this
-                    queue(i, "County", derived)
-        if not county_key:
-            log.debug(f"  row {i+2}: county '{county_dn}' not in registry — skipping GIS")
-            continue
-
-        gis = gis_full_lookup(address, county_key)
-        sleep(cfg.HTTP_DELAY_SECONDS)   # VGIN handles higher throughput than county endpoints
-
-        # ── Owner fields ──────────────────────────────────────────────────────
-        if gis.get("owner_name") and not val(row, "Owner_Name"):
-            queue(i, "Owner_Name",                          gis["owner_name"])
-            queue(i, "Owner_Mailing_Address",               gis.get("owner_mailing_address", ""))
-            queue(i, "Owner_Mailing_Differs_From_Property", gis.get("owner_mailing_differs", ""))
-            filled_p6_owner += 1
-            log.info(f"  row {i+2}: Owner={gis['owner_name']}")
-
-        # ── Redfin is disabled — GIS (VGIN + county fallback) is the only value source ──
-        # needs_bbs was removed: Beds_Baths_Sqft is no longer a sheet column.
-        # Redfin is only called if GIS returned no assessed_value AND the sheet
-        # cell is still blank.  Set ENABLE_REDFIN = False in config.py to skip
-        # entirely (default).
-        needs_est = not val(row, "Current_Est_Value") and "assessed_value" not in gis
-        rf: dict = {}
-        if needs_est and getattr(cfg, "ENABLE_REDFIN", False):
-            rf = get_redfin_estimate(address, zip_code)
-            if rf:
-                filled_p6_redfin += 1
-                log.info(f"  row {i+2}: Redfin supplement → {list(rf.keys())}")
-            sleep(cfg.REDFIN_DELAY_SECONDS)
-
-        # ── Merge: GIS primary, Redfin fills remaining gaps ───────────────────
-        year_built      = gis.get("year_built")     or rf.get("year_built")
-        sqft            = gis.get("sqft")           or rf.get("sqft")
-        lot_size        = gis.get("lot_size", "")
-        assessed_value  = gis.get("assessed_value")
-        redfin_est      = rf.get("redfin_estimate")
-        est_val         = redfin_est or assessed_value
-        beds            = gis.get("beds")           or rf.get("beds")
-        baths           = gis.get("baths")          or rf.get("baths")
-        last_sale_date  = gis.get("last_sale_date", "")
-        last_sale_price = gis.get("last_sale_price")
-
-        if gis:
-            filled_p6_gis += 1
-
-        # ── Write property fields ─────────────────────────────────────────────
-        if year_built and not val(row, "Year_Built"):
-            queue(i, "Year_Built", str(year_built))
-
-        if not val(row, "Beds_Baths_Sqft"):
-            parts = []
-            if beds:  parts.append(f"{beds} bd")
-            if baths:
-                b_str = f"{int(baths)} ba" if float(baths) == int(baths) else f"{baths} ba"
-                parts.append(b_str)
-            if sqft:  parts.append(f"{sqft:,} sqft")
-            bbs = " / ".join(parts)
-            if bbs:
-                queue(i, "Beds_Baths_Sqft", bbs)
-
-        if lot_size and not val(row, "Lot_Size"):
-            queue(i, "Lot_Size", lot_size)
-
-        if last_sale_date and not val(row, "Last_Sold_Date"):
-            queue(i, "Last_Sold_Date", last_sale_date)
-        if last_sale_price and not val(row, "Last_Sold_Price"):
-            queue(i, "Last_Sold_Price", f"${last_sale_price:,}")
-
-        if est_val and not val(row, "Current_Est_Value"):
-            label = "(Est.)" if redfin_est else "(Assessed)"
-            queue(i, "Current_Est_Value", f"${int(est_val):,} {label}")
-
-        # ── Derived calculations ──────────────────────────────────────────────
-        listing_raw = re.sub(r"[^0-9]", "", val(row, "Listing_Price"))
-        try:
-            listing_price = int(listing_raw) if listing_raw else 0
-        except ValueError:
-            listing_price = 0
-
-        if not est_val:
-            ev_raw = re.sub(r"[^0-9]", "", val(row, "Current_Est_Value"))
-            try:
-                est_val = int(ev_raw) if ev_raw else 0
-            except ValueError:
-                est_val = 0
-
-        if est_val and est_val > 0 and listing_price > 0:
-            if not val(row, "Rough_Equity_Est"):
-                equity = int(est_val) - listing_price
-                queue(i, "Rough_Equity_Est",
-                      f"+${equity:,}" if equity >= 0 else f"-${abs(equity):,}")
-                filled_p6_calc += 1
-            if not val(row, "Est_Profit_Potential"):
-                profit = int(est_val * 0.70) - listing_price
-                queue(i, "Est_Profit_Potential",
-                      f"+${profit:,}" if profit >= 0 else f"-${abs(profit):,}")
-
-        sale_date_for_yrs = last_sale_date or val(row, "Last_Sold_Date")
-        if sale_date_for_yrs and not val(row, "Years_Since_Last_Sale"):
-            try:
-                sale_yr = int(sale_date_for_yrs[:4])
-                yrs = date.today().year - sale_yr
-                if 0 <= yrs <= 100:
-                    queue(i, "Years_Since_Last_Sale", str(yrs))
-            except (ValueError, IndexError):
-                pass
-
-    log.info(
-        f"  → GIS hits: {filled_p6_gis}  owner filled: {filled_p6_owner}  "
-        f"Redfin supplements: {filled_p6_redfin}  derived calcs: {filled_p6_calc}  "
-        f"rows processed: {len(p6)}"
-    )
-
-    # ─────────────────────────────────────────────────────────────────────────
-    # Pass 7 — Derived fields (no API calls)
-    #
-    # Rows that skipped Pass 6 because their raw GIS fields were already filled
-    # may still be missing calculated fields if Listing_Price wasn't available
-    # at the time of the last GIS run.  This pass is purely computational.
-    # ─────────────────────────────────────────────────────────────────────────
-    p7 = [
-        (i, row) for i, row in enumerate(data)
-        if val(row, "Current_Est_Value") and val(row, "Listing_Price")
-        and (
-            not val(row, "Rough_Equity_Est")
-            or not val(row, "Est_Profit_Potential")
-        )
-    ]
-    p7b = [
-        (i, row) for i, row in enumerate(data)
-        if val(row, "Last_Sold_Date") and not val(row, "Years_Since_Last_Sale")
-    ]
-    log.info(
-        f"Pass 7 — Derived fields (no API): "
-        f"{len(p7)} equity/profit row(s), {len(p7b)} years-since-sale row(s)"
-    )
-    filled_p7 = 0
-
-    for i, row in p7:
-        listing_raw = re.sub(r"[^0-9]", "", val(row, "Listing_Price"))
-        ev_raw      = re.sub(r"[^0-9]", "", val(row, "Current_Est_Value"))
-        try:
-            listing_price = int(listing_raw) if listing_raw else 0
-            est_val       = int(ev_raw)       if ev_raw      else 0
-        except ValueError:
-            continue
-        if listing_price <= 0 or est_val <= 0:
-            continue
-        if not val(row, "Rough_Equity_Est"):
-            equity = est_val - listing_price
-            queue(i, "Rough_Equity_Est",
-                  f"+${equity:,}" if equity >= 0 else f"-${abs(equity):,}")
-            filled_p7 += 1
-        if not val(row, "Est_Profit_Potential"):
-            profit = int(est_val * 0.70) - listing_price
-            queue(i, "Est_Profit_Potential",
-                  f"+${profit:,}" if profit >= 0 else f"-${abs(profit):,}")
-
-    for i, row in p7b:
-        try:
-            sale_yr = int(val(row, "Last_Sold_Date")[:4])
-            yrs = date.today().year - sale_yr
-            if 0 <= yrs <= 100:
-                queue(i, "Years_Since_Last_Sale", str(yrs))
-        except (ValueError, IndexError):
-            pass
-
-    log.info(f"  → filled {filled_p7} equity rows, {len(p7b)} years-since-sale rows")
-
-    # ─────────────────────────────────────────────────────────────────────────
-    # Pass 8 — Column.us individual notice URLs
+    # Pass 6 — Column.us individual notice URLs
     #
     # sheets_sync.py force-updates Listing_URL for any row whose address still
-    # appears in the current scraper output.  Pass 8 handles the remaining rows
+    # appears in the current scraper output.  Pass 7 handles the remaining rows
     # — ones that are no longer scraped but still show the generic search-page
     # URL instead of an individual notice link.
     #
@@ -1374,7 +767,7 @@ def run() -> None:
             )
         )
     ]
-    log.info(f"Pass 8 — Column.us notice URLs: {len(p8)} candidate row(s)")
+    log.info(f"Pass 6 — Column.us notice URLs: {len(p8)} candidate row(s)")
 
     if p8:
         try:
@@ -1387,7 +780,7 @@ def run() -> None:
                 )
                 page = context.new_page()
 
-                log.info("  Pass 8: loading Column.us search page…")
+                log.info("  Pass 6: loading Column.us search page…")
                 page.goto(COLUMN_US_SEARCH_URL, wait_until="load", timeout=40_000)
                 page.wait_for_timeout(8_000)
 
@@ -1456,7 +849,7 @@ def run() -> None:
 
         except ImportError:
             log.info(
-                "  Pass 8 skipped — playwright not installed.\n"
+                "  Pass 6 skipped — playwright not installed.\n"
                 "    Install: pip3 install playwright --break-system-packages"
                 " && playwright install chromium"
             )

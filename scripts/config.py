@@ -291,6 +291,19 @@ COLUMN_US_SOURCES: list[dict] = [
 ENABLE_PNV: bool = False  # ON HOLD (2026-05-22) — paused for later use; re-enable by setting True
 
 # ---------------------------------------------------------------------------
+# Paused data files — sheets_sync.py will refuse to sync these
+# ---------------------------------------------------------------------------
+# Add the relative path (from project root) of any JSON data file whose
+# source is currently paused.  This prevents accidental manual syncs.
+import os as _os
+_SCRIPTS_DIR = _os.path.dirname(_os.path.abspath(__file__))
+_ROOT        = _os.path.join(_SCRIPTS_DIR, "..")
+PAUSED_DATA_FILES: set = {
+    _os.path.realpath(_os.path.join(_ROOT, "data", "foreclosures_pnv.json")),
+}
+del _os, _SCRIPTS_DIR, _ROOT
+
+# ---------------------------------------------------------------------------
 # Legacy scraper.py source flags (all False — dead code)
 # ---------------------------------------------------------------------------
 # scraper.py's run() references these flags for old Column.us / supplemental

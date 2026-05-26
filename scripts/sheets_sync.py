@@ -30,7 +30,7 @@ from google.oauth2.service_account import Credentials
 import json
 import glob
 import logging
-from datetime import date, datetime
+from datetime import date
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)s  %(message)s")
 log = logging.getLogger(__name__)
@@ -62,25 +62,13 @@ COLUMNS = [
     "Notice_Text",                          # I
     "Status",                               # J
     "Investment_Priority",                  # K
-    "Listing_Price",                        # L
-    "Current_Est_Value",                    # M
-    "Rough_Equity_Est",                     # N
-    "Est_Profit_Potential",                 # O
-    "Last_Sold_Date",                       # P
-    "Last_Sold_Price",                      # Q
-    "Years_Since_Last_Sale",                # R
-    "City",                                 # S
-    "ZIP",                                  # T
-    "State",                                # U
-    "Property_Type",                        # V
-    "Is_Auction",                           # W
-    "Owner_Name",                           # X
-    "Owner_Mailing_Address",                # Y
-    "Owner_Mailing_Differs_From_Property",  # Z
-    "Estimated_Phone",                      # AA
-    "Estimated_Email",                      # AB
-    "Listing_URL",                          # AC
-    "Notes",                                # AD
+    "City",                                 # L
+    "ZIP",                                  # M
+    "State",                               # N
+    "Property_Type",                        # O
+    "Is_Auction",                           # P
+    "Listing_URL",                          # Q
+    "Notes",                                # R
 ]
 
 
@@ -100,32 +88,9 @@ def find_creds_file() -> str | None:
     return None
 
 
-def _fmt_price(val) -> str:
-    """Format a numeric value as a dollar string, e.g. 350000 → '$350,000'."""
-    if isinstance(val, (int, float)) and val:
-        return f"${int(val):,}"
-    return ""
-
-
-def _years_since(date_str: str) -> str:
-    """Return decimal years since date_str (YYYY-MM-DD), or ''."""
-    if not date_str:
-        return ""
-    try:
-        then = datetime.strptime(date_str[:10], "%Y-%m-%d").date()
-        years = (date.today() - then).days / 365.25
-        return f"{years:.1f}"
-    except ValueError:
-        return ""
-
 
 def listing_to_row(listing: dict) -> list:
-    """Convert a foreclosure listing dict to a sheet row (aligned to COLUMNS).
-
-    Reads pre-computed fields from normalized listings (status, investment_priority,
-    rough_equity, profit_potential). Falls back to inline calculation for legacy
-    rows that were scraped before normalize_listing() was added.
-    """
+    """Convert a foreclosure listing dict to a sheet row (aligned to COLUMNS)."""
     stage = listing.get("stage", "")
 
     # Use pre-computed status from normalize_listing(), fall back to inline calc.
@@ -134,10 +99,6 @@ def listing_to_row(listing: dict) -> list:
         "pre-fc":   "Pre-Foreclosure Notice",
         "reo":      "REO / Bank Owned",
     }.get(stage, stage.title())
-
-    # ── Listing price ─────────────────────────────────────────────────────────
-    price     = listing.get("asking_price")
-    price_str = _fmt_price(price)
 
     # ── Investment priority ───────────────────────────────────────────────────
     # Use pre-computed value from normalize_listing(); fall back to inline calc.
@@ -152,36 +113,6 @@ def listing_to_row(listing: dict) -> list:
             priority = "Medium"
         else:
             priority = "Low"
-
-    last_sold_date  = listing.get("last_sold_date") or ""
-    last_sold_price = _fmt_price(listing.get("last_sold_price"))
-
-    # estimated_value: normalize() pre-selects best available (GIS → Redfin).
-    # Fall back to legacy redfin_estimate field for rows not yet re-normalized.
-    est_value = listing.get("estimated_value") or listing.get("redfin_estimate")
-    est_value_str = f"{_fmt_price(est_value)} (Est.)" if est_value else ""
-
-    # Rough equity: estimated value minus asking price (pre-computed by normalize_listing,
-    # but recalculate here for rows that haven't been re-normalized yet)
-    rough_equity_raw = listing.get("rough_equity")
-    if rough_equity_raw is not None:
-        rough_equity = _fmt_price(rough_equity_raw)
-    elif est_value and price:
-        rough_equity = _fmt_price(int(est_value) - int(price))
-    else:
-        rough_equity = ""
-
-    # Profit potential — 70% rule: (ARV × 0.70) − asking_price → dollar amount
-    # Pre-computed by normalize_listing(); recalculate for legacy rows.
-    profit_raw = listing.get("profit_potential")
-    if profit_raw is not None:
-        est_profit_pct = _fmt_price(profit_raw)
-    elif est_value and price:
-        est_profit_pct = _fmt_price(int(int(est_value) * 0.70) - int(price))
-    else:
-        est_profit_pct = ""
-
-    years_since_sale = _years_since(last_sold_date)
 
     # ── Listing URL ───────────────────────────────────────────────────────────
     listing_url = listing.get("source_url") or listing.get("redfin_url") or ""
@@ -209,32 +140,31 @@ def listing_to_row(listing: dict) -> list:
         listing.get("notice_text") or "",                         # I  Notice_Text
         status,                                                   # J  Status
         priority,                                                 # K  Investment_Priority
-        price_str,                                                # L  Listing_Price
-        est_value_str,                                            # M  Current_Est_Value
-        rough_equity,                                             # N  Rough_Equity_Est
-        est_profit_pct,                                           # O  Est_Profit_Potential
-        last_sold_date,                                           # P  Last_Sold_Date
-        last_sold_price,                                          # Q  Last_Sold_Price
-        years_since_sale,                                         # R  Years_Since_Last_Sale
-        listing.get("city") or "",                                # S  City
-        listing.get("zip")  or "",                                # T  ZIP
-        "VA",                                                     # U  State
+        listing.get("city") or "",                                # L  City
+        listing.get("zip")  or "",                                # M  ZIP
+        "VA",                                                     # N  State
         "SFR" if listing.get("property_type") == "single-family"
-             else (listing.get("property_type") or "SFR"),        # V  Property_Type
-        "Yes" if stage == "auction" else "No",                    # W  Is_Auction
-        listing.get("owner_name") or "",                          # X  Owner_Name
-        listing.get("owner_mailing_address") or "",               # Y  Owner_Mailing_Address
-        listing.get("owner_mailing_differs") or "",               # Z  Owner_Mailing_Differs_From_Property
-        listing.get("owner_phone") or "",                         # AA Estimated_Phone
-        listing.get("owner_email") or "",                         # AB Estimated_Email
-        listing_url,                                              # AC Listing_URL
-        notes,                                                    # AD Notes
+             else (listing.get("property_type") or "SFR"),        # O  Property_Type
+        "Yes" if stage == "auction" else "No",                    # P  Is_Auction
+        listing_url,                                              # Q  Listing_URL
+        notes,                                                    # R  Notes
     ]
 
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 def run() -> None:
+    # ── Guard: refuse to sync paused/disabled sources ─────────────────────────
+    paused = getattr(cfg, "PAUSED_DATA_FILES", set())
+    if os.path.realpath(DATA_FILE) in paused:
+        log.error(
+            "SYNC BLOCKED: %s is in PAUSED_DATA_FILES. "
+            "This source is currently paused. To re-enable, remove it from "
+            "PAUSED_DATA_FILES in config.py and set the matching ENABLE_ flag to True.",
+            os.path.basename(DATA_FILE)
+        )
+        return
+
     # ── 1. Load scraped data ──────────────────────────────────────────────────
     if not os.path.exists(DATA_FILE):
         log.error(f"Data file not found: {DATA_FILE} — run scraper.py first")
@@ -242,6 +172,16 @@ def run() -> None:
 
     with open(DATA_FILE) as f:
         data = json.load(f)
+
+    # Extra safety: reject files that carry a paused status in their metadata
+    if data.get("metadata", {}).get("status") == "paused":
+        log.error(
+            "SYNC BLOCKED: %s has status=paused in its metadata. "
+            "Clear the file or re-enable the source before syncing.",
+            os.path.basename(DATA_FILE)
+        )
+        return
+
     listings = data.get("listings", [])
     log.info(f"Loaded {len(listings)} listings from {DATA_FILE}")
 
@@ -343,11 +283,6 @@ def run() -> None:
     # Note: "Beds_Baths_Sqft", "Year_Built", "Lot_Size" were removed from COLUMNS
     # and are no longer in the sheet — keep this list in sync with COLUMNS above.
     BACKFILL_COLS = [
-        ("Owner_Name",                          "owner_name"),
-        ("Owner_Mailing_Address",               "owner_mailing_address"),
-        ("Owner_Mailing_Differs_From_Property", "owner_mailing_differs"),
-        ("Estimated_Phone",                     "owner_phone"),
-        ("Estimated_Email",                     "owner_email"),
         ("City",                                "city"),
         ("State",                               None),   # always "VA" — derived in listing_to_row
         ("County",                              "county"),
