@@ -130,7 +130,26 @@ COUNTY_TEXT_RE = re.compile(
     re.IGNORECASE,
 )
 
-# Trustee's Sale address line: "TRUSTEE'S SALE OF 123 MAIN ST, CITY, VA 12345"
+# Deed of Trust date: "Deed of Trust dated December 6, 2007, in the original principal"
+DEED_DATE_RE = re.compile(
+    rf"Deed\s+of\s+Trust\s+dated\s+({_MONTHS})\s+(\d{{1,2}}),?\s+(\d{{4}})",
+    re.IGNORECASE,
+)
+
+# Original principal: "original principal amount of $250,000.00"
+PRINCIPAL_RE = re.compile(
+    r"original\s+principal\s+(?:amount\s+of\s+)?(\$[\d,]+(?:\.\d{1,2})?)",
+    re.IGNORECASE,
+)
+
+# Deposit: "A bidder\u2019s deposit of ten percent (10%)" or "deposit of $25,000"
+DEPOSIT_RE = re.compile(
+    r"bidder[\u2019'`]?s?\s+deposit\s+of\s+[^($]*\((\d+(?:\.\d+)?%)\)"
+    r"|bidder[\u2019'`]?s?\s+deposit\s+of\s+(\$[\d,]+(?:\.\d{1,2})?)",
+    re.IGNORECASE,
+)
+
+# Trustee's Sale address line: "TRUSTEE'S SALE OF 123 MAIN ST, CITY, VA 12345" 
 # Handles both straight (') and Unicode right single quote (’) apostrophes.
 TRUSTEE_ADDR_RE = re.compile(
     r"TRUSTEE[’'`]?S?\s+SALE\s+OF\s+(.+?)(?:\.|\s+In execution|\s+In\s+execution)",
@@ -244,6 +263,31 @@ def extract_address(text: str) -> str:
             addr = m.group(1).strip().rstrip(".,")
             return addr
     return ""
+
+
+def parse_deed_date(text: str) -> str:
+    """Extract deed of trust date → YYYY-MM-DD, or \'\'."""
+    m = DEED_DATE_RE.search(text)
+    if not m:
+        return ""
+    try:
+        return datetime.strptime(f"{m.group(1)} {m.group(2)} {m.group(3)}", "%B %d %Y").strftime("%Y-%m-%d")
+    except ValueError:
+        return ""
+
+
+def parse_original_principal(text: str) -> str:
+    """Extract original principal amount → e.g. \'$250,000.00\', or \'\'."""
+    m = PRINCIPAL_RE.search(text)
+    return m.group(1) if m else ""
+
+
+def parse_deposit(text: str) -> str:
+    """Extract bidder deposit → e.g. \'10%\' or \'$25,000\', or \'\'."""
+    m = DEPOSIT_RE.search(text)
+    if not m:
+        return ""
+    return m.group(1) or m.group(2) or ""
 
 
 def is_virginia_notice(text: str) -> bool:
@@ -376,9 +420,9 @@ def parse_detail_page(url: str, soup: BeautifulSoup) -> dict | None:
         "days_in_foreclosure": 0,
         "lender":            "",
         "trustee":           "",
-        "original_principal": "",
-        "deposit":           "",
-        "deed_of_trust_date": "",
+        "original_principal": parse_original_principal(notice_text),
+        "deposit":           parse_deposit(notice_text),
+        "deed_of_trust_date": parse_deed_date(notice_text),
         "notice_text":       notice_trimmed,
         "source":            SOURCE_TAG,
         "source_url":        SEARCH_URL,

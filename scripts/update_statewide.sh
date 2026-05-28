@@ -11,4 +11,8 @@
 
 set -e
 cd "$(dirname "$0")/.."
+# Always reset sheet to canonical column schema before any source runs.
+# This prevents stale headers (e.g. ZIP at B) from surviving between pipeline versions.
+python3 scripts/sheets_sync.py --clear-only
+
 exec python3 scripts/run.py "$@"

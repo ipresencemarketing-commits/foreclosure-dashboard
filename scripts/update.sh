@@ -2,10 +2,9 @@
 # update.sh — Foreclosure Finder pipeline
 #
 # Steps:
-#   1. Scrape   — fetch notices from all active source groups → data/foreclosures.json
-#   2. Sync     — push listings to Google Sheets (initial push, no enrichment yet)
-#   3. Backfill — 8-pass enrichment: GIS owner/property, sale date re-parse, derived calcs
-#   4. Publish  — commit + push to GitHub Pages
+#   1. Scrape+Sync — run.py: scrape all sources + sync each to Google Sheets
+#   2. Backfill    — 8-pass enrichment: GIS owner/property, sale date re-parse, derived calcs
+#   3. Publish     — commit + push to GitHub Pages
 #
 # Active scraper source groups (all called by scraper.py → run()):
 #   Group 3  (PNV)  — publicnoticevirginia.com        (statewide; §55.1-321 required)
@@ -56,30 +55,18 @@ python3 scripts/run.py
 echo "   Done."
 echo ""
 
-echo ">> Step 1b — Washington Times classifieds (classified.washingtontimes.com)..."
-python3 scripts/scraper_washingtontimes.py --output data/foreclosures_washingtontimes.json || echo "   [warn] Washington Times scraper failed — skipping"
-echo "   Done."
-echo ""
-
-# ── Step 2: Sync ──────────────────────────────────────────────────────────────
-echo ">> Step 2/4 — Syncing to Google Sheets (initial push)..."
-python3 scripts/sheets_sync.py || echo "   [warn] Sheets sync skipped — check credentials/service-account.json"
-python3 scripts/sheets_sync.py --file data/foreclosures_washingtontimes.json || echo "   [warn] Washington Times sheets sync skipped"
-echo "   Done."
-echo ""
-
-# ── Step 3: Backfill ──────────────────────────────────────────────────────────
+# ── Step 2: Backfill ──────────────────────────────────────────────────────────
 # 8-pass enrichment: sale date/time (re-fetch), county, city, ZIP, owner +
 # property details (VGIN statewide → county fallback → Redfin supplement),
 # derived fields (equity, profit potential), Column.us permalink URLs.
-echo ">> Step 3/4 — Backfilling missing fields (GIS / Redfin / derived calcs)..."
+echo ">> Step 2/3 — Backfilling missing fields (GIS / Redfin / derived calcs)..."
 python3 scripts/backfill.py || echo "   [warn] Backfill skipped — check credentials/service-account.json"
 echo "   Done."
 echo ""
 
-# ── Step 4: Publish to GitHub Pages ──────────────────────────────────────────
+# ── Step 3: Publish to GitHub Pages ──────────────────────────────────────────
 if [[ "$PUSH_PAGES" == "true" ]]; then
-    echo ">> Step 4/4 — Publishing to GitHub Pages..."
+    echo ">> Step 3/3 — Publishing to GitHub Pages..."
     if [[ -f "$REPO_DIR/scripts/build_site.py" ]]; then
         python3 scripts/build_site.py
     fi
@@ -92,7 +79,7 @@ if [[ "$PUSH_PAGES" == "true" ]]; then
         echo "   Pushed to GitHub Pages."
     fi
 else
-    echo ">> Step 4/4 — GitHub Pages push skipped (--no-push)"
+    echo ">> Step 3/3 — GitHub Pages push skipped (--no-push)"
 fi
 
 echo ""
