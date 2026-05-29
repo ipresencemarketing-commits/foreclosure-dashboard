@@ -64,8 +64,9 @@ SOURCE_TAG  = "siwpc"
 # Map PDF county/city headers → pipeline display names
 # Keys are lowercase as they appear in the PDF
 COUNTY_MAP: dict[str, str] = {
-    # Target counties
+    # Known header → display name mappings (handles unusual formatting in PDF)
     "fredericksburg":    "Fredericksburg City",
+    "city of fredericksburg": "Fredericksburg City",
     "stafford":          "Stafford",
     "spotsylvania":      "Spotsylvania",
     "caroline":          "Caroline",
@@ -73,10 +74,23 @@ COUNTY_MAP: dict[str, str] = {
     "culpeper":          "Culpeper",
     "king george":       "King George",
     "hanover":           "Hanover",
+    "richmond":          "Richmond City",
     "city of richmond":  "Richmond City",
     "chesterfield":      "Chesterfield",
     "henrico":           "Henrico",
     "louisa":            "Louisa",
+    "roanoke":           "Roanoke",
+    "city of roanoke":   "Roanoke City",
+    "roanoke city":      "Roanoke City",
+    "salem":             "Salem",
+    "city of salem":     "Salem",
+    "botetourt":         "Botetourt",
+    "bedford":           "Bedford",
+    "franklin":          "Franklin",
+    "montgomery":        "Montgomery",
+    "radford":           "Radford",
+    "city of radford":   "Radford",
+    # All other VA counties/cities pass through via fallback in parse_listings()
 }
 
 # Courthouse sale locations by display name (mirrors scraper.py courthouse_location())
@@ -294,7 +308,7 @@ def parse_listings(text: str) -> list[dict]:
         # Not a listing row — treat as a county/section header if it doesn't start with a digit
         if not line[0].isdigit() and line not in ("VA",):
             key = line.lower()
-            current_county_display = COUNTY_MAP.get(key)   # None = out of scope
+            current_county_display = COUNTY_MAP.get(key, key.title())  # unknown headers pass through
 
     return listings
 
@@ -350,7 +364,7 @@ def main():
     log.info("In-scope listings found: %d", len(raw_listings))
 
     if not raw_listings:
-        log.warning("No in-scope listings — check county headers in PDF or TARGET_COUNTIES_MAP")
+        log.warning("No listings parsed — check county headers in PDF or LISTING_RE pattern")
 
     # County summary
     from collections import Counter

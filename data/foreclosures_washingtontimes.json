@@ -1981,7 +1981,7 @@
       "listing_url": "http://classified.washingtontimes.com/category/358/Foreclosure-Sales-FFX-Cty/listings/158436/00102625.html",
       "file_number": "",
       "first_seen": "2026-05-29",
-      "is_new": true,
+      "is_new": false,
       "investment_priority": "High"
     },
     {
@@ -2326,5 +2326,5 @@
       "investment_priority": "High"
     }
   ],
-  "scraped_at": "2026-05-29T14:23:31.619918Z"
+  "scraped_at": "2026-05-29T18:48:22.707840Z"
 }

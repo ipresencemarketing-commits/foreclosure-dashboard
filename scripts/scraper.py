@@ -1120,12 +1120,6 @@ def scrape_hud_homes() -> list:
     url = "https://www.hudhomestore.gov/searchresult?citystate=VA"
     log.info(f"  HUD Homes: {url}")
 
-    TARGET_COUNTIES_HUD = {
-        "stafford", "spotsylvania", "caroline", "fredericksburg",
-        "fauquier", "culpeper", "king george", "hanover",
-        "richmond", "chesterfield", "henrico", "louisa",
-    }
-
     try:
         resp = requests.get(url, headers=HEADERS, timeout=25)
         resp.raise_for_status()
@@ -1161,8 +1155,6 @@ def scrape_hud_homes() -> list:
 
         for prop in properties:
             county_raw = str(prop.get("propertyCounty", "")).strip()
-            if county_raw.lower() not in TARGET_COUNTIES_HUD:
-                continue
 
             address   = str(prop.get("propertyAddress", "")).strip()
             city_raw  = str(prop.get("propertyCity", "")).strip()
@@ -1274,6 +1266,7 @@ def scrape_homepath() -> list:
     log.info(f"  HomePath: {url}")
 
     TARGET_COUNTY_MAP = {
+        # Stage 1
         "fredericksburg": "Fredericksburg City",
         "stafford":       "Stafford",
         "spotsylvania":   "Spotsylvania",
@@ -1286,6 +1279,15 @@ def scrape_homepath() -> list:
         "chesterfield":   "Chesterfield",
         "henrico":        "Henrico",
         "louisa":         "Louisa",
+        # Stage 2 — Roanoke metro
+        "roanoke":        "Roanoke",
+        "roanoke city":   "Roanoke City",
+        "salem":          "Salem",
+        "botetourt":      "Botetourt",
+        "bedford":        "Bedford",
+        "franklin":       "Franklin",
+        "montgomery":     "Montgomery",
+        "radford":        "Radford",
     }
 
     try:
@@ -1305,9 +1307,7 @@ def scrape_homepath() -> list:
 
         for item in properties:
             county_raw   = (item.get("county") or "").lower().strip()
-            county_clean = TARGET_COUNTY_MAP.get(county_raw)
-            if not county_clean:
-                continue
+            county_clean = TARGET_COUNTY_MAP.get(county_raw) or county_raw.title()
 
             address  = (item.get("addressLine1") or "").title()
             city     = (item.get("city") or "").title()
@@ -1398,12 +1398,6 @@ def scrape_homesteps() -> list:
     url = "https://www.homesteps.com/listing/search?search=Virginia"
     log.info(f"  HomeSteps: {url}")
 
-    TARGET_COUNTIES_SET = {
-        "fredericksburg city", "stafford", "spotsylvania", "caroline",
-        "fauquier", "culpeper", "king george", "hanover",
-        "richmond city", "chesterfield", "henrico", "louisa",
-    }
-
     try:
         resp = requests.get(url, headers=HEADERS, timeout=25)
         resp.raise_for_status()
@@ -1440,8 +1434,6 @@ def scrape_homesteps() -> list:
 
             # Derive county from city and check against target list
             county = city_to_county(city_raw)
-            if county == "Unknown" or county.lower() not in TARGET_COUNTIES_SET:
-                continue
 
             # ── Price ──────────────────────────────────────────────────────
             price = None
@@ -3239,6 +3231,31 @@ def city_to_county(city: str) -> str:
         # Louisa
         "louisa":            "Louisa",
         "mineral":           "Louisa",
+        # Roanoke City (independent city — same ambiguity as Richmond/Henrico;
+        # unincorporated Roanoke County addresses also use "Roanoke" as mailing city)
+        "roanoke":           "Roanoke City",
+        # Roanoke County communities
+        "vinton":            "Roanoke",
+        "cave spring":       "Roanoke",
+        "hollins":           "Roanoke",
+        "mount pleasant":    "Roanoke",
+        # Salem (independent city)
+        "salem":             "Salem",
+        # Botetourt County
+        "daleville":         "Botetourt",
+        "fincastle":         "Botetourt",
+        "troutville":        "Botetourt",
+        # Bedford County
+        "bedford":           "Bedford",
+        "forest":            "Bedford",
+        # Franklin County
+        "rocky mount":       "Franklin",
+        "ferrum":            "Franklin",
+        # Montgomery County
+        "christiansburg":    "Montgomery",
+        "blacksburg":        "Montgomery",
+        # Radford (independent city)
+        "radford":           "Radford",
     }
     for key, val in mapping.items():
         if key in city:

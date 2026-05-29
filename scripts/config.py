@@ -49,16 +49,24 @@ SINCE_DATE: date = TODAY - timedelta(days=LOOKBACK_DAYS)
 
 #: Lowercase county keys used internally for matching and GIS lookups.
 TARGET_COUNTIES: list[str] = [
+    # Stage 1 — Fredericksburg + Richmond metros
     "fredericksburg", "stafford", "spotsylvania", "caroline",
     "fauquier", "culpeper", "king george", "hanover",
     "richmond", "chesterfield", "henrico", "louisa",
+    # Stage 2 — Roanoke metro
+    "roanoke city", "roanoke", "salem", "botetourt",
+    "bedford", "franklin", "montgomery", "radford",
 ]
 
 #: Display names used in the Google Sheet "County" column.
 TARGET_COUNTIES_DISPLAY: list[str] = [
+    # Stage 1 — Fredericksburg + Richmond metros
     "Fredericksburg City", "Stafford", "Spotsylvania", "Caroline",
     "Fauquier", "Culpeper", "King George", "Hanover",
     "Richmond City", "Chesterfield", "Henrico", "Louisa",
+    # Stage 2 — Roanoke metro
+    "Roanoke City", "Roanoke", "Salem", "Botetourt",
+    "Bedford", "Franklin", "Montgomery", "Radford",
 ]
 
 # ---------------------------------------------------------------------------
@@ -136,8 +144,8 @@ COLUMN_US_SOURCES: list[dict] = [
         "header":     "ROANOKE TIMES",
         "source_tag": "column_us_roanoke",
         "output":     "data/foreclosures_roanoke.json",
-        "enabled":    False,
-        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+        "enabled":    True,
+        "notes":      "Stage 2 — Roanoke City, Roanoke County, Salem, Botetourt, Bedford, Franklin, Montgomery",
     },
     {
         "name":       "lynchburg",
