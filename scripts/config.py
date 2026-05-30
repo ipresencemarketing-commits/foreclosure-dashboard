@@ -274,6 +274,69 @@ COLUMN_US_SOURCES: list[dict] = [
         ),
     },
     # ---------------------------------------------------------------------------
+    # New sources found 2026-05-30 via subdomain probe
+    # ---------------------------------------------------------------------------
+    {
+        "name":       "dailypress",
+        "label":      "Daily Press (Hampton Roads)",
+        "url":        "https://dailypress.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "DAILY PRESS",
+        "source_tag": "column_us_dailypress",
+        "output":     "data/foreclosures_dailypress.json",
+        "enabled":    True,
+        "notes":      "Confirmed live 2026-05-30, 6 results. Covers Newport News, Hampton, York, James City, Isle of Wight. Portal publishes some out-of-state notices — county filter drops non-VA.",
+    },
+    {
+        "name":       "northernnecknews",
+        "label":      "Northern Neck News",
+        "url":        "https://northernnecknews.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "NORTHERN NECK NEWS",
+        "source_tag": "column_us_northernnecknews",
+        "output":     "data/foreclosures_northernnecknews.json",
+        "enabled":    True,
+        "notes":      "Confirmed live 2026-05-30, 2 results. Covers Richmond County (Warsaw), Northumberland, Lancaster, Westmoreland overlap.",
+    },
+    {
+        "name":       "sungazette",
+        "label":      "Sun Gazette (Arlington/Fairfax)",
+        "url":        "https://sungazette.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "SUN GAZETTE",
+        "source_tag": "column_us_sungazette",
+        "output":     "data/foreclosures_sungazette.json",
+        "enabled":    True,
+        "notes":      "Confirmed live 2026-05-30, 0 results currently. Header unconfirmed — assumed SUN GAZETTE. Arlington/Fairfax NoVA coverage.",
+    },
+    {
+        "name":       "insidenova",
+        "label":      "InsideNOVA",
+        "url":        "https://insidenova.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "INSIDENOVA",
+        "source_tag": "column_us_insidenova",
+        "output":     "data/foreclosures_insidenova.json",
+        "enabled":    True,
+        "notes":      "Confirmed live 2026-05-30, 0 results currently. Header unconfirmed — assumed INSIDENOVA. Prince William/NoVA coverage.",
+    },
+    {
+        "name":       "rappnews",
+        "label":      "Rappahannock News",
+        "url":        "https://rappnews.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "RAPPAHANNOCK NEWS",
+        "source_tag": "column_us_rappnews",
+        "output":     "data/foreclosures_rappnews.json",
+        "enabled":    True,
+        "notes":      "Confirmed live 2026-05-30, 0 results currently. Header unconfirmed — assumed RAPPAHANNOCK NEWS. Rappahannock County coverage; Culpeper/Fauquier border.",
+    },
+    {
+        "name":       "cardinalnews",
+        "label":      "Cardinal News",
+        "url":        "https://cardinalnews.column.us/search?noticeType=Foreclosure+Sale",
+        "header":     "CARDINAL NEWS",
+        "source_tag": "column_us_cardinalnews",
+        "output":     "data/foreclosures_cardinalnews.json",
+        "enabled":    True,
+        "notes":      "Confirmed live 2026-05-30, 0 results currently. Header unconfirmed — assumed CARDINAL NEWS. Statewide Virginia digital outlet.",
+    },
+    # ---------------------------------------------------------------------------
     # Custom-domain Column.us portals (not *.column.us subdomains)
     # Same scraper_column_us.py engine; different URL structure and noticeType param.
     # ---------------------------------------------------------------------------

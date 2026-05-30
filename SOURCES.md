@@ -953,6 +953,115 @@ Manual visit to `tmppllc.com/virginia_foreclosure_sales` to confirm whether the 
 
 ---
 
+---
+
+## Source 25 — Column.us Daily Press (Hampton Roads)
+
+**URL:** https://dailypress.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_dailypress`
+**Toggle:** `dailypress` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: True`)
+**Technology:** Playwright via `scraper_column_us.py`
+**Header string:** `DAILY PRESS` ✅ confirmed 2026-05-30
+**Counties:** Newport News City, Hampton City, York County, James City County, Isle of Wight, Poquoson; Hampton Roads metro
+**Output:** `data/foreclosures_dailypress.json`
+
+### What this source provides
+- Same fields as other Column.us portals (address, county, sale date/time, lender, trustee, full notice text, listing URL)
+
+### Known issues
+- **Out-of-state notices present** — the portal publishes some non-Virginia notices (sample showed Michigan "Delta County"). County filter drops all non-VA results automatically.
+- **6 results confirmed** on 2026-05-30 detect run.
+
+### Fix status
+- ✅ Enabled 2026-05-30 — header confirmed, county filter handles out-of-state noise
+
+---
+
+## Source 26 — Column.us Northern Neck News
+
+**URL:** https://northernnecknews.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_northernnecknews`
+**Toggle:** `northernnecknews` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: True`)
+**Technology:** Playwright via `scraper_column_us.py`
+**Header string:** `NORTHERN NECK NEWS` ✅ confirmed 2026-05-30
+**Counties:** Richmond County (Warsaw) primary; Northumberland, Lancaster, Westmoreland overlap
+**Output:** `data/foreclosures_northernnecknews.json`
+
+### Notes
+- First confirmed notice was Warsaw, VA (Richmond County) — rural Northern Neck peninsula. Low volume expected but fills a gap not covered by other portals.
+- Overlaps geographically with `westmorelandnews.column.us` — some attorneys may dual-publish.
+
+### Fix status
+- ✅ Enabled 2026-05-30 — 2 results confirmed, header confirmed
+
+---
+
+## Source 27 — Column.us Sun Gazette (Arlington/Fairfax)
+
+**URL:** https://sungazette.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_sungazette`
+**Toggle:** `sungazette` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: True`)
+**Technology:** Playwright via `scraper_column_us.py`
+**Header string:** `SUN GAZETTE` (unconfirmed — 0 results on 2026-05-30 detect run)
+**Counties:** Arlington County, Fairfax County; Northern Virginia
+**Output:** `data/foreclosures_sungazette.json`
+
+### Fix status
+- ⚠️ Enabled 2026-05-30 — portal live, 0 results currently, header unconfirmed
+
+---
+
+## Source 28 — Column.us InsideNOVA
+
+**URL:** https://insidenova.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_insidenova`
+**Toggle:** `insidenova` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: True`)
+**Technology:** Playwright via `scraper_column_us.py`
+**Header string:** `INSIDENOVA` (unconfirmed — 0 results on 2026-05-30 detect run)
+**Counties:** Prince William County, Manassas City, Manassas Park City; Northern Virginia
+**Output:** `data/foreclosures_insidenova.json`
+
+### Fix status
+- ⚠️ Enabled 2026-05-30 — portal live, 0 results currently, header unconfirmed
+
+---
+
+## Source 29 — Column.us Rappahannock News
+
+**URL:** https://rappnews.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_rappnews`
+**Toggle:** `rappnews` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: True`)
+**Technology:** Playwright via `scraper_column_us.py`
+**Header string:** `RAPPAHANNOCK NEWS` (unconfirmed — 0 results on 2026-05-30 detect run)
+**Counties:** Rappahannock County primary; Culpeper/Fauquier border overlap possible
+**Output:** `data/foreclosures_rappnews.json`
+
+### Notes
+- Rappahannock County is a small, rural county bordering Culpeper and Fauquier (both Stage 1 targets). Attorneys serving those counties may occasionally publish here.
+
+### Fix status
+- ⚠️ Enabled 2026-05-30 — portal live, 0 results currently, header unconfirmed
+
+---
+
+## Source 30 — Column.us Cardinal News
+
+**URL:** https://cardinalnews.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_cardinalnews`
+**Toggle:** `cardinalnews` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: True`)
+**Technology:** Playwright via `scraper_column_us.py`
+**Header string:** `CARDINAL NEWS` (unconfirmed — 0 results on 2026-05-30 detect run)
+**Counties:** Statewide Virginia digital outlet — Southwest and Southside Virginia focus
+**Output:** `data/foreclosures_cardinalnews.json`
+
+### Notes
+- Cardinal News is a nonprofit digital outlet covering news that large papers miss, focused on Southwest and Southside VA. If attorneys publish legal notices here, it could fill rural county gaps. Low volume expected.
+
+### Fix status
+- ⚠️ Enabled 2026-05-30 — portal live, 0 results currently, header unconfirmed
+
+---
+
 ## Fix Order (by lead volume potential)
 
 1. **SIWPC** — highest-volume firm, early-warning value, simple HTML table scraper.
