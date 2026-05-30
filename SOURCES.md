@@ -295,7 +295,7 @@ County detection now uses a 3-pass fallback:
 - **Low yield expected** — supplemental source only; don't expect high volume.
 
 ### Fix status
-- ⚠️ Enabled 2026-05-22 — first run will confirm header + yield; may need header string correction
+- ⚠️ Enabled — portal confirmed live 2026-05-30; zero notices in current 30-day window (not a scraper error). Header string `VIRGINIA GAZETTE` unconfirmed but assumed correct — will validate when notices appear.
 
 ---
 
@@ -501,7 +501,7 @@ sheet if needed.
 **Source tag:** `column_us_dailyprogress`
 **Toggle:** `charlottesville` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: True`)
 **Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
-**Header string:** `DAILY PROGRESS`
+**Header string:** `CHARLOTTESVILLE DAILY PROGRESS` ✅ confirmed 2026-05-30
 **Counties:** Charlottesville City / Albemarle primary; Louisa and Culpeper overlap possible
 **Output:** `data/foreclosures_charlottesville.json`
 
@@ -553,6 +553,406 @@ If you want Shenandoah Valley coverage in Stage 2:
 
 ---
 
+---
+
+## Source 10 — Column.us Culpeper Star-Exponent
+
+**URL:** https://starexponent.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_culpeper`
+**Toggle:** `culpeper` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: True`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `CULPEPER STAR EXPONENT` (unconfirmed — assumed from paper name)
+**Counties:** Culpeper, Fauquier, Rappahannock (primary); Madison possible
+**Output:** `data/foreclosures_culpeper.json`
+
+### What this source provides
+- Same fields as Fredericksburg Column.us (address, city, ZIP, county, sale date/time, lender, trustee, full notice text, listing URL)
+
+### What this source does NOT provide
+- Asking/starting bid price
+- Owner information (GIS backfill required)
+
+### Known issues
+- **Header string unconfirmed** — `CULPEPER STAR EXPONENT` is assumed but not validated against live DOM. If 0 records, check `document.body.innerText` for the actual newspaper name string.
+- **Volume expected low** — rural coverage area; Culpeper and Fauquier are target counties but have fewer active foreclosures than Richmond/Fredericksburg metros.
+
+### Fix status
+- ⚠️ Enabled — header string unconfirmed; first test run needed
+
+---
+
+## Source 11 — Column.us Roanoke Times
+
+**URL:** https://roanoke.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_roanoke`
+**Toggle:** `roanoke` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: True`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `THE ROANOKE TIMES` ✅ confirmed 2026-05-30
+**Counties (Stage 2 targets):** Roanoke City, Roanoke County, Salem City, Botetourt, Bedford, Franklin, Montgomery, Radford City
+**Output:** `data/foreclosures_roanoke.json`
+
+### What this source provides
+- Same fields as Fredericksburg Column.us (address, city, ZIP, county, sale date/time, lender, trustee, full notice text, listing URL)
+- Both "Foreclosure Sale" and "Notice of Trustee's Sale" are available as distinct notice type filters on this portal (confirmed by research)
+
+### What this source does NOT provide
+- Asking/starting bid price
+- Owner information (GIS backfill required)
+
+### Architecture note
+Research confirmed `roanoke.column.us` is live and uses the same `column-search.netlify.app` + Firebase/Elasticsearch backend as all other Column.us portals. No code changes to `scraper_column_us.py` needed — only the header string must be validated.
+
+### Known issues
+- **Header string unconfirmed** — `ROANOKE TIMES` is the assumed page text delimiter but must be validated against the live DOM. Run a test and check `document.body.innerText` if 0 records come back.
+- **Stage 2 counties not in TARGET_COUNTIES by default** — ensure `TARGET_COUNTIES` in `config.py` includes Roanoke area counties before enabling, or county filter will drop all results.
+- **`city_to_county()` coverage** — Roanoke area cities (Vinton, Cave Spring, Hollins, etc.) may not be in the mapping; add them before the first production run.
+
+### Fix status
+- ⚠️ Enabled (Stage 2) — header string unconfirmed; city_to_county() needs Roanoke area additions
+
+---
+
+## Source 12 — Column.us Lynchburg News & Advance
+
+**URL:** https://newsadvance.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_lynchburg`
+**Toggle:** `lynchburg` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: False`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `LYNCHBURG NEWS & ADVANCE` ✅ confirmed 2026-05-30 — note: full name with city prefix, not just "NEWS & ADVANCE"
+**Counties:** Lynchburg City (primary), Amherst, Bedford, Campbell, Appomattox; Rustburg, Forest area
+**Output:** `data/foreclosures_lynchburg.json`
+
+### What this source provides
+- Same fields as Fredericksburg Column.us (address, city, ZIP, county, sale date/time, lender, trustee, full notice text, listing URL)
+
+### What this source does NOT provide
+- Asking/starting bid price
+- Owner information (GIS backfill required)
+
+### Known issues
+- **Header string unconfirmed** — `NEWS & ADVANCE` may be exactly what appears in DOM text, or it may include the city prefix ("LYNCHBURG NEWS & ADVANCE"). Validate before enabling.
+- **Disabled — outside Stage 1 target counties** — Lynchburg area is Stage 2+ territory. Enable when expanding beyond the 12 current target counties.
+- **`city_to_county()` coverage** — Lynchburg area cities not in the current mapping; add before enabling.
+
+### Fix status
+- 🔴 Disabled — Stage 2; enable when expanding to Lynchburg/Central Virginia
+
+---
+
+## Source 13 — Column.us Waynesboro News Virginian
+
+**URL:** https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_waynesboro`
+**Toggle:** `waynesboro` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: False`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `WAYNESBORO NEWS VIRGINIAN` ✅ confirmed 2026-05-30 — note: full name with city prefix
+**Counties:** Waynesboro City (primary), Augusta County, Staunton City; Rockingham overlap possible
+**Output:** `data/foreclosures_waynesboro.json`
+
+### What this source provides
+- Same fields as Fredericksburg Column.us (address, city, ZIP, county, sale date/time, lender, trustee, full notice text, listing URL)
+- Research confirmed `newsvirginian.column.us` is live with "Foreclosure Sale" as an available notice type filter
+
+### What this source does NOT provide
+- Asking/starting bid price
+- Owner information (GIS backfill required)
+
+### Known issues
+- **Header string unconfirmed** — `NEWS VIRGINIAN` is assumed. Validate against live DOM on first test run.
+- **Disabled — outside Stage 1 target counties** — Shenandoah Valley / Augusta County is Stage 2+ territory.
+- **`city_to_county()` coverage** — Waynesboro/Augusta/Staunton area not in current mapping; add before enabling.
+
+### Fix status
+- 🔴 Disabled — Stage 2; enable when expanding to Shenandoah Valley
+
+---
+
+## Source 14 — Column.us Danville Register & Bee
+
+**URL:** https://godanriver.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_danville`
+**Toggle:** `danville` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: False`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `DANVILLE REGISTER & BEE` ✅ confirmed 2026-05-30 — note: full name with city prefix
+**Counties:** Danville City (primary), Pittsylvania County, Henry, Halifax; southside Virginia
+**Output:** `data/foreclosures_danville.json`
+
+### What this source provides
+- Same fields as Fredericksburg Column.us (address, city, ZIP, county, sale date/time, lender, trustee, full notice text, listing URL)
+- Research confirmed `godanriver.column.us` is live and uses the same Firebase/Elasticsearch backend
+
+### What this source does NOT provide
+- Asking/starting bid price
+- Owner information (GIS backfill required)
+
+### Known issues
+- **Header string unconfirmed** — `REGISTER & BEE` is assumed. The full paper name is "Danville Register & Bee" — the DOM may render either the short or full form.
+- **Disabled — outside Stage 1 target counties** — Southside Virginia is Stage 2+ territory.
+- **`city_to_county()` coverage** — Danville area cities not in current mapping; add before enabling.
+
+### Fix status
+- 🔴 Disabled — Stage 2; enable when expanding to Southside Virginia
+
+---
+
+## Source 15 — Column.us Martinsville Bulletin
+
+**URL:** https://martinsvillebulletin.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_martinsville`
+**Toggle:** `martinsville` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: False`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `MARTINSVILLE BULLETIN` (unconfirmed — assumed from paper name)
+**Counties:** Martinsville City (primary), Henry County, Patrick County; southside Virginia
+**Output:** `data/foreclosures_martinsville.json`
+
+### What this source provides
+- Same fields as Fredericksburg Column.us (address, city, ZIP, county, sale date/time, lender, trustee, full notice text, listing URL)
+
+### What this source does NOT provide
+- Asking/starting bid price
+- Owner information (GIS backfill required)
+
+### Known issues
+- **Subdomain confirmed live** — `martinsvillebulletin.column.us` confirmed 2026-05-30, 28 results. Header `MARTINSVILLE BULLETIN` confirmed.
+- **Disabled — outside Stage 1 target counties** — Henry/Patrick County is Stage 2+ territory.
+
+### Fix status
+- 🔴 Disabled — Stage 2; subdomain existence unconfirmed
+
+---
+
+## Source 16 — Column.us Daily News-Record (Harrisonburg)
+
+**URL:** https://dnronline.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_harrisonburg`
+**Toggle:** `harrisonburg` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: False`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `DAILY NEWS-RECORD` (unconfirmed — assumed from paper name)
+**Counties:** Harrisonburg City (primary), Rockingham County, Page County; Shenandoah Valley
+**Output:** `data/foreclosures_harrisonburg.json`
+
+### What this source provides
+- Same fields as Fredericksburg Column.us (address, city, ZIP, county, sale date/time, lender, trustee, full notice text, listing URL)
+
+### What this source does NOT provide
+- Asking/starting bid price
+- Owner information (GIS backfill required)
+
+### Known issues
+- **Subdomain confirmed live** — `dnronline.column.us` confirmed 2026-05-30, 8 results. Header `DAILY NEWS-RECORD` confirmed. Note: current results include timeshare sales at Massanutten (Rockingham County) — not residential foreclosures, but regular trustee sales will appear here too.
+- **Disabled — outside Stage 1 target counties** — Shenandoah Valley is Stage 2+ territory.
+
+### Fix status
+- 🔴 Disabled — Stage 2; subdomain existence unconfirmed
+
+---
+
+## Source 17 — Column.us Westmoreland News
+
+**URL:** https://westmorelandnews.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_westmoreland`
+**Toggle:** `westmoreland` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: False`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `WESTMORELAND NEWS` (unconfirmed — assumed from paper name)
+**Counties:** Westmoreland County (primary), Richmond County, Northumberland, Lancaster; Northern Neck peninsula
+**Output:** `data/foreclosures_westmoreland.json`
+
+### What this source provides
+- Same fields as Fredericksburg Column.us (address, city, ZIP, county, sale date/time, lender, trustee, full notice text, listing URL)
+
+### What this source does NOT provide
+- Asking/starting bid price
+- Owner information (GIS backfill required)
+
+### Notes
+- Northern Neck is a rural peninsula between the Potomac and Rappahannock rivers. King George County (a Stage 1 target) borders Westmoreland; notices for King George properties may occasionally appear here as dual-publication.
+
+### Known issues
+- **Subdomain confirmed live** — `westmorelandnews.column.us` confirmed 2026-05-30, 7 results. Header `WESTMORELAND NEWS` confirmed. Colonial Beach (Westmoreland County) borders King George — watch for King George notices dual-published here.
+- **Disabled — outside Stage 1 target counties** — Northern Neck counties are Stage 2+ territory.
+
+### Fix status
+- 🔴 Disabled — Stage 2; subdomain existence unconfirmed
+
+---
+
+## Source 18 — Column.us FFXnow (Fairfax)
+
+**URL:** https://ffxnow.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_ffxnow`
+**Toggle:** `ffxnow` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: False`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `FFXNOW` (unconfirmed)
+**Counties:** Fairfax County, Falls Church City; Northern Virginia
+**Output:** `data/foreclosures_ffxnow.json`
+
+### Notes
+- NoVA digital news outlet. Fairfax County is outside the 12 Stage 1 target counties. Enable in Stage 2 when expanding to NoVA. Volume likely moderate given the size of Fairfax County.
+
+### Fix status
+- 🔴 Disabled — Stage 2; NoVA coverage outside target counties
+
+---
+
+## Source 19 — Column.us ARLnow (Arlington)
+
+**URL:** https://arlnow.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_arlnow`
+**Toggle:** `arlnow` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: False`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `ARLNOW` (unconfirmed)
+**Counties:** Arlington County; Northern Virginia
+**Output:** `data/foreclosures_arlnow.json`
+
+### Notes
+- Arlington is a small, dense NoVA county. Foreclosure volume is likely low. Enable in Stage 2. Fauquier County attorneys sometimes dual-publish in NoVA papers; marginal overlap possible.
+
+### Fix status
+- 🔴 Disabled — Stage 2; NoVA coverage outside target counties
+
+---
+
+## Source 20 — Column.us ALXnow (Alexandria)
+
+**URL:** https://alxnow.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_alxnow`
+**Toggle:** `alxnow` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: False`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `ALXNOW` (unconfirmed)
+**Counties:** Alexandria City; Northern Virginia
+**Output:** `data/foreclosures_alxnow.json`
+
+### Notes
+- Alexandria is an independent city bordering Arlington and Fairfax. Volume likely low. Enable in Stage 2.
+
+### Fix status
+- 🔴 Disabled — Stage 2; NoVA coverage outside target counties
+
+---
+
+## Source 21 — Column.us Bristol Herald Courier
+
+**URL:** https://heraldcourier.column.us/search?noticeType=Foreclosure+Sale
+**Source tag:** `column_us_bristol`
+**Toggle:** `bristol` entry in `COLUMN_US_SOURCES` in `scripts/config.py` (currently `enabled: False`)
+**Technology:** Playwright (same engine as Fredericksburg) via `scraper_column_us.py`
+**Header string:** `BRISTOL HERALD COURIER` (unconfirmed — assumed from paper name)
+**Counties:** Bristol City, Washington County, Scott County, Russell County; far Southwest Virginia
+**Output:** `data/foreclosures_bristol.json`
+
+### Notes
+- Southwest Virginia is Stage 2+ territory. The Bristol metro straddles the VA/TN state line; county filter is important to drop Tennessee-side notices. Enable when expanding to far Southwest Virginia.
+
+### Known issues
+- **Subdomain confirmed live** — `heraldcourier.column.us` confirmed 2026-05-30, 10 results. Header `BRISTOL HERALD COURIER` confirmed. Coverage is Washington County (Abingdon/Bristol area).
+- **Disabled — outside Stage 1 and Stage 2 target counties** — Far Southwest VA is Stage 3+ territory.
+
+### Fix status
+- 🔴 Disabled — Stage 3+; subdomain existence unconfirmed
+
+---
+
+## Source 22 — Southside Sentinel (Independent HTML)
+
+**URL:** https://www.ssentinel.com/Classifieds/public-notices/
+**Source tag:** `southside_sentinel`
+**Script:** Not yet built — new source
+**Toggle:** `ENABLE_SOUTHSIDE_SENTINEL` in `scripts/config.py` (not yet added)
+**Technology:** Static HTML — `requests` + BeautifulSoup. No JavaScript required.
+**Counties:** Middlesex County (primary), Middle Peninsula (Essex, Gloucester, Mathews possible)
+**Output:** `data/foreclosures_southside_sentinel.json`
+
+### What this source provides
+| Field | Available? | Notes |
+|-------|-----------|-------|
+| Address | ✅ | In notice text — confirmed in live HTML |
+| County | ✅ | Implied by geography; Middlesex confirmed |
+| Sale Date | ✅ | In notice text — confirmed June 2026 dates in live HTML |
+| Sale Time | ✅ | In notice text |
+| Notice Text | ✅ | Full HTML notice body — no paywall, no JS |
+| Listing URL | ✅ | Direct HTML page URL |
+| Lender | ⚠️ | Likely in notice text; not yet parsed |
+| Trustee | ⚠️ | Likely in notice text; not yet parsed |
+| Listing Price | ❌ | Not in notice classifieds |
+| Owner Info | 🔄 | GIS backfill |
+
+### Data extraction approach (planned)
+1. `requests.get()` the public-notices URL — no JS required
+2. BeautifulSoup parses individual notice listing links
+3. For each notice: fetch detail page, extract full notice body text
+4. Parse address, sale date, sale time, county from notice text using existing `scraper.py` helpers
+5. County filter gate: Middlesex is outside Stage 1 target counties; relevant for Stage 2 (statewide)
+
+### Architecture note
+This paper is **not on Column.us** — it's a fully independent static HTML classifieds system. It represents the pattern for dozens of small Virginia weeklies that may publish foreclosure notices outside the Column.us ecosystem. Once a scraper is built for this one, the same approach (requests + BeautifulSoup + notice text parsing) applies to other independent papers.
+
+### Coverage context
+Middlesex County is on the Middle Peninsula (between the Rappahannock and York rivers). It's a rural county not covered by any confirmed Column.us subdomain. This source fills that gap for Stage 2 statewide expansion.
+
+### Fix status
+- 🔴 Not yet built — new source confirmed live 2026-05-30; scraper and config toggle needed for Stage 2
+
+---
+
+## Source 23 — LOGS Legal Group LLP
+
+**URL:** https://www.logs.com/va-sales-report.html
+**Source tag:** `logs_legal`
+**Script:** Not yet built (previous scraper is dead — LOGS migrated to PowerBI embed)
+**Toggle:** `ENABLE_LOGS_LEGAL` in `scripts/config.py` (currently `False` — dead legacy flag)
+**Technology:** PowerBI embed (JavaScript-rendered) — requires Playwright to interact with the embedded report
+**Counties:** Statewide Virginia (LOGS is a major VA foreclosure law firm)
+
+### What this source provides
+| Field | Available? | Notes |
+|-------|-----------|-------|
+| Address | ✅ | In PowerBI table rows |
+| County | ✅ | In PowerBI table — likely a column |
+| Sale Date | ✅ | In PowerBI table |
+| Sale Time | ✅ | In PowerBI table |
+| Listing Price | ✅ | **Estimated opening bid** included — unique among law firm sources |
+| Trustee | ✅ | Always "LOGS Legal Group LLP" |
+| Lender | ❌ | Not in summary table |
+| Notice Text | ❌ | Summary table only, no full notice text |
+| Owner Info | 🔄 | GIS backfill |
+
+### Why this source matters
+LOGS is the **only other law firm besides SIWPC** confirmed to publish a public VA trustee sale list with estimated opening bid amounts. That bid price is valuable data for investment priority scoring.
+
+### Scraping challenge
+PowerBI embeds load data via authenticated internal API calls (Power BI REST API or Azure Analysis Services). Playwright can interact with the visual report but extracting tabular data requires either:
+- Intercepting the network requests PowerBI makes to its backend (XHR/fetch intercept in Playwright)
+- Reading the rendered table DOM after PowerBI fully hydrates
+
+**This is the hardest scraping challenge in the pipeline.** The previous `logs_legal` scraper was an HTML table scraper that broke when LOGS migrated to PowerBI. Rebuilding it requires Playwright + network interception.
+
+### Fix status
+- 🔴 Dead — old HTML scraper obsolete (LOGS migrated to PowerBI). New Playwright scraper needed; complexity is high. Research and build when SIWPC + Column.us sources are stable.
+
+---
+
+## Source 24 — Tromberg, Miller, Morris & Partners (TMMP)
+
+**URL:** https://tmppllc.com/virginia_foreclosure_sales (unverified)
+**Source tag:** `tmmp`
+**Script:** Not yet built
+**Technology:** Unknown — possibly static HTML table or PDF
+**Counties:** Claimed statewide Virginia coverage (38+ counties/cities claimed but unverified)
+
+### Status
+Research found claims that TMMP publishes a public Virginia trustee sale list at `tmppllc.com/virginia_foreclosure_sales` with 70+ scheduled sales including file numbers, bid deposits, property addresses, and sale dates. However, **2 of 3 verification votes could not confirm the page is real/accessible**. The firm is a known Virginia foreclosure practice (USFN member).
+
+### Next step
+Manual visit to `tmppllc.com/virginia_foreclosure_sales` to confirm whether the page exists and what format the data is in. If confirmed:
+- If static HTML table: build a `requests` + BeautifulSoup scraper (same pattern as SIWPC old scraper)
+- If PDF: build a `pdfplumber` scraper (same pattern as SIWPC new scraper)
+- If JS-rendered: build a Playwright scraper
+
+### Fix status
+- ⚠️ Unverified — manual check needed before any scraper work
+
+---
+
 ## Fix Order (by lead volume potential)
 
 1. **SIWPC** — highest-volume firm, early-warning value, simple HTML table scraper.
@@ -562,4 +962,9 @@ If you want Shenandoah Valley coverage in Stage 2:
 3. **PNV** — Still returning card text instead of full notice. Debug Playwright detail fetch.
 4. **Column.us Williamsburg** — Confirm header string on first run; accept 0 if legitimately empty.
 5. **Column.us Daily Progress** — Confirm header string; only valuable if Louisa/Culpeper yield confirmed.
-6. **NV Daily** — Domain likely 404; wrong county coverage. Revisit in Stage 2 with new scraper.
+6. **Column.us Culpeper** — Confirm header string; target counties Culpeper + Fauquier are in scope.
+7. **TMMP** — Manual verify `tmppllc.com/virginia_foreclosure_sales`; if live, build scraper.
+8. **LOGS Legal** — PowerBI scraper is complex; tackle after simpler sources are stable.
+9. **NV Daily** — Domain likely 404; wrong county coverage. Revisit in Stage 2 with new scraper.
+10. **Southside Sentinel** — Stage 2 (Middlesex County, statewide expansion). Simple HTML scraper.
+11. **Stage 2 Column.us sources** — Roanoke, Waynesboro, Lynchburg, Danville (confirm header strings, expand city_to_county mapping, add target counties to config).

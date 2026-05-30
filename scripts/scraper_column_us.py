@@ -71,6 +71,7 @@ def parse_args():
     p.add_argument("--output", required=False, help="Output JSON file (relative to project root or absolute)")
     p.add_argument("--label",  required=False, default="", help="Human-readable name for log messages")
     p.add_argument("--detect", action="store_true", help="Print first 2000 chars of body text and exit (for header detection)")
+    p.add_argument("--wait",   type=int, default=None, help="Override initial page load wait in milliseconds (default: 8000)")
     return p.parse_args()
 
 
@@ -117,7 +118,7 @@ def save(listings: list, data_file: str, source_url: str) -> None:
 # Scraper
 # ---------------------------------------------------------------------------
 
-def scrape(url: str, paper_header: str, source_tag: str, label: str, detect_mode: bool = False) -> list:
+def scrape(url: str, paper_header: str, source_tag: str, label: str, detect_mode: bool = False, load_wait_ms: int = 8_000) -> list:
     """Scrape a Column.us site for Foreclosure Sale notices."""
     listings = []
 
@@ -158,7 +159,7 @@ def scrape(url: str, paper_header: str, source_tag: str, label: str, detect_mode
 
             log.info(f"  {tag}: loading {url}")
             page.goto(url, wait_until="load", timeout=40_000)
-            page.wait_for_timeout(8_000)
+            page.wait_for_timeout(load_wait_ms)
 
             # ── Detect mode: dump body text and exit ──────────────────────
             if detect_mode:
@@ -454,6 +455,7 @@ def main():
         source_tag=args.source,
         label=label,
         detect_mode=args.detect,
+        load_wait_ms=args.wait if args.wait is not None else 8_000,
     )
 
     if not args.detect:

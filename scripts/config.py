@@ -141,7 +141,7 @@ COLUMN_US_SOURCES: list[dict] = [
         "name":       "roanoke",
         "label":      "Roanoke Times",
         "url":        "https://roanoke.column.us/search?noticeType=Foreclosure+Sale",
-        "header":     "ROANOKE TIMES",
+        "header":     "THE ROANOKE TIMES",
         "source_tag": "column_us_roanoke",
         "output":     "data/foreclosures_roanoke.json",
         "enabled":    True,
@@ -151,17 +151,17 @@ COLUMN_US_SOURCES: list[dict] = [
         "name":       "lynchburg",
         "label":      "Lynchburg News & Advance",
         "url":        "https://newsadvance.column.us/search?noticeType=Foreclosure+Sale",
-        "header":     "NEWS & ADVANCE",
+        "header":     "LYNCHBURG NEWS & ADVANCE",
         "source_tag": "column_us_lynchburg",
         "output":     "data/foreclosures_lynchburg.json",
-        "enabled":    False,
-        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+        "enabled":    True,
+        "notes":      "Enabled 2026-05-30 — Lynchburg City, Amherst, Bedford, Campbell, Appomattox",
     },
     {
         "name":       "charlottesville",
         "label":      "Charlottesville Daily Progress",
         "url":        "https://dailyprogress.column.us/search?noticeType=Foreclosure+Sale",
-        "header":     "DAILY PROGRESS",
+        "header":     "CHARLOTTESVILLE DAILY PROGRESS",
         "source_tag": "column_us_dailyprogress",
         "output":     "data/foreclosures_charlottesville.json",
         "enabled":    True,
@@ -171,11 +171,11 @@ COLUMN_US_SOURCES: list[dict] = [
         "name":       "waynesboro",
         "label":      "Waynesboro News Virginian",
         "url":        "https://newsvirginian.column.us/search?noticeType=Foreclosure+Sale",
-        "header":     "NEWS VIRGINIAN",
+        "header":     "WAYNESBORO NEWS VIRGINIAN",
         "source_tag": "column_us_waynesboro",
         "output":     "data/foreclosures_waynesboro.json",
-        "enabled":    False,
-        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+        "enabled":    True,
+        "notes":      "Enabled 2026-05-30 — Waynesboro City, Augusta County, Staunton City",
     },
     {
         "name":       "martinsville",
@@ -184,18 +184,18 @@ COLUMN_US_SOURCES: list[dict] = [
         "header":     "MARTINSVILLE BULLETIN",
         "source_tag": "column_us_martinsville",
         "output":     "data/foreclosures_martinsville.json",
-        "enabled":    False,
-        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+        "enabled":    True,
+        "notes":      "Enabled 2026-05-30 — Martinsville City, Henry County, Patrick County",
     },
     {
         "name":       "danville",
         "label":      "Danville Register & Bee",
         "url":        "https://godanriver.column.us/search?noticeType=Foreclosure+Sale",
-        "header":     "REGISTER & BEE",
+        "header":     "DANVILLE REGISTER & BEE",
         "source_tag": "column_us_danville",
         "output":     "data/foreclosures_danville.json",
-        "enabled":    False,
-        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+        "enabled":    True,
+        "notes":      "Enabled 2026-05-30 — Danville City, Pittsylvania County, Henry, Halifax",
     },
     {
         "name":       "westmoreland",
@@ -204,8 +204,8 @@ COLUMN_US_SOURCES: list[dict] = [
         "header":     "WESTMORELAND NEWS",
         "source_tag": "column_us_westmoreland",
         "output":     "data/foreclosures_westmoreland.json",
-        "enabled":    False,
-        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+        "enabled":    True,
+        "notes":      "Enabled 2026-05-30 — Westmoreland County, Northern Neck; King George border overlap",
     },
     {
         "name":       "harrisonburg",
@@ -214,8 +214,8 @@ COLUMN_US_SOURCES: list[dict] = [
         "header":     "DAILY NEWS-RECORD",
         "source_tag": "column_us_harrisonburg",
         "output":     "data/foreclosures_harrisonburg.json",
-        "enabled":    False,
-        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+        "enabled":    True,
+        "notes":      "Enabled 2026-05-30 — Harrisonburg City, Rockingham County, Page County",
     },
     {
         "name":       "ffxnow",
@@ -224,8 +224,8 @@ COLUMN_US_SOURCES: list[dict] = [
         "header":     "FFXNOW",
         "source_tag": "column_us_ffxnow",
         "output":     "data/foreclosures_ffxnow.json",
-        "enabled":    False,
-        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+        "enabled":    True,
+        "notes":      "Enabled 2026-05-30 — Fairfax County, Falls Church City; Northern Virginia",
     },
     {
         "name":       "arlnow",
@@ -234,8 +234,8 @@ COLUMN_US_SOURCES: list[dict] = [
         "header":     "ARLNOW",
         "source_tag": "column_us_arlnow",
         "output":     "data/foreclosures_arlnow.json",
-        "enabled":    False,
-        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+        "enabled":    True,
+        "notes":      "Enabled 2026-05-30 — Arlington County; Northern Virginia",
     },
     {
         "name":       "alxnow",
@@ -244,8 +244,8 @@ COLUMN_US_SOURCES: list[dict] = [
         "header":     "ALXNOW",
         "source_tag": "column_us_alxnow",
         "output":     "data/foreclosures_alxnow.json",
-        "enabled":    False,
-        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+        "enabled":    True,
+        "notes":      "Enabled 2026-05-30 — Alexandria City; Northern Virginia",
     },
     {
         "name":       "bristol",
@@ -254,8 +254,8 @@ COLUMN_US_SOURCES: list[dict] = [
         "header":     "BRISTOL HERALD COURIER",
         "source_tag": "column_us_bristol",
         "output":     "data/foreclosures_bristol.json",
-        "enabled":    False,
-        "notes":      "Outside target counties — Stage 2 (statewide expansion)",
+        "enabled":    True,
+        "notes":      "Enabled 2026-05-30 — Bristol City, Washington County, Scott, Russell; SW Virginia",
     },
     {
         "name":       "nvdaily",
@@ -330,6 +330,22 @@ ENABLE_VA_COURTS:           bool = False  # Dead — VA eCourts requires auth se
 # SIWPC toggle  (handled by scraper_siwpc.py, called directly by run.py)
 # ---------------------------------------------------------------------------
 ENABLE_SIWPC: bool = True   # Samuel I. White, P.C. — daily PDF at siwpc.net
+
+# ---------------------------------------------------------------------------
+# Southside Sentinel toggle  (scraper not yet built — Stage 2)
+# ---------------------------------------------------------------------------
+# Static HTML classifieds at ssentinel.com/Classifieds/public-notices/
+# Covers Middlesex County and the Middle Peninsula (outside Stage 1 target counties).
+# Set True when the scraper is built and Stage 2 expansion begins.
+ENABLE_SOUTHSIDE_SENTINEL: bool = False
+
+# ---------------------------------------------------------------------------
+# TMMP toggle  (scraper not yet built — needs manual verification first)
+# ---------------------------------------------------------------------------
+# Tromberg, Miller, Morris & Partners — claimed public VA sale list at
+# tmppllc.com/virginia_foreclosure_sales. Page existence unconfirmed.
+# Do not build scraper until page is manually verified.
+ENABLE_TMMP: bool = False
 
 # ---------------------------------------------------------------------------
 # Washington Times toggle  (handled by scraper_washingtontimes.py)
