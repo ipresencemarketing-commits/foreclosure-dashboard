@@ -50,7 +50,7 @@ echo "=================================================="
 echo ""
 
 # ── Step 1: Scrape ────────────────────────────────────────────────────────────
-echo ">> Step 1/4 — Scraping foreclosure notices (active sources defined in scripts/config.py COLUMN_US_SOURCES)..."
+echo ">> Step 1/5 — Scraping foreclosure notices (active sources defined in scripts/config.py COLUMN_US_SOURCES)..."
 python3 scripts/run.py
 echo "   Done."
 echo ""
@@ -59,14 +59,25 @@ echo ""
 # 8-pass enrichment: sale date/time (re-fetch), county, city, ZIP, owner +
 # property details (VGIN statewide → county fallback → Redfin supplement),
 # derived fields (equity, profit potential), Column.us permalink URLs.
-echo ">> Step 2/3 — Backfilling missing fields (GIS / Redfin / derived calcs)..."
+echo ">> Step 2/5 — Backfilling missing fields (GIS / Redfin / derived calcs)..."
 python3 scripts/backfill.py || echo "   [warn] Backfill skipped — check credentials/service-account.json"
 echo "   Done."
 echo ""
 
-# ── Step 3: Publish to GitHub Pages ──────────────────────────────────────────
+# ── Step 3: Sync to PostgreSQL (app database) ────────────────────────────────
+# Runs only if DATABASE_URL is set. Google Sheets sync continues regardless.
+if [[ -n "${DATABASE_URL:-}" ]]; then
+    echo ">> Step 3/5 — Syncing to PostgreSQL (app database)..."
+    python3 scripts/db_sync.py || echo "   [warn] DB sync failed — check DATABASE_URL and connection"
+    echo "   Done."
+else
+    echo ">> Step 3/5 — DB sync skipped (DATABASE_URL not set)"
+fi
+echo ""
+
+# ── Step 4: Publish to GitHub Pages ──────────────────────────────────────────
 if [[ "$PUSH_PAGES" == "true" ]]; then
-    echo ">> Step 3/3 — Publishing to GitHub Pages..."
+    echo ">> Step 4/5 — Publishing to GitHub Pages..."
     if [[ -f "$REPO_DIR/scripts/build_site.py" ]]; then
         python3 scripts/build_site.py
     fi
@@ -79,7 +90,7 @@ if [[ "$PUSH_PAGES" == "true" ]]; then
         echo "   Pushed to GitHub Pages."
     fi
 else
-    echo ">> Step 3/3 — GitHub Pages push skipped (--no-push)"
+    echo ">> Step 4/5 — GitHub Pages push skipped (--no-push)"
 fi
 
 echo ""
