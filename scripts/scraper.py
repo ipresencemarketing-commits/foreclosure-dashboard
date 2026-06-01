@@ -2589,41 +2589,79 @@ def parse_deed_of_trust_date(text: str):
     """
     Extract the Deed of Trust date from full notice text.
 
-    Patterns seen in Virginia trustee sale notices:
-      "Deed of Trust dated January 5, 2018"
-      "deed of trust dated 01/05/2018"
-      "Deed of Trust, dated the 5th day of January, 2018"
+    Patterns tried in order:
+
+    A. "Deed of Trust dated January 5, 2018"
+       "Deed of Trust, dated the 5th day of January, 2018"
+       "deed of trust dated 01/05/2018"
+       — 'dated' comes immediately after the Deed of Trust reference
+
+    B. "Deed of Trust in the original principal amount of $178,500.00, dated February 16, 2023"
+       "principal amount of $305,000.00, dated December 23, 2005"
+       — 'dated' follows the dollar amount (amount separates DOT ref from date)
+
     Returns ISO date string "YYYY-MM-DD" or None.
     """
-    # Pattern A: "dated Month D, YYYY" or "dated M/D/YYYY"
+    DATE_FMTS = ("%B %d, %Y", "%B %d %Y", "%b %d, %Y", "%b %d %Y",
+                 "%m/%d/%Y", "%m/%d/%y", "%Y-%m-%d")
+
+    def _try_parse(candidate: str):
+        candidate = candidate.strip().rstrip('.,;')
+        candidate = re.sub(r'(\d+)(st|nd|rd|th)', r'\1', candidate)
+        for fmt in DATE_FMTS:
+            try:
+                return datetime.strptime(candidate, fmt).date().isoformat()
+            except ValueError:
+                pass
+        # Fallback: try just the first word-group that looks like a date (trim trailing words)
+        trimmed = re.sub(r'\s+\S+$', '', candidate).strip()
+        if trimmed != candidate:
+            for fmt in DATE_FMTS:
+                try:
+                    return datetime.strptime(trimmed, fmt).date().isoformat()
+                except ValueError:
+                    pass
+        return None
+
+    # ── Pattern A1: "dated the 5th day of January, 2018" ─────────────────────
+    # Ordinal day-of-month format — normalize to "January 5, 2018" then parse.
     m = re.search(
-        r'[Dd]eed\s+of\s+[Tt]rust[^,]*?,?\s+dated\s+'
-        r'(?:the\s+)?(\d{1,2}(?:st|nd|rd|th)?\s+day\s+of\s+)?'
-        r'([A-Za-z]+|\d{1,2})[/\s,]+(\d{1,2}|\d{4})[/\s,]+(\d{4}|\d{2})',
+        r'\bdated\s+the\s+(\d{1,2})(?:st|nd|rd|th)\s+day\s+of\s+([A-Za-z]+),?\s+(\d{4})',
+        text, re.IGNORECASE
+    )
+    if m:
+        day, month, year = m.group(1), m.group(2), m.group(3)
+        result = _try_parse(f"{month} {day}, {year}")
+        if result:
+            return result
+
+    # ── Pattern A2: "Deed of Trust [optional words, no dollar sign] dated [date]"
+    # Stops before a dollar sign so we don't span into Pattern B territory.
+    # Date portion can start with a letter (month name) or digit (M/D/YYYY).
+    m = re.search(
+        r'[Dd]eed\s+of\s+[Tt]rust[^$\n]{0,60}?\bdated\s+'
+        r'((?:[A-Za-z]+|\d{1,2})[/,\s]+\d{1,2}[/,\s]+\d{4})',
         text
     )
     if m:
-        raw = m.group(0)
-        # Pull just the date portion after "dated"
-        date_part = re.search(
-            r'dated\s+(?:the\s+\d{1,2}(?:st|nd|rd|th)?\s+day\s+of\s+)?(.{6,30})',
-            raw, re.IGNORECASE
-        )
-        if date_part:
-            candidate = date_part.group(1).strip().rstrip('.,;')
-            # Try numeric M/D/YYYY
-            for fmt in ('%m/%d/%Y', '%m/%d/%y'):
-                try:
-                    return datetime.strptime(candidate[:10], fmt).date().isoformat()
-                except ValueError:
-                    pass
-            # Try "Month D, YYYY"
-            for fmt in ('%B %d, %Y', '%B %d %Y', '%b %d, %Y'):
-                try:
-                    cleaned = re.sub(r'(\d+)(st|nd|rd|th)', r'\1', candidate)
-                    return datetime.strptime(cleaned, fmt).date().isoformat()
-                except ValueError:
-                    pass
+        result = _try_parse(m.group(1))
+        if result:
+            return result
+
+    # ── Pattern B: "principal amount of $X.XX[,] dated [date]"
+    # Covers: "Deed of Trust in the original principal amount of $178,500.00, dated February 16, 2023"
+    #         "original principal amount of $305,000.00 dated December 23, 2005"
+    #         "original principal amount of $235,125.00, dated March 1, 2013"
+    m = re.search(
+        r'principal\s+amount\s+of\s+\$[\d,]+(?:\.\d{2})?\s*,?\s*dated\s+'
+        r'((?:[A-Za-z]+|\d{1,2})[/,\s]+\d{1,2}[/,\s]+\d{4})',
+        text, re.IGNORECASE
+    )
+    if m:
+        result = _try_parse(m.group(1))
+        if result:
+            return result
+
     return None
 
 
