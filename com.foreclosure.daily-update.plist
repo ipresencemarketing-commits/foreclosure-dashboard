@@ -8,18 +8,18 @@
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
-        <string>/Users/jarvis/Documents/Claude/Foreclosures/scripts/update_statewide.sh</string>
+        <string>/Users/jarvis/Documents/Claude/Foreclosures/scripts/update.sh</string>
     </array>
 
     <key>StandardOutPath</key>
-    <string>/Users/jarvis/Documents/Claude/Foreclosures/data/daily_run.log</string>
+    <string>/Users/jarvis/Documents/Claude/Foreclosures/logs/last_run.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/jarvis/Documents/Claude/Foreclosures/data/daily_run.log</string>
+    <string>/Users/jarvis/Documents/Claude/Foreclosures/logs/last_run.log</string>
 
     <key>WorkingDirectory</key>
     <string>/Users/jarvis/Documents/Claude/Foreclosures</string>
 
-    <!-- 7:00 AM every day — scraper deduplicates, so weekend runs are harmless -->
+    <!-- 7:00 AM every day -->
     <key>StartCalendarInterval</key>
     <dict>
         <key>Hour</key>
@@ -28,16 +28,22 @@
         <integer>0</integer>
     </dict>
 
-    <!-- Ensures python3, homebrew, and git are on PATH -->
+    <!-- PATH covers Homebrew python3, git, and Playwright chromium -->
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
-        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <string>/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
         <key>HOME</key>
         <string>/Users/jarvis</string>
+        <key>PYTHONPATH</key>
+        <string>/Users/jarvis/Documents/Claude/Foreclosures/scripts</string>
     </dict>
 
     <key>RunAtLoad</key>
+    <false/>
+
+    <!-- Restart automatically if it crashes -->
+    <key>KeepAlive</key>
     <false/>
 </dict>
 </plist>
