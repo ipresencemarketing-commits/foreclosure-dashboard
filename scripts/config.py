@@ -395,6 +395,14 @@ ENABLE_VA_COURTS:           bool = False  # Dead — VA eCourts requires auth se
 ENABLE_SIWPC: bool = True   # Samuel I. White, P.C. — daily PDF at siwpc.net
 
 # ---------------------------------------------------------------------------
+# Brock & Scott toggle  (handled by scraper_brockscott.py, called by run.py)
+# ---------------------------------------------------------------------------
+# Static HTML scraper — no Playwright needed.
+# URL: brockandscott.com/foreclosure-sales/?_sft_foreclosure_state=va
+# Covers statewide Virginia. Unique: provides Opening Bid Amount.
+ENABLE_BROCKSCOTT: bool = True
+
+# ---------------------------------------------------------------------------
 # Southside Sentinel toggle  (scraper not yet built — Stage 2)
 # ---------------------------------------------------------------------------
 # Static HTML classifieds at ssentinel.com/Classifieds/public-notices/

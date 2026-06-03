@@ -1062,6 +1062,50 @@ Manual visit to `tmppllc.com/virginia_foreclosure_sales` to confirm whether the 
 
 ---
 
+---
+
+## Source 31 — Brock & Scott, PLLC
+
+**URL:** https://www.brockandscott.com/foreclosure-sales/?_sft_foreclosure_state=va
+**Source tag:** `brockandscott`
+**Script:** `scripts/scraper_brockscott.py`
+**Toggle:** `ENABLE_BROCKSCOTT` in `scripts/config.py` (currently `True`)
+**Technology:** `requests` + BeautifulSoup — static HTML WordPress site, no Playwright needed
+**Counties:** Statewide Virginia (B&S is a major regional foreclosure law firm)
+**Output:** `data/foreclosures_brockscott.json`
+
+### What this source provides
+| Field | Available? | Notes |
+|-------|-----------|-------|
+| Address | ✅ | Street + city + ZIP in one field (3-space separator) |
+| County | ✅ | Explicit county field + CSS class — reliable, includes independent cities |
+| Sale Date | ✅ | MM/DD/YYYY format |
+| Sale Time | ✅ | HH:MM:SS AM/PM format |
+| Sale Location | ✅ | Derived from county → courthouse lookup |
+| Opening Bid Amount | ✅ | Listed (may be 0.00 if not yet set) |
+| Case # | ✅ | Trustee file reference in notice_text field |
+| Trustee | ✅ | Always "Brock & Scott, PLLC" |
+| Lender | ❌ | Not in listing summary |
+| Notice Text | ❌ | Summary table only — no full notice |
+| Owner Info | 🔄 | GIS backfill |
+
+### Data extraction approach
+1. `requests.get()` with `_sft_foreclosure_state=va` filter
+2. BeautifulSoup parses `<article class="type-foreclosure_search">` elements (10 per page)
+3. Paginated via `sf_paged=N` — follows "Next >" link until exhausted
+4. County extracted from field text AND CSS class (e.g. `foreclosure_county-poquoson-city`)
+5. Address parsed by splitting on 2+ whitespace (B&S format)
+6. Crawl delay: 0.5s between pages
+
+### County coverage (sample from 2026-06-03)
+Grayson, Poquoson City, Hopewell City, Chesapeake City, Gloucester, Chesterfield,
+Prince William, Augusta, and more — confirms statewide coverage including independent cities.
+
+### Fix status
+- ✅ Live 2026-06-03 — 20 listings confirmed, all fields parsing correctly
+
+---
+
 ## Fix Order (by lead volume potential)
 
 1. **SIWPC** — highest-volume firm, early-warning value, simple HTML table scraper.

@@ -115,6 +115,26 @@ def main():
         print()
         print("  SIWPC: SKIPPED (ENABLE_SIWPC=False in config.py)")
 
+    # ── Brock & Scott PLLC ───────────────────────────────────────
+    if cfg.ENABLE_BROCKSCOTT:
+        print()
+        print("-" * 60)
+        print("  Brock & Scott, PLLC (brockandscott.com)")
+        print("-" * 60)
+        bs_output = os.path.join(PROJECT_ROOT, "data", "foreclosures_brockscott.json")
+        ok = run(
+            [python, "scripts/scraper_brockscott.py"],
+            "Brock & Scott scraper"
+        )
+        if ok and sync:
+            run(
+                [python, "scripts/sheets_sync.py", "--file", bs_output],
+                "sheets sync — Brock & Scott"
+            )
+    else:
+        print()
+        print("  Brock & Scott: SKIPPED (ENABLE_BROCKSCOTT=False in config.py)")
+
     # ── Washington Times Classifieds ─────────────────────────────
     if cfg.ENABLE_WASHINGTONTIMES:
         print()
