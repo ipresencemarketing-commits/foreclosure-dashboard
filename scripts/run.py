@@ -115,6 +115,26 @@ def main():
         print()
         print("  SIWPC: SKIPPED (ENABLE_SIWPC=False in config.py)")
 
+    # ── LOGS Legal Group LLP ─────────────────────────────────────
+    if cfg.ENABLE_LOGS:
+        print()
+        print("-" * 60)
+        print("  LOGS Legal Group LLP (logs.com/va-sales-report.html)")
+        print("-" * 60)
+        logs_output = os.path.join(PROJECT_ROOT, "data", "foreclosures_logs.json")
+        ok = run(
+            [python, "scripts/scraper_logs.py"],
+            "LOGS Legal scraper"
+        )
+        if ok and sync:
+            run(
+                [python, "scripts/sheets_sync.py", "--file", logs_output],
+                "sheets sync — LOGS Legal"
+            )
+    else:
+        print()
+        print("  LOGS Legal: SKIPPED (ENABLE_LOGS=False in config.py)")
+
     # ── Brock & Scott PLLC ───────────────────────────────────────
     if cfg.ENABLE_BROCKSCOTT:
         print()

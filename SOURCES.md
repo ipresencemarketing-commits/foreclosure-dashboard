@@ -926,8 +926,17 @@ PowerBI embeds load data via authenticated internal API calls (Power BI REST API
 
 **This is the hardest scraping challenge in the pipeline.** The previous `logs_legal` scraper was an HTML table scraper that broke when LOGS migrated to PowerBI. Rebuilding it requires Playwright + network interception.
 
+### Technical approach (implemented)
+The scraper uses Playwright to load the PowerBI iframe URL directly, intercepts the `querydata?synchronous=true` POST response, then decodes the DSR (Data Shape Result) binary format in Python — no DOM scraping needed. This retrieves all rows at once, bypassing PowerBI's virtualised table rendering which only shows ~20 rows at a time.
+
+**DSR decode notes:**
+- `ValueDicts` D0–D5 are string lookup arrays (county, state, address, auctioneer, phone, status)
+- Addresses beyond D2's 100 entries are inlined directly as strings in C arrays
+- R bitmask per row controls which columns carry forward from the previous row
+- Empty dicts (D4/phone) are skipped entirely
+
 ### Fix status
-- 🔴 Dead — old HTML scraper obsolete (LOGS migrated to PowerBI). New Playwright scraper needed; complexity is high. Research and build when SIWPC + Column.us sources are stable.
+- ✅ Live 2026-06-03 — 110 listings confirmed, all counties resolved, PowerBI DSR decoder working
 
 ---
 

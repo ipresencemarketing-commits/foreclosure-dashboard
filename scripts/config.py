@@ -395,6 +395,14 @@ ENABLE_VA_COURTS:           bool = False  # Dead — VA eCourts requires auth se
 ENABLE_SIWPC: bool = True   # Samuel I. White, P.C. — daily PDF at siwpc.net
 
 # ---------------------------------------------------------------------------
+# LOGS Legal toggle  (handled by scraper_logs.py, called by run.py)
+# ---------------------------------------------------------------------------
+# Playwright-based PowerBI interceptor — no HTML scraping.
+# URL: logs.com/va-sales-report.html
+# Provides statewide VA trustee sales. ~110 listings.
+ENABLE_LOGS: bool = True
+
+# ---------------------------------------------------------------------------
 # Brock & Scott toggle  (handled by scraper_brockscott.py, called by run.py)
 # ---------------------------------------------------------------------------
 # Static HTML scraper — no Playwright needed.
