@@ -403,6 +403,14 @@ ENABLE_SIWPC: bool = True   # Samuel I. White, P.C. — daily PDF at siwpc.net
 ENABLE_LOGS: bool = True
 
 # ---------------------------------------------------------------------------
+# Auction.com toggle  (handled by scraper_auctioncom.py, called by run.py)
+# ---------------------------------------------------------------------------
+# GraphQL API — no Playwright, no auth token needed.
+# URL: auction.com/residential/VA/.../foreclosures_at (GOTO filter = live courthouse sales)
+# ~26 VA listings. Provides beds/baths/sqft, year built, lot size, est. market value.
+ENABLE_AUCTIONCOM: bool = True
+
+# ---------------------------------------------------------------------------
 # Xome Auction toggle  (handled by scraper_xome.py, called by run.py)
 # ---------------------------------------------------------------------------
 # Two-step REST API — no Playwright needed. Step 1 fetches county/date/ID

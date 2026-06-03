@@ -1267,6 +1267,57 @@ Newport News City(3) — plus 20+ other counties. True statewide coverage.
 
 ---
 
+---
+
+## Source 35 — Auction.com (GOTO Foreclosures)
+
+**URL:** https://www.auction.com/residential/VA/active_lt/auction_date_order_st/goto_mt/y_nbs/foreclosures_at
+**API:** POST https://graph.auction.com/graphql
+**Source tag:** `auction_com`
+**Script:** `scripts/scraper_auctioncom.py`
+**Toggle:** `ENABLE_AUCTIONCOM` in `scripts/config.py` (currently `True`)
+**Technology:** GraphQL API — `requests.post()` only, no Playwright, no auth token
+**Counties:** Statewide Virginia
+**Output:** `data/foreclosures_auctioncom.json`
+
+### What this source provides
+| Field | Available? | Notes |
+|-------|-----------|-------|
+| Address | ✅ | `seller_property` street + city + ZIP |
+| County | ✅ | `country_secondary_subdivision` |
+| Sale Date + Time | ✅ | `auction.visible_auction_start_date_time` (UTC → ET converted) |
+| Beds / Baths / SqFt | ✅ | `primary_property.summary` |
+| Year Built | ✅ | `primary_property.summary.year_built` |
+| Lot Size | ✅ | `primary_property.summary.lot_size` (acres) |
+| Est. Market Value | ✅ | `primary_property.summary.valuation` (AVM estimate) |
+| Occupancy Status | ✅ | `listing_configuration.occupancy_status` |
+| Product Type | ✅ | TRUSTEE / FORECLOSURE confirmed |
+| Is Hot | ✅ | `is_hot` flag |
+| Listing URL | ✅ | `listing_page_path` on auction.com |
+| Opening Bid | ⚠️ | Often null pre-auction; available once set |
+| Lender / Trustee | ❌ | Not in GraphQL response |
+| Notice Text | ❌ | Not available |
+| Owner Info | 🔄 | GIS backfill |
+
+### Filter: GOTO only
+The `marketing_tags: "goto"` variable in the GraphQL filters restricts results to **GOTO properties** — live courthouse trustee sales. Without this filter the API returns online-only auctions as well. GOTO = "going to the courthouse."
+
+### GraphQL query note
+The query is captured from the auction.com site JS bundle and stored verbatim in the scraper. If the API starts returning 400 errors, the query schema may have changed — re-capture from browser devtools and update `GRAPHQL_QUERY` in `scraper_auctioncom.py`.
+
+### Time zone
+`auction.start_date` is stored in UTC. The scraper converts UTC → Eastern Time (UTC-4 for EDT summer, UTC-5 for EST winter). Currently hardcoded at UTC-4 (EDT). If sale times appear 1 hour off in winter, update the offset to 5.
+
+### County coverage (sample 2026-06-03, 26 listings)
+Fauquier, Augusta, Salem City, Washington, Arlington, Bedford, Chesterfield(2),
+Hampton City(2) — 20+ counties total. Lower volume than other sources but
+includes **estimated market values** making investment scoring more accurate.
+
+### Fix status
+- ✅ Live 2026-06-03 — 26 listings, 0 unknown counties, GraphQL query confirmed working
+
+---
+
 ## Fix Order (by lead volume potential)
 
 1. **SIWPC** — highest-volume firm, early-warning value, simple HTML table scraper.

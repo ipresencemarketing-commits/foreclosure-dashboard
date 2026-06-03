@@ -135,6 +135,26 @@ def main():
         print()
         print("  LOGS Legal: SKIPPED (ENABLE_LOGS=False in config.py)")
 
+    # ── Auction.com ───────────────────────────────────────────────
+    if cfg.ENABLE_AUCTIONCOM:
+        print()
+        print("-" * 60)
+        print("  Auction.com (GOTO foreclosures — live courthouse sales)")
+        print("-" * 60)
+        ac_output = os.path.join(PROJECT_ROOT, "data", "foreclosures_auctioncom.json")
+        ok = run(
+            [python, "scripts/scraper_auctioncom.py"],
+            "Auction.com scraper"
+        )
+        if ok and sync:
+            run(
+                [python, "scripts/sheets_sync.py", "--file", ac_output],
+                "sheets sync — Auction.com"
+            )
+    else:
+        print()
+        print("  Auction.com: SKIPPED (ENABLE_AUCTIONCOM=False in config.py)")
+
     # ── Xome Auctions ─────────────────────────────────────────────
     if cfg.ENABLE_XOME:
         print()
