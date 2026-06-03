@@ -135,6 +135,26 @@ def main():
         print()
         print("  LOGS Legal: SKIPPED (ENABLE_LOGS=False in config.py)")
 
+    # ── Rosenberg & Associates ────────────────────────────────────
+    if cfg.ENABLE_ROSENBERG:
+        print()
+        print("-" * 60)
+        print("  Rosenberg & Associates (rosenberg-assoc.com)")
+        print("-" * 60)
+        ra_output = os.path.join(PROJECT_ROOT, "data", "foreclosures_rosenberg.json")
+        ok = run(
+            [python, "scripts/scraper_rosenberg.py"],
+            "Rosenberg & Associates scraper"
+        )
+        if ok and sync:
+            run(
+                [python, "scripts/sheets_sync.py", "--file", ra_output],
+                "sheets sync — Rosenberg & Associates"
+            )
+    else:
+        print()
+        print("  Rosenberg & Associates: SKIPPED (ENABLE_ROSENBERG=False in config.py)")
+
     # ── Brock & Scott PLLC ───────────────────────────────────────
     if cfg.ENABLE_BROCKSCOTT:
         print()

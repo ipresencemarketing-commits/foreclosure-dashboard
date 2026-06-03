@@ -403,6 +403,14 @@ ENABLE_SIWPC: bool = True   # Samuel I. White, P.C. — daily PDF at siwpc.net
 ENABLE_LOGS: bool = True
 
 # ---------------------------------------------------------------------------
+# Rosenberg & Associates toggle  (handled by scraper_rosenberg.py, called by run.py)
+# ---------------------------------------------------------------------------
+# Static HTML table — requests + BeautifulSoup, no Playwright needed.
+# URL: rosenberg-assoc.com/foreclosure-sales/
+# VA + MD + DC mixed; filters to VA only. ~66 active VA listings.
+ENABLE_ROSENBERG: bool = True
+
+# ---------------------------------------------------------------------------
 # Brock & Scott toggle  (handled by scraper_brockscott.py, called by run.py)
 # ---------------------------------------------------------------------------
 # Static HTML scraper — no Playwright needed.

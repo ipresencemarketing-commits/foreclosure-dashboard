@@ -1115,6 +1115,52 @@ Prince William, Augusta, and more — confirms statewide coverage including inde
 
 ---
 
+---
+
+## Source 32 — Rosenberg & Associates
+
+**URL:** https://rosenberg-assoc.com/foreclosure-sales/
+**Source tag:** `rosenberg`
+**Script:** `scripts/scraper_rosenberg.py`
+**Toggle:** `ENABLE_ROSENBERG` in `scripts/config.py` (currently `True`)
+**Technology:** `requests` + BeautifulSoup — static HTML table, no Playwright needed
+**Counties:** Statewide Virginia (site also lists MD and DC — filtered out)
+**Output:** `data/foreclosures_rosenberg.json`
+
+### What this source provides
+| Field | Available? | Notes |
+|-------|-----------|-------|
+| Address | ✅ | Street + city + ZIP assembled |
+| County | ✅ | Jurisdiction field — explicit, normalised via JURISDICTION_MAP |
+| Sale Date | ✅ | MM-DD-YYYY format |
+| Sale Time | ✅ | H:MM AM/PM |
+| Sale Location | ✅ | Derived from county → courthouse lookup |
+| Deposit Amount | ✅ | "$ 20,000" parsed to integer |
+| Case Number | ✅ | Stored in notice_text field |
+| Trustee | ✅ | Always "Rosenberg & Associates" |
+| Lender | ❌ | Not in table |
+| Opening Bid | ❌ | Deposit listed, not opening bid |
+| Notice Text | ❌ | Summary table only |
+| Owner Info | 🔄 | GIS backfill |
+
+### Data extraction approach
+1. `requests.get()` fetches static HTML page
+2. BeautifulSoup parses `table tr` rows (1 table, 142 rows as of 2026-06-03)
+3. Filters: state = "VA" only (drops MD and DC rows)
+4. Filters: cur_case_stat_id = 1 (active) — drops sold (2) and cancelled (3)
+5. Filters: cancelled = "N" and soldid empty (belt and suspenders)
+6. Jurisdiction normalised via JURISDICTION_MAP (handles "City of X", bare city names, "X City" formats)
+
+### County coverage (sample 2026-06-03, 66 listings)
+Fairfax(6), Chesterfield(5), Loudoun(3), Hampton City(3), Roanoke City(3),
+Chesapeake City(3), Norfolk City(2), Virginia Beach City(2), Hanover(2), Danville City(2),
+plus 20+ other Virginia counties and independent cities — true statewide coverage
+
+### Fix status
+- ✅ Live 2026-06-03 — 66 VA active listings, 0 unknown counties, all fields parsing correctly
+
+---
+
 ## Fix Order (by lead volume potential)
 
 1. **SIWPC** — highest-volume firm, early-warning value, simple HTML table scraper.
