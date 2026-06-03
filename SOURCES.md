@@ -1161,6 +1161,63 @@ plus 20+ other Virginia counties and independent cities — true statewide cover
 
 ---
 
+---
+
+## Source 33 — ServiceLink Auction
+
+**URL:** https://www.servicelinkauction.com/foreclosures/virginia
+**API:** https://www.servicelinkauction.com/api/listingsvc/v1/listings?state=VA&limit=100&sortByEndingSoonest=true&listingProgramWebsite=Foreclosure+Sale
+**Source tag:** `servicelink`
+**Script:** `scripts/scraper_servicelink.py`
+**Toggle:** `ENABLE_SERVICELINK` in `scripts/config.py` (currently `True`)
+**Technology:** Pure REST API — `requests` only, no Playwright, no HTML parsing. Sub-second fetch.
+**Counties:** Statewide Virginia
+**Output:** `data/foreclosures_servicelink.json`
+
+### What this source provides (richest source in the pipeline)
+| Field | Available? | Notes |
+|-------|-----------|-------|
+| Address | ✅ | Street + city + ZIP from API |
+| County | ✅ | Explicit from API `propertyInfo.county` |
+| Sale Date | ✅ | ISO datetime `foreclosureSaleDate` |
+| Sale Time | ✅ | `tpsSaleTime` e.g. "11:45 AM" |
+| Sale Location | ✅ | **Full courthouse address** from `tpsSaleLocation` |
+| Property Type | ✅ | Single Family, Town House, Condo, etc. |
+| Beds / Baths / SqFt | ✅ | `bedrooms`, `fullBathrooms`, `interiorSqFt` |
+| Year Built | ✅ | `yearBuilt` |
+| Lot Size | ✅ | `lotSize` (sq ft) |
+| Occupancy Status | ✅ | Occupied / Vacant |
+| Trustee / Attorney | ✅ | `foreclosureAttorneyName` (Aldridge Pite, Orlans, Brock & Scott, etc.) |
+| Attorney Reference # | ✅ | `foreclosureAttorneyReference` (case #) |
+| Listing URL | ✅ | Individual property detail page |
+| Opening Bid | ❌ | Not in API |
+| Lender | ❌ | Not in API |
+| Notice Text | ❌ | Not in API |
+| Owner Info | 🔄 | GIS backfill (property details already populated) |
+
+### Data extraction approach
+1. Single `requests.get()` to the JSON API — no browser required
+2. API max limit = 100; current VA inventory is ~81 (well within limit)
+3. Filters: state = VA, foreclosureSaleStatusWebsite = "Active" or blank
+4. County normalised via `county_display()` (strips trailing "County" from API values)
+5. `tpsSaleLocation` used directly as sale location (exact courthouse address — more precise than our courthouse_location() lookup)
+
+### County coverage (sample 2026-06-03, 70 listings)
+Chesterfield(6), Roanoke(4), Chesapeake City(4), Virginia Beach City(4),
+Fairfax(3), Wise(3), Stafford(3), Frederick(3), Portsmouth City(3), Rockbridge(2),
+plus 20+ other VA counties — true statewide coverage
+
+### Notable characteristics
+- **Beds/baths/sqft/year built populated at scrape time** — no GIS backfill needed for property details
+- **Exact courthouse address** from `tpsSaleLocation` — more precise than derived lookup
+- **Multiple trustees**: Aldridge Pite (formerly BWW), Orlans Associates, Brock & Scott all appear
+- **Cash only flag** tracked in notice_text
+
+### Fix status
+- ✅ Live 2026-06-03 — 70 listings, 0 unknown counties, all fields parsing correctly
+
+---
+
 ## Fix Order (by lead volume potential)
 
 1. **SIWPC** — highest-volume firm, early-warning value, simple HTML table scraper.

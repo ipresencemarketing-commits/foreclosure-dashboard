@@ -403,6 +403,16 @@ ENABLE_SIWPC: bool = True   # Samuel I. White, P.C. — daily PDF at siwpc.net
 ENABLE_LOGS: bool = True
 
 # ---------------------------------------------------------------------------
+# ServiceLink Auction toggle  (handled by scraper_servicelink.py, called by run.py)
+# ---------------------------------------------------------------------------
+# Pure REST API — no Playwright, no HTML parsing. Sub-second fetch.
+# URL: servicelinkauction.com/foreclosures/virginia
+# Richest source in the pipeline: beds/baths/sqft, year built, lot size,
+# occupancy status, exact courthouse address, individual listing URL.
+# ~70-80 active VA listings. API limit=100 max.
+ENABLE_SERVICELINK: bool = True
+
+# ---------------------------------------------------------------------------
 # Rosenberg & Associates toggle  (handled by scraper_rosenberg.py, called by run.py)
 # ---------------------------------------------------------------------------
 # Static HTML table — requests + BeautifulSoup, no Playwright needed.

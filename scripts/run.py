@@ -135,6 +135,26 @@ def main():
         print()
         print("  LOGS Legal: SKIPPED (ENABLE_LOGS=False in config.py)")
 
+    # ── ServiceLink Auction ───────────────────────────────────────
+    if cfg.ENABLE_SERVICELINK:
+        print()
+        print("-" * 60)
+        print("  ServiceLink Auction (servicelinkauction.com)")
+        print("-" * 60)
+        sl_output = os.path.join(PROJECT_ROOT, "data", "foreclosures_servicelink.json")
+        ok = run(
+            [python, "scripts/scraper_servicelink.py"],
+            "ServiceLink Auction scraper"
+        )
+        if ok and sync:
+            run(
+                [python, "scripts/sheets_sync.py", "--file", sl_output],
+                "sheets sync — ServiceLink"
+            )
+    else:
+        print()
+        print("  ServiceLink Auction: SKIPPED (ENABLE_SERVICELINK=False in config.py)")
+
     # ── Rosenberg & Associates ────────────────────────────────────
     if cfg.ENABLE_ROSENBERG:
         print()
