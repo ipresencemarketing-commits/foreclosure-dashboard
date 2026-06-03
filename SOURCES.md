@@ -1218,6 +1218,55 @@ plus 20+ other VA counties — true statewide coverage
 
 ---
 
+---
+
+## Source 34 — Xome Auctions
+
+**URL:** https://www.xome.com/auctions/foreclosuresales?ss=virginia&cl=false
+**API (Step 1):** https://apis.xome.com/auctions/listing/v1/Foreclosures/VA/Assets?auctionStartAfter=YYYY-MM-DD
+**API (Step 2):** https://apis.xome.com/auctions/listing/v1/Foreclosures/Assets?assetIds=ID1,ID2,...&fetchListingInfo=true&fetchLocation=true
+**Source tag:** `xome`
+**Script:** `scripts/scraper_xome.py`
+**Toggle:** `ENABLE_XOME` in `scripts/config.py` (currently `True`)
+**Technology:** Two-step REST API — `requests` only, no Playwright. Both calls use `Authorization: 8ec77f3db3ec43e4a62bb00c78b031e0` (public token embedded in site JS).
+**Counties:** Statewide Virginia
+**Output:** `data/foreclosures_xome.json`
+
+### What this source provides
+| Field | Available? | Notes |
+|-------|-----------|-------|
+| Address | ✅ | `fCLTListingInfo.unstructuredAddress` + city + ZIP |
+| County | ✅ | From Step 1 Assets map county name |
+| Sale Date | ✅ | `saleStartDate` MM/DD/YYYY |
+| Sale Time | ✅ | `liveAuctionStartTime` |
+| Sale Location | ✅ | `liveAuctionLocationDescription` — full courthouse address |
+| Starting Bid | ⚠️ | `formattedStartingBid` — often "TBD" pre-marketing |
+| Bid Increment | ✅ | `bidIncrement` (typically $1,000) |
+| Listing URL | ✅ | Individual property page on xome.com |
+| Xome ID | ✅ | `displayId` (e.g. P114A37) in notice_text |
+| Beds/Baths/Sqft | ❌ | Not in this API |
+| Lender / Trustee | ❌ | Not in API — "Xome Auctions" used as placeholder |
+| Notice Text | ❌ | Not in API |
+| Owner Info | 🔄 | GIS backfill |
+
+### Data extraction approach (2 API calls total)
+1. **Step 1** — `GET /VA/Assets?auctionStartAfter=...` returns county→date→[IDs] mapping
+2. **Step 2** — `GET /Assets?assetIds=ID1,ID2,...` batch-fetches all property details in a single request (all 85 IDs in one call)
+3. County name normalised from `"Fairfax County, Virginia"` → strip `, Virginia` → strip trailing `County` → `county_display()`
+
+### Auth token
+The `Authorization` header value `8ec77f3db3ec43e4a62bb00c78b031e0` is a public API key embedded in `foreclosuresalesV2.min.js`. It is not user-specific. If the scraper starts returning 401, inspect the JS bundle for a new key.
+
+### County coverage (sample 2026-06-03, 85 listings)
+Prince William(5), Virginia Beach City(5), Hampton City(4), Suffolk City(4),
+Roanoke(4), Chesterfield(3), Fairfax(3), Augusta(3), Chesapeake City(3),
+Newport News City(3) — plus 20+ other counties. True statewide coverage.
+
+### Fix status
+- ✅ Live 2026-06-03 — 85 listings, 0 unknown counties, all fields parsing correctly
+
+---
+
 ## Fix Order (by lead volume potential)
 
 1. **SIWPC** — highest-volume firm, early-warning value, simple HTML table scraper.

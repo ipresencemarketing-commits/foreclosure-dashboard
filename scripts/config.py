@@ -403,6 +403,16 @@ ENABLE_SIWPC: bool = True   # Samuel I. White, P.C. — daily PDF at siwpc.net
 ENABLE_LOGS: bool = True
 
 # ---------------------------------------------------------------------------
+# Xome Auction toggle  (handled by scraper_xome.py, called by run.py)
+# ---------------------------------------------------------------------------
+# Two-step REST API — no Playwright needed. Step 1 fetches county/date/ID
+# map; Step 2 batch-fetches all property details in a single call.
+# URL: xome.com/auctions/foreclosuresales?ss=virginia
+# Auth: public token embedded in site JS (not user-specific).
+# ~85 VA listings. Includes full courthouse address from API.
+ENABLE_XOME: bool = True
+
+# ---------------------------------------------------------------------------
 # ServiceLink Auction toggle  (handled by scraper_servicelink.py, called by run.py)
 # ---------------------------------------------------------------------------
 # Pure REST API — no Playwright, no HTML parsing. Sub-second fetch.

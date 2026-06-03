@@ -135,6 +135,26 @@ def main():
         print()
         print("  LOGS Legal: SKIPPED (ENABLE_LOGS=False in config.py)")
 
+    # ── Xome Auctions ─────────────────────────────────────────────
+    if cfg.ENABLE_XOME:
+        print()
+        print("-" * 60)
+        print("  Xome Auctions (xome.com/auctions/foreclosuresales)")
+        print("-" * 60)
+        xome_output = os.path.join(PROJECT_ROOT, "data", "foreclosures_xome.json")
+        ok = run(
+            [python, "scripts/scraper_xome.py"],
+            "Xome Auction scraper"
+        )
+        if ok and sync:
+            run(
+                [python, "scripts/sheets_sync.py", "--file", xome_output],
+                "sheets sync — Xome"
+            )
+    else:
+        print()
+        print("  Xome: SKIPPED (ENABLE_XOME=False in config.py)")
+
     # ── ServiceLink Auction ───────────────────────────────────────
     if cfg.ENABLE_SERVICELINK:
         print()
