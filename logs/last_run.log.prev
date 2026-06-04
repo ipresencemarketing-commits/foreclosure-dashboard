@@ -1,0 +1,496 @@
+
+==================================================
+  Foreclosure Finder — Pipeline
+  2026-05-15 00:43:03
+==================================================
+
+>> Step 1/3 — Scraping foreclosure notices (8 active groups: PNV, Column.us ×4, LOGS Legal, Auction.com, SIWPC; Groups 7+9 disabled)...
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 00:43:03,652  INFO  Starting Virginia foreclosure scraper…
+2026-05-15 00:43:03,652  INFO  Search window: 30 days  (2026-04-15 → 2026-05-15)  |  set LOOKBACK_DAYS in scripts/config.py
+2026-05-15 00:43:03,652  INFO  --- Group 3: PublicNoticeVirginia.com ---
+2026-05-15 00:43:04,452  INFO    PNV: opening site with Playwright
+2026-05-15 00:43:08,451  INFO    PNV: search box filled
+2026-05-15 00:43:08,454  INFO    PNV: date range set to 4/15/2026 → 5/15/2026 (30-day window from config.py)
+2026-05-15 00:43:14,840  INFO    PNV: collecting notice IDs from results page 1
+2026-05-15 00:43:14,846  INFO    PNV: page 1 → 10 notice(s)
+2026-05-15 00:43:16,113  INFO    PNV: collecting notice IDs from results page 2
+2026-05-15 00:43:16,117  INFO    PNV: page 2 → 10 notice(s)
+2026-05-15 00:43:17,369  INFO    PNV: collecting notice IDs from results page 3
+2026-05-15 00:43:17,374  INFO    PNV: page 3 → 10 notice(s)
+2026-05-15 00:43:18,612  INFO    PNV: collecting notice IDs from results page 4
+2026-05-15 00:43:18,617  INFO    PNV: page 4 → 10 notice(s)
+2026-05-15 00:43:19,872  INFO    PNV: collecting notice IDs from results page 5
+2026-05-15 00:43:19,877  INFO    PNV: page 5 → 10 notice(s)
+2026-05-15 00:43:21,124  INFO    PNV: collecting notice IDs from results page 6
+2026-05-15 00:43:21,129  INFO    PNV: page 6 → 10 notice(s)
+2026-05-15 00:43:22,377  INFO    PNV: collecting notice IDs from results page 7
+2026-05-15 00:43:22,382  INFO    PNV: page 7 → 10 notice(s)
+2026-05-15 00:43:23,624  INFO    PNV: collecting notice IDs from results page 8
+2026-05-15 00:43:23,628  INFO    PNV: page 8 → 10 notice(s)
+2026-05-15 00:43:24,871  INFO    PNV: collecting notice IDs from results page 9
+2026-05-15 00:43:24,876  INFO    PNV: page 9 → 10 notice(s)
+2026-05-15 00:43:26,127  INFO    PNV: collecting notice IDs from results page 10
+2026-05-15 00:43:26,132  INFO    PNV: page 10 → 10 notice(s)
+2026-05-15 00:43:27,376  INFO    PNV: collecting notice IDs from results page 11
+2026-05-15 00:43:27,377  INFO    PNV: page 11 → 10 notice(s)
+2026-05-15 00:43:28,635  INFO    PNV: collecting notice IDs from results page 12
+2026-05-15 00:43:28,639  INFO    PNV: page 12 → 10 notice(s)
+2026-05-15 00:43:29,881  INFO    PNV: collecting notice IDs from results page 13
+2026-05-15 00:43:29,886  INFO    PNV: page 13 → 10 notice(s)
+2026-05-15 00:43:31,126  INFO    PNV: collecting notice IDs from results page 14
+2026-05-15 00:43:31,131  INFO    PNV: page 14 → 10 notice(s)
+2026-05-15 00:43:32,376  INFO    PNV: collecting notice IDs from results page 15
+2026-05-15 00:43:32,380  INFO    PNV: page 15 → 10 notice(s)
+2026-05-15 00:43:33,625  INFO    PNV: collecting notice IDs from results page 16
+2026-05-15 00:43:33,629  INFO    PNV: page 16 → 10 notice(s)
+2026-05-15 00:43:34,877  INFO    PNV: collecting notice IDs from results page 17
+2026-05-15 00:43:34,881  INFO    PNV: page 17 → 10 notice(s)
+2026-05-15 00:43:36,122  INFO    PNV: collecting notice IDs from results page 18
+2026-05-15 00:43:36,126  INFO    PNV: page 18 → 10 notice(s)
+2026-05-15 00:43:37,374  INFO    PNV: collecting notice IDs from results page 19
+2026-05-15 00:43:37,377  INFO    PNV: page 19 → 10 notice(s)
+2026-05-15 00:43:38,620  INFO    PNV: collecting notice IDs from results page 20
+2026-05-15 00:43:38,623  INFO    PNV: page 20 → 10 notice(s)
+2026-05-15 00:43:39,870  INFO    PNV: collecting notice IDs from results page 21
+2026-05-15 00:43:39,874  INFO    PNV: page 21 → 10 notice(s)
+2026-05-15 00:43:41,142  INFO    PNV: collecting notice IDs from results page 22
+2026-05-15 00:43:41,147  INFO    PNV: page 22 → 10 notice(s)
+2026-05-15 00:43:42,394  INFO    PNV: collecting notice IDs from results page 23
+2026-05-15 00:43:42,398  INFO    PNV: page 23 → 10 notice(s)
+2026-05-15 00:43:43,640  INFO    PNV: collecting notice IDs from results page 24
+2026-05-15 00:43:43,644  INFO    PNV: page 24 → 10 notice(s)
+2026-05-15 00:43:44,879  INFO    PNV: collecting notice IDs from results page 25
+2026-05-15 00:43:44,884  INFO    PNV: page 25 → 10 notice(s)
+2026-05-15 00:43:46,133  INFO    PNV: collecting notice IDs from results page 26
+2026-05-15 00:43:46,137  INFO    PNV: page 26 → 10 notice(s)
+2026-05-15 00:43:47,412  INFO    PNV: collecting notice IDs from results page 27
+2026-05-15 00:43:47,416  INFO    PNV: page 27 → 10 notice(s)
+2026-05-15 00:43:48,653  INFO    PNV: collecting notice IDs from results page 28
+2026-05-15 00:43:48,657  INFO    PNV: page 28 → 10 notice(s)
+2026-05-15 00:43:49,916  INFO    PNV: collecting notice IDs from results page 29
+2026-05-15 00:43:49,920  INFO    PNV: page 29 → 10 notice(s)
+2026-05-15 00:43:51,161  INFO    PNV: collecting notice IDs from results page 30
+2026-05-15 00:43:51,165  INFO    PNV: page 30 → 10 notice(s)
+2026-05-15 00:43:52,414  INFO    PNV: collecting notice IDs from results page 31
+2026-05-15 00:43:52,418  INFO    PNV: page 31 → 10 notice(s)
+2026-05-15 00:43:53,654  INFO    PNV: collecting notice IDs from results page 32
+2026-05-15 00:43:53,659  INFO    PNV: page 32 → 10 notice(s)
+2026-05-15 00:43:54,902  INFO    PNV: collecting notice IDs from results page 33
+2026-05-15 00:43:54,906  INFO    PNV: page 33 → 10 notice(s)
+2026-05-15 00:43:56,174  INFO    PNV: collecting notice IDs from results page 34
+2026-05-15 00:43:56,178  INFO    PNV: page 34 → 10 notice(s)
+2026-05-15 00:43:57,444  INFO    PNV: collecting notice IDs from results page 35
+2026-05-15 00:43:57,448  INFO    PNV: page 35 → 10 notice(s)
+2026-05-15 00:43:58,694  INFO    PNV: collecting notice IDs from results page 36
+2026-05-15 00:43:58,698  INFO    PNV: page 36 → 10 notice(s)
+2026-05-15 00:43:59,963  INFO    PNV: collecting notice IDs from results page 37
+2026-05-15 00:43:59,967  INFO    PNV: page 37 → 10 notice(s)
+2026-05-15 00:44:01,214  INFO    PNV: collecting notice IDs from results page 38
+2026-05-15 00:44:01,218  INFO    PNV: page 38 → 10 notice(s)
+2026-05-15 00:44:02,464  INFO    PNV: collecting notice IDs from results page 39
+2026-05-15 00:44:02,469  INFO    PNV: page 39 → 10 notice(s)
+2026-05-15 00:44:03,709  INFO    PNV: collecting notice IDs from results page 40
+2026-05-15 00:44:03,713  INFO    PNV: page 40 → 10 notice(s)
+2026-05-15 00:44:04,955  INFO    PNV: collecting notice IDs from results page 41
+2026-05-15 00:44:04,959  INFO    PNV: page 41 → 10 notice(s)
+2026-05-15 00:44:06,206  INFO    PNV: collecting notice IDs from results page 42
+2026-05-15 00:44:06,211  INFO    PNV: page 42 → 10 notice(s)
+2026-05-15 00:44:07,454  INFO    PNV: collecting notice IDs from results page 43
+2026-05-15 00:44:07,458  INFO    PNV: page 43 → 10 notice(s)
+2026-05-15 00:44:08,693  INFO    PNV: collecting notice IDs from results page 44
+2026-05-15 00:44:08,697  INFO    PNV: page 44 → 10 notice(s)
+2026-05-15 00:44:09,937  INFO    PNV: collecting notice IDs from results page 45
+2026-05-15 00:44:09,942  INFO    PNV: page 45 → 10 notice(s)
+2026-05-15 00:44:11,207  INFO    PNV: collecting notice IDs from results page 46
+2026-05-15 00:44:11,211  INFO    PNV: page 46 → 10 notice(s)
+2026-05-15 00:44:12,479  INFO    PNV: collecting notice IDs from results page 47
+2026-05-15 00:44:12,483  INFO    PNV: page 47 → 10 notice(s)
+2026-05-15 00:44:13,750  INFO    PNV: collecting notice IDs from results page 48
+2026-05-15 00:44:13,754  INFO    PNV: page 48 → 10 notice(s)
+2026-05-15 00:44:14,997  INFO    PNV: collecting notice IDs from results page 49
+2026-05-15 00:44:15,001  INFO    PNV: page 49 → 10 notice(s)
+2026-05-15 00:44:16,243  INFO    PNV: collecting notice IDs from results page 50
+2026-05-15 00:44:16,248  INFO    PNV: page 50 → 10 notice(s)
+2026-05-15 00:44:17,497  INFO    PNV: collecting notice IDs from results page 51
+2026-05-15 00:44:17,501  INFO    PNV: page 51 → 10 notice(s)
+2026-05-15 00:44:18,752  INFO    PNV: collecting notice IDs from results page 52
+2026-05-15 00:44:18,756  INFO    PNV: page 52 → 10 notice(s)
+2026-05-15 00:44:19,994  INFO    PNV: collecting notice IDs from results page 53
+2026-05-15 00:44:19,998  INFO    PNV: page 53 → 10 notice(s)
+2026-05-15 00:44:21,241  INFO    PNV: collecting notice IDs from results page 54
+2026-05-15 00:44:21,246  INFO    PNV: page 54 → 10 notice(s)
+2026-05-15 00:44:22,494  INFO    PNV: collecting notice IDs from results page 55
+2026-05-15 00:44:22,498  INFO    PNV: page 55 → 10 notice(s)
+2026-05-15 00:44:23,761  INFO    PNV: collecting notice IDs from results page 56
+2026-05-15 00:44:23,765  INFO    PNV: page 56 → 10 notice(s)
+2026-05-15 00:44:25,010  INFO    PNV: collecting notice IDs from results page 57
+2026-05-15 00:44:25,014  INFO    PNV: page 57 → 10 notice(s)
+2026-05-15 00:44:26,261  INFO    PNV: collecting notice IDs from results page 58
+2026-05-15 00:44:26,266  INFO    PNV: page 58 → 10 notice(s)
+2026-05-15 00:44:27,509  INFO    PNV: collecting notice IDs from results page 59
+2026-05-15 00:44:27,513  INFO    PNV: page 59 → 10 notice(s)
+2026-05-15 00:44:28,753  INFO    PNV: collecting notice IDs from results page 60
+2026-05-15 00:44:28,758  INFO    PNV: page 60 → 10 notice(s)
+2026-05-15 00:44:30,005  INFO    PNV: collecting notice IDs from results page 61
+2026-05-15 00:44:30,009  INFO    PNV: page 61 → 10 notice(s)
+2026-05-15 00:44:31,256  INFO    PNV: collecting notice IDs from results page 62
+2026-05-15 00:44:31,260  INFO    PNV: page 62 → 10 notice(s)
+2026-05-15 00:44:32,520  INFO    PNV: collecting notice IDs from results page 63
+2026-05-15 00:44:32,524  INFO    PNV: page 63 → 10 notice(s)
+2026-05-15 00:44:33,765  INFO    PNV: collecting notice IDs from results page 64
+2026-05-15 00:44:33,769  INFO    PNV: page 64 → 10 notice(s)
+2026-05-15 00:44:35,013  INFO    PNV: collecting notice IDs from results page 65
+2026-05-15 00:44:35,017  INFO    PNV: page 65 → 10 notice(s)
+2026-05-15 00:44:36,261  INFO    PNV: collecting notice IDs from results page 66
+2026-05-15 00:44:36,265  INFO    PNV: page 66 → 10 notice(s)
+2026-05-15 00:44:37,521  INFO    PNV: collecting notice IDs from results page 67
+2026-05-15 00:44:37,525  INFO    PNV: page 67 → 10 notice(s)
+2026-05-15 00:44:38,766  INFO    PNV: collecting notice IDs from results page 68
+2026-05-15 00:44:38,770  INFO    PNV: page 68 → 10 notice(s)
+2026-05-15 00:44:40,034  INFO    PNV: collecting notice IDs from results page 69
+2026-05-15 00:44:40,039  INFO    PNV: page 69 → 10 notice(s)
+2026-05-15 00:44:41,274  INFO    PNV: collecting notice IDs from results page 70
+2026-05-15 00:44:41,279  INFO    PNV: page 70 → 10 notice(s)
+2026-05-15 00:44:42,545  INFO    PNV: collecting notice IDs from results page 71
+2026-05-15 00:44:42,550  INFO    PNV: page 71 → 10 notice(s)
+2026-05-15 00:44:43,814  INFO    PNV: collecting notice IDs from results page 72
+2026-05-15 00:44:43,818  INFO    PNV: page 72 → 10 notice(s)
+2026-05-15 00:44:45,064  INFO    PNV: collecting notice IDs from results page 73
+2026-05-15 00:44:45,068  INFO    PNV: page 73 → 10 notice(s)
+2026-05-15 00:44:46,337  INFO    PNV: collecting notice IDs from results page 74
+2026-05-15 00:44:46,342  INFO    PNV: page 74 → 10 notice(s)
+2026-05-15 00:44:47,586  INFO    PNV: collecting notice IDs from results page 75
+2026-05-15 00:44:47,590  INFO    PNV: page 75 → 10 notice(s)
+2026-05-15 00:44:48,856  INFO    PNV: collecting notice IDs from results page 76
+2026-05-15 00:44:48,860  INFO    PNV: page 76 → 10 notice(s)
+2026-05-15 00:44:50,104  INFO    PNV: collecting notice IDs from results page 77
+2026-05-15 00:44:50,107  INFO    PNV: page 77 → 10 notice(s)
+2026-05-15 00:44:51,352  INFO    PNV: collecting notice IDs from results page 78
+2026-05-15 00:44:51,356  INFO    PNV: page 78 → 10 notice(s)
+2026-05-15 00:44:52,598  INFO    PNV: collecting notice IDs from results page 79
+2026-05-15 00:44:52,603  INFO    PNV: page 79 → 10 notice(s)
+2026-05-15 00:44:53,845  INFO    PNV: collecting notice IDs from results page 80
+2026-05-15 00:44:53,849  INFO    PNV: page 80 → 10 notice(s)
+2026-05-15 00:44:55,097  INFO    PNV: collecting notice IDs from results page 81
+2026-05-15 00:44:55,101  INFO    PNV: page 81 → 10 notice(s)
+2026-05-15 00:44:56,344  INFO    PNV: collecting notice IDs from results page 82
+2026-05-15 00:44:56,348  INFO    PNV: page 82 → 10 notice(s)
+2026-05-15 00:44:57,590  INFO    PNV: collecting notice IDs from results page 83
+2026-05-15 00:44:57,594  INFO    PNV: page 83 → 10 notice(s)
+2026-05-15 00:44:58,842  INFO    PNV: collecting notice IDs from results page 84
+2026-05-15 00:44:58,846  INFO    PNV: page 84 → 10 notice(s)
+2026-05-15 00:45:00,096  INFO    PNV: collecting notice IDs from results page 85
+2026-05-15 00:45:00,100  INFO    PNV: page 85 → 10 notice(s)
+2026-05-15 00:45:01,342  INFO    PNV: collecting notice IDs from results page 86
+2026-05-15 00:45:01,346  INFO    PNV: page 86 → 10 notice(s)
+2026-05-15 00:45:02,590  INFO    PNV: collecting notice IDs from results page 87
+2026-05-15 00:45:02,594  INFO    PNV: page 87 → 10 notice(s)
+2026-05-15 00:45:03,840  INFO    PNV: collecting notice IDs from results page 88
+2026-05-15 00:45:03,844  INFO    PNV: page 88 → 10 notice(s)
+2026-05-15 00:45:05,087  INFO    PNV: collecting notice IDs from results page 89
+2026-05-15 00:45:05,092  INFO    PNV: page 89 → 10 notice(s)
+2026-05-15 00:45:06,336  INFO    PNV: collecting notice IDs from results page 90
+2026-05-15 00:45:06,340  INFO    PNV: page 90 → 10 notice(s)
+2026-05-15 00:45:07,586  INFO    PNV: collecting notice IDs from results page 91
+2026-05-15 00:45:07,590  INFO    PNV: page 91 → 10 notice(s)
+2026-05-15 00:45:08,832  INFO    PNV: collecting notice IDs from results page 92
+2026-05-15 00:45:08,837  INFO    PNV: page 92 → 10 notice(s)
+2026-05-15 00:45:10,077  INFO    PNV: collecting notice IDs from results page 93
+2026-05-15 00:45:10,081  INFO    PNV: page 93 → 10 notice(s)
+2026-05-15 00:45:11,327  INFO    PNV: collecting notice IDs from results page 94
+2026-05-15 00:45:11,332  INFO    PNV: page 94 → 10 notice(s)
+2026-05-15 00:45:12,580  INFO    PNV: collecting notice IDs from results page 95
+2026-05-15 00:45:12,584  INFO    PNV: page 95 → 10 notice(s)
+2026-05-15 00:45:13,832  INFO    PNV: collecting notice IDs from results page 96
+2026-05-15 00:45:13,836  INFO    PNV: page 96 → 10 notice(s)
+2026-05-15 00:45:15,105  INFO    PNV: collecting notice IDs from results page 97
+2026-05-15 00:45:15,109  INFO    PNV: page 97 → 10 notice(s)
+2026-05-15 00:45:16,353  INFO    PNV: collecting notice IDs from results page 98
+2026-05-15 00:45:16,357  INFO    PNV: page 98 → 10 notice(s)
+2026-05-15 00:45:17,613  INFO    PNV: collecting notice IDs from results page 99
+2026-05-15 00:45:17,617  INFO    PNV: page 99 → 10 notice(s)
+2026-05-15 00:45:18,863  INFO    PNV: collecting notice IDs from results page 100
+2026-05-15 00:45:18,867  INFO    PNV: page 100 → 10 notice(s)
+2026-05-15 00:45:18,879  INFO    PNV: no more pages (last page = 100)
+2026-05-15 00:45:18,880  INFO    PNV: 1000 unique notices across 100 page(s)
+2026-05-15 00:45:18,883  INFO    PNV: session_id = iqszoomrb32s1usgtombc4jb
+2026-05-15 00:45:18,908  INFO    PNV: fetching 1000 detail pages via HTTP…
+2026-05-15 00:46:10,748  INFO    PNV: processed 100/1000 detail pages…
+2026-05-15 00:47:01,183  INFO    PNV: processed 200/1000 detail pages…
+2026-05-15 00:47:54,767  INFO    PNV: processed 300/1000 detail pages…
+2026-05-15 00:48:45,781  INFO    PNV: processed 400/1000 detail pages…
+2026-05-15 00:49:38,887  INFO    PNV: processed 500/1000 detail pages…
+2026-05-15 00:50:30,948  INFO    PNV: processed 600/1000 detail pages…
+2026-05-15 00:51:21,122  INFO    PNV: processed 700/1000 detail pages…
+2026-05-15 00:52:12,260  INFO    PNV: processed 800/1000 detail pages…
+2026-05-15 00:53:03,826  INFO    PNV: processed 900/1000 detail pages…
+2026-05-15 00:53:57,757  INFO    PNV: processed 1000/1000 detail pages…
+2026-05-15 00:53:58,032  INFO    PublicNoticeVA: found 1000 listings
+2026-05-15 00:53:58,032  INFO  --- Existing: Column.us — Fredericksburg Free-Lance Star ---
+2026-05-15 00:53:58,585  INFO    Column.us [column_us]: https://fredericksburg.column.us/search?noticeType=Foreclosure+Sale&startDate=2026-04-15&endDate=2026-05-15  (30-day window: 2026-04-15 → 2026-05-15)
+2026-05-15 00:54:08,466  INFO    Column.us [column_us]: 'Load more' click #1
+2026-05-15 00:54:10,985  INFO    Column.us [column_us]: 'Load more' click #2
+2026-05-15 00:54:13,508  INFO    Column.us [column_us]: 'Load more' click #3
+2026-05-15 00:54:16,028  INFO    Column.us [column_us]: 'Load more' click #4
+2026-05-15 00:54:18,534  INFO    Column.us [column_us]: 'Load more' exhausted (4 clicks)
+2026-05-15 00:54:18,537  INFO    Column.us [column_us]: 0 notice URL(s) found
+2026-05-15 00:54:18,571  INFO    Column.us [column_us]: 6 notice block(s) found
+2026-05-15 00:54:18,574  INFO    [1/6] ADDED — 107 Germanna Way, Stafford | county: Stafford | sale: 2026-05-21
+2026-05-15 00:54:18,575  INFO    [2/6] ADDED — 116 Landing Drive, Fredericksburg | county: Fredericksburg City | sale: 2026-05-21
+2026-05-15 00:54:18,576  INFO    [3/6] ADDED — 116 Landing Drive, Fredericksburg | county: Fredericksburg City | sale: 2026-05-21
+2026-05-15 00:54:18,577  INFO    [4/6] SKIPPED (no address) | "and that Any/All Legal Heirs of Craig M. Roane appear on or before May 8, 2026 at 9:00 in the Clerk'"
+2026-05-15 00:54:18,577  INFO    [5/6] SKIPPED (no address) | "and that Any/All Legal Heirs of Craig M. Roane appear on or before May 8, 2026 at 9:00 in the Clerk'"
+2026-05-15 00:54:18,577  INFO    [6/6] SKIPPED (no address) | "and that Any/All Legal Heirs of Craig M. Roane appear on or before May 8, 2026 at 9:00 in the Clerk'"
+2026-05-15 00:54:18,577  INFO    Column.us [column_us] summary: 3 added | 3 skipped (no address) | 6 total blocks
+2026-05-15 00:54:18,597  INFO    Column.us [column_us]: returning 3 listing(s)
+2026-05-15 00:54:18,597  INFO  --- Group 1: Column.us — Richmond Times-Dispatch ---
+2026-05-15 00:54:18,865  INFO    Column.us [column_us_richmond]: https://richmond.column.us/search?noticeType=Foreclosure+Sale&startDate=2026-04-15&endDate=2026-05-15  (30-day window: 2026-04-15 → 2026-05-15)
+2026-05-15 00:54:48,401  WARNING    Column.us [column_us_richmond]: page never showed 'RICHMOND TIMES-DISPATCH' after 20 s — no notices or site layout changed
+2026-05-15 00:54:48,441  INFO  --- Group 2: LOGS Legal Group / PFCVA ---
+2026-05-15 00:54:48,441  INFO    LOGS Legal: https://www.logs.com/va-sales-report.html
+2026-05-15 00:54:48,669  INFO    LOGS Legal: no structured table rows found — trying text scan fallback
+2026-05-15 00:54:48,670  INFO    LOGS Legal: found 0 target-county listing(s)
+2026-05-15 00:54:48,671  INFO  --- Group 4: Column.us — Charlottesville Daily Progress ---
+2026-05-15 00:54:49,029  INFO    Column.us [column_us_dailyprogress]: https://dailyprogress.column.us/search?noticeType=Foreclosure+Sale&startDate=2026-04-15&endDate=2026-05-15  (30-day window: 2026-04-15 → 2026-05-15)
+2026-05-15 00:54:58,728  INFO    Column.us [column_us_dailyprogress]: 'Load more' click #1
+2026-05-15 00:55:01,249  INFO    Column.us [column_us_dailyprogress]: 'Load more' click #2
+2026-05-15 00:55:03,756  INFO    Column.us [column_us_dailyprogress]: 'Load more' exhausted (2 clicks)
+2026-05-15 00:55:03,759  INFO    Column.us [column_us_dailyprogress]: 0 notice URL(s) found
+2026-05-15 00:55:03,788  INFO    Column.us [column_us_dailyprogress]: 40 notice block(s) found
+2026-05-15 00:55:03,789  INFO    [1/40] ADDED — 469 VENABLE ROAD, A/R/T/A 496 VENABLE ROAD, PALMYRA | county: unknown | sale: 2026-07-10
+2026-05-15 00:55:03,790  INFO    [2/40] ADDED — 620 PEA RIDGE ROAD, STANARDSVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 00:55:03,791  INFO    [3/40] ADDED — 2205 N. Berkshire Road, Charlottesville | county: unknown | sale: 2026-06-17
+2026-05-15 00:55:03,794  INFO    [4/40] ADDED — 39 Harris Lane, Palmyra | county: unknown | sale: 2026-06-10
+2026-05-15 00:55:03,794  INFO    [5/40] ADDED — 24 Ponderosa Lane, Palmyra | county: Fluvanna | sale: 2026-06-10
+2026-05-15 00:55:03,795  INFO    [6/40] ADDED — 117 Madison Circle, Locust Grove | county: unknown | sale: 2026-06-02
+2026-05-15 00:55:03,796  INFO    [7/40] ADDED — 405 SWIFT RUN ROAD, RUCKERSVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 00:55:03,797  INFO    [8/40] ADDED — 1528 Riding Club Road, Keene | county: Albemarle | sale: 2026-06-24
+2026-05-15 00:55:03,797  INFO    [9/40] ADDED — 294 FAIRLANE DRIVE, STANARDSVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 00:55:03,800  INFO    [10/40] ADDED — 260 HELENA LANE, SHIPMAN | county: unknown | sale: TBD
+2026-05-15 00:55:03,801  INFO    [11/40] ADDED — 620 PEA RIDGE ROAD, STANARDSVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 00:55:03,801  INFO    [12/40] ADDED — 24 Ponderosa Lane, Palmyra | county: Fluvanna | sale: 2026-06-10
+2026-05-15 00:55:03,802  INFO    [13/40] ADDED — 469 VENABLE ROAD, A/R/T/A 496 VENABLE ROAD, PALMYRA | county: unknown | sale: 2026-07-10
+2026-05-15 00:55:03,803  INFO    [14/40] ADDED — 2205 N. Berkshire Road, Charlottesville | county: unknown | sale: 2026-06-17
+2026-05-15 00:55:03,803  INFO    [15/40] ADDED — 294 FAIRLANE DRIVE, STANARDSVILLE | county: unknown | sale: 2026-07-06
+2026-05-15 00:55:03,804  INFO    [16/40] ADDED — 1528 Riding Club Road, Keene | county: Albemarle | sale: 2026-06-24
+2026-05-15 00:55:03,805  INFO    [17/40] ADDED — 117 Madison Circle, Locust Grove | county: unknown | sale: 2026-06-02
+2026-05-15 00:55:03,805  INFO    [18/40] ADDED — 24 Ponderosa Lane, Palmyra | county: Fluvanna | sale: 2026-06-10
+2026-05-15 00:55:03,806  INFO    [19/40] ADDED — 222 EVERGREEN ROAD, LOUISA | county: Louisa | sale: 2026-06-23
+2026-05-15 00:55:03,807  INFO    [20/40] ADDED — 899 COLD SPRING TRL, PALMYRA | county: unknown | sale: 2026-06-17
+2026-05-15 00:55:03,807  INFO    [21/40] ADDED — 8139 Chestnut Grove Road, Esmont | county: unknown | sale: 2026-05-19
+2026-05-15 00:55:03,808  INFO    [22/40] ADDED — 1371 BEALS LANE, SCOTTSVILLE | county: unknown | sale: 2026-06-17
+2026-05-15 00:55:03,808  INFO    [23/40] ADDED — 3653 Gilbert Station Road, Barboursville | county: Albemarle | sale: 2026-05-26
+2026-05-15 00:55:03,809  INFO    [24/40] ADDED — 973 WILLIS PROFFITT ROAD, MINERAL | county: Louisa | sale: 2026-06-23
+2026-05-15 00:55:03,810  INFO    [25/40] ADDED — 8139 Chestnut Grove Road, Esmont | county: unknown | sale: 2026-05-19
+2026-05-15 00:55:03,811  INFO    [26/40] ADDED — 471 Tibbs Shop Road, Brightwood | county: unknown | sale: 2026-05-12
+2026-05-15 00:55:03,811  INFO    [27/40] ADDED — 222 EVERGREEN ROAD, LOUISA | county: Louisa | sale: 2026-06-23
+2026-05-15 00:55:03,812  INFO    [28/40] ADDED — 1371 BEALS LANE, SCOTTSVILLE | county: unknown | sale: 2026-06-17
+2026-05-15 00:55:03,812  INFO    [29/40] ADDED — 899 COLD SPRING TRL, PALMYRA | county: unknown | sale: 2026-06-17
+2026-05-15 00:55:03,813  INFO    [30/40] ADDED — 3653 Gilbert Station Road, Barboursville | county: Albemarle | sale: 2026-05-26
+2026-05-15 00:55:03,813  INFO    [31/40] ADDED — 973 WILLIS PROFFITT ROAD, MINERAL | county: Louisa | sale: 2026-06-23
+2026-05-15 00:55:03,814  INFO    [32/40] ADDED — 8139 Chestnut Grove Road, Esmont | county: unknown | sale: 2026-05-19
+2026-05-15 00:55:03,815  INFO    [33/40] ADDED — 2649 OLIVER CREEK ROAD, TROY | county: unknown | sale: 2026-06-10
+2026-05-15 00:55:03,815  INFO    [34/40] ADDED — 1412 Carlton Avenue #101, Charlottesville | county: unknown | sale: 2026-04-21
+2026-05-15 00:55:03,816  INFO    [35/40] ADDED — 4585 Buffalo Road, Dillwyn | county: unknown | sale: 2026-05-13
+2026-05-15 00:55:03,817  INFO    [36/40] ADDED — 471 Tibbs Shop Road, Brightwood | county: unknown | sale: 2026-05-12
+2026-05-15 00:55:03,817  INFO    [37/40] ADDED — 1285 EAST RIVER ROAD, FORK UNION | county: unknown | sale: 2026-05-11
+2026-05-15 00:55:03,818  INFO    [38/40] ADDED — 3653 Gilbert Station Road, Barboursville | county: Albemarle | sale: 2026-05-26
+2026-05-15 00:55:03,819  INFO    [39/40] ADDED — 565 CEDAR LANE ROAD, PALMYRA | county: unknown | sale: 2026-06-26
+2026-05-15 00:55:03,819  INFO    [40/40] ADDED — 6084 Louisa Road, Keswick | county: unknown | sale: 2026-04-23
+2026-05-15 00:55:03,820  INFO    Column.us [column_us_dailyprogress] summary: 40 added | 0 skipped (no address) | 40 total blocks
+2026-05-15 00:55:03,837  INFO    Column.us [column_us_dailyprogress]: returning 40 listing(s)
+2026-05-15 00:55:03,837  INFO  --- Group 5: Auction.com (REO + trustee pre-sales) ---
+2026-05-15 00:55:04,133  INFO    Auction.com: scanning 6 sitemap file(s)
+2026-05-15 00:55:08,173  INFO    Auction.com: 37 target-county detail page(s)
+2026-05-15 00:55:28,861  INFO    Auction.com: found 37 target-county listing(s)
+2026-05-15 00:55:28,866  INFO  --- Group 6: Column.us — Virginia Gazette (Williamsburg) ---
+2026-05-15 00:55:29,213  INFO    Column.us [column_us_williamsburg]: https://vagazette.column.us/search?noticeType=Foreclosure+Sale&startDate=2026-04-15&endDate=2026-05-15  (30-day window: 2026-04-15 → 2026-05-15)
+2026-05-15 00:56:01,311  WARNING    Column.us [column_us_williamsburg]: page never showed 'VIRGINIA GAZETTE' after 20 s — no notices or site layout changed
+2026-05-15 00:56:01,346  INFO  --- Group 7: NV Daily Column.us SKIPPED (ENABLE_COLUMN_NVDAILY=False) ---
+2026-05-15 00:56:01,346  INFO  --- Group 8: Samuel I. White, P.C. (siwpc.com) ---
+2026-05-15 00:56:01,346  INFO    SIWPC: https://www.siwpc.com/sales-report
+2026-05-15 00:56:01,611  WARNING  Certificate did not match expected hostname: www.siwpc.com. Certificate: {'subject': ((('commonName', '*.bizland.com'),),), 'issuer': ((('countryName', 'GB'),), (('organizationName', 'Sectigo Limited'),), (('commonName', 'Sectigo Public Server Authentication CA DV R36'),)), 'version': 3, 'serialNumber': '6BB50C00BEE1B137CFB4C9B36EAC27CC', 'notBefore': 'Aug 18 00:00:00 2025 GMT', 'notAfter': 'Aug 18 23:59:59 2026 GMT', 'subjectAltName': (('DNS', '*.bizland.com'), ('DNS', 'bizland.com')), 'OCSP': ('http://ocsp.sectigo.com',), 'caIssuers': ('http://crt.sectigo.com/SectigoPublicServerAuthenticationCADVR36.crt',)}
+2026-05-15 00:56:01,612  ERROR    SIWPC error: HTTPSConnectionPool(host='www.siwpc.com', port=443): Max retries exceeded with url: /sales-report (Caused by SSLError(CertificateError("hostname 'www.siwpc.com' doesn't match either of '*.bizland.com', 'bizland.com'")))
+Traceback (most recent call last):
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/connection.py", line 796, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/connection.py", line 1010, in _ssl_wrap_socket_and_match_hostname
+    _match_hostname(
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/connection.py", line 1039, in _match_hostname
+    match_hostname(cert, asserted_hostname, hostname_checks_common_name)
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/util/ssl_match_hostname.py", line 152, in match_hostname
+    raise CertificateError(
+urllib3.util.ssl_match_hostname.CertificateError: hostname 'www.siwpc.com' doesn't match either of '*.bizland.com', 'bizland.com'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+urllib3.exceptions.SSLError: hostname 'www.siwpc.com' doesn't match either of '*.bizland.com', 'bizland.com'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/requests/adapters.py", line 644, in send
+    resp = conn.urlopen(
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/util/retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='www.siwpc.com', port=443): Max retries exceeded with url: /sales-report (Caused by SSLError(CertificateError("hostname 'www.siwpc.com' doesn't match either of '*.bizland.com', 'bizland.com'")))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jarvis/Documents/Claude/Foreclosures/scripts/scraper.py", line 2068, in scrape_siwpc
+    resp = requests.get(url, headers=HEADERS, timeout=25)
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/requests/api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "/Users/jarvis/Library/Python/3.9/lib/python/site-packages/requests/adapters.py", line 675, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='www.siwpc.com', port=443): Max retries exceeded with url: /sales-report (Caused by SSLError(CertificateError("hostname 'www.siwpc.com' doesn't match either of '*.bizland.com', 'bizland.com'")))
+2026-05-15 00:56:01,623  INFO    SIWPC: found 0 target-county listing(s)
+2026-05-15 00:56:01,623  INFO  --- Group 9: VA Courts SKIPPED (ENABLE_VA_COURTS=False) ---
+2026-05-15 00:56:01,637  INFO  Total after dedup: 405 listings
+2026-05-15 00:56:01,637  INFO  --- Owner data enrichment (county GIS) ---
+2026-05-15 00:56:01,637  INFO    Owner lookup: Richmond Times-Dispatch Thursday, May 14, 2026 City: County: (Richmond City)
+2026-05-15 00:56:14,689  INFO    Owner lookup: Richmond Times-Dispatch Wednesday, May 13, 2026 City: County: (Richmond City)
+2026-05-15 00:56:27,704  INFO    Owner lookup: Richmond Times-Dispatch Tuesday, May 12, 2026 City: County: (Richmond City)
+2026-05-15 00:56:40,718  INFO    Owner lookup: Richmond Times-Dispatch Monday, May 11, 2026 City: County: (Richmond City)
+2026-05-15 00:56:53,731  INFO    Owner lookup: Richmond Times-Dispatch Sunday, May 10, 2026 City: County: (Richmond City)
+2026-05-15 00:57:06,745  INFO    Owner lookup: Richmond Times-Dispatch Saturday, May 09, 2026 City: County: (Richmond City)
+2026-05-15 00:57:19,759  INFO    Owner lookup: Richmond Times-Dispatch Friday, May 08, 2026 City: County: (Richmond City)
+2026-05-15 00:57:32,768  INFO    Owner lookup: Richmond Times-Dispatch Thursday, May 07, 2026 City: County: (Richmond City)
+2026-05-15 00:57:45,784  INFO    Owner lookup: Richmond Times-Dispatch Wednesday, May 06, 2026 City: County: (Richmond City)
+2026-05-15 00:57:58,793  INFO    Owner lookup: Richmond Times-Dispatch Tuesday, May 05, 2026 City: County: (Richmond City)
+2026-05-15 00:58:11,804  INFO    Owner lookup: Richmond Times-Dispatch Monday, May 04, 2026 City: County: (Richmond City)
+2026-05-15 00:58:24,813  INFO    Owner lookup: Richmond Times-Dispatch Sunday, May 03, 2026 City: County: (Richmond City)
+2026-05-15 00:58:37,827  INFO    Owner lookup: Richmond Times-Dispatch Saturday, May 02, 2026 City: County: (Richmond City)
+2026-05-15 00:58:50,839  INFO    Owner lookup: Richmond Times-Dispatch Friday, May 01, 2026 City: County: (Richmond City)
+2026-05-15 00:59:03,852  INFO    Owner lookup: Richmond Times-Dispatch Thursday, April 30, 2026 City: County: (Richmond City)
+2026-05-15 00:59:16,866  INFO    Owner lookup: Richmond Times-Dispatch Wednesday, April 29, 2026 City: County: (Richmond City)
+2026-05-15 00:59:29,879  INFO    Owner lookup: Fauquier Times Wednesday, April 29, 2026 City: County: (Fauquier)
+2026-05-15 00:59:30,927  INFO    Owner lookup: Richmond Times-Dispatch Tuesday, April 28, 2026 City: County: (Richmond City)
+2026-05-15 00:59:43,941  INFO    Owner lookup: Richmond Times-Dispatch Monday, April 27, 2026 City: County: (Richmond City)
+2026-05-15 00:59:56,955  INFO    Owner lookup: Richmond Times-Dispatch Sunday, April 26, 2026 City: County: (Richmond City)
+2026-05-15 01:00:09,965  INFO    Owner lookup: Richmond Times-Dispatch Saturday, April 25, 2026 City: County: (Richmond City)
+2026-05-15 01:00:22,980  INFO    Owner lookup: Richmond Times-Dispatch Friday, April 24, 2026 City: County: (Richmond City)
+2026-05-15 01:00:35,994  INFO    Owner lookup: Richmond Times-Dispatch Thursday, April 23, 2026 City: County: (Richmond City)
+2026-05-15 01:00:49,009  INFO    Owner lookup: Richmond Times-Dispatch Wednesday, April 22, 2026 City: County: (Richmond City)
+2026-05-15 01:01:02,021  INFO    Owner lookup: Fauquier Times Wednesday, April 22, 2026 City: County: (Fauquier)
+2026-05-15 01:01:03,033  INFO    Owner lookup: Richmond Times-Dispatch Tuesday, April 21, 2026 City: County: (Richmond City)
+2026-05-15 01:01:16,047  INFO    Owner lookup: Richmond Times-Dispatch Sunday, April 19, 2026 City: County: (Richmond City)
+2026-05-15 01:01:29,061  INFO    Owner lookup: Richmond Times-Dispatch Saturday, April 18, 2026 City: County: (Richmond City)
+2026-05-15 01:01:42,074  INFO    Owner lookup: Richmond Times-Dispatch Friday, April 17, 2026 City: County: (Richmond City)
+2026-05-15 01:01:55,088  INFO    Owner lookup: Henrico Citizen Thursday, April 16, 2026 City: County: (Henrico)
+2026-05-15 01:01:56,132  INFO    Owner lookup: Richmond Times-Dispatch Thursday, April 16, 2026 City: County: (Richmond City)
+2026-05-15 01:02:09,145  INFO    Owner lookup: Richmond Times-Dispatch Wednesday, April 15, 2026 City: County: (Richmond City)
+2026-05-15 01:02:22,157  INFO    Owner lookup: Richmond Times-Dispatch Tuesday, April 14, 2026 City: County: (Richmond City)
+2026-05-15 01:02:35,171  INFO    Owner lookup: Richmond Times-Dispatch Monday, April 13, 2026 City: County: (Richmond City)
+2026-05-15 01:02:48,185  INFO    Owner lookup: Richmond Times-Dispatch Sunday, April 12, 2026 City: County: (Richmond City)
+2026-05-15 01:03:01,198  INFO    Owner lookup: Richmond Times-Dispatch Saturday, April 11, 2026 City: County: (Richmond City)
+2026-05-15 01:03:14,211  INFO    Owner lookup: Richmond Times-Dispatch Friday, April 10, 2026 City: County: (Richmond City)
+2026-05-15 01:03:27,224  INFO    Owner lookup: Richmond Times-Dispatch Thursday, April 09, 2026 City: County: (Richmond City)
+2026-05-15 01:03:40,241  INFO    Owner lookup: Richmond Times-Dispatch Wednesday, April 08, 2026 City: County: (Richmond City)
+2026-05-15 01:03:53,255  INFO    Owner lookup: Richmond Times-Dispatch Tuesday, April 07, 2026 City: County: (Richmond City)
+2026-05-15 01:04:06,269  INFO    Owner lookup: Richmond Times-Dispatch Monday, April 06, 2026 City: County: (Richmond City)
+2026-05-15 01:04:19,282  INFO    Owner lookup: Richmond Times-Dispatch Sunday, April 05, 2026 City: County: (Richmond City)
+2026-05-15 01:04:32,296  INFO    Owner lookup: Richmond Times-Dispatch Saturday, April 04, 2026 City: County: (Richmond City)
+2026-05-15 01:04:45,307  INFO    Owner lookup: Richmond Times-Dispatch Friday, April 03, 2026 City: County: (Richmond City)
+2026-05-15 01:04:58,322  INFO    Owner lookup: Richmond Times-Dispatch Thursday, April 02, 2026 City: County: (Richmond City)
+2026-05-15 01:05:11,338  INFO    Owner lookup: Richmond Times-Dispatch Wednesday, April 01, 2026 City: County: (Richmond City)
+2026-05-15 01:05:24,353  INFO    Owner lookup: Richmond Times-Dispatch Tuesday, March 31, 2026 City: County: (Richmond City)
+2026-05-15 01:05:37,365  INFO    Owner lookup: Richmond Times-Dispatch Thursday, March 26, 2026 City: County: (Richmond City)
+2026-05-15 01:05:50,374  INFO    Owner lookup: Richmond Times-Dispatch Wednesday, March 25, 2026 City: County: (Richmond City)
+2026-05-15 01:06:03,388  INFO    Owner lookup: Richmond Times-Dispatch Tuesday, March 24, 2026 City: County: (Richmond City)
+2026-05-15 01:06:16,402  INFO    Owner lookup: Fauquier Times Wednesday, March 18, 2026 City: County: (Fauquier)
+2026-05-15 01:06:17,461  INFO    Owner lookup: Richmond Times-Dispatch Wednesday, March 18, 2026 City: County: (Richmond City)
+2026-05-15 01:06:30,470  INFO    Owner lookup: Richmond Times-Dispatch Tuesday, March 17, 2026 City: County: (Richmond City)
+2026-05-15 01:06:43,483  INFO    Owner lookup: 107 Germanna Way, Stafford, VA 22554 (Stafford)
+2026-05-15 01:06:44,545  INFO    Owner lookup: 116 Landing Drive, Fredericksburg, VA 22405 (Fredericksburg City)
+2026-05-15 01:06:57,587  INFO    Owner lookup: 24 Ponderosa Lane, Palmyra, VA 22963 (Fluvanna)
+2026-05-15 01:06:58,592  INFO    Owner lookup: 1528 Riding Club Road, Keene, VA 22946 (Albemarle)
+2026-05-15 01:06:59,598  INFO    Owner lookup: 222 EVERGREEN ROAD, LOUISA, VA 23093 (Louisa)
+2026-05-15 01:07:00,694  INFO    Owner lookup: 3653 Gilbert Station Road, Barboursville, VA 22923 (Albemarle)
+2026-05-15 01:07:01,700  INFO    Owner lookup: 973 WILLIS PROFFITT ROAD, MINERAL, VA 23117 (Louisa)
+2026-05-15 01:07:02,837  INFO    Owner lookup: 3405 Danbury Rd (Richmond City)
+2026-05-15 01:07:15,851  INFO    Owner lookup: 101 Taraby Dr (Henrico)
+2026-05-15 01:07:16,891  INFO    Owner lookup: 704 Kinneytown Rd (Louisa)
+2026-05-15 01:07:17,951  INFO    Owner lookup: 1305 Mormac Rd (Richmond City)
+2026-05-15 01:07:30,964  INFO    Owner lookup: 3004 South Ridge Dr (Chesterfield)
+2026-05-15 01:07:32,014  INFO    Owner lookup: 211 Club Rd (Louisa)
+2026-05-15 01:07:33,066  INFO    Owner lookup: 309 N Lake Ave (Richmond City)
+2026-05-15 01:07:46,081  INFO    Owner lookup: 7012 Stanley Rd King (King George)
+2026-05-15 01:07:47,151  INFO    Owner lookup: 8230 Christian Ridge Dr (Hanover)
+2026-05-15 01:07:58,330  INFO    Owner lookup: 297 North Bluewater Blvd (Louisa)
+2026-05-15 01:07:59,386  INFO    Owner lookup: 2135 Allwood Ave (Richmond City)
+2026-05-15 01:08:12,399  INFO    Owner lookup: 5514 Parker St (Richmond City)
+2026-05-15 01:08:25,414  INFO    Owner lookup: 4619 Willesden Rd North (Chesterfield)
+2026-05-15 01:08:26,426  INFO    Owner lookup: 4224 N Kinsley Ave (Richmond City)
+2026-05-15 01:08:39,438  INFO    Owner lookup: 20300 Stonewood Manor Dr South (Chesterfield)
+2026-05-15 01:08:40,451  INFO    Owner lookup: 11000 Chester Rd (Chesterfield)
+2026-05-15 01:08:41,463  INFO    Owner lookup: 3523 Hanover Ave (Richmond City)
+2026-05-15 01:08:54,477  INFO    Owner lookup: 3929 Meadowview Ln (Richmond City)
+2026-05-15 01:09:07,492  INFO    Owner lookup: 2 Carlsbad Dr (Stafford)
+2026-05-15 01:09:08,503  INFO    Owner lookup: 6466 Bareback Ter North (Chesterfield)
+2026-05-15 01:09:09,514  INFO    Owner lookup: 3207 Gay Ave (Henrico)
+2026-05-15 01:09:10,527  INFO    Owner lookup: 100 Sand Dollar Cv (Stafford)
+2026-05-15 01:09:11,539  INFO    Owner lookup: 13201 Court Ridge Rd (Chesterfield)
+2026-05-15 01:09:12,550  INFO    Owner lookup: 7265 Cross County Rd (Louisa)
+2026-05-15 01:09:13,607  INFO    Owner lookup: 12274 Piney Ln (Fauquier)
+2026-05-15 01:09:14,619  INFO    Owner lookup: 8120 Four Mile Run Pkwy (Richmond City)
+2026-05-15 01:09:27,634  INFO    Owner lookup: 1911 Springdale Rd (Richmond City)
+2026-05-15 01:09:40,648  INFO    Owner lookup: 10432 Merrigan Rd (Richmond City)
+2026-05-15 01:09:53,664  INFO    Owner lookup: 205 Braemar Pl (Fredericksburg City)
+2026-05-15 01:10:06,674  INFO    Owner lookup: 205 Bentley Ave (Chesterfield)
+2026-05-15 01:10:07,685  INFO    Owner lookup: 4205 Seamore St (Richmond City)
+2026-05-15 01:10:20,699  INFO    Owner lookup: 13321 Kingsmill Rd (Chesterfield)
+2026-05-15 01:10:21,711  INFO    Owner lookup: 11256 Torrie Way (Fauquier)
+2026-05-15 01:10:22,721  INFO    Owner lookup: 912 Hartford Ln North (Chesterfield)
+2026-05-15 01:10:23,733  INFO    Owner lookup: 8600 Kingsland Park Dr North (Chesterfield)
+2026-05-15 01:10:24,745  INFO    Owner lookup: 9905 Shadowridge Ct (Fredericksburg City)
+2026-05-15 01:10:37,758  INFO    Owner lookup: 810 W 46Th St (Richmond City)
+2026-05-15 01:10:50,772  INFO    Owner enrichment complete: 0 enriched, 0 skipped (already set)
+2026-05-15 01:10:50,808  INFO  Saved 405 listings to /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures.json
+2026-05-15 01:10:50,809  INFO  Done.
+   Done.
+
+>> Step 2/3 — Syncing to Google Sheets...
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-05-15 01:10:51,026  INFO  Loaded 405 listings from /Users/jarvis/Documents/Claude/Foreclosures/scripts/../data/foreclosures.json
+2026-05-15 01:10:51,070  INFO    Authenticated with /Users/jarvis/Documents/Claude/Foreclosures/scripts/../credentials/service-account.json
+2026-05-15 01:10:52,685  INFO    Header row confirmed (30 columns)
+2026-05-15 01:10:52,685  INFO    3 addresses already in sheet
+2026-05-15 01:10:52,686  INFO    Back-filling 2 empty cell(s) on existing rows…
+2026-05-15 01:10:52,860  INFO    ✓ Enrichment back-fill complete (2 cells)
+2026-05-15 01:10:52,865  INFO    Appending 403 new row(s)…
+2026-05-15 01:10:53,408  INFO    ✓ Added 403 new listing(s) to Google Sheet
+2026-05-15 01:10:53,988  INFO    ✓ Summary tab updated — 406 total properties
+   Done.
+
+>> Step 3/3 — GitHub Pages push skipped (--no-push)
+
+==================================================
+  Pipeline complete — 2026-05-15 01:10:54
+==================================================
+
