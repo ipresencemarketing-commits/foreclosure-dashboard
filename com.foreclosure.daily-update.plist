@@ -8,13 +8,8 @@
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
-        <string>/Users/jarvis/Documents/Claude/Foreclosures/scripts/update.sh</string>
+        <string>/Users/jarvis/Documents/Claude/Foreclosures/scripts/run_daily.sh</string>
     </array>
-
-    <key>StandardOutPath</key>
-    <string>/Users/jarvis/Documents/Claude/Foreclosures/logs/last_run.log</string>
-    <key>StandardErrorPath</key>
-    <string>/Users/jarvis/Documents/Claude/Foreclosures/logs/last_run.log</string>
 
     <key>WorkingDirectory</key>
     <string>/Users/jarvis/Documents/Claude/Foreclosures</string>
@@ -42,7 +37,6 @@
     <key>RunAtLoad</key>
     <false/>
 
-    <!-- Restart automatically if it crashes -->
     <key>KeepAlive</key>
     <false/>
 </dict>
