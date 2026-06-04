@@ -395,6 +395,22 @@ ENABLE_VA_COURTS:           bool = False  # Dead — VA eCourts requires auth se
 ENABLE_SIWPC: bool = True   # Samuel I. White, P.C. — daily PDF at siwpc.net
 
 # ---------------------------------------------------------------------------
+# Glasser Law toggle  (handled by scraper_glasserlaw.py, called by run.py)
+# ---------------------------------------------------------------------------
+# Playwright required — Cloudflare protection on site.
+# URL: glasserlaw.com/New%20Folder/Foreclosure%20Sales.html
+# ~21 VA listings. Has bid deposit, original principal, full courthouse address.
+ENABLE_GLASSERLAW: bool = True
+
+# ---------------------------------------------------------------------------
+# MWC Law toggle  (handled by scraper_mwclaw.py, called by run.py)
+# ---------------------------------------------------------------------------
+# Static HTML — requests + BeautifulSoup, no Playwright needed.
+# URL: apps.mwc-law.com/SalesLists/VA.html
+# ~40 VA listings. Clean table with county, city, address, file number.
+ENABLE_MWCLAW: bool = True
+
+# ---------------------------------------------------------------------------
 # LOGS Legal toggle  (handled by scraper_logs.py, called by run.py)
 # ---------------------------------------------------------------------------
 # Playwright-based PowerBI interceptor — no HTML scraping.

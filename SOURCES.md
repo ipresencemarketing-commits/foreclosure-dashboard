@@ -1318,6 +1318,74 @@ includes **estimated market values** making investment scoring more accurate.
 
 ---
 
+---
+
+## Source 36 — Glasser & Glasser, P.L.C.
+
+**URL:** https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html
+**Source tag:** `glasserlaw`
+**Script:** `scripts/scraper_glasserlaw.py`
+**Toggle:** `ENABLE_GLASSERLAW` in `scripts/config.py` (currently `True`)
+**Technology:** Playwright (Cloudflare protection on site blocks plain requests)
+**Counties:** Statewide Virginia
+**Output:** `data/foreclosures_glasserlaw.json`
+
+### What this source provides
+| Field | Available? | Notes |
+|-------|-----------|-------|
+| Address | ✅ | Parsed from `<br/>`-separated lines in address cell |
+| County | ✅ | Jurisdiction field: "County of X" / "City of X" → normalised |
+| Sale Date | ✅ | M/D/YYYY |
+| Sale Time | ✅ | H:MM:SS AM/PM → H:MM AM/PM |
+| Sale Location | ✅ | Full courthouse address from `<br/>`-separated cell |
+| Bid Deposit | ✅ | "$7,000.00" → integer |
+| Original Principal | ✅ | Loan amount |
+| File Number | ✅ | In notice_text |
+| Trustee | ✅ | Always "Glasser & Glasser, P.L.C." |
+| Lender | ❌ | Not in table |
+| Notice Text | ❌ | Summary table only |
+| Owner Info | 🔄 | GIS backfill |
+
+### Fix status
+- ✅ Live 2026-06-04 — 21 listings, 0 unknown counties
+
+---
+
+## Source 37 — McCabe, Weisberg & Conway, LLC (MWC Law)
+
+**URL:** https://apps.mwc-law.com/SalesLists/VA.html
+**Source tag:** `mwclaw`
+**Script:** `scripts/scraper_mwclaw.py`
+**Toggle:** `ENABLE_MWCLAW` in `scripts/config.py` (currently `True`)
+**Technology:** `requests` + BeautifulSoup — static HTML, no Playwright needed
+**Counties:** Statewide Virginia
+**Output:** `data/foreclosures_mwclaw.json`
+
+### What this source provides
+| Field | Available? | Notes |
+|-------|-----------|-------|
+| Address | ✅ | Street + city in separate columns |
+| County | ✅ | Explicit column — normalised (handles "Prince WiIliam" typo, "Montgomery-VA") |
+| Sale Date | ✅ | M/D/YYYY |
+| Sale Time | ✅ | H:MM:SS AM/PM → H:MM AM/PM |
+| File Number | ✅ | In notice_text |
+| ZIP | ❌ | Not in table — GIS backfill fills from address |
+| Bid Deposit | ❌ | Not in table |
+| Lender | ❌ | Not in table |
+| Notice Text | ❌ | Summary table only |
+| Owner Info | 🔄 | GIS backfill |
+
+### County normalisation notes
+- `"Prince WiIliam County"` — typo (capital I); stripped to "Prince William"
+- `"Montgomery-VA"` — stripped "-VA" suffix → "Montgomery"
+- `"City of X"` — normalised to "X City" via county_display()
+- `"Alexandria"` — bare city → "Alexandria City"
+
+### Fix status
+- ✅ Live 2026-06-04 — 40 listings, 0 unknown counties
+
+---
+
 ## Fix Order (by lead volume potential)
 
 1. **SIWPC** — highest-volume firm, early-warning value, simple HTML table scraper.

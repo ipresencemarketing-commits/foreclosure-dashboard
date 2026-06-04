@@ -115,6 +115,46 @@ def main():
         print()
         print("  SIWPC: SKIPPED (ENABLE_SIWPC=False in config.py)")
 
+    # ── Glasser Law ───────────────────────────────────────────────
+    if cfg.ENABLE_GLASSERLAW:
+        print()
+        print("-" * 60)
+        print("  Glasser Law (glasserlaw.com)")
+        print("-" * 60)
+        gl_output = os.path.join(PROJECT_ROOT, "data", "foreclosures_glasserlaw.json")
+        ok = run(
+            [python, "scripts/scraper_glasserlaw.py"],
+            "Glasser Law scraper"
+        )
+        if ok and sync:
+            run(
+                [python, "scripts/sheets_sync.py", "--file", gl_output],
+                "sheets sync — Glasser Law"
+            )
+    else:
+        print()
+        print("  Glasser Law: SKIPPED (ENABLE_GLASSERLAW=False in config.py)")
+
+    # ── MWC Law ───────────────────────────────────────────────────
+    if cfg.ENABLE_MWCLAW:
+        print()
+        print("-" * 60)
+        print("  MWC Law (apps.mwc-law.com)")
+        print("-" * 60)
+        mwc_output = os.path.join(PROJECT_ROOT, "data", "foreclosures_mwclaw.json")
+        ok = run(
+            [python, "scripts/scraper_mwclaw.py"],
+            "MWC Law scraper"
+        )
+        if ok and sync:
+            run(
+                [python, "scripts/sheets_sync.py", "--file", mwc_output],
+                "sheets sync — MWC Law"
+            )
+    else:
+        print()
+        print("  MWC Law: SKIPPED (ENABLE_MWCLAW=False in config.py)")
+
     # ── LOGS Legal Group LLP ─────────────────────────────────────
     if cfg.ENABLE_LOGS:
         print()
