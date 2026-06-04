@@ -395,6 +395,14 @@ ENABLE_VA_COURTS:           bool = False  # Dead — VA eCourts requires auth se
 ENABLE_SIWPC: bool = True   # Samuel I. White, P.C. — daily PDF at siwpc.net
 
 # ---------------------------------------------------------------------------
+# Auction Network toggle  (handled by scraper_auctionnetwork.py, called by run.py)
+# ---------------------------------------------------------------------------
+# Playwright required — JS-rendered SPA, no state filter URL param.
+# Scrapes all pages, filters VA-only, fetches each detail page.
+# Low volume (typically 2-10 VA listings) but catches unique properties.
+ENABLE_AUCTIONNETWORK: bool = True
+
+# ---------------------------------------------------------------------------
 # Glasser Law toggle  (handled by scraper_glasserlaw.py, called by run.py)
 # ---------------------------------------------------------------------------
 # Playwright required — Cloudflare protection on site.

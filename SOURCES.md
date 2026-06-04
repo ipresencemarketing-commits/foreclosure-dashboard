@@ -1386,6 +1386,46 @@ includes **estimated market values** making investment scoring more accurate.
 
 ---
 
+---
+
+## Source 38 — Auction Network
+
+**URL:** https://bid.auctionnetwork.com/Home/Auctions?auctionTypes=Foreclosure/Trustee
+**Source tag:** `auctionnetwork`
+**Script:** `scripts/scraper_auctionnetwork.py`
+**Toggle:** `ENABLE_AUCTIONNETWORK` in `scripts/config.py` (currently `True`)
+**Technology:** Playwright (JS-rendered SPA; no URL state filter available)
+**Counties:** Statewide Virginia (filtered from multi-state listing)
+**Output:** `data/foreclosures_auctionnetwork.json`
+
+### What this source provides
+| Field | Available? | Notes |
+|-------|-----------|-------|
+| Address | ✅ | Parsed from `<br/>`-separated h1 lines |
+| County | ✅ | From detail page (e.g. "Prince William County") |
+| Sale Date + Time | ✅ | From detail page: "LIVE Auction Jun 16 at 1:00 PM" |
+| Sale Location | ✅ | From detail page: "Sale Location: ..." (VA-verified) |
+| Listing URL | ✅ | Individual detail page on bid.auctionnetwork.com |
+| Listing ID | ✅ | `data-listingid` attribute |
+| Opening Bid | ❌ | Not shown pre-auction |
+| Lender / Notice Text | ❌ | Not in listing |
+| Owner Info | 🔄 | GIS backfill |
+
+### Scraping approach
+1. Paginate through all listing pages (safety cap 20 pages)
+2. On each page, collect listing cards where address contains `, VA ` — filter Virginia only
+3. Deduplicate by `data-listingid` (same VA listings may appear on multiple pages)
+4. For each unique VA listing, load the detail page to get exact sale date/time, county, and sale location
+5. Validate sale location — falls back to `courthouse_location(county)` if location doesn't contain "VA"
+
+### Volume
+Typically 2–10 VA listings. Low volume but captures properties from Williams & Williams Auctioneers and similar firms not listed on other sources.
+
+### Fix status
+- ✅ Live 2026-06-04 — 2 listings (Prince William, King William), all fields parsing correctly
+
+---
+
 ## Fix Order (by lead volume potential)
 
 1. **SIWPC** — highest-volume firm, early-warning value, simple HTML table scraper.

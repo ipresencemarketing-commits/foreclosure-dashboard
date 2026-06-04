@@ -115,6 +115,26 @@ def main():
         print()
         print("  SIWPC: SKIPPED (ENABLE_SIWPC=False in config.py)")
 
+    # ── Auction Network ───────────────────────────────────────────
+    if cfg.ENABLE_AUCTIONNETWORK:
+        print()
+        print("-" * 60)
+        print("  Auction Network (bid.auctionnetwork.com)")
+        print("-" * 60)
+        an_output = os.path.join(PROJECT_ROOT, "data", "foreclosures_auctionnetwork.json")
+        ok = run(
+            [python, "scripts/scraper_auctionnetwork.py"],
+            "Auction Network scraper"
+        )
+        if ok and sync:
+            run(
+                [python, "scripts/sheets_sync.py", "--file", an_output],
+                "sheets sync — Auction Network"
+            )
+    else:
+        print()
+        print("  Auction Network: SKIPPED (ENABLE_AUCTIONNETWORK=False in config.py)")
+
     # ── Glasser Law ───────────────────────────────────────────────
     if cfg.ENABLE_GLASSERLAW:
         print()
