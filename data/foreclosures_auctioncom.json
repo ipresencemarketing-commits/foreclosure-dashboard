@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "auction_com",
-    "updated": "2026-06-04",
+    "updated": "2026-06-05",
     "url": "https://www.auction.com/residential/VA/active_lt/auction_date_order_st/goto_mt/y_nbs/foreclosures_at"
   },
   "listings": [
@@ -95,7 +95,7 @@
       "sale_date": "2026-06-08",
       "sale_time": "11:30 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 4,
+      "days_until_sale": 3,
       "asking_price": null,
       "assessed_value": 279322,
       "beds_baths_sqft": "2bd / 1ba / 1,558 sqft",
@@ -106,7 +106,7 @@
       "notice_text": "Listing ID: 2059498 | Occupancy: Vacant",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/14245-sinking-creek-rd-bristol-va-2059498",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -121,7 +121,7 @@
       "sale_date": "2026-06-08",
       "sale_time": "1:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 4,
+      "days_until_sale": 3,
       "asking_price": null,
       "assessed_value": 200042,
       "beds_baths_sqft": "1bd / 1ba / 720 sqft",
@@ -132,7 +132,7 @@
       "notice_text": "Listing ID: 2026976 | Occupancy: Occupied",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/3701-5th-st-s-arlington-va-2026976",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -147,7 +147,7 @@
       "sale_date": "2026-06-08",
       "sale_time": "2:30 PM",
       "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 4,
+      "days_until_sale": 3,
       "asking_price": null,
       "assessed_value": 406864,
       "beds_baths_sqft": "4bd / 2.5ba / 2,130 sqft",
@@ -158,7 +158,7 @@
       "notice_text": "Listing ID: 2026709 | Occupancy: Occupied | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/10400-crooked-branch-ter-north-chesterfield-va-2026709",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -173,7 +173,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "9:45 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 5,
+      "days_until_sale": 4,
       "asking_price": null,
       "assessed_value": 464863,
       "beds_baths_sqft": "4bd / 3ba / 2,557 sqft",
@@ -184,7 +184,7 @@
       "notice_text": "Listing ID: 2025693 | Occupancy: Occupied | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/403-dunham-massie-dr-hampton-va-2025693",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -199,7 +199,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "11:45 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 5,
+      "days_until_sale": 4,
       "asking_price": null,
       "assessed_value": 204000,
       "beds_baths_sqft": "0bd / 0.5ba / 1,960 sqft",
@@ -210,7 +210,7 @@
       "notice_text": "Listing ID: 2033951 | Occupancy: Vacant | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/1152-augusta-pl-lynchburg-va-2033951",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -225,7 +225,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "1:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 5,
+      "days_until_sale": 4,
       "asking_price": null,
       "assessed_value": 255394,
       "beds_baths_sqft": "2bd / 1.5ba / 1,224 sqft",
@@ -236,7 +236,7 @@
       "notice_text": "Listing ID: 2023021 | Occupancy: Occupied | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/1558-crescent-pointe-ln-virginia-beach-va-2023021",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -251,7 +251,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "1:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 5,
+      "days_until_sale": 4,
       "asking_price": null,
       "assessed_value": 461342,
       "beds_baths_sqft": "3bd / 2ba / 1,324 sqft",
@@ -262,7 +262,7 @@
       "notice_text": "Listing ID: 2027906 | Occupancy: Occupied | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/14201-fisher-ave-woodbridge-va-2027906",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -277,7 +277,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "1:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 5,
+      "days_until_sale": 4,
       "asking_price": null,
       "assessed_value": 289304,
       "beds_baths_sqft": "2bd / 2ba / 948 sqft",
@@ -288,7 +288,7 @@
       "notice_text": "Listing ID: 2045761 | Occupancy: Occupied | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/103-saw-grass-bnd-virginia-beach-va-2045761",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -303,7 +303,7 @@
       "sale_date": "2026-06-10",
       "sale_time": "10:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 6,
+      "days_until_sale": 5,
       "asking_price": null,
       "assessed_value": 365000,
       "beds_baths_sqft": "4bd / 2ba / 1,464 sqft",
@@ -314,7 +314,7 @@
       "notice_text": "Listing ID: 2026213 | Occupancy: Occupied",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/1310-elm-view-ave-norfolk-va-2026213",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -329,7 +329,7 @@
       "sale_date": "2026-06-10",
       "sale_time": "12:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 6,
+      "days_until_sale": 5,
       "asking_price": null,
       "assessed_value": 251425,
       "beds_baths_sqft": "3bd / 1ba / 950 sqft",
@@ -340,7 +340,7 @@
       "notice_text": "Listing ID: 2045760 | Occupancy: Occupied",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/508-stalham-rd-chesapeake-va-2045760",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -355,7 +355,7 @@
       "sale_date": "2026-06-10",
       "sale_time": "3:45 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 6,
+      "days_until_sale": 5,
       "asking_price": null,
       "assessed_value": 474269,
       "beds_baths_sqft": "4bd / 2.5ba / 1,919 sqft",
@@ -366,7 +366,7 @@
       "notice_text": "Listing ID: 2031064 | Occupancy: Vacant | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/2628-sir-thomas-way-williamsburg-va-2031064",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -381,7 +381,7 @@
       "sale_date": "2026-06-11",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 7,
+      "days_until_sale": 6,
       "asking_price": null,
       "assessed_value": 339682,
       "beds_baths_sqft": "4bd / 2.5ba / 2,122 sqft",
@@ -392,7 +392,7 @@
       "notice_text": "Listing ID: 2035334 | Occupancy: Occupied | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/1128-micott-dr-hampton-va-2035334",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -407,7 +407,7 @@
       "sale_date": "2026-06-11",
       "sale_time": "1:00 PM",
       "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 7,
+      "days_until_sale": 6,
       "asking_price": null,
       "assessed_value": 383784,
       "beds_baths_sqft": "3bd / 2.5ba / 2,304 sqft",
@@ -418,7 +418,7 @@
       "notice_text": "Listing ID: 2026216 | Occupancy: Occupied",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/14435-hancock-towns-dr-chesterfield-va-2026216",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -433,7 +433,7 @@
       "sale_date": "2026-06-15",
       "sale_time": "10:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 11,
+      "days_until_sale": 10,
       "asking_price": null,
       "assessed_value": null,
       "beds_baths_sqft": "0bd / 0ba",
@@ -444,7 +444,7 @@
       "notice_text": "Listing ID: 2050584 | Occupancy: Occupied | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/74-old-virginia-st-urbanna-va-2050584",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -459,7 +459,7 @@
       "sale_date": "2026-06-15",
       "sale_time": "10:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 11,
+      "days_until_sale": 10,
       "asking_price": null,
       "assessed_value": 241263,
       "beds_baths_sqft": "4bd / 2ba / 1,152 sqft",
@@ -470,7 +470,7 @@
       "notice_text": "Listing ID: 2052215 | Occupancy: Occupied",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/23390-booth-rd-stony-creek-va-2052215",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -485,7 +485,7 @@
       "sale_date": "2026-06-15",
       "sale_time": "3:45 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 11,
+      "days_until_sale": 10,
       "asking_price": null,
       "assessed_value": 485450,
       "beds_baths_sqft": "3bd / 3ba / 2,902 sqft",
@@ -496,7 +496,7 @@
       "notice_text": "Listing ID: 2061419 | Occupancy: Vacant | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/23179-antioch-rd-windsor-va-2061419",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -511,7 +511,7 @@
       "sale_date": "2026-06-16",
       "sale_time": "9:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 12,
+      "days_until_sale": 11,
       "asking_price": null,
       "assessed_value": 358466,
       "beds_baths_sqft": "5bd / 2ba / 2,338 sqft",
@@ -522,7 +522,7 @@
       "notice_text": "Listing ID: 2039325 | Occupancy: Occupied",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/807-churchville-ave-staunton-va-2039325",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -537,7 +537,7 @@
       "sale_date": "2026-06-16",
       "sale_time": "12:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 12,
+      "days_until_sale": 11,
       "asking_price": null,
       "assessed_value": 156000,
       "beds_baths_sqft": "4bd / 0ba / 3,155 sqft",
@@ -548,7 +548,7 @@
       "notice_text": "Listing ID: 2033234 | Occupancy: Occupied | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/3046-linwood-rd-nw-roanoke-va-2033234",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -563,7 +563,7 @@
       "sale_date": "2026-06-16",
       "sale_time": "12:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 12,
+      "days_until_sale": 11,
       "asking_price": null,
       "assessed_value": 250429,
       "beds_baths_sqft": "3bd / 1.5ba / 2,310 sqft",
@@ -574,7 +574,7 @@
       "notice_text": "Listing ID: 2040545 | Occupancy: Vacant",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/1809-azalea-ave-portsmouth-va-2040545",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -589,7 +589,7 @@
       "sale_date": "2026-06-16",
       "sale_time": "12:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 12,
+      "days_until_sale": 11,
       "asking_price": null,
       "assessed_value": 428219,
       "beds_baths_sqft": "3bd / 3ba / 2,511 sqft",
@@ -600,7 +600,7 @@
       "notice_text": "Listing ID: 2036256 | Occupancy: Occupied",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/3414-kenwick-trl-roanoke-va-2036256",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -615,7 +615,7 @@
       "sale_date": "2026-06-16",
       "sale_time": "3:15 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 12,
+      "days_until_sale": 11,
       "asking_price": null,
       "assessed_value": 193000,
       "beds_baths_sqft": "4bd / 1ba / 1,056 sqft",
@@ -626,7 +626,7 @@
       "notice_text": "Listing ID: 2032075 | Occupancy: Occupied | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/31218-cherokee-dr-franklin-va-2032075",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -641,7 +641,7 @@
       "sale_date": "2026-06-17",
       "sale_time": "12:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 13,
+      "days_until_sale": 12,
       "asking_price": null,
       "assessed_value": 360848,
       "beds_baths_sqft": "3bd / 1.5ba / 1,663 sqft",
@@ -652,7 +652,7 @@
       "notice_text": "Listing ID: 2036147 | Occupancy: Vacant | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/105-cottonwood-ln-chesapeake-va-2036147",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -667,7 +667,7 @@
       "sale_date": "2026-06-18",
       "sale_time": "3:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 14,
+      "days_until_sale": 13,
       "asking_price": null,
       "assessed_value": 119000,
       "beds_baths_sqft": "0bd / 2ba / 1,134 sqft",
@@ -678,7 +678,7 @@
       "notice_text": "Listing ID: 2040256 | Occupancy: Occupied | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/187-holcomb-st-danville-va-2040256",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -745,7 +745,7 @@
       "sale_date": "2026-06-08",
       "sale_time": "10:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 4,
+      "days_until_sale": 3,
       "asking_price": null,
       "assessed_value": 401516,
       "beds_baths_sqft": "4bd / 3.5ba / 2,065 sqft",
@@ -756,7 +756,7 @@
       "notice_text": "Listing ID: 2030894 | Occupancy: Vacant | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/245-crofton-ct-stephenson-va-2030894",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -771,7 +771,7 @@
       "sale_date": "2026-06-08",
       "sale_time": "10:30 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 4,
+      "days_until_sale": 3,
       "asking_price": null,
       "assessed_value": 275500,
       "beds_baths_sqft": "4bd / 4ba / 3,450 sqft",
@@ -782,7 +782,7 @@
       "notice_text": "Listing ID: 2031180 | Occupancy: Occupied",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/209-maple-ave-waynesboro-va-2031180",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -797,7 +797,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "11:30 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 5,
+      "days_until_sale": 4,
       "asking_price": null,
       "assessed_value": 410772,
       "beds_baths_sqft": "1bd / 1.5ba / 1,045 sqft",
@@ -808,7 +808,7 @@
       "notice_text": "Listing ID: 2030120 | Occupancy: Occupied | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/5904-mount-eagle-dr-alexandria-va-2030120",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -823,7 +823,7 @@
       "sale_date": "2026-06-15",
       "sale_time": "1:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 11,
+      "days_until_sale": 10,
       "asking_price": null,
       "assessed_value": 175000,
       "beds_baths_sqft": "2bd / 1ba / 696 sqft",
@@ -834,7 +834,7 @@
       "notice_text": "Listing ID: 2035190 | Occupancy: Vacant | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/2392-w-river-rd-aylett-va-2035190",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -849,7 +849,7 @@
       "sale_date": "2026-06-15",
       "sale_time": "2:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 11,
+      "days_until_sale": 10,
       "asking_price": null,
       "assessed_value": 333500,
       "beds_baths_sqft": "3bd / 2ba / 1,328 sqft",
@@ -860,7 +860,7 @@
       "notice_text": "Listing ID: 2035330 | Occupancy: Occupied | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/1810-maplewood-ave-richmond-va-2035330",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -875,7 +875,7 @@
       "sale_date": "2026-06-16",
       "sale_time": "2:45 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 12,
+      "days_until_sale": 11,
       "asking_price": null,
       "assessed_value": 236127,
       "beds_baths_sqft": "3bd / 2.5ba / 1,201 sqft",
@@ -886,7 +886,7 @@
       "notice_text": "Listing ID: 2032597 | Occupancy: Occupied",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/1821-spar-st-chesapeake-va-2032597",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     },
     {
@@ -901,7 +901,7 @@
       "sale_date": "2026-06-18",
       "sale_time": "9:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 14,
+      "days_until_sale": 13,
       "asking_price": null,
       "assessed_value": 103000,
       "beds_baths_sqft": "3bd / 1ba / 1,283 sqft",
@@ -912,7 +912,7 @@
       "notice_text": "Listing ID: 2040254 | Occupancy: Occupied | Hot",
       "source": "auction_com",
       "source_url": "https://www.auction.com/details/1509-wildcat-rd-big-stone-gap-va-2040254",
-      "first_seen": "2026-06-04",
+      "first_seen": "2026-06-05",
       "is_new": true
     }
   ]
