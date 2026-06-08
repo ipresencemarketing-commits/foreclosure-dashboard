@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "servicelink",
-    "updated": "2026-06-05",
+    "updated": "2026-06-08",
     "url": "https://www.servicelinkauction.com/foreclosures/virginia"
   },
   "listings": [
@@ -192,7 +192,7 @@
       "sale_date": "2026-06-08",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 3,
+      "days_until_sale": 0,
       "asking_price": null,
       "lender": null,
       "trustee": "Orlans Associates P.C.",
@@ -202,7 +202,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/525-westwood-blvd-nw-roanoke-24017-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -242,7 +242,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 4,
+      "days_until_sale": 1,
       "asking_price": null,
       "lender": null,
       "trustee": "RAS",
@@ -252,7 +252,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/93-brooke-crest-ln-stafford-22554-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -317,7 +317,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 4,
+      "days_until_sale": 1,
       "asking_price": null,
       "lender": null,
       "trustee": "BWW Law Group",
@@ -327,7 +327,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/3148-hancock-dr-chesapeake-23323-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -342,7 +342,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 4,
+      "days_until_sale": 1,
       "asking_price": null,
       "lender": null,
       "trustee": "LOGS Legal Group LLP",
@@ -352,7 +352,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/215-oliver-rd-altavista-24517-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -367,7 +367,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 4,
+      "days_until_sale": 1,
       "asking_price": null,
       "lender": null,
       "trustee": "RAS",
@@ -377,7 +377,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/169-royal-ct-warrenton-20186-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -417,7 +417,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 4,
+      "days_until_sale": 1,
       "asking_price": null,
       "lender": null,
       "trustee": "RAS",
@@ -427,7 +427,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/1070-rainey-dr-norfolk-23504-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -442,7 +442,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 4,
+      "days_until_sale": 1,
       "asking_price": null,
       "lender": null,
       "trustee": "LOGS Legal Group LLP",
@@ -452,7 +452,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/3931-port-rd-chesapeake-23321-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -467,7 +467,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 4,
+      "days_until_sale": 1,
       "asking_price": null,
       "lender": null,
       "trustee": "RAS",
@@ -477,7 +477,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/9-kelley-rd-fredericksburg-22405-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -492,7 +492,7 @@
       "sale_date": "2026-06-10",
       "sale_time": "10:00 AM",
       "sale_location": "The front of the Circuit Court building for the County of Frederick located at 5 North Kent Street, Winchester, Virginia.",
-      "days_until_sale": 5,
+      "days_until_sale": 2,
       "asking_price": null,
       "lender": null,
       "trustee": "LOGS Legal Group LLP",
@@ -502,7 +502,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/237-brunswick-rd-stephens-city-22655-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -517,7 +517,7 @@
       "sale_date": "2026-06-10",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 5,
+      "days_until_sale": 2,
       "asking_price": null,
       "lender": null,
       "trustee": "RAS",
@@ -527,7 +527,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/6700-brambleton-rd-chesterfield-23832-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -542,7 +542,7 @@
       "sale_date": "2026-06-10",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 5,
+      "days_until_sale": 2,
       "asking_price": null,
       "lender": null,
       "trustee": "LOGS Legal Group LLP",
@@ -552,7 +552,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/6522-wheeler-dr-king-george-22485-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -567,7 +567,7 @@
       "sale_date": "2026-06-10",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 5,
+      "days_until_sale": 2,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -577,7 +577,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/100-coville-st-middletown-22645-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -592,7 +592,7 @@
       "sale_date": "2026-06-10",
       "sale_time": "2:00 PM",
       "sale_location": "In the front of the Circuit Court building for Frederick County located at the Judicial Center, 5 North Kent Street, Winchester, Virginia, or any such temporary alternative Circuit Court location designated by the Judges of the Circuit Court",
-      "days_until_sale": 5,
+      "days_until_sale": 2,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -602,7 +602,7 @@
       "notice_text": "Case #: VA-381618 | Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/157-equestrian-dr-stephens-city-22655-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -617,7 +617,7 @@
       "sale_date": "2026-06-11",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 6,
+      "days_until_sale": 3,
       "asking_price": null,
       "lender": null,
       "trustee": "Power Default Services Inc",
@@ -627,7 +627,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/8601-river-rd-south-chesterfield-23803-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -642,7 +642,7 @@
       "sale_date": "2026-06-12",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 7,
+      "days_until_sale": 4,
       "asking_price": null,
       "lender": null,
       "trustee": "Rosenberg and Associates",
@@ -652,7 +652,7 @@
       "notice_text": "Occupancy: Vacant | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/56-banister-dr-hampton-23666-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -667,7 +667,7 @@
       "sale_date": "2026-06-15",
       "sale_time": "12:00 PM",
       "sale_location": "In the front of the Circuit Court building for Gloucester County, 7400 Justice Drive, Gloucester, Virginia, or any such temporary alternative Circuit Court location designated by the Judges of the Circuit Court",
-      "days_until_sale": 10,
+      "days_until_sale": 7,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -677,7 +677,7 @@
       "notice_text": "Case #: VA-383100 | Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/2706-pigeon-hill-rd-hayes-23072-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -692,7 +692,7 @@
       "sale_date": "2026-06-15",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 10,
+      "days_until_sale": 7,
       "asking_price": null,
       "lender": null,
       "trustee": "Atlantic / Orlans Law",
@@ -702,7 +702,7 @@
       "notice_text": null,
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/1116-fairfax-avenue-northwest-roanoke-24017-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -717,7 +717,7 @@
       "sale_date": "2026-06-15",
       "sale_time": "2:30 PM",
       "sale_location": "In the front of the Circuit Court building for the City of Richmond, John Marshall Courts Building, 400 North 9th Street, Richmond, Virginia",
-      "days_until_sale": 10,
+      "days_until_sale": 7,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -727,7 +727,7 @@
       "notice_text": "Case #: VA-383190 | Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/12325-petrel-xing-midlothian-23112-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -742,7 +742,7 @@
       "sale_date": "2026-06-16",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 11,
+      "days_until_sale": 8,
       "asking_price": null,
       "lender": null,
       "trustee": "Rosenberg and Associates",
@@ -752,7 +752,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/1300-smyrna-cir-virginia-beach-23464-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -767,7 +767,7 @@
       "sale_date": "2026-06-16",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 11,
+      "days_until_sale": 8,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -777,7 +777,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/1325-w-25th-st-norfolk-23508-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -792,7 +792,7 @@
       "sale_date": "2026-06-16",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 11,
+      "days_until_sale": 8,
       "asking_price": null,
       "lender": null,
       "trustee": "Tromberg, Morris & Poulin",
@@ -802,7 +802,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/509-brian-avenue-virginia-beach-23462-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -817,7 +817,7 @@
       "sale_date": "2026-06-16",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 11,
+      "days_until_sale": 8,
       "asking_price": null,
       "lender": null,
       "trustee": "Cohn, Goldberg and Deutsch, LLC",
@@ -827,7 +827,7 @@
       "notice_text": "Occupancy: Vacant | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/5904-mount-eagle-drive-unit-4-1615-alexandria-22303-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -842,7 +842,7 @@
       "sale_date": "2026-06-18",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 13,
+      "days_until_sale": 10,
       "asking_price": null,
       "lender": null,
       "trustee": "LOGS Legal Group LLP",
@@ -852,7 +852,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/451-ingal-blvd-salem-24153-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -867,7 +867,7 @@
       "sale_date": "2026-06-18",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 13,
+      "days_until_sale": 10,
       "asking_price": null,
       "lender": null,
       "trustee": "RAS",
@@ -877,7 +877,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/1007-mount-laurel-rd-clover-24534-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -892,7 +892,7 @@
       "sale_date": "2026-06-18",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 13,
+      "days_until_sale": 10,
       "asking_price": null,
       "lender": null,
       "trustee": "LOGS Legal Group LLP",
@@ -902,7 +902,7 @@
       "notice_text": "Occupancy: Vacant | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/6426-hickory-fork-rd-hayes-23072-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -917,7 +917,7 @@
       "sale_date": "2026-06-19",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 14,
+      "days_until_sale": 11,
       "asking_price": null,
       "lender": null,
       "trustee": "Cohn, Goldberg and Deutsch, LLC",
@@ -927,7 +927,7 @@
       "notice_text": null,
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/15830-donald-curtis-dr-woodbridge-22191-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -942,7 +942,7 @@
       "sale_date": "2026-06-22",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 17,
+      "days_until_sale": 14,
       "asking_price": null,
       "lender": null,
       "trustee": "LOGS Legal Group LLP",
@@ -952,7 +952,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/56-gospel-light-church-rd-axton-24054-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -967,7 +967,7 @@
       "sale_date": "2026-06-22",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 17,
+      "days_until_sale": 14,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -977,7 +977,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/517-byswick-ln-richmond-23225-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -992,7 +992,7 @@
       "sale_date": "2026-06-22",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 17,
+      "days_until_sale": 14,
       "asking_price": null,
       "lender": null,
       "trustee": "RAS",
@@ -1002,7 +1002,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/200-cove-terrace-carrollton-23314-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1017,7 +1017,7 @@
       "sale_date": "2026-06-22",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 17,
+      "days_until_sale": 14,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -1027,7 +1027,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/9085-williamsville-rd-mechanicsville-23116-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1042,7 +1042,7 @@
       "sale_date": "2026-06-22",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 17,
+      "days_until_sale": 14,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -1052,7 +1052,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/8601-erika-hill-dr-midlothian-23112-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1067,7 +1067,7 @@
       "sale_date": "2026-06-23",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 18,
+      "days_until_sale": 15,
       "asking_price": null,
       "lender": null,
       "trustee": "Tromberg, Morris & Poulin",
@@ -1077,7 +1077,7 @@
       "notice_text": "Occupancy: Vacant | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/4028-foxwood-dr-virginia-beach-23462-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1117,7 +1117,7 @@
       "sale_date": "2026-06-23",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 18,
+      "days_until_sale": 15,
       "asking_price": null,
       "lender": null,
       "trustee": "Brock and Scott PLLC",
@@ -1127,7 +1127,7 @@
       "notice_text": "Case #: 25-26178-FC01",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/1576-dylan-dr-virginia-beach-23464-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1142,7 +1142,7 @@
       "sale_date": "2026-06-23",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 18,
+      "days_until_sale": 15,
       "asking_price": null,
       "lender": null,
       "trustee": "Rosenberg and Associates",
@@ -1152,7 +1152,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/140-hillcrest-cir-saltville-24370-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1167,7 +1167,7 @@
       "sale_date": "2026-06-23",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 18,
+      "days_until_sale": 15,
       "asking_price": null,
       "lender": null,
       "trustee": "Samuel I. White, PC",
@@ -1177,7 +1177,7 @@
       "notice_text": "Occupancy: Vacant | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/2619-forest-hills-rd-petersburg-23805-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1192,7 +1192,7 @@
       "sale_date": "2026-06-24",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 19,
+      "days_until_sale": 16,
       "asking_price": null,
       "lender": null,
       "trustee": "Tromberg, Morris & Poulin",
@@ -1202,7 +1202,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/828-kemp-meadow-dr-chesapeake-23320-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1217,7 +1217,7 @@
       "sale_date": "2026-06-24",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 19,
+      "days_until_sale": 16,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -1227,7 +1227,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/46542-lynnhaven-square-sterling-20165-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1242,7 +1242,7 @@
       "sale_date": "2026-06-24",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 19,
+      "days_until_sale": 16,
       "asking_price": null,
       "lender": null,
       "trustee": "Cohn, Goldberg and Deutsch, LLC",
@@ -1252,7 +1252,7 @@
       "notice_text": null,
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/332-worthington-sq-portsmouth-23704-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1267,7 +1267,7 @@
       "sale_date": "2026-06-24",
       "sale_time": "2:00 PM",
       "sale_location": "In the front of the Circuit Court building for Loudoun County, 18 E. Market Street, Leesburg, VA",
-      "days_until_sale": 19,
+      "days_until_sale": 16,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -1277,7 +1277,7 @@
       "notice_text": "Case #: VA-370127 | Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/25057-prairie-fire-sqr-aldie-20105-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1292,7 +1292,7 @@
       "sale_date": "2026-06-25",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 20,
+      "days_until_sale": 17,
       "asking_price": null,
       "lender": null,
       "trustee": "Rosenberg and Associates",
@@ -1302,7 +1302,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/1319-liberty-rd-ne-roanoke-24012-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1317,7 +1317,7 @@
       "sale_date": "2026-06-25",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 20,
+      "days_until_sale": 17,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -1327,7 +1327,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/4202-old-mountain-rd-ne-roanoke-24019-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1342,7 +1342,7 @@
       "sale_date": "2026-06-29",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 24,
+      "days_until_sale": 21,
       "asking_price": null,
       "lender": null,
       "trustee": "LOGS Legal Group LLP",
@@ -1352,7 +1352,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/19927-upland-ter-ashburn-20147-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1367,7 +1367,7 @@
       "sale_date": "2026-06-29",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 24,
+      "days_until_sale": 21,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -1377,7 +1377,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/3413-maury-st-richmond-23224-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1392,7 +1392,7 @@
       "sale_date": "2026-06-29",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 24,
+      "days_until_sale": 21,
       "asking_price": null,
       "lender": null,
       "trustee": "RAS",
@@ -1402,7 +1402,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/519-n-armistead-st-apartment-alexandria-22312-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1417,7 +1417,7 @@
       "sale_date": "2026-06-29",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 24,
+      "days_until_sale": 21,
       "asking_price": null,
       "lender": null,
       "trustee": "Brock and Scott PLLC",
@@ -1427,7 +1427,7 @@
       "notice_text": "Case #: 25-36782-FC01",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/133-n-linden-ave-henrico-23075-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1442,7 +1442,7 @@
       "sale_date": "2026-06-29",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 24,
+      "days_until_sale": 21,
       "asking_price": null,
       "lender": null,
       "trustee": "Rosenberg and Associates",
@@ -1452,7 +1452,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/27-neville-ct-stafford-22554-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1467,7 +1467,7 @@
       "sale_date": "2026-06-30",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 25,
+      "days_until_sale": 22,
       "asking_price": null,
       "lender": null,
       "trustee": "RAS",
@@ -1477,7 +1477,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/340-newman-dr-aylett-23009-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1492,7 +1492,7 @@
       "sale_date": "2026-06-30",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 25,
+      "days_until_sale": 22,
       "asking_price": null,
       "lender": null,
       "trustee": "Brock and Scott PLLC",
@@ -1502,7 +1502,7 @@
       "notice_text": "Case #: 26-01766-FC01",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/57-patriot-dr-waynesboro-22980-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1517,7 +1517,7 @@
       "sale_date": "2026-06-30",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 25,
+      "days_until_sale": 22,
       "asking_price": null,
       "lender": null,
       "trustee": "Rosenberg and Associates",
@@ -1527,7 +1527,7 @@
       "notice_text": null,
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/1105-sword-dr-chesapeake-23323-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1542,7 +1542,7 @@
       "sale_date": "2026-06-30",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 25,
+      "days_until_sale": 22,
       "asking_price": null,
       "lender": null,
       "trustee": "Brock and Scott PLLC",
@@ -1552,7 +1552,7 @@
       "notice_text": "Case #: 25-28975-FC01",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/1326-26th-st-newport-news-23607-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1567,7 +1567,7 @@
       "sale_date": "2026-07-01",
       "sale_time": "Pending",
       "sale_location": "In The Front Of The Circuit Court Building For Fairfax County, 4110 Chain Bridge Road, Fairfax, VA",
-      "days_until_sale": 26,
+      "days_until_sale": 23,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -1577,7 +1577,7 @@
       "notice_text": "Case #: VA-349241 | Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/8160-gilroy-dr-lorton-22079-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1592,7 +1592,7 @@
       "sale_date": "2026-07-01",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 26,
+      "days_until_sale": 23,
       "asking_price": null,
       "lender": null,
       "trustee": "RAS",
@@ -1602,7 +1602,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/317-long-view-rd-linden-22642-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1617,7 +1617,7 @@
       "sale_date": "2026-07-01",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 26,
+      "days_until_sale": 23,
       "asking_price": null,
       "lender": null,
       "trustee": "Tromberg, Morris & Poulin",
@@ -1627,7 +1627,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/106-7th-st-grottoes-24441-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1642,7 +1642,7 @@
       "sale_date": "2026-07-01",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 26,
+      "days_until_sale": 23,
       "asking_price": null,
       "lender": null,
       "trustee": "RAS",
@@ -1652,7 +1652,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/824-buckner-ave-big-stone-gap-24219-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1667,7 +1667,7 @@
       "sale_date": "2026-07-01",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 26,
+      "days_until_sale": 23,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -1677,7 +1677,7 @@
       "notice_text": null,
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/5935-baptist-hollow-rd-hiwassee-24347-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1717,7 +1717,7 @@
       "sale_date": "2026-07-01",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 26,
+      "days_until_sale": 23,
       "asking_price": null,
       "lender": null,
       "trustee": "Cohn, Goldberg and Deutsch, LLC",
@@ -1727,7 +1727,7 @@
       "notice_text": null,
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/100-idlewood-ave-portsmouth-23704-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1742,7 +1742,7 @@
       "sale_date": "2026-07-01",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 26,
+      "days_until_sale": 23,
       "asking_price": null,
       "lender": null,
       "trustee": "Brock and Scott PLLC",
@@ -1752,7 +1752,7 @@
       "notice_text": "Case #: 25-22044-FC01",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/105-shipmate-way-portsmouth-23702-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1767,7 +1767,7 @@
       "sale_date": "2026-07-02",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 27,
+      "days_until_sale": 24,
       "asking_price": null,
       "lender": null,
       "trustee": "Rosenberg and Associates",
@@ -1777,7 +1777,7 @@
       "notice_text": "Occupancy: Vacant | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/903-south-avenue-newport-news-23605-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1792,7 +1792,7 @@
       "sale_date": "2026-07-02",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 27,
+      "days_until_sale": 24,
       "asking_price": null,
       "lender": null,
       "trustee": "Rosenberg and Associates",
@@ -1802,7 +1802,7 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/301-london-company-way-williamsburg-23185-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
       "is_new": true
     },
     {
@@ -1817,7 +1817,7 @@
       "sale_date": "2026-07-02",
       "sale_time": "Pending",
       "sale_location": "Pending",
-      "days_until_sale": 27,
+      "days_until_sale": 24,
       "asking_price": null,
       "lender": null,
       "trustee": "Aldridge Pite, LLP",
@@ -1827,7 +1827,32 @@
       "notice_text": "Occupancy: Occupied | Cash only",
       "source": "servicelink",
       "source_url": "https://www.servicelinkauction.com/property-details/500-perrymont-ave-lynchburg-24502-va-united-states-tps",
-      "first_seen": "2026-06-05",
+      "first_seen": "2026-06-08",
+      "is_new": true
+    },
+    {
+      "id": "fc-988d7ec1",
+      "address": "3918 Tyler Ave Nw, Roanoke, VA 24017",
+      "city": "Roanoke",
+      "county": "Roanoke 1",
+      "state": "VA",
+      "zip": "24017",
+      "property_type": "Single Family Home",
+      "stage": "auction",
+      "sale_date": "2026-07-06",
+      "sale_time": "Pending",
+      "sale_location": "Pending",
+      "days_until_sale": 28,
+      "asking_price": null,
+      "lender": null,
+      "trustee": "RAS",
+      "beds_baths_sqft": "2bd / 1ba / 1,170 sqft",
+      "year_built": 1946,
+      "lot_size": "7070",
+      "notice_text": "Occupancy: Occupied | Cash only",
+      "source": "servicelink",
+      "source_url": "https://www.servicelinkauction.com/property-details/3918-tyler-ave-nw-roanoke-24017-va-united-states-tps",
+      "first_seen": "2026-06-08",
       "is_new": true
     }
   ]
