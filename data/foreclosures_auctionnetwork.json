@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "auctionnetwork",
-    "updated": "2026-06-08",
+    "updated": "2026-06-09",
     "url": "https://bid.auctionnetwork.com/Home/Auctions?auctionTypes=Foreclosure/Trustee"
   },
   "listings": [
@@ -17,14 +17,14 @@
       "sale_date": "2026-06-16",
       "sale_time": "1:00 PM",
       "sale_location": "9311 Lee Avenue, Manassas VA",
-      "days_until_sale": 8,
+      "days_until_sale": 7,
       "asking_price": null,
       "lender": null,
       "trustee": "Auction Network",
       "notice_text": "Listing ID: 6676663",
       "source": "auctionnetwork",
       "source_url": "https://bid.auctionnetwork.com/Listing/Details/6676663/5133-CURRAN-CREEK-DR-Haymarket-VA-20169-403521",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -39,14 +39,14 @@
       "sale_date": "2026-06-25",
       "sale_time": "9:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 17,
+      "days_until_sale": 16,
       "asking_price": null,
       "lender": null,
       "trustee": "Auction Network",
       "notice_text": "Listing ID: 7104600",
       "source": "auctionnetwork",
       "source_url": "https://bid.auctionnetwork.com/Listing/Details/7104600/1026-SEATONS-LN-WEST-POINT-VA-23181-402600",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     }
   ]

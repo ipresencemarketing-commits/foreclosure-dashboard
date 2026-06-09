@@ -471,6 +471,14 @@ ENABLE_ROSENBERG: bool = True
 ENABLE_BROCKSCOTT: bool = True
 
 # ---------------------------------------------------------------------------
+# Aldridge Pite, LLP toggle  (handled by scraper_aldridgepite.py, called by run.py)
+# ---------------------------------------------------------------------------
+# Playwright required — disclaimer cookie gate on site.
+# URL: aldridgepite.com/sale-day-listings-selection/foreclosure-listings-virginia/
+# Statewide VA trustee sales. Scraper clicks "I agree" to bypass disclaimer.
+ENABLE_ALDRIDGEPITE: bool = True
+
+# ---------------------------------------------------------------------------
 # Southside Sentinel toggle  (scraper not yet built — Stage 2)
 # ---------------------------------------------------------------------------
 # Static HTML classifieds at ssentinel.com/Classifieds/public-notices/

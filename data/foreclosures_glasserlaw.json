@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "glasserlaw",
-    "updated": "2026-06-08",
+    "updated": "2026-06-09",
     "url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html"
   },
   "listings": [
@@ -41,7 +41,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "10:00 AM",
       "sale_location": "City of Hampton Circuit Court, 237 North King Street, Hampton, VA 23669",
-      "days_until_sale": 1,
+      "days_until_sale": 0,
       "asking_price": null,
       "deposit": "10000",
       "original_principal": 98000,
@@ -50,7 +50,7 @@
       "notice_text": "File #: 241765 | Original principal: $98,000",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -89,7 +89,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "10:00 AM",
       "sale_location": "Fairfax County Circuit Court, 4110 Chain Bridge Road, Fairfax, VA 22030",
-      "days_until_sale": 1,
+      "days_until_sale": 0,
       "asking_price": null,
       "deposit": "28500",
       "original_principal": 280330,
@@ -98,7 +98,7 @@
       "notice_text": "File #: 228192 | Original principal: $280,330",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -113,7 +113,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "11:45 AM",
       "sale_location": "City of Norfolk Circuit Court, 150 St. Paul`s Boulevard, Norfolk, VA 23510",
-      "days_until_sale": 1,
+      "days_until_sale": 0,
       "asking_price": null,
       "deposit": "6500",
       "original_principal": 55000,
@@ -122,7 +122,7 @@
       "notice_text": "File #: 232608 | Original principal: $55,000",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -137,7 +137,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "1:00 PM",
       "sale_location": "City of Virginia Beach Circuit Court, 2425 Nimmo Parkway, Virginia Beach, VA 23456",
-      "days_until_sale": 1,
+      "days_until_sale": 0,
       "asking_price": null,
       "deposit": "21500",
       "original_principal": 213399,
@@ -146,7 +146,7 @@
       "notice_text": "File #: 241595 | Original principal: $213,399",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -161,7 +161,7 @@
       "sale_date": "2026-06-09",
       "sale_time": "1:00 PM",
       "sale_location": "City of Virginia Beach Circuit Court, 2425 Nimmo Parkway, Virginia Beach, VA 23456",
-      "days_until_sale": 1,
+      "days_until_sale": 0,
       "asking_price": null,
       "deposit": "19500",
       "original_principal": 192400,
@@ -170,7 +170,7 @@
       "notice_text": "File #: 241716 | Original principal: $192,400",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -185,7 +185,7 @@
       "sale_date": "2026-06-10",
       "sale_time": "10:00 AM",
       "sale_location": "City of Virginia Beach Circuit Court, 2425 Nimmo Parkway, Virginia Beach, VA 23456",
-      "days_until_sale": 2,
+      "days_until_sale": 1,
       "asking_price": null,
       "deposit": "15000",
       "original_principal": 150000,
@@ -194,7 +194,7 @@
       "notice_text": "File #: 241521 | Original principal: $150,000",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -209,7 +209,7 @@
       "sale_date": "2026-06-10",
       "sale_time": "11:00 AM",
       "sale_location": "Shenandoah County Circuit Court, 112 South Main Street, Woodstock, VA 22664",
-      "days_until_sale": 2,
+      "days_until_sale": 1,
       "asking_price": null,
       "deposit": "9500",
       "original_principal": 95000,
@@ -218,7 +218,7 @@
       "notice_text": "File #: 241794 | Original principal: $95,000",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -233,7 +233,7 @@
       "sale_date": "2026-06-10",
       "sale_time": "12:00 PM",
       "sale_location": "City of Chesapeake Circuit Court, 307 Albemarle Drive, Chesapeake, VA 23322",
-      "days_until_sale": 2,
+      "days_until_sale": 1,
       "asking_price": null,
       "deposit": "21500",
       "original_principal": 213400,
@@ -242,7 +242,7 @@
       "notice_text": "File #: 241596 | Original principal: $213,400",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -257,7 +257,7 @@
       "sale_date": "2026-06-11",
       "sale_time": "12:15 PM",
       "sale_location": "City of Lynchburg Circuit Court, 900 Court Street, Lynchburg, VA 24505",
-      "days_until_sale": 3,
+      "days_until_sale": 2,
       "asking_price": null,
       "deposit": "4500",
       "original_principal": 45000,
@@ -266,7 +266,7 @@
       "notice_text": "File #: 241817 | Original principal: $45,000",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -281,7 +281,7 @@
       "sale_date": "2026-06-15",
       "sale_time": "10:00 AM",
       "sale_location": "Dinwiddie County Circuit Court, 14008 Boydton Plank Road, Dinwiddie, VA 23841",
-      "days_until_sale": 7,
+      "days_until_sale": 6,
       "asking_price": null,
       "deposit": "19500",
       "original_principal": 194000,
@@ -290,7 +290,7 @@
       "notice_text": "File #: 241502 | Original principal: $194,000",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -305,7 +305,7 @@
       "sale_date": "2026-06-15",
       "sale_time": "10:00 AM",
       "sale_location": "Middlesex County Circuit Court, 73 Bowden Street, Saluda, VA 23149",
-      "days_until_sale": 7,
+      "days_until_sale": 6,
       "asking_price": null,
       "deposit": "6000",
       "original_principal": 58300,
@@ -314,7 +314,7 @@
       "notice_text": "File #: 241590 | Original principal: $58,300",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -329,7 +329,7 @@
       "sale_date": "2026-06-16",
       "sale_time": "1:00 PM",
       "sale_location": "Prince William County Circuit Court, 9311 Lee Avenue, Manassas, VA 20110",
-      "days_until_sale": 8,
+      "days_until_sale": 7,
       "asking_price": null,
       "deposit": "30500",
       "original_principal": 305150,
@@ -338,7 +338,7 @@
       "notice_text": "File #: 241643 | Original principal: $305,150",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -353,7 +353,7 @@
       "sale_date": "2026-06-17",
       "sale_time": "10:00 AM",
       "sale_location": "City of Charlottesville Circuit Court, 315 East High Street, Charlottesville, VA 22902",
-      "days_until_sale": 9,
+      "days_until_sale": 8,
       "asking_price": null,
       "deposit": "5000",
       "original_principal": 50000,
@@ -362,7 +362,7 @@
       "notice_text": "File #: 241824 | Original principal: $50,000",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -377,7 +377,7 @@
       "sale_date": "2026-06-18",
       "sale_time": "10:00 AM",
       "sale_location": "City of Richmond Circuit Court, 400 North 9th Street, Richmond, VA 23219",
-      "days_until_sale": 10,
+      "days_until_sale": 9,
       "asking_price": null,
       "deposit": "24000",
       "original_principal": 240562,
@@ -386,7 +386,7 @@
       "notice_text": "File #: 241947 | Original principal: $240,562",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -401,7 +401,7 @@
       "sale_date": "2026-06-23",
       "sale_time": "12:00 PM",
       "sale_location": "City of Portsmouth Circuit Court, 1345 Court Street, Portsmouth, VA 23705",
-      "days_until_sale": 15,
+      "days_until_sale": 14,
       "asking_price": null,
       "deposit": "11000",
       "original_principal": 108109,
@@ -410,7 +410,7 @@
       "notice_text": "File #: 240201 | Original principal: $108,109",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -425,7 +425,7 @@
       "sale_date": "2026-06-25",
       "sale_time": "10:00 AM",
       "sale_location": "Appomattox County Circuit Court, 297 Court Street, Appomattox, VA 24522",
-      "days_until_sale": 17,
+      "days_until_sale": 16,
       "asking_price": null,
       "deposit": "9000",
       "original_principal": 87300,
@@ -434,7 +434,7 @@
       "notice_text": "File #: 239395 | Original principal: $87,300",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -449,7 +449,7 @@
       "sale_date": "2026-06-25",
       "sale_time": "1:00 PM",
       "sale_location": "Roanoke County Circuit Court, 305 East Main Street, Salem, VA 24153",
-      "days_until_sale": 17,
+      "days_until_sale": 16,
       "asking_price": null,
       "deposit": "5700",
       "original_principal": 56748,
@@ -458,7 +458,7 @@
       "notice_text": "File #: 240496 | Original principal: $56,748",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -473,7 +473,7 @@
       "sale_date": "2026-06-26",
       "sale_time": "10:00 AM",
       "sale_location": "Augusta County Circuit Court, 1 East Johnson Street, Staunton, VA 24402",
-      "days_until_sale": 18,
+      "days_until_sale": 17,
       "asking_price": null,
       "deposit": "9200",
       "original_principal": 91248,
@@ -482,7 +482,7 @@
       "notice_text": "File #: 236500 | Original principal: $91,248",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -497,7 +497,7 @@
       "sale_date": "2026-06-26",
       "sale_time": "1:00 PM",
       "sale_location": "City of Danville Circuit Court, 401 Patton Street, Danville, VA 24543",
-      "days_until_sale": 18,
+      "days_until_sale": 17,
       "asking_price": null,
       "deposit": "13500",
       "original_principal": 132275,
@@ -506,7 +506,7 @@
       "notice_text": "File #: 241952 | Original principal: $132,275",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -521,7 +521,7 @@
       "sale_date": "2026-06-29",
       "sale_time": "10:00 AM",
       "sale_location": "City of Suffolk Circuit Court, 150 North Main Street, Suffolk, VA 23434",
-      "days_until_sale": 21,
+      "days_until_sale": 20,
       "asking_price": null,
       "deposit": "13000",
       "original_principal": 128173,
@@ -530,7 +530,7 @@
       "notice_text": "File #: 231128 | Original principal: $128,173",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -545,7 +545,7 @@
       "sale_date": "2026-06-29",
       "sale_time": "2:15 PM",
       "sale_location": "Loudoun County Circuit Court, 18 East Market Street, Leesburg, VA 20178",
-      "days_until_sale": 21,
+      "days_until_sale": 20,
       "asking_price": null,
       "deposit": "15000",
       "original_principal": 150000,
@@ -554,7 +554,7 @@
       "notice_text": "File #: 241950 | Original principal: $150,000",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -569,7 +569,7 @@
       "sale_date": "2026-06-30",
       "sale_time": "10:00 AM",
       "sale_location": "Fairfax County Circuit Court, 4110 Chain Bridge Road, Fairfax, VA 22030",
-      "days_until_sale": 22,
+      "days_until_sale": 21,
       "asking_price": null,
       "deposit": "6000",
       "original_principal": 61400,
@@ -578,7 +578,7 @@
       "notice_text": "File #: 234240 | Original principal: $61,400",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
       "is_new": true
     },
     {
@@ -593,7 +593,7 @@
       "sale_date": "2026-06-30",
       "sale_time": "12:45 PM",
       "sale_location": "Fairfax County Circuit Court, 4110 Chain Bridge Road, Fairfax, VA 22030",
-      "days_until_sale": 22,
+      "days_until_sale": 21,
       "asking_price": null,
       "deposit": "9200",
       "original_principal": 92000,
@@ -602,7 +602,55 @@
       "notice_text": "File #: 241837 | Original principal: $92,000",
       "source": "glasserlaw",
       "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
-      "first_seen": "2026-06-08",
+      "first_seen": "2026-06-09",
+      "is_new": true
+    },
+    {
+      "id": "fc-fb5369b0",
+      "address": "4701 Bromfield Avenue, Virginia Beach, VA 23455",
+      "city": "Virginia Beach",
+      "county": "Virginia Beach City",
+      "state": "VA",
+      "zip": "23455",
+      "property_type": "single-family",
+      "stage": "auction",
+      "sale_date": "2026-07-01",
+      "sale_time": "10:00 AM",
+      "sale_location": "City of Virginia Beach Circuit Court, 2425 Nimmo Parkway, Virginia Beach, VA 23456",
+      "days_until_sale": 22,
+      "asking_price": null,
+      "deposit": "20000",
+      "original_principal": 200000,
+      "lender": null,
+      "trustee": "Glasser & Glasser, P.L.C.",
+      "notice_text": "File #: 241630 | Original principal: $200,000",
+      "source": "glasserlaw",
+      "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
+      "first_seen": "2026-06-09",
+      "is_new": true
+    },
+    {
+      "id": "fc-bcf2302a",
+      "address": "5024 Waterford Road, Amissville, VA 20106",
+      "city": "Amissville",
+      "county": "Culpeper",
+      "state": "VA",
+      "zip": "20106",
+      "property_type": "single-family",
+      "stage": "auction",
+      "sale_date": "2026-07-01",
+      "sale_time": "11:30 AM",
+      "sale_location": "Culpeper County Circuit Court, 135 West Cameron Street, Culpeper, VA 22701",
+      "days_until_sale": 22,
+      "asking_price": null,
+      "deposit": "22500",
+      "original_principal": 225000,
+      "lender": null,
+      "trustee": "Glasser & Glasser, P.L.C.",
+      "notice_text": "File #: 241942 | Original principal: $225,000",
+      "source": "glasserlaw",
+      "source_url": "https://www.glasserlaw.com/New%20Folder/Foreclosure%20Sales.html",
+      "first_seen": "2026-06-09",
       "is_new": true
     }
   ]

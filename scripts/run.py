@@ -295,6 +295,26 @@ def main():
         print()
         print("  Brock & Scott: SKIPPED (ENABLE_BROCKSCOTT=False in config.py)")
 
+    # ── Aldridge Pite, LLP ────────────────────────────────────────
+    if cfg.ENABLE_ALDRIDGEPITE:
+        print()
+        print("-" * 60)
+        print("  Aldridge Pite, LLP (aldridgepite.com)")
+        print("-" * 60)
+        ap_output = os.path.join(PROJECT_ROOT, "data", "foreclosures_aldridgepite.json")
+        ok = run(
+            [python, "scripts/scraper_aldridgepite.py"],
+            "Aldridge Pite scraper"
+        )
+        if ok and sync:
+            run(
+                [python, "scripts/sheets_sync.py", "--file", ap_output],
+                "sheets sync — Aldridge Pite"
+            )
+    else:
+        print()
+        print("  Aldridge Pite: SKIPPED (ENABLE_ALDRIDGEPITE=False in config.py)")
+
     # ── Washington Times Classifieds ─────────────────────────────
     if cfg.ENABLE_WASHINGTONTIMES:
         print()
