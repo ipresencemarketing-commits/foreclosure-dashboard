@@ -103,6 +103,19 @@ def save(listings: list) -> None:
     # Normalize every listing to the canonical phone-app-ready schema
     normalized = [normalize_listing(l) for l in listings]
 
+    # Deduplicate by normalized address — keep first occurrence per address
+    seen_addresses: set[str] = set()
+    deduped: list = []
+    for l in normalized:
+        addr_key = (l.get("address") or "").strip().lower()
+        if not addr_key or addr_key not in seen_addresses:
+            if addr_key:
+                seen_addresses.add(addr_key)
+            deduped.append(l)
+    if len(deduped) < len(normalized):
+        log.info(f"Removed {len(normalized) - len(deduped)} duplicate address(es) from listings")
+    normalized = deduped
+
     data = {
         "meta": {
             "schema_version":  "2.0",

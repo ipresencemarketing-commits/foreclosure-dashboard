@@ -373,6 +373,39 @@ def run() -> None:
     else:
         log.info("  No enrichment gaps to fill on existing rows.")
 
+    # ── 5b. Remove duplicate address rows from sheet ─────────────────────────
+    # Walk all data rows; for any address seen more than once, delete the later
+    # occurrences (keep the first row, which is most likely to have enrichment).
+    _seen_addrs: set[str] = set()
+    _dup_rows: list[int] = []
+    for i, row in enumerate(all_values[HEADER_ROW:], start=HEADER_ROW + 1):
+        if not row or len(row) <= addr_col:
+            continue
+        addr_val = row[addr_col].strip().lower()
+        if not addr_val:
+            continue
+        if addr_val in _seen_addrs:
+            _dup_rows.append(i)
+        else:
+            _seen_addrs.add(addr_val)
+
+    if _dup_rows:
+        log.info(f"  Removing {len(_dup_rows)} duplicate row(s) from sheet…")
+        try:
+            # Delete from bottom up so row numbers don't shift as we delete
+            for row_num in sorted(_dup_rows, reverse=True):
+                sheet.delete_rows(row_num)
+            log.info(f"  ✓ Removed {len(_dup_rows)} duplicate row(s)")
+            # Refresh sheet snapshot after deletions
+            all_values = sheet.get_all_values()
+            existing_addresses = {
+                row[addr_col].strip().lower()
+                for row in all_values[HEADER_ROW:]
+                if row and len(row) > addr_col and row[addr_col].strip()
+            }
+        except gspread.exceptions.APIError as e:
+            log.error(f"  Could not remove duplicate rows: {e}")
+
     # ── 6. Append new rows ────────────────────────────────────────────────────
     new_rows = []
     for listing in listings:

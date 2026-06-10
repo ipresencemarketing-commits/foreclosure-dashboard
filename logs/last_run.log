@@ -2529,3 +2529,216 @@
 2026-06-10 07:40:39,928  INFO    ✓ Enrichment back-fill complete (75 cells)
 2026-06-10 07:40:39,929  INFO    No new listings to add — sheet is up to date.
 2026-06-10 07:40:40,590  INFO    ✓ Summary tab updated — 1357 total properties
+[main 6d0de11] Auto-update: 2026-06-10 07:40
+ 44 files changed, 11503 insertions(+), 12161 deletions(-)
+ create mode 100644 address_comparison_results.txt
+ create mode 100644 compare_addresses.py
+ create mode 100644 scripts/comparison_report.py
+ create mode 100644 scripts/side_by_side_report.py
+To https://github.com/ipresencemarketing-commits/foreclosure-dashboard.git
+   2e0b4dc..6d0de11  main -> main
+
+============================================================
+  Virginia Foreclosure Pipeline
+  2026-06-10 07:00:01
+  Sync to Google Sheets: True
+  Push to GitHub Pages:  True
+============================================================
+
+Sources enabled:  25
+Sources disabled: 0
+
+------------------------------------------------------------
+  Free Lance-Star (Fredericksburg)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Fredericksburg Free Press
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Richmond Times-Dispatch
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Culpeper Star-Exponent
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Virginia Gazette (Williamsburg)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Roanoke Times
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Lynchburg News & Advance
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Charlottesville Daily Progress
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Waynesboro News Virginian
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Martinsville Bulletin
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Danville Register & Bee
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Westmoreland News
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Daily News-Record (Harrisonburg)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  FFXnow (Fairfax)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  ARLnow (Arlington)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  ALXnow (Alexandria)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Bristol Herald Courier
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Northern Virginia Daily
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Daily Press (Hampton Roads)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Northern Neck News
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Sun Gazette (Arlington/Fairfax)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  InsideNOVA
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Rappahannock News
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Cardinal News
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Washington Post Public Notices
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Samuel I. White, P.C. (SIWPC PDF)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Auction Network (bid.auctionnetwork.com)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Glasser Law (glasserlaw.com)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  MWC Law (apps.mwc-law.com)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  LOGS Legal Group LLP (logs.com/va-sales-report.html)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Auction.com (GOTO foreclosures — live courthouse sales)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Xome Auctions (xome.com/auctions/foreclosuresales)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  ServiceLink Auction (servicelinkauction.com)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Rosenberg & Associates (rosenberg-assoc.com)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Brock & Scott, PLLC (brockandscott.com)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  Aldridge Pite, LLP (aldridgepite.com)
+------------------------------------------------------------
+
+------------------------------------------------------------
+  The Washington Times (classified.washingtontimes.com)
+------------------------------------------------------------
+
+  PNV: SKIPPED (ENABLE_PNV=False in config.py)
+
+------------------------------------------------------------
+  Publishing to GitHub Pages...
+------------------------------------------------------------
+  Pushed to GitHub Pages.
+
+============================================================
+  Pipeline complete — 2026-06-10 07:40:42
+============================================================
+
+   Done.
+
+>> Step 2/5 — Backfilling missing fields (GIS / Redfin / derived calcs)...
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/auth/__init__.py:54: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+/Users/jarvis/Library/Python/3.9/lib/python/site-packages/google/oauth2/__init__.py:40: FutureWarning: You are using a Python version 3.9 past its end of life. Google will update google-auth with critical bug fixes on a best-effort basis, but not with any other fixes or features. Please upgrade your Python version, and then update google-auth.
+  warnings.warn(eol_message.format("3.9"), FutureWarning)
+2026-06-10 07:40:42,752  INFO  Reading sheet…
+2026-06-10 07:40:43,163  INFO    1357 data rows loaded
+2026-06-10 07:40:43,164  INFO  Pass 1 — F_Sale_Date/Time: 21 candidate row(s)
+2026-06-10 07:41:02,817  INFO    → filled 0/21
+2026-06-10 07:41:02,820  INFO  Pass 1b — F_Sale_Date/Time (secondary sources): 23 candidate row(s)
+2026-06-10 07:41:34,899  INFO    → Auction.com: 0  PNV search: 0  total: 0/23
+2026-06-10 07:41:34,901  INFO  Pass 2 — County: 17 candidate row(s)
+2026-06-10 07:42:00,061  INFO    → filled 0/17
+2026-06-10 07:42:00,062  INFO  Pass 3 — State: 0 row(s) → filling 'VA'
+2026-06-10 07:42:00,064  INFO  Pass 4 — City: 83 candidate row(s)
+2026-06-10 07:42:00,065  INFO    → filled 0/83
+2026-06-10 07:42:00,065  INFO  Pass 5 — ZIP: 46 candidate row(s)
+2026-06-10 07:42:00,065  INFO    → filled 2/46
+2026-06-10 07:42:00,067  INFO  Pass 6 — Column.us notice URLs: 0 candidate row(s)
+2026-06-10 07:42:00,067  INFO  Writing 2 cell update(s) to sheet…
+2026-06-10 07:42:00,258  INFO  ✓ Backfill complete — 2 cell(s) updated
+   Done.
+
+>> Step 3/5 — DB sync skipped (DATABASE_URL not set)
+
+>> Step 4/5 — GitHub Pages push skipped (--no-push)
+
+==================================================
+  Pipeline complete — 2026-06-10 07:42:00
+==================================================
+

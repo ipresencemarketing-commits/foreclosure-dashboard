@@ -275,6 +275,47 @@ def main():
         table_row(s, cnt)
     blank()
 
+    # ── DUPLICATE ADDRESSES ────────────────────────────────────────────────
+    heading("DUPLICATE ADDRESSES — within each sheet")
+    blank()
+
+    # Duplicates in Foreclosures tab
+    fc_key_counts: Counter = Counter(addr_key(safe_get(r, FC_ADDR_COL)) for r in fc_rows)
+    fc_dup_keys   = {k for k, cnt in fc_key_counts.items() if cnt > 1}
+    fc_dup_rows   = [r for r in fc_rows if addr_key(safe_get(r, FC_ADDR_COL)) in fc_dup_keys]
+    fc_dup_rows.sort(key=lambda r: addr_key(safe_get(r, FC_ADDR_COL)))
+
+    subheading(f"🔁  FORECLOSURES duplicates  ({len(fc_dup_rows)} rows across {len(fc_dup_keys)} address groups)")
+    table_header("Address", "County", "F_Sale_Date", "Status", "Investment_Priority", "Listing_Price")
+    for r in fc_dup_rows:
+        table_row(
+            safe_get(r, FC_ADDR_COL),
+            safe_get(r, FC_COUNTY_COL),
+            safe_get(r, FC_DATE_COL),
+            safe_get(r, FC_STATUS_COL),
+            safe_get(r, FC_PRIORITY_COL),
+            safe_get(r, FC_PRICE_COL),
+        )
+    blank()
+
+    # Duplicates in Schedule tab
+    sched_key_counts: Counter = Counter(addr_key(safe_get(r, SCHED_ADDR_COL)) for r in sched_rows)
+    sched_dup_keys   = {k for k, cnt in sched_key_counts.items() if cnt > 1}
+    sched_dup_rows   = [r for r in sched_rows if addr_key(safe_get(r, SCHED_ADDR_COL)) in sched_dup_keys]
+    sched_dup_rows.sort(key=lambda r: addr_key(safe_get(r, SCHED_ADDR_COL)))
+
+    subheading(f"🔁  SCHEDULE duplicates  ({len(sched_dup_rows)} rows across {len(sched_dup_keys)} address groups)")
+    table_header("Address", "County", "Date", "Source", "Status")
+    for r in sched_dup_rows:
+        table_row(
+            safe_get(r, SCHED_ADDR_COL),
+            safe_get(r, SCHED_COUNTY_COL),
+            safe_get(r, SCHED_DATE_COL),
+            safe_get(r, SCHED_SOURCE_COL),
+            safe_get(r, SCHED_STATUS_COL),
+        )
+    blank()
+
     # ── CROSS-COMPARISON ───────────────────────────────────────────────────
     heading("CROSS-COMPARISON: Schedule ↔ Foreclosures")
     blank()

@@ -99,6 +99,19 @@ def save(listings: list, data_file: str, source_url: str) -> None:
         listing["is_new"] = listing["first_seen"] == today
         listing["days_until_sale"] = days_until(listing.get("sale_date"))
 
+    # Deduplicate by normalized address — keep first occurrence per address
+    seen_addresses: set[str] = set()
+    deduped: list = []
+    for l in listings:
+        addr_key = (l.get("address") or "").strip().lower()
+        if not addr_key or addr_key not in seen_addresses:
+            if addr_key:
+                seen_addresses.add(addr_key)
+            deduped.append(l)
+    if len(deduped) < len(listings):
+        log.info(f"Removed {len(listings) - len(deduped)} duplicate address(es) from listings")
+    listings = deduped
+
     data = {
         "meta": {
             "last_updated": datetime.now().isoformat(timespec="seconds"),
