@@ -1,0 +1,32 @@
+Reading File A (Foreclosures)...
+File A raw content length: 813528 chars
+File A: split on newline, 432 rows
+File A: 237 address strings extracted
+File A: 142 unique address keys
+
+Reading File B (Schedule)...
+File B raw content length: 114791 chars
+File B: split on &#10;, 8 rows
+File B: 0 raw addresses extracted
+File B: 0 unique address keys
+
+==================================================
+RESULTS
+==================================================
+Total unique Schedule addresses: 0
+Total Foreclosures unique address keys: 142
+Match count: 0
+Missing (Schedule NOT in Foreclosures): 0
+
+Change vs last run (prev unique=329, prev matches=50, prev missing=279):
+  New Schedule addresses: -329
+  Match change: -50
+  Missing change: -279
+
+==================================================
+MATCHED (Schedule addresses found in Foreclosures):
+==================================================
+
+==================================================
+MISSING SCHEDULE ADDRESSES (not in Foreclosures) [0 total]:
+==================================================

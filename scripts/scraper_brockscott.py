@@ -261,9 +261,14 @@ def scrape(since_date: date = None) -> list:
             }
             listings.append(listing)
 
-        # Check for next page
-        next_link = soup.select_one("div.nav-previous a, a[href*='sf_paged']")
-        if next_link and f"sf_paged={page + 1}" in next_link.get("href", ""):
+        # Check for next page — find a link whose text is "Next" (not Previous)
+        # Searching all sf_paged links risks matching the Previous link first on page 2+
+        next_link = None
+        for a in soup.find_all("a", href=re.compile(r"sf_paged=")):
+            if "next" in a.get_text(strip=True).lower():
+                next_link = a
+                break
+        if next_link:
             page += 1
             time.sleep(0.5)
         else:
