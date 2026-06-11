@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "rosenberg",
-    "updated": "2026-06-10",
+    "updated": "2026-06-11",
     "url": "https://rosenberg-assoc.com/foreclosure-sales/"
   },
   "listings": [
@@ -17,7 +17,7 @@
       "sale_date": "2026-08-07",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 58,
+      "days_until_sale": 57,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -25,7 +25,7 @@
       "notice_text": "Case #: 24-002816-VA-F-3",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -40,7 +40,7 @@
       "sale_date": "2026-08-05",
       "sale_time": "02:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 56,
+      "days_until_sale": 55,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -48,7 +48,7 @@
       "notice_text": "Case #: 26-005554-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -63,7 +63,7 @@
       "sale_date": "2026-07-31",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 51,
+      "days_until_sale": 50,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -71,7 +71,7 @@
       "notice_text": "Case #: 26-005547-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -86,7 +86,7 @@
       "sale_date": "2026-07-23",
       "sale_time": "10:00 AM",
       "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 43,
+      "days_until_sale": 42,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -94,7 +94,7 @@
       "notice_text": "Case #: 26-005544-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -109,7 +109,7 @@
       "sale_date": "2026-07-31",
       "sale_time": "12:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 51,
+      "days_until_sale": 50,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -117,7 +117,7 @@
       "notice_text": "Case #: 26-005540-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -132,7 +132,7 @@
       "sale_date": "2026-07-14",
       "sale_time": "11:30 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 34,
+      "days_until_sale": 33,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -140,7 +140,7 @@
       "notice_text": "Case #: 26-005531-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -155,7 +155,7 @@
       "sale_date": "2026-06-26",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 16,
+      "days_until_sale": 15,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -163,7 +163,7 @@
       "notice_text": "Case #: 25-004354-VA-F-2",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -178,7 +178,7 @@
       "sale_date": "2026-07-31",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 51,
+      "days_until_sale": 50,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -186,7 +186,7 @@
       "notice_text": "Case #: 26-005502-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -201,7 +201,7 @@
       "sale_date": "2026-07-22",
       "sale_time": "10:30 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 42,
+      "days_until_sale": 41,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -209,7 +209,7 @@
       "notice_text": "Case #: 26-005500-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -224,7 +224,7 @@
       "sale_date": "2026-07-31",
       "sale_time": "03:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 51,
+      "days_until_sale": 50,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -232,7 +232,7 @@
       "notice_text": "Case #: 26-005499-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -247,7 +247,7 @@
       "sale_date": "2026-07-14",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 34,
+      "days_until_sale": 33,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -255,7 +255,7 @@
       "notice_text": "Case #: 26-005497-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -270,7 +270,7 @@
       "sale_date": "2026-06-23",
       "sale_time": "01:00 PM",
       "sale_location": "Front steps, Hanover Circuit Court, 7507 Library Dr",
-      "days_until_sale": 13,
+      "days_until_sale": 12,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -278,7 +278,7 @@
       "notice_text": "Case #: 26-005488-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -316,7 +316,7 @@
       "sale_date": "2026-06-29",
       "sale_time": "12:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 19,
+      "days_until_sale": 18,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -324,7 +324,7 @@
       "notice_text": "Case #: 22-001004-VA-F-4",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -362,7 +362,7 @@
       "sale_date": "2026-06-30",
       "sale_time": "03:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 20,
+      "days_until_sale": 19,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -370,7 +370,7 @@
       "notice_text": "Case #: 26-005468-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -385,7 +385,7 @@
       "sale_date": "2026-08-04",
       "sale_time": "09:30 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 55,
+      "days_until_sale": 54,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -393,7 +393,7 @@
       "notice_text": "Case #: 23-001229-VA-F-3",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -408,7 +408,7 @@
       "sale_date": "2026-06-26",
       "sale_time": "03:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 16,
+      "days_until_sale": 15,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -416,7 +416,7 @@
       "notice_text": "Case #: 26-005460-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -431,7 +431,7 @@
       "sale_date": "2026-06-25",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 15,
+      "days_until_sale": 14,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -439,7 +439,7 @@
       "notice_text": "Case #: 26-005459-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -454,7 +454,7 @@
       "sale_date": "2026-07-27",
       "sale_time": "02:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 47,
+      "days_until_sale": 46,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -462,7 +462,7 @@
       "notice_text": "Case #: 23-001863-VA-F-4",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -477,7 +477,7 @@
       "sale_date": "2026-06-23",
       "sale_time": "01:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 13,
+      "days_until_sale": 12,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -485,7 +485,7 @@
       "notice_text": "Case #: 26-005457-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -500,7 +500,7 @@
       "sale_date": "2026-06-23",
       "sale_time": "02:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 13,
+      "days_until_sale": 12,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -508,7 +508,7 @@
       "notice_text": "Case #: 26-005456-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -546,7 +546,7 @@
       "sale_date": "2026-07-21",
       "sale_time": "03:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 41,
+      "days_until_sale": 40,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -554,7 +554,7 @@
       "notice_text": "Case #: 26-005450-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -569,7 +569,7 @@
       "sale_date": "2026-06-23",
       "sale_time": "02:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 13,
+      "days_until_sale": 12,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -577,7 +577,7 @@
       "notice_text": "Case #: 26-005444-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -592,7 +592,7 @@
       "sale_date": "2026-06-16",
       "sale_time": "12:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 6,
+      "days_until_sale": 5,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -600,7 +600,7 @@
       "notice_text": "Case #: 26-005443-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -615,7 +615,7 @@
       "sale_date": "2026-06-23",
       "sale_time": "01:00 PM",
       "sale_location": "Front steps, Hanover Circuit Court, 7507 Library Dr",
-      "days_until_sale": 13,
+      "days_until_sale": 12,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -623,7 +623,7 @@
       "notice_text": "Case #: 25-004012-VA-F-2",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -638,7 +638,7 @@
       "sale_date": "2026-06-12",
       "sale_time": "12:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 2,
+      "days_until_sale": 1,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -646,7 +646,7 @@
       "notice_text": "Case #: 26-005426-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -684,7 +684,7 @@
       "sale_date": "2026-07-09",
       "sale_time": "12:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 29,
+      "days_until_sale": 28,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -692,7 +692,7 @@
       "notice_text": "Case #: 26-005396-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -730,7 +730,7 @@
       "sale_date": "2026-06-23",
       "sale_time": "03:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 13,
+      "days_until_sale": 12,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -738,7 +738,7 @@
       "notice_text": "Case #: 26-005363-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -753,7 +753,7 @@
       "sale_date": "2026-08-03",
       "sale_time": "10:00 AM",
       "sale_location": "Front steps, Henrico Circuit Court, 4301 E Parham Rd",
-      "days_until_sale": 54,
+      "days_until_sale": 53,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -761,7 +761,7 @@
       "notice_text": "Case #: 24-002548-VA-F-2",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -776,7 +776,7 @@
       "sale_date": "2026-07-30",
       "sale_time": "10:00 AM",
       "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 50,
+      "days_until_sale": 49,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -784,7 +784,7 @@
       "notice_text": "Case #: 26-005289-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -799,7 +799,7 @@
       "sale_date": "2026-06-23",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 13,
+      "days_until_sale": 12,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -807,7 +807,7 @@
       "notice_text": "Case #: 26-005287-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -822,7 +822,7 @@
       "sale_date": "2026-07-20",
       "sale_time": "02:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 40,
+      "days_until_sale": 39,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -830,7 +830,7 @@
       "notice_text": "Case #: 26-005274-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -845,7 +845,7 @@
       "sale_date": "2026-06-18",
       "sale_time": "02:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 8,
+      "days_until_sale": 7,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -853,7 +853,7 @@
       "notice_text": "Case #: 26-005265-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -868,7 +868,7 @@
       "sale_date": "2026-07-24",
       "sale_time": "01:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 44,
+      "days_until_sale": 43,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -876,7 +876,7 @@
       "notice_text": "Case #: 26-005263-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -891,7 +891,7 @@
       "sale_date": "2026-07-28",
       "sale_time": "03:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 48,
+      "days_until_sale": 47,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -899,7 +899,7 @@
       "notice_text": "Case #: 26-005261-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -914,7 +914,7 @@
       "sale_date": "2026-07-21",
       "sale_time": "10:30 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 41,
+      "days_until_sale": 40,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -922,7 +922,7 @@
       "notice_text": "Case #: 26-005258-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -937,7 +937,7 @@
       "sale_date": "2026-08-07",
       "sale_time": "02:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 58,
+      "days_until_sale": 57,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -945,7 +945,7 @@
       "notice_text": "Case #: 26-005231-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -960,7 +960,7 @@
       "sale_date": "2026-07-06",
       "sale_time": "02:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 26,
+      "days_until_sale": 25,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -968,7 +968,7 @@
       "notice_text": "Case #: 26-005230-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1006,7 +1006,7 @@
       "sale_date": "2026-08-12",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 63,
+      "days_until_sale": 62,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1014,7 +1014,7 @@
       "notice_text": "Case #: 25-005197-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1052,7 +1052,7 @@
       "sale_date": "2026-07-31",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 51,
+      "days_until_sale": 50,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1060,7 +1060,7 @@
       "notice_text": "Case #: 25-005142-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1075,7 +1075,7 @@
       "sale_date": "2026-06-26",
       "sale_time": "11:30 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 16,
+      "days_until_sale": 15,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1083,7 +1083,7 @@
       "notice_text": "Case #: 25-005130-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1121,7 +1121,7 @@
       "sale_date": "2026-07-21",
       "sale_time": "10:00 AM",
       "sale_location": "Front steps, Spotsylvania Circuit Court, 9115 Courthouse Rd",
-      "days_until_sale": 41,
+      "days_until_sale": 40,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1129,7 +1129,7 @@
       "notice_text": "Case #: 25-005084-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1144,7 +1144,7 @@
       "sale_date": "2026-06-26",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 16,
+      "days_until_sale": 15,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1152,7 +1152,7 @@
       "notice_text": "Case #: 25-005070-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1167,7 +1167,7 @@
       "sale_date": "2026-06-26",
       "sale_time": "12:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 16,
+      "days_until_sale": 15,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1175,7 +1175,7 @@
       "notice_text": "Case #: 25-005045-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1190,7 +1190,7 @@
       "sale_date": "2026-06-11",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 1,
+      "days_until_sale": 0,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1198,7 +1198,7 @@
       "notice_text": "Case #: 25-005013-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1213,7 +1213,7 @@
       "sale_date": "2026-07-10",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 30,
+      "days_until_sale": 29,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1221,7 +1221,7 @@
       "notice_text": "Case #: 25-004954-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1236,7 +1236,7 @@
       "sale_date": "2026-06-01",
       "sale_time": "01:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": -9,
+      "days_until_sale": -10,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1244,7 +1244,7 @@
       "notice_text": "Case #: 25-004921-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1259,7 +1259,7 @@
       "sale_date": "2026-06-30",
       "sale_time": "11:00 AM",
       "sale_location": "Front steps, Caroline Circuit Court, 112 Courthouse Ln",
-      "days_until_sale": 20,
+      "days_until_sale": 19,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1267,7 +1267,7 @@
       "notice_text": "Case #: 25-004861-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1282,7 +1282,7 @@
       "sale_date": "2026-07-27",
       "sale_time": "10:00 AM",
       "sale_location": "Front steps, Stafford Circuit Court, 1300 Courthouse Rd",
-      "days_until_sale": 47,
+      "days_until_sale": 46,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1290,7 +1290,7 @@
       "notice_text": "Case #: 25-004815-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1305,7 +1305,7 @@
       "sale_date": "2026-06-12",
       "sale_time": "12:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 2,
+      "days_until_sale": 1,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1313,7 +1313,7 @@
       "notice_text": "Case #: 25-004793-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1328,7 +1328,7 @@
       "sale_date": "2026-06-30",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 20,
+      "days_until_sale": 19,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1336,7 +1336,7 @@
       "notice_text": "Case #: 25-004500-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1351,7 +1351,7 @@
       "sale_date": "2026-06-23",
       "sale_time": "12:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 13,
+      "days_until_sale": 12,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1359,7 +1359,7 @@
       "notice_text": "Case #: 25-004499-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1374,7 +1374,7 @@
       "sale_date": "2026-07-07",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 27,
+      "days_until_sale": 26,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1382,7 +1382,7 @@
       "notice_text": "Case #: 22-000821-VA-F-2",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1397,7 +1397,7 @@
       "sale_date": "2026-07-02",
       "sale_time": "11:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 22,
+      "days_until_sale": 21,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1405,7 +1405,7 @@
       "notice_text": "Case #: 24-003032-VA-F-2",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1420,7 +1420,7 @@
       "sale_date": "2026-07-02",
       "sale_time": "12:30 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 22,
+      "days_until_sale": 21,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1428,7 +1428,7 @@
       "notice_text": "Case #: 24-003650-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1443,7 +1443,7 @@
       "sale_date": "2026-06-29",
       "sale_time": "10:00 AM",
       "sale_location": "Front steps, Stafford Circuit Court, 1300 Courthouse Rd",
-      "days_until_sale": 19,
+      "days_until_sale": 18,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1451,7 +1451,7 @@
       "notice_text": "Case #: 24-003325-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1466,7 +1466,7 @@
       "sale_date": "2026-07-30",
       "sale_time": "10:00 AM",
       "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 50,
+      "days_until_sale": 49,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1474,7 +1474,7 @@
       "notice_text": "Case #: 22-000226-VA-F-2",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1489,7 +1489,7 @@
       "sale_date": "2026-08-05",
       "sale_time": "10:30 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 56,
+      "days_until_sale": 55,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1497,7 +1497,7 @@
       "notice_text": "Case #: 22-002095-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1512,7 +1512,7 @@
       "sale_date": "2026-06-25",
       "sale_time": "10:00 AM",
       "sale_location": "Front steps, Chesterfield Circuit Court, 9500 Courthouse Rd",
-      "days_until_sale": 15,
+      "days_until_sale": 14,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1520,7 +1520,7 @@
       "notice_text": "Case #: 22-001743-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1535,7 +1535,7 @@
       "sale_date": "2026-07-07",
       "sale_time": "02:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 27,
+      "days_until_sale": 26,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1543,7 +1543,7 @@
       "notice_text": "Case #: 24-002825-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1558,7 +1558,7 @@
       "sale_date": "2026-08-10",
       "sale_time": "01:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 61,
+      "days_until_sale": 60,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1566,7 +1566,7 @@
       "notice_text": "Case #: 26-005228-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1581,7 +1581,7 @@
       "sale_date": "2026-08-07",
       "sale_time": "01:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 58,
+      "days_until_sale": 57,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1589,7 +1589,7 @@
       "notice_text": "Case #: 25-005063-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1604,7 +1604,7 @@
       "sale_date": "2026-08-11",
       "sale_time": "10:00 AM",
       "sale_location": "Front steps, Hanover Circuit Court, 7507 Library Dr",
-      "days_until_sale": 62,
+      "days_until_sale": 61,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1612,7 +1612,7 @@
       "notice_text": "Case #: 26-005567-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1627,7 +1627,7 @@
       "sale_date": "2026-08-12",
       "sale_time": "02:00 PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 63,
+      "days_until_sale": 62,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1635,7 +1635,7 @@
       "notice_text": "Case #: 26-005483-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     },
     {
@@ -1650,7 +1650,7 @@
       "sale_date": "2026-08-11",
       "sale_time": "10:00 AM",
       "sale_location": "Front steps, Spotsylvania Circuit Court, 9115 Courthouse Rd",
-      "days_until_sale": 62,
+      "days_until_sale": 61,
       "asking_price": null,
       "deposit": "20000",
       "lender": null,
@@ -1658,7 +1658,7 @@
       "notice_text": "Case #: 26-005574-VA-F-1",
       "source": "rosenberg",
       "source_url": "https://rosenberg-assoc.com/foreclosure-sales/",
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-06-11",
       "is_new": true
     }
   ]
