@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "auctionnetwork",
-    "updated": "2026-06-11",
+    "updated": "2026-06-12",
     "url": "https://bid.auctionnetwork.com/Home/Auctions?auctionTypes=Foreclosure/Trustee"
   },
   "listings": [
@@ -39,14 +39,14 @@
       "sale_date": "2026-06-25",
       "sale_time": "9:00 AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 14,
+      "days_until_sale": 13,
       "asking_price": null,
       "lender": null,
       "trustee": "Auction Network",
       "notice_text": "Listing ID: 7104600",
       "source": "auctionnetwork",
       "source_url": "https://bid.auctionnetwork.com/Listing/Details/7104600/1026-SEATONS-LN-WEST-POINT-VA-23181-402600",
-      "first_seen": "2026-06-11",
+      "first_seen": "2026-06-12",
       "is_new": true
     }
   ]

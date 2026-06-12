@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-06-11T07:04:45",
+    "last_updated": "2026-06-12T07:04:41",
     "source": "https://westmorelandnews.column.us/search?noticeType=Foreclosure+Sale",
     "total_count": 3,
     "new_today": 0
@@ -19,8 +19,8 @@
       "sale_date": "2026-06-12",
       "sale_time": "12:00PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 1,
-      "notice_date": "2026-06-11",
+      "days_until_sale": 0,
+      "notice_date": "2026-06-12",
       "days_in_foreclosure": 0,
       "lender": "chase",
       "trustee": null,
@@ -29,7 +29,7 @@
       "deed_of_trust_date": "2004-04-27",
       "notice_text": "Foreclosure Sale NOTICE OF SUBSTITUTE TRUSTEE\u2019S SALE (15885 Kings Highway, Montross, VA 22520) Tax Map Reference Nos.: 34-16F; 34A2-1-5-10; 34A2-1-5-12; 34A2-1-5-13; and 34-16H Pursuant to the terms of certain Deed of Trust dated April 27, 2004 (the \u201c Deed of Trust \u201d) and recorded April 27, 2004 in the Clerk\u2019s Office for the Circuit Court of Westmoreland County at Book 638, Page 569, the real property described in the Deed of Trust commonly known as 15885 Kings Highway, Montross, Virginia 22520, and all improvements related thereto (collectively, the \u201c Property \u201d), as set forth below and as more specifically described in the Deed of Trust, to which reference is hereby made, will be offered for sale at public auction: Parcel 1 : All that certain parcel of land situate in the Town of Montross, Westmoreland County, Virginia, containing an area of 4,987 square feet, the metes and bounds of which are shown by plat of survey of Richard B. Allison, Jr., C.L.S., dated August 4, 1987, entitled \"Plat Showing a Portion of the Property of Max Anderson & Cynthia I. Fowler,\" a copy of which is recorded in the Circuit Court Clerk's Office of Westmoreland County, Virginia, in Deed Book 344 at Page 135. (Tax Map No. 34-16F) Parcel 2 : All that certain parcel of land situate in the Town of Montross, Westmoreland County, Virginia, containing an area of 20,286 square feet, the metes and bounds of which are shown by plat of survey of Richard B. Allison, Jr., C.L.S., dated December 19, 1986, and entitled \"Plat Showing Parcel A & Parcel B, A Portion of the Property of W. Norris Lowery, Town of Montross,\" a copy of which is recorded in the said Clerk's Office in Deed Book 335 at Page 485, said lot being designated thereon as \"Parcel B.\" (Tax Map No. 34A2-1-5-12) Parcel 3 : All that certain lot fronting 65 feet on State Highway No. 3 and extending back at right angles between parallel lines a distance of 146 feet, shown oh a certain plat of survey of J. Arthur Cooke, C.L.S., dated March 21, 1953, and entitled \"Survey Showing Property Lines in Vicinity of Post Office, Montross, Westmoreland County, Virginia,\" upon which said lot is located in the office building known as the B & P Building, the said plat being of record in the Clerk's Office of the Circuit Court of Westmoreland Count, Virginia, in Deed Book 146 at Page 156. (Tax Map No. 34A2-1-5-10) Parcel 4 : All that certain lot fronting 55 feet on State Highway No. 3 and extending back at right angles between parallel lines a distance of 150 feet, the metes and bounds of which are shown by a certain plat of survey of J. Arthur Cooke, C.L.S., dated June 22, 1953, recorded with a certain deed in said Clerk's Office in Deed Book 146 at Page 158. (Tax Map No. 34A2-1-5-13) Being the same property conveyed unto IBABI, INC., a Virginia Corporation, by deed dated December 26, 1997, and recorded in the aforesaid Clerk's Office in Deed Book 480 at Page 681. Parcel 5 : All that certain lot, piece or parcel of land lying, being and situate in Westmoreland County, Virginia, and containing 1.7704 acres, which is bounded by the line \"A\" and \"B\", as shown on plat of survey made by Richard B. Allison, Jr., C.L.S., dated March 11, 1999, and entitled \"Plat Showing Property Line Adjustment Between the Properties of Rita Donner and IBABI, INC...,\" a copy of which is recorded in the said Clerk's Office in Deed Book 504 at Page 116. (Tax Map No. 34-16H) Being the same property conveyed unto IBABI, INC., a Virginia Corporation; by Deed of Boundary Line Adjustment dated March 16, 1999, and recorded in the aforesaid Clerk's Office in Deed Book 504 at Page 114. The sale will take place at 15885 Kings Highway, Montross, VA 22520 and via simultaneous online auction on June 12, 2026, at 12:00 p.m. (prevailing Eastern Time) . Terms: The purchase price in the form of immediately available funds will be due and payable on the closing date. A deposit in the form of immediately available funds in the amount of $50,000 will be required of the successful bidder at the time of sale. The high bidder will be required to increase the deposit to an amount equal to 10% of the high bid within 3 business days of the sale date. The successful bidder will be required to close within thirty (30) days of the date of sale. Time will be of the essence as to the closing date and the payment of the purchase price. In the event an auctioneer is used in connection with the sale of the Property, there may be included a buyer\u2019s premium of 5% added to the highest bid to determine the purchase price that must be paid by the successful bidder. All loss or damage to the Property from the time of sale and before settlement shall be at the risk of the successful bidder. The Property will be sold subject to all encumbrances that are not extinguished by operation of law by the sale and subject to all easements, equitable servitudes, conditions, rights of way, restrictions, rights of redemption, covenants, declarations, and restrictions of reco",
       "source": "column_us_westmoreland",
-      "source_url": "https://westmorelandnews.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-04-12",
+      "source_url": "https://westmorelandnews.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-04-13",
       "first_seen": "2026-05-30",
       "is_new": false
     },
@@ -46,8 +46,8 @@
       "sale_date": "2026-06-05",
       "sale_time": "3:00PM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": -6,
-      "notice_date": "2026-06-11",
+      "days_until_sale": -7,
+      "notice_date": "2026-06-12",
       "days_in_foreclosure": 0,
       "lender": null,
       "trustee": null,
@@ -56,7 +56,7 @@
       "deed_of_trust_date": "2022-09-26",
       "notice_text": "Foreclosure Sale Trustee's Sale 197 FT KING DR, COLONIAL BEACH, VA 22443 (Parcel ID: 6B 4 K 5) Default having been made in the terms of a certain Deed of Trust dated 9/26/2022, in the original principal amount of $201,531.00 and recorded in the Clerk's Office of the Circuit Court of the Westmoreland County, Virginia on 9/27/2022, as Instrument No. 220003767, in Book 959, Page 1948, the undersigned Substitute Trustees will sell at public auction on 6/5/2026 at 3:00 PM, Front of building of the Circuit Court Building For Westmoreland County, 175 Polk Street, Montross, Virginia 22520, the property designated as 197 FT KING DR, COLONIAL BEACH, VA 22443. Lot 5, Block K, Section 4, Westmoreland Shores, as shown on a plat of said Section 4, Westmoreland Shores, dated 11 February 1957, made by Brooks and Barton, C.L.S., Richmond, Virginia, and duly recorded in the Office or the Clerk of the Circuit Court of Westmoreland County, Virginia, in Deed Book 154 at Page 560 and 561, to which plat reference is made for the metes and bounds of said lot. TERMS: CASH. A deposit of $20,153.10 or 10% of the sale price, whichever is lower, will be required of the successful bidder at time of sale. Prior to the sale, interested bidders will be required to register with and must present a bid deposit which may be held during the sale by the trustee. The bid deposit must be certified funds and/or cash, but no more than $9,900.00 of cash will be accepted. The successful bidder's deposit will be retained at the sale and applied to the sale price. If held by the trustee, all other bid deposits will be returned to the unsuccessful bidders. Settlement is to be made within 15 days. The successful bidder will be responsible for obtaining possession of the property, and for all costs and fees related to recording the Trustee's Deed, including the grantors tax. The successful bidder will be required to execute a Memorandum of Trustee's Sale, available for review upon request before the sale, outlining additional terms of sale and settlement. A Trustee's Deed will be prepared by Trustee's attorney at high bidder's expense. This is a communication from a debt collector. Vylla Solutions - Virginia, LLC, 283 Constitution Drive, Suite 102, Office B, Virginia Beach, VA 23462, File No. 26-39071, Tel: 888-313-1969 **********END OF ADVERTISEMENT********** RICHMOND COUNTY, VIRGINIA 2026-06-03",
       "source": "column_us_westmoreland",
-      "source_url": "https://westmorelandnews.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-04-12",
+      "source_url": "https://westmorelandnews.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-04-13",
       "first_seen": "2026-05-11",
       "is_new": false
     },
@@ -73,8 +73,8 @@
       "sale_date": "2026-08-04",
       "sale_time": "11:00AM",
       "sale_location": "Courthouse steps \u2014 verify with trustee",
-      "days_until_sale": 54,
-      "notice_date": "2026-06-11",
+      "days_until_sale": 53,
+      "notice_date": "2026-06-12",
       "days_in_foreclosure": 0,
       "lender": null,
       "trustee": null,
@@ -83,7 +83,7 @@
       "deed_of_trust_date": "2022-05-20",
       "notice_text": "Foreclosure Sale Trustee's Sale 558 SHOREWOOD DR, COLONIAL BEACH, VA 22443 (Parcel ID: 10C 10 1 14 / 13416-1) Default having been made in the terms of a certain Deed of Trust dated 5/20/2022, in the original principal amount of $206,196.00 and recorded in the Clerk's Office of the Circuit Court of the Westmoreland County, Virginia on 5/24/2022, in Book 955, Page 1908, the undersigned Substitute Trustees will sell at public auction on 8/4/2026 at 11:00 AM, At the Front of the Circuit Court Building For Westmoreland County located at 175 Polk Street, Montross, VA 22520, the property designated as 558 SHOREWOOD DR, COLONIAL BEACH, VA 22443. Lot No. Fourteen (14) in Block 1, of the Wildwood Section of Placid Bay Estates, as shown and described by metes and bounds upon a plat of survey thereof, dated 2 March 1964, by J. Arthur Cooke, C.L.S., which said plat is recorded with a Certificate of Owners Consent to Subdivision in the Clerks Office of the Circuit Court of Westmoreland County, Virginia, in Deed Book 189, at Page 644, et seq. Reference to said plat being made for a more complete description of the property conveyed herein. TERMS: CASH. A deposit of $20,619.60 or 10% of the sale price, whichever is lower, will be required of the successful bidder at time of sale. Prior to the sale, interested bidders will be required to register with and must present a bid deposit which may be held during the sale by the trustee. The bid deposit must be certified funds and/or cash, but no more than $9,900.00 of cash will be accepted. The successful bidder's deposit will be retained at the sale and applied to the sale price. If held by the trustee, all other bid deposits will be returned to the unsuccessful bidders. Settlement is to be made within 15 days. The successful bidder will be responsible for obtaining possession of the property, and for all costs and fees related to recording the Trustee's Deed, including the grantors tax. The successful bidder will be required to execute a Memorandum of Trustee's Sale, available for review upon request before the sale, outlining additional terms of sale and settlement. A Trustee's Deed will be prepared by Trustee's attorney at high bidder's expense. This is a communication from a debt collector. Vylla Solutions - Virginia, LLC, 283 Constitution Drive, Suite 102, Office B, Virginia Beach, VA 23462, File No. 25-34318, Tel: 888-313-1969 **********END OF ADVERTISEMENT********** RICHMOND COUNTY, VIRGINIA 2026-05-20",
       "source": "column_us_westmoreland",
-      "source_url": "https://westmorelandnews.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-04-12",
+      "source_url": "https://westmorelandnews.column.us/search?noticeType=Foreclosure+Sale&afterDate=2026-04-13",
       "first_seen": "2026-05-30",
       "is_new": false
     }
